@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Juego 17 · Secuencias lógicas — Sala de espera virtual</title>
+  <meta name="description" content="Razonamiento: completá secuencias numéricas, de letras o patrones simples. Puntaje, racha y resultado copiable." />
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <meta name="theme-color" content="#0e2239" />
+
+  <style>
+    .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
+    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .brand .logo{ width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
+    .brand-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand-sub{ opacity:.9; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .game-shell{ margin-top:16px; }
+    .game-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .kpiwrap{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .kpi{ padding:10px 12px; border-radius:14px; border:1px solid rgba(15,30,51,.12); background: rgba(238,242,247,.9); min-width: 150px; }
+    .kpi .label{ font-size:.8rem; opacity:.8; margin:0; }
+    .kpi .value{ margin:2px 0 0 0; font-weight:800; font-size:1.05rem; color:#0f1e33; }
+
+    .stage{ margin-top:14px; display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; }
+    @media (max-width: 920px){ .stage{ grid-template-columns: 1fr; } }
+
+    .prompt-box{
+      border-radius:18px;
+      border:1px solid rgba(15,30,51,.14);
+      background:#fff;
+      padding:18px;
+      min-height: 250px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .seq{
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 900;
+      color:#0f1e33;
+      line-height:1.15;
+      margin:0;
+      text-align:center;
+      letter-spacing:.04em;
+    }
+    .subline{
+      text-align:center;
+      margin:0;
+      font-weight:700;
+      color:#334155;
+      opacity:.9;
+    }
+
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(15,30,51,.10);
+      overflow:hidden;
+      margin-top:6px;
+    }
+    .bar > div{
+      height:100%;
+      width:100%;
+      background: rgba(37,99,235,.55);
+      transform-origin: left center;
+      transform: scaleX(0);
+    }
+
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    @media (min-width: 560px){
+      .choices{ grid-template-columns: 1fr 1fr; }
+    }
+    .choice{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,30,51,.14);
+      background: rgba(255,255,255,.92);
+      cursor: pointer;
+      font-weight: 900;
+      color:#0f1e33;
+      line-height:1.35;
+      text-align:center;
+      user-select:none;
+      font-size: 1.05rem;
+    }
+    .choice:hover{ box-shadow: 0 8px 24px rgba(15,30,51,.10); }
+    .choice[disabled]{ cursor:not-allowed; opacity:.6; }
+    .choice.good{ border-color: rgba(16,185,129,.55); background: rgba(16,185,129,.10); }
+    .choice.bad{ border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.08); }
+
+    .status{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15,30,51,.12);
+      background: rgba(238,242,247,.9);
+      min-height: 72px;
+    }
+    .status b{ color:#0f1e33; }
+    .muted{ color:#475569; }
+
+    .settings-grid{ display:grid; grid-template-columns: 1fr; gap:12px; margin-top: 12px; }
+    .setting{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .setting label{ font-weight:700; color:#0f1e33; }
+    select, input[type="number"]{
+      border-radius: 12px;
+      border: 1px solid rgba(15,30,51,.18);
+      padding: 10px 10px;
+      background:#fff;
+      min-width: 180px;
+    }
+
+    .result-box{
+      padding:12px 12px;
+      border-radius:16px;
+      border: 1px solid rgba(15,30,51,.12);
+      background: rgba(238,242,247,.9);
+      margin-top: 12px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 800;
+      font-size: .92rem;
+    }
+
+    .note{
+      margin-top:12px;
+      opacity:.92;
+      font-size: .95rem;
+      color:#334155;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🧩</div>
+        <div class="brand-text" style="min-width:0">
+          <div class="brand-title">Sala de espera virtual</div>
+          <div class="brand-sub">Juego 17 · Secuencias lógicas</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+        <span class="pill" id="pillMode" title="Configuración actual">🎛️</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap game-shell">
+    <section class="section-card">
+      <div class="game-head">
+        <div>
+          <h1 class="card-title" style="margin:0">Secuencias lógicas</h1>
+          <p class="card-sub" style="margin-top:6px">
+            Completá la secuencia eligiendo la opción correcta. Incluye números, letras y patrones simples.
+          </p>
+        </div>
+        <div class="row">
+          <button class="btn-primary" id="btnStart" type="button">Iniciar</button>
+          <button class="btn btn-ghost" id="btnStop" type="button" disabled>Terminar</button>
+        </div>
+      </div>
+
+      <div class="kpiwrap" aria-label="Indicadores">
+        <div class="kpi">
+          <p class="label">Ítem</p>
+          <p class="value" id="kpiItem">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Aciertos</p>
+          <p class="value" id="kpiOk">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Errores</p>
+          <p class="value" id="kpiBad">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Racha</p>
+          <p class="value" id="kpiStreak">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">RT medio</p>
+          <p class="value" id="kpiRT">—</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div>
+          <div class="prompt-box" aria-live="polite">
+            <div>
+              <p class="subline" id="hintLine">Configurá y presioná <b>Iniciar</b>.</p>
+              <h2 class="seq" id="seq">—</h2>
+              <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+            </div>
+
+            <div>
+              <div class="choices" id="choices" aria-label="Opciones">
+                <!-- injected -->
+              </div>
+
+              <div class="status" id="status">
+                <span class="muted">Tip:</span> buscá patrones simples: suma, alternancia, repetición, saltos en letras.
+              </div>
+            </div>
+          </div>
+
+          <div class="note">
+            Ejercicio breve de razonamiento. No es diagnóstico.
+          </div>
+        </div>
+
+        <aside class="section-card" style="margin:0">
+          <h2 class="card-title" style="margin:0">Configuración</h2>
+          <p class="card-sub" style="margin-top:6px">Ajustá antes de iniciar.</p>
+
+          <div class="settings-grid">
+            <div class="setting">
+              <label for="diffSel">Dificultad</label>
+              <select id="diffSel">
+                <option value="easy">Fácil</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Difícil</option>
+              </select>
+            </div>
+
+            <div class="setting">
+              <label for="itemsNum">Cantidad de ítems</label>
+              <input id="itemsNum" type="number" min="5" max="25" step="1" value="10" />
+            </div>
+
+            <div class="setting">
+              <label for="timeSel">Tiempo por ítem</label>
+              <select id="timeSel">
+                <option value="0" selected>Sin límite</option>
+                <option value="20000">20 s</option>
+                <option value="15000">15 s</option>
+                <option value="10000">10 s</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="result-box" id="resultBox" style="display:none">
+            <h3 class="card-title" style="margin:0">Resultado</h3>
+            <p class="card-sub" id="resultText" style="margin-top:8px"></p>
+            <div class="row" style="margin-top:10px">
+              <button class="btn" id="btnCopy" type="button">Copiar</button>
+              <button class="btn btn-ghost" id="btnRestart" type="button">Reiniciar</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // Accesibilidad: tamaño de texto (persistente)
+    (function(){
+      const key="textScalePct";
+      let pct = parseInt(localStorage.getItem(key) || "100", 10);
+      pct = Math.min(130, Math.max(85, pct));
+      document.documentElement.style.setProperty("--scale", pct + "%");
+      const minus = document.getElementById("btnAminus");
+      const plus  = document.getElementById("btnAplus");
+      minus.addEventListener("click", ()=>{ pct=Math.max(85, pct-5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+      plus.addEventListener("click", ()=>{ pct=Math.min(130, pct+5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+    })();
+
+    const $=(id)=>document.getElementById(id);
+
+    const seqEl = $("seq");
+    const hintLine = $("hintLine");
+    const statusEl = $("status");
+    const barFill = $("barFill");
+    const choicesEl = $("choices");
+
+    const btnStart = $("btnStart");
+    const btnStop  = $("btnStop");
+
+    const diffSel = $("diffSel");
+    const itemsNum= $("itemsNum");
+    const timeSel = $("timeSel");
+    const pillMode= $("pillMode");
+
+    const kpiItem = $("kpiItem");
+    const kpiOk   = $("kpiOk");
+    const kpiBad  = $("kpiBad");
+    const kpiStreak = $("kpiStreak");
+    const kpiRT   = $("kpiRT");
+
+    const resultBox = $("resultBox");
+    const resultText= $("resultText");
+    const btnCopy = $("btnCopy");
+    const btnRestart = $("btnRestart");
+
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+    function clamp(v,a,b){ return Math.min(b, Math.max(a,v)); }
+
+    let state="idle";
+    let total=10;
+    let idx=0;
+    let ok=0;
+    let bad=0;
+    let streak=0;
+    let rts=[];
+    let cur=null;
+    let tStart=0;
+    let perItem=0;
+    let raf=null;
+    let deadline=0;
+
+    function updatePill(){
+      const d = diffSel.value==="easy"?"Fácil":diffSel.value==="hard"?"Difícil":"Normal";
+      const t = parseInt(timeSel.value,10);
+      const tt = t===0?"∞":Math.round(t/1000)+"s";
+      pillMode.textContent = `🎛️ ${d} · ${itemsNum.value} ítems · ${tt}`;
+      pillMode.title = `Dificultad: ${d} | Ítems: ${itemsNum.value} | Tiempo/ítem: ${tt}`;
+    }
+    ["change","input"].forEach(ev=>{
+      diffSel.addEventListener(ev, updatePill);
+      itemsNum.addEventListener(ev, updatePill);
+      timeSel.addEventListener(ev, updatePill);
+    });
+    updatePill();
+
+    function setEnabled(r){
+      btnStart.disabled = r;
+      btnStop.disabled = !r;
+      diffSel.disabled = r;
+      itemsNum.disabled = r;
+      timeSel.disabled = r;
+    }
+
+    function stopTimer(){
+      if(raf){ cancelAnimationFrame(raf); raf=null; }
+      barFill.style.transform="scaleX(0)";
+    }
+
+    function startTimer(){
+      stopTimer();
+      if(perItem<=0){ return; }
+      deadline = performance.now() + perItem;
+      barFill.style.transform="scaleX(1)";
+      const tick=()=>{
+        if(state!=="running"){ stopTimer(); return; }
+        const remain = Math.max(0, deadline - performance.now());
+        const pct = remain / perItem;
+        barFill.style.transform = `scaleX(${pct})`;
+        if(remain<=0){
+          stopTimer();
+          grade(null, true); // timeout
+          return;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    function updateKPIs(){
+      kpiItem.textContent = state==="running" ? `${idx+1} / ${total}` : "—";
+      kpiOk.textContent = `${ok}`;
+      kpiBad.textContent = `${bad}`;
+      kpiStreak.textContent = `${streak}`;
+      const avg = rts.length ? Math.round(rts.reduce((a,b)=>a+b,0)/rts.length) : 0;
+      kpiRT.textContent = avg ? `${avg} ms` : "—";
+    }
+
+    // === Generadores de secuencias ===
+    function makeArithmetic(diff){
+      const step = randInt(diff==="easy"?1:diff==="hard"?3:2, diff==="hard"?8:6);
+      const start = randInt(1, diff==="hard"?18:14);
+      const len = 4;
+      const a = Array.from({length:len}, (_,i)=>start + step*i);
+      const missingIndex = len-1;
+      const correct = a[missingIndex];
+      const shown = a.slice(0, missingIndex).concat(["?"]);
+      const seq = shown.join(" · ");
+      const opts = distractorsNum(correct, step, diff);
+      return {seq, correct, options: opts, explain: `Progresión aritmética: suma de ${step}.`};
+    }
+
+    function makeGeometric(diff){
+      const mul = randChoice(diff==="easy"?[2,3]: diff==="hard"?[2,3,4]:[2,3]);
+      const start = randChoice([1,2,3,4,5]);
+      const len=4;
+      const a = Array.from({length:len}, (_,i)=>start * Math.pow(mul,i));
+      const correct = a[len-1];
+      const seq = a.slice(0,len-1).concat(["?"]).join(" · ");
+      const opts = distractorsNum(correct, mul, diff, true);
+      return {seq, correct, options: opts, explain: `Progresión geométrica: ×${mul}.`};
+    }
+
+    function makeFibo(diff){
+      const a0 = randInt(1,5);
+      const a1 = randInt(1,6);
+      const a2 = a0+a1;
+      const a3 = a1+a2;
+      const correct = a2+a3;
+      const seq = [a0,a1,a2,a3,"?"].join(" · ");
+      const opts = shuffle([correct, correct-1, correct+2, correct+3].map(x=>Math.max(1,x))).slice(0,4);
+      return {seq, correct, options: ensureUnique(opts, correct), explain: `Cada término es la suma de los dos anteriores.`};
+    }
+
+    function makeAlternating(diff){
+      const A = randChoice(["▲","●","■","◆","★"]);
+      let B = randChoice(["▲","●","■","◆","★"]);
+      while(B===A) B=randChoice(["▲","●","■","◆","★"]);
+      const seqArr = [A,B,A,B,"?"];
+      const correct = A;
+      const seq = seqArr.join("  ");
+      const opts = shuffle([A,B, randChoice(["⬟","⬢","⬣","✚","✖"]), randChoice(["◻","◼","◯","◉","✦"]) ]);
+      return {seq, correct, options: ensureUnique(opts, correct), explain: `Patrón alternante: A–B–A–B–...`};
+    }
+
+    function makeLetters(diff){
+      const step = randChoice(diff==="easy"?[1,2]: diff==="hard"?[2,3,4]:[2,3]);
+      const maxBase = Math.max(0, 25 - step*4); // aseguramos A..Z
+      const base = randInt(0, maxBase);
+      const letters = [];
+      for(let i=0;i<4;i++){
+        letters.push(String.fromCharCode(65 + base + step*i));
+      }
+      const correctCode = 65 + base + step*4;
+      const correct = String.fromCharCode(correctCode);
+      const seq = letters.concat(["?"]).join(" · ");
+
+      // Distractores dentro de A..Z
+      const cand = new Set([correctCode]);
+      const optsCodes = [correctCode];
+      while(optsCodes.length<4){
+        const d = randInt(-3, 3);
+        if(d===0) continue;
+        const c = correctCode + d;
+        if(c<65 || c>90) continue;
+        if(!cand.has(c)){
+          cand.add(c); optsCodes.push(c);
+        }
+      }
+      const opts = shuffle(optsCodes.map(c=>String.fromCharCode(c)));
+      return {seq, correct, options: ensureUnique(opts, correct), explain: `Saltos de letras: +${step}.`};
+    }
+
+    function makeMixed(diff){
+      // Easy: arithmetic or alternating; Normal: +letters; Hard: include geometric/fibo
+      const poolEasy=[makeArithmetic, makeAlternating];
+      const poolNormal=[makeArithmetic, makeAlternating, makeLetters];
+      const poolHard=[makeArithmetic, makeAlternating, makeLetters, makeGeometric, makeFibo];
+
+      const fn = (diff==="easy") ? randChoice(poolEasy)
+        : (diff==="hard") ? randChoice(poolHard)
+        : randChoice(poolNormal);
+
+      return fn(diff);
+    }
+
+    function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+    function randChoice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function ensureUnique(arr, correct){
+      const set=new Set();
+      const out=[];
+      for(const x of arr){
+        if(!set.has(String(x))){
+          set.add(String(x));
+          out.push(x);
+        }
+      }
+      if(!set.has(String(correct))){
+        out[0]=correct;
+      }
+      // If still <4, pad
+      while(out.length<4){
+        const n = (typeof correct==="number") ? correct + randInt(-5,5) : String.fromCharCode(correct.charCodeAt(0)+randInt(-3,3));
+        if(!set.has(String(n))){
+          set.add(String(n)); out.push(n);
+        }
+      }
+      return shuffle(out).slice(0,4);
+    }
+
+    function distractorsNum(correct, stepOrMul, diff, isGeo=false){
+      const candidates = new Set([correct]);
+      const out=[correct];
+      const spread = diff==="easy"?2:diff==="hard"?5:3;
+
+      while(out.length<4){
+        let d = randInt(-spread, spread);
+        if(d===0) continue;
+        let val;
+        if(isGeo){
+          val = correct + d*stepOrMul;
+        }else{
+          val = correct + d*stepOrMul;
+        }
+        if(val<0) continue;
+        if(!candidates.has(val)){
+          candidates.add(val);
+          out.push(val);
+        }
+      }
+      return shuffle(out);
+    }
+
+    function renderChoices(opts){
+      choicesEl.innerHTML="";
+      opts.forEach((opt, i)=>{
+        const b=document.createElement("button");
+        b.type="button";
+        b.className="choice";
+        b.textContent = String(opt);
+        b.addEventListener("click", ()=>grade(opt,false,b));
+        choicesEl.appendChild(b);
+      });
+    }
+
+    function disableChoices(disabled){
+      [...choicesEl.querySelectorAll("button")].forEach(b=>b.disabled=disabled);
+    }
+
+    function next(){
+      if(idx>=total){ end(); return; }
+      cur = makeMixed(diffSel.value);
+      seqEl.textContent = cur.seq;
+      hintLine.innerHTML = "Elegí la opción que completa la secuencia:";
+      statusEl.innerHTML = '<span class="muted">Pensá el patrón…</span>';
+      renderChoices(cur.options);
+      disableChoices(false);
+      tStart=performance.now();
+      startTimer();
+      updateKPIs();
+    }
+
+    function grade(ans, isTimeout=false, btn=null){
+      if(state!=="running") return;
+      stopTimer();
+      disableChoices(true);
+
+      const rt = isTimeout ? null : (performance.now()-tStart);
+      const correct = (!isTimeout) && (String(ans)===String(cur.correct));
+
+      if(correct){
+        ok++; streak++;
+        if(btn) btn.classList.add("good");
+        statusEl.innerHTML = `✅ <b>Correcto</b> · ${cur.explain} · ${Math.round(rt)} ms`;
+      }else{
+        bad++; streak=0;
+        if(isTimeout){
+          statusEl.innerHTML = `⏱️ <b>Tiempo</b> · Respuesta: <b>${cur.correct}</b>. ${cur.explain}`;
+        }else{
+          if(btn) btn.classList.add("bad");
+          statusEl.innerHTML = `❌ <b>Incorrecto</b> · Respuesta: <b>${cur.correct}</b>. ${cur.explain}`;
+        }
+      }
+      if(rt!==null) rts.push(rt);
+
+      setTimeout(()=>{
+        idx++;
+        next();
+      }, 700);
+    }
+
+    function start(){
+      resultBox.style.display="none";
+      total = clamp(parseInt(itemsNum.value,10)||10, 5, 25);
+      perItem = parseInt(timeSel.value,10) || 0;
+      idx=0; ok=0; bad=0; streak=0; rts=[];
+      state="running";
+      setEnabled(true);
+      next();
+    }
+
+    function end(){
+      if(state!=="running") return;
+      state="ended";
+      setEnabled(false);
+      stopTimer();
+      disableChoices(true);
+      seqEl.textContent = "✓";
+      hintLine.textContent = "Juego finalizado.";
+
+      const acc = ok / total;
+      const avg = rts.length ? (rts.reduce((a,b)=>a+b,0)/rts.length) : 0;
+
+      const level = (acc>=0.85 && avg && avg<7000) ? "Excelente"
+        : (acc>=0.7) ? "Bien"
+        : "A practicar";
+
+      const txt = `Resultado: ${level}. Aciertos: ${ok}/${total} (${Math.round(acc*100)}%). Errores: ${bad}. Tiempo medio: ${avg?Math.round(avg):"—"} ms.`;
+      resultText.textContent = txt;
+      resultBox.style.display="block";
+      statusEl.innerHTML = `📌 <b>${level}</b> · Probá otra dificultad o agregá tiempo por ítem.`;
+      updateKPIs();
+    }
+
+    btnStart.addEventListener("click", start);
+    btnStop.addEventListener("click", end);
+
+    btnRestart.addEventListener("click", ()=>{
+      state="idle";
+      setEnabled(false);
+      stopTimer();
+      disableChoices(true);
+      seqEl.textContent = "—";
+      hintLine.innerHTML = "Configurá y presioná <b>Iniciar</b>.";
+      statusEl.innerHTML = '<span class="muted">Tip:</span> buscá patrones simples: suma, alternancia, repetición, saltos en letras.';
+      kpiItem.textContent="—"; kpiOk.textContent="—"; kpiBad.textContent="—"; kpiStreak.textContent="—"; kpiRT.textContent="—";
+      resultBox.style.display="none";
+      updatePill();
+    });
+
+    btnCopy.addEventListener("click", async ()=>{
+      const acc = ok / total;
+      const avg = rts.length ? (rts.reduce((a,b)=>a+b,0)/rts.length) : 0;
+      const d = diffSel.value==="easy"?"Fácil":diffSel.value==="hard"?"Difícil":"Normal";
+      const text = `Juego 17 · Secuencias lógicas | Dif: ${d} | Aciertos: ${ok}/${total} (${Math.round(acc*100)}%) | Errores: ${bad} | RT medio: ${avg?Math.round(avg):"—"} ms`;
+      try{
+        await navigator.clipboard.writeText(text);
+        statusEl.innerHTML = "✅ Copiado al portapapeles.";
+      }catch(e){
+        statusEl.innerHTML = "⚠️ No se pudo copiar automáticamente.";
+      }
+    });
+
+    // Init
+    setEnabled(false);
+    disableChoices(true);
+    updateKPIs();
+  </script>
+</body>
+</html>

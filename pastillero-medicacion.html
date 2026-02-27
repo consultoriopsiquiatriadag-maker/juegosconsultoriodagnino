@@ -1,0 +1,868 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cómo armar el pastillero — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía práctica para organizar la medicación: tipos de pastillero, cómo armarlo paso a paso, qué hacer si se olvida una dosis y señales de que la adherencia está fallando." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Pastillero visual interactivo */
+    .pill-grid{
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    @media(max-width:540px){
+      .pill-grid{ grid-template-columns: repeat(4, 1fr); gap:6px; }
+    }
+    .pill-day{
+      border-radius: 14px;
+      border: 2px solid rgba(148,163,184,.28);
+      padding: 10px 6px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .18s, background .18s;
+      background: rgba(255,255,255,.06);
+      user-select: none;
+    }
+    .pill-day.taken{
+      border-color: rgba(16,185,129,.55);
+      background: rgba(16,185,129,.12);
+    }
+    .pill-day .day-label{
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      opacity: .65;
+      margin-bottom: 6px;
+    }
+    .pill-day .pill-icon{
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .pill-day .tick{
+      font-size: .85rem;
+      margin-top: 4px;
+      min-height: 1.1em;
+    }
+
+    /* Tipos de pastillero cards */
+    .pastillero-cards{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .pastillero-card{
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(255,255,255,.06);
+      padding: 16px;
+    }
+    .pastillero-card .pc-icon{ font-size: 2rem; margin-bottom: 8px; }
+    .pastillero-card .pc-title{ font-weight: 700; margin-bottom: 4px; }
+    .pastillero-card .pc-para{ font-size: .93rem; opacity:.88; }
+    .pastillero-card .pc-ideal{
+      margin-top: 10px;
+      font-size: .83rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.20);
+      display: inline-block;
+    }
+
+    /* Pasos */
+    .steps-list{
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0 0;
+      display: grid;
+      gap: 12px;
+    }
+    .steps-list li{
+      counter-increment: step-counter;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .steps-list li::before{
+      content: counter(step-counter);
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(37,99,235,.14);
+      border: 2px solid rgba(37,99,235,.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .95rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{ min-width: 220px; font-weight: 600; }
+    .range-row input[type="range"]{ flex: 1; min-width: 220px; }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+
+    /* Alerta dosis */
+    .dosis-grid{
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .dosis-row{
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media(max-width:480px){ .dosis-row{ grid-template-columns: 1fr; } }
+    .dosis-tag{
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-weight: 700;
+      font-size: .88rem;
+      text-align: center;
+    }
+    .dosis-tag.nunca{ background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.28); color:#dc2626; }
+    .dosis-tag.generalmente{ background: rgba(251,146,60,.12); border: 1px solid rgba(251,146,60,.28); color:#ea580c; }
+    .dosis-tag.siempre{ background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.28); color:#059669; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Cómo armar el pastillero</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/pastillero-portada.webp -->
+        <img src="assets/img/pastillero-portada.webp?v=1" alt="Ilustración: pastillero semanal organizado con colores por día" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Cómo armar el pastillero</h1>
+          <p>Guía práctica para organizarse con la medicación: tipos, paso a paso, qué hacer si olvidás una dosis y cómo acompañar sin invadir.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Por qué importa -->
+    <section class="section" id="por-que-importa">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué importa la adherencia</h2>
+            <p class="card-sub">
+              La medicación psiquiátrica —y cualquier medicación crónica— solo funciona si se toma
+              de forma consistente. Olvidar dosis de forma frecuente no es simplemente un descuido:
+              puede desestabilizar el tratamiento, generar síntomas de discontinuación o reducir
+              significativamente la eficacia del fármaco.
+            </p>
+            <p class="card-sub">
+              Los estudios muestran que más del 50% de las personas con tratamientos crónicos
+              tienen algún grado de adherencia irregular. No es un problema de voluntad:
+              es un problema de organización, rutina y contexto. Un buen sistema de pastillero
+              es una herramienta clínica, no un accesorio.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Regla de oro: <b>no modificar dosis ni suspender medicación por cuenta propia</b>,
+          aunque uno se sienta mejor o peor. Siempre consultar primero con el médico tratante.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Tipos de pastillero -->
+    <section class="section" id="tipos">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Tipos de pastillero · ¿Cuál elegir?</h2>
+            <p class="card-sub">Hay opciones para cada situación. El mejor es el que se usa con constancia.</p>
+          </div>
+        </div>
+
+        <div class="pastillero-cards">
+
+          <div class="pastillero-card">
+            <div class="pc-icon">📅</div>
+            <div class="pc-title">Semanal básico</div>
+            <p class="pc-para">7 compartimentos, uno por día. El más común y económico. Ideal para una sola toma diaria.</p>
+            <span class="pc-ideal">Ideal para: una toma/día · autonomía conservada</span>
+          </div>
+
+          <div class="pastillero-card">
+            <div class="pc-icon">🕐</div>
+            <div class="pc-title">Semanal con franjas horarias</div>
+            <p class="pc-para">Cada día se divide en mañana, mediodía, tarde y noche. Permite organizar múltiples tomas con claridad.</p>
+            <span class="pc-ideal">Ideal para: 2–4 tomas/día · esquemas complejos</span>
+          </div>
+
+          <div class="pastillero-card">
+            <div class="pc-icon">📦</div>
+            <div class="pc-title">Mensual / blíster de farmacia</div>
+            <p class="pc-para">El farmacéutico prepara la medicación ya fraccionada en un blíster mes a mes. Reduce errores al mínimo.</p>
+            <span class="pc-ideal">Ideal para: adultos mayores · supervisión parcial</span>
+          </div>
+
+          <div class="pastillero-card">
+            <div class="pc-icon">📱</div>
+            <div class="pc-title">App + alarma</div>
+            <p class="pc-para">Aplicaciones como Medisafe, MyTherapy o incluso alarmas del celular con etiqueta. No reemplaza el pastillero físico pero lo complementa.</p>
+            <span class="pc-ideal">Ideal para: personas activas · como recordatorio extra</span>
+          </div>
+
+          <div class="pastillero-card">
+            <div class="pc-icon">🤖</div>
+            <div class="pc-title">Pastillero automático</div>
+            <p class="pc-para">Dispensa la dosis correcta a la hora programada, con alarma sonora. Más costoso pero muy eficaz en casos de deterioro cognitivo.</p>
+            <span class="pc-ideal">Ideal para: deterioro cognitivo · vivir solo</span>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Para esquemas complejos (muchas tomas, comprimidos que se parten, medicación que necesita frío),
+          consultá con el farmacéutico: puede asesorarte sobre el sistema más adecuado y en muchos casos
+          preparar el blíster mensual directamente.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Cómo armar el pastillero paso a paso -->
+    <section class="section" id="paso-a-paso">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo armar el pastillero · Paso a paso</h2>
+            <p class="card-sub">Dedicar 10 minutos una vez por semana al mismo día y hora reduce los errores al mínimo.</p>
+          </div>
+        </div>
+
+        <ol class="steps-list card-sub">
+          <li>
+            <div>
+              <b>Reuní todo antes de empezar.</b> Medicación, la lista prescripta por el médico
+              (o la foto de la receta) y el pastillero vacío sobre una superficie limpia y bien iluminada.
+              No armar el pastillero de memoria.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Verificá que los medicamentos sean los correctos.</b> Nombre del fármaco, presentación
+              (comprimidos, cápsulas, gotas) y dosis (miligramos). Si hay dudas, consultá antes de seguir.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Elegí un día y hora fija para armar el pastillero.</b> El domingo a la noche
+              o el lunes a la mañana son las opciones más usadas. La repetición semanal convierte
+              el armado en un hábito automático.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Cargá día por día, franja por franja.</b> Empezá por el lunes, completá todas las franjas
+              horarias de ese día y recién entonces pasá al martes. Evitá saltear días y volver.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Contá los comprimidos antes de cerrar cada compartimento.</b> Si el médico indicó
+              "1 y ½ comprimido", partirlos todos al inicio de la semana reduce el margen de error.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Revisá que no falte ningún medicamento para completar la semana.</b>
+              Si hay que ir a la farmacia, mejor saberlo el domingo que el miércoles.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Guardá el pastillero siempre en el mismo lugar visible.</b>
+              Al lado del desayuno, junto al cepillo de dientes o en la mesa de luz:
+              el lugar que funcione como ancla visual para la rutina.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Anotá cualquier duda o cambio que noten durante la semana.</b>
+              Una libreta pequeña al lado del pastillero, o una nota en el celular,
+              es suficiente para no olvidar comentarle al médico en la próxima consulta.
+            </div>
+          </li>
+        </ol>
+
+        <div class="note" style="margin-top:14px">
+          Si la medicación cambia (nueva indicación, ajuste de dosis, medicación suspendida):
+          vaciar el pastillero y volver a armarlo desde cero con la nueva indicación.
+          No mezclar la carga vieja con la nueva.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Marcador visual semanal interactivo -->
+    <section class="section" id="marcador">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Marcador de toma semanal</h2>
+            <p class="card-sub">Tocá cada día para marcarlo como tomado. Es orientativo: no reemplaza el registro clínico.</p>
+          </div>
+        </div>
+
+        <div class="pill-grid" id="pillGrid" role="group" aria-label="Marcador de toma semanal">
+          <!-- generado por JS -->
+        </div>
+
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn-secondary" id="btnResetPills" type="button">Reiniciar semana</button>
+          <button class="btn-primary" id="btnCopyPills" type="button">Copiar resumen de tomas</button>
+        </div>
+        <div class="copy-ok" id="copyOkPills">✅ Copiado. Podés compartirlo con tu médico o guardarlo en tu registro.</div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Qué hacer si olvidás una dosis -->
+    <section class="section" id="dosis-olvidada">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">¿Qué hacer si olvidás una dosis?</h2>
+            <p class="card-sub">
+              La respuesta varía según el medicamento. La regla general es consultar con el médico
+              o farmacéutico si tenés dudas. Pero estas orientaciones aplican a la mayoría de los casos:
+            </p>
+          </div>
+        </div>
+
+        <div class="dosis-grid">
+
+          <div class="dosis-row">
+            <div class="dosis-tag nunca">Nunca hacer</div>
+            <p class="card-sub" style="margin:0">
+              <b>Tomar el doble en la dosis siguiente</b> para "compensar".
+              En la mayoría de los fármacos psiquiátricos esto puede generar efectos adversos serios.
+            </p>
+          </div>
+
+          <div class="dosis-row">
+            <div class="dosis-tag generalmente">Depende del caso</div>
+            <p class="card-sub" style="margin:0">
+              <b>Tomar la dosis olvidada en cuanto te acordás</b>, si todavía falta mucho tiempo
+              para la dosis siguiente. Si ya es cerca del horario de la próxima toma,
+              saltear la olvidada y continuar normalmente. Consultá con tu médico cuál es el criterio
+              específico para tu medicación.
+            </p>
+          </div>
+
+          <div class="dosis-row">
+            <div class="dosis-tag siempre">Siempre hacer</div>
+            <p class="card-sub" style="margin:0">
+              <b>Anotarlo y contárselo al médico</b> en la próxima consulta.
+              Si los olvidos son frecuentes, es importante revisarlo: puede haber una solución
+              (cambio de horario, pastillero automático, recordatorio).
+            </p>
+          </div>
+
+          <div class="dosis-row">
+            <div class="dosis-tag nunca">Nunca hacer</div>
+            <p class="card-sub" style="margin:0">
+              <b>Suspender la medicación por cuenta propia</b> porque "ya me siento bien"
+              o porque "no me está haciendo efecto". Siempre hablarlo antes con el médico.
+            </p>
+          </div>
+
+          <div class="dosis-row">
+            <div class="dosis-tag siempre">Siempre hacer</div>
+            <p class="card-sub" style="margin:0">
+              <b>Llamar al médico o ir a guardia</b> si tras olvidar una dosis aparecen síntomas
+              de discontinuación: mareos, náuseas, sensación eléctrica en el cuerpo,
+              irritabilidad intensa o reaparición brusca de síntomas.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Algunos medicamentos —como el litio, los anticonvulsivantes y ciertos antipsicóticos—
+          tienen ventanas terapéuticas más estrechas y requieren mayor cuidado ante olvidos.
+          Si tomás alguno de estos, acordá con tu médico un protocolo específico para estas situaciones.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Señales de que la adherencia está fallando -->
+    <section class="section" id="adherencia">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de que la adherencia está fallando</h2>
+            <p class="card-sub">
+              A veces la adherencia irregular no se percibe fácilmente desde adentro.
+              Estas señales pueden ayudar a detectarla antes de que impacte en el tratamiento:
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>El pastillero de la semana anterior quedó con comprimidos sin tomar.</li>
+          <li>Las cajas de medicación duran más de lo esperado (sobran pastillas al final del mes).</li>
+          <li>La persona no recuerda si tomó o no la medicación del día, con frecuencia.</li>
+          <li>Hay reaparición gradual de síntomas que estaban controlados, sin otra causa evidente.</li>
+          <li>La persona evita hablar de la medicación, cambia de tema o dice "sí, sí" sin confirmación real.</li>
+          <li>Se saltan consultas médicas de seguimiento.</li>
+          <li>La persona expresa dudas sobre la medicación ("no sé si me hace bien", "me quiero sacar esto") sin haberlo charlado con el médico.</li>
+          <li>Aparecen síntomas de discontinuación intermitentes: mareos, irritabilidad, insomnio sin causa clara.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si se detectan estas señales, el camino no es el control ni la confrontación:
+          es la conversación abierta. Preguntar cómo se siente la persona con la medicación
+          suele ser más útil que verificar si tomó la pastilla.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Rol de la familia -->
+    <section class="section" id="rol-familia">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Rol de la familia · Acompañar sin invadir</h2>
+            <p class="card-sub">
+              El acompañamiento familiar en la adherencia puede ser muy valioso o contraproducente,
+              según cómo se haga. La diferencia está en el tono y en el respeto por la autonomía de la persona.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Ofrecer ayuda, no imponer control.</b> "¿Querés que te ayude a armar el pastillero esta semana?"
+            es muy diferente de revisar sin avisar si la pastilla fue tomada.
+            La segunda opción, aunque bienintencionada, genera resistencia.
+          </li>
+          <li>
+            <b>Acordar de antemano el nivel de participación.</b> Lo ideal es que la persona y su familia
+            definan juntos cuánta intervención se desea. Ese acuerdo puede revisarse con el médico.
+            Sin ese acuerdo, el acompañamiento puede sentirse como vigilancia.
+          </li>
+          <li>
+            <b>Usar recordatorios neutrales, no sermones.</b> Una alarma compartida, un mensaje
+            de texto a la hora de la toma o simplemente "¿ya tomaste las del mediodía?" sin tono
+            de reproche son formas de acompañar que no erosionan la relación.
+          </li>
+          <li>
+            <b>No utilizar la medicación como campo de batalla.</b> Si hay conflicto en la pareja
+            o la familia, la medicación no debe convertirse en moneda de negociación ni en argumento.
+          </li>
+          <li>
+            <b>Informar al médico si detectan olvidos frecuentes.</b> No para "acusar" a la persona,
+            sino para que el equipo tratante pueda ajustar la estrategia: cambio de horario,
+            simplificación del esquema, pastillero automático u otra intervención.
+          </li>
+          <li>
+            <b>Reconocer cuando la adherencia mejora.</b> Un comentario positivo genuino
+            ("me alegra que estés pudiendo con el esquema") refuerza el comportamiento
+            mucho más que el señalamiento del olvido.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Para adultos mayores con deterioro cognitivo, el nivel de supervisión puede ser mayor
+          y más directo. En ese caso, el objetivo no es la autonomía total sino la seguridad.
+          El médico tratante puede orientar cuánto control es adecuado en cada situación.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio: Registro semanal -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro semanal de adherencia (1 minuto)</h2>
+            <p class="card-sub">Para llevar a la consulta o compartir con el equipo tratante.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá tu nivel general de adherencia esta semana (0 = ninguna toma · 10 = todas sin olvidos).<br/>
+            2) Anotá si hubo olvidos y en qué momento del día ocurrieron más.<br/>
+            3) Anotá cualquier efecto o sensación que notaste con la medicación.<br/>
+            4) Copiá el resumen para llevar a la consulta.
+          </div>
+
+          <div class="range-row">
+            <label for="adherenciaRange">Adherencia esta semana (0–10)</label>
+            <input id="adherenciaRange" type="range" min="0" max="10" step="1" value="8" />
+            <div class="pill-val" id="adherenciaVal">8</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="olvidosInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Hubo olvidos? ¿Cuándo? (opcional)</label>
+            <input id="olvidosInput" class="input" type="text" placeholder="Ej: martes a la noche / mediodía del jueves / ninguno..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="efectosInput" style="font-weight:600; display:block; margin-bottom:6px;">Efectos o sensaciones notadas (opcional)</label>
+            <input id="efectosInput" class="input" type="text" placeholder="Ej: más somnolencia / sin efectos / mareos al levantarme / sin cambios..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Notas para el médico (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: me costó tomar la del mediodía en el trabajo / quiero revisar el horario / preguntar si puedo partir el comprimido..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Por qué la adherencia es tan difícil y cómo el entorno puede ayudar.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            La adherencia a la medicación es uno de los problemas más prevalentes —y más subestimados—
+            de la salud en general, y de la salud mental en particular. La Organización Mundial de la Salud
+            estima que en enfermedades crónicas alrededor del 50% de los pacientes no toma la medicación
+            según lo prescripto. En psiquiatría, las cifras son similares o peores, y las consecuencias
+            pueden ser especialmente severas: recaídas, hospitalizaciones, deterioro funcional.
+          </p>
+
+          <p>
+            La adherencia irregular no es, en la mayoría de los casos, un problema de actitud o de voluntad.
+            Es un problema complejo con múltiples dimensiones: la complejidad del esquema (cuántas tomas,
+            cuántos medicamentos distintos, a qué horarios), los efectos adversos que generan rechazo,
+            la falta de una rutina que ancle la toma, las creencias sobre la medicación ("ya me siento bien,
+            para qué seguir") y los factores de acceso (costo, disponibilidad en la farmacia, dificultad
+            para ir a buscar la receta).
+          </p>
+
+          <p>
+            Desde el punto de vista conductual, la adherencia funciona como cualquier hábito:
+            se ancla mejor cuando se asocia a un contexto ya existente en la rutina diaria.
+            "Tomo la pastilla mientras tomo el café de la mañana" es más sólido que "tomo la pastilla
+            a las 8". El primero tiene un detonante conductual (el café); el segundo solo tiene un número
+            en el reloj. Por eso el lugar del pastillero importa: al lado del desayuno, del cepillo
+            de dientes, de las llaves. El objeto visible actúa como recordatorio pasivo.
+          </p>
+
+          <p>
+            En adultos mayores, la situación tiene particularidades adicionales. La polifarmacia
+            (tomar muchos medicamentos simultáneamente) es frecuente y hace que el esquema sea más
+            difícil de gestionar. Las alteraciones cognitivas, incluso leves, pueden hacer que la persona
+            no recuerde si tomó o no la medicación, generando o bien olvidos o bien doble toma accidental.
+            Los pastilleros automáticos y los blísteres preparados por el farmacéutico son herramientas
+            especialmente valiosas en este contexto.
+          </p>
+
+          <p>
+            El papel de la familia es decisivo pero delicado. El control excesivo —revisar la boca
+            después de la toma, preguntar repetidamente, hacer comentarios cada vez que hay un olvido—
+            puede generar el efecto contrario: la persona se resiste a la medicación como forma
+            de recuperar control sobre su propia vida. La investigación en adherencia muestra
+            que el enfoque colaborativo ("¿cómo estás manejando el tema de la medicación? ¿hay algo
+            que te esté complicando?") produce mejores resultados que el enfoque supervisivo.
+          </p>
+
+          <p>
+            Cuando la adherencia falla de forma sistemática y la persona no puede o no quiere
+            gestionarla sola, existen alternativas clínicas: la inyección de depósito (formulaciones
+            de antipsicóticos u otros fármacos que se aplican cada 2–4 semanas y evitan la toma diaria),
+            el pastillero automático con dispensación programada, o el acompañamiento de un cuidador
+            profesional para la medicación. Ninguna de estas opciones es una "rendición": son adaptaciones
+            del tratamiento a las necesidades reales de la persona.
+          </p>
+
+          <p>
+            Por último: si alguien tiene dudas, miedos o rechazos relacionados con la medicación,
+            lo más importante es que pueda expresarlos sin sentir que será juzgado o presionado.
+            El médico necesita esa información para poder ajustar el tratamiento. Un esquema que
+            la persona no puede o no quiere seguir, por más que sea "el correcto" en términos técnicos,
+            no funciona en la práctica. La adherencia es siempre un trabajo conjunto entre el paciente,
+            su entorno y el equipo de salud.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. Cualquier cambio en la medicación debe ser acordado con el médico tratante.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés revisar tu esquema de medicación?</h3>
+            <p class="card-sub">
+              Si tenés dudas sobre los horarios, los efectos o cómo simplificar el esquema,
+              la Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Pastillero visual JS -->
+  <script>
+    (function(){
+      const days  = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+      const taken = [false,false,false,false,false,false,false];
+      const grid  = document.getElementById("pillGrid");
+
+      function render(){
+        grid.innerHTML = "";
+        days.forEach((d,i)=>{
+          const el = document.createElement("div");
+          el.className = "pill-day" + (taken[i] ? " taken" : "");
+          el.setAttribute("role","checkbox");
+          el.setAttribute("aria-checked", taken[i] ? "true" : "false");
+          el.setAttribute("aria-label", d + (taken[i] ? " — tomado" : " — pendiente"));
+          el.tabIndex = 0;
+          el.innerHTML = `
+            <div class="day-label">${d}</div>
+            <div class="pill-icon">${taken[i] ? "✅" : "💊"}</div>
+            <div class="tick">${taken[i] ? "Tomado" : ""}</div>
+          `;
+          el.addEventListener("click", ()=>{ taken[i]=!taken[i]; render(); });
+          el.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); taken[i]=!taken[i]; render(); }});
+          grid.appendChild(el);
+        });
+      }
+      render();
+
+      document.getElementById("btnResetPills").addEventListener("click",()=>{
+        taken.fill(false); render();
+      });
+
+      document.getElementById("btnCopyPills").addEventListener("click", async ()=>{
+        const resumen = days.map((d,i)=> d+": "+(taken[i]?"✅":"⬜")).join(" | ");
+        const d = new Date();
+        const pad = n=>String(n).padStart(2,"0");
+        const fecha = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+        const txt = `Pastillero semanal (${fecha}) — ${resumen}`;
+        try{
+          await navigator.clipboard.writeText(txt);
+        }catch(e){
+          const ta=document.createElement("textarea");
+          ta.value=txt; document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta);
+        }
+        const ok=document.getElementById("copyOkPills");
+        ok.style.display="block";
+        setTimeout(()=>ok.style.display="none",3500);
+      });
+    })();
+  </script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const adherenciaRange = document.getElementById("adherenciaRange");
+      const adherenciaVal   = document.getElementById("adherenciaVal");
+      const olvidosInput    = document.getElementById("olvidosInput");
+      const efectosInput    = document.getElementById("efectosInput");
+      const noteInput       = document.getElementById("noteInput");
+      const btnCopy         = document.getElementById("btnCopy");
+      const btnReset        = document.getElementById("btnReset");
+      const copyOk          = document.getElementById("copyOk");
+
+      function upd(){ adherenciaVal.textContent = adherenciaRange.value; }
+      adherenciaRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d=new Date(), pad=n=>String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async ()=>{
+        const olvidos = (olvidosInput.value||"").trim();
+        const efectos = (efectosInput.value||"").trim();
+        const note    = (noteInput.value||"").trim();
+        const txt = `Pastillero — Registro semanal | Adherencia: ${adherenciaRange.value}/10 | Olvidos: ${olvidos||"—"} | Efectos/sensaciones: ${efectos||"—"} | Notas: ${note||"—"} | Fecha/hora: ${nowStr()}`;
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }catch(e){
+          const ta=document.createElement("textarea");
+          ta.value=txt; document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }
+      });
+
+      btnReset.addEventListener("click",()=>{
+        adherenciaRange.value=8; olvidosInput.value="";
+        efectosInput.value=""; noteInput.value="";
+        upd(); copyOk.style.display="none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

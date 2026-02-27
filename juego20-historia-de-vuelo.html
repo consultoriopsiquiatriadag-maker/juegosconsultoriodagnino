@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 20 · Historia de vuelo — Sala de espera virtual</title>
+  <meta name="description" content="Memoria episódica: leé una historia corta sobre un vuelo tranquilo y respondé preguntas sobre sus detalles." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: var(--dark);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .topbar-brand { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .topbar-sub { font-size: 12px; opacity: .8; }
+    .btn-back {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.25); }
+
+    main {
+      flex: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--dark);
+    }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* STORY PICKER */
+    .story-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0 20px;
+    }
+    .story-pick-btn {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color .2s, background .2s;
+    }
+    .story-pick-btn:hover { border-color: var(--blue); background: rgba(14,108,196,.04); }
+    .story-pick-icon { font-size: 24px; }
+    .story-pick-title { font-weight: 600; font-size: 14px; }
+    .story-pick-dest { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* STORY READING */
+    .story-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .story-emoji { font-size: 36px; }
+    .story-title { font-size: 18px; font-weight: 700; }
+    .story-dest { font-size: 13px; color: var(--muted); }
+
+    .story-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #2d3748;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    /* QUESTIONS */
+    .q-num { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .q-text { font-size: 16px; font-weight: 600; margin-bottom: 14px; line-height: 1.4; }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .opt-btn {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-family: inherit;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .opt-btn:hover { border-color: var(--blue); background: rgba(14,108,196,.05); }
+    .opt-btn.correct { border-color: #10b981; background: #d1fae5; color: #065f46; font-weight: 600; }
+    .opt-btn.wrong   { border-color: #ef4444; background: #fee2e2; color: #991b1b; }
+    .opt-btn:disabled { cursor: default; }
+
+    .fb-box {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .fb-box.ok  { background: #d1fae5; color: #065f46; }
+    .fb-box.err { background: #fee2e2; color: #991b1b; }
+
+    /* PROGRESS BAR */
+    .prog-wrap { margin-bottom: 14px; }
+    .prog-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .prog-bar { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 999px; transition: width .4s ease; }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-icon { font-size: 56px; margin-bottom: 10px; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .score-box { background: rgba(14,108,196,.08); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .score-box .snum { font-size: 40px; font-weight: 900; color: var(--blue); }
+    .score-box .slabel { font-size: 13px; color: var(--muted); }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar" role="banner">
+  <div>
+    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
+    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+  </div>
+  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active card">
+    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">📖</div>
+    <h1 style="text-align:center;">Historia de vuelo</h1>
+    <p class="subtitle" style="text-align:center; margin-bottom:20px;">Memoria episódica narrativa — Juego 20</p>
+    <ul style="padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
+      <li>Elegí una historia de vuelo y leéla a tu ritmo.</li>
+      <li>Cuando termines, responderás 5 preguntas sobre los detalles.</li>
+      <li>Sin cronómetro. El relato es el destino.</li>
+    </ul>
+    <div style="display:flex; justify-content:center;">
+      <button class="btn btn-primary" id="btn-to-pick" aria-label="Elegir historia">Elegir historia</button>
+    </div>
+  </div>
+
+  <!-- STORY PICKER -->
+  <div id="screen-pick" class="screen card">
+    <h1>Elegí tu historia</h1>
+    <p class="subtitle" style="margin-bottom:4px;">Cinco relatos. Cada uno, un vuelo tranquilo.</p>
+    <div class="story-list" id="story-list"></div>
+  </div>
+
+  <!-- STORY READ -->
+  <div id="screen-story" class="screen card">
+    <div class="story-header">
+      <div class="story-emoji" id="s-emoji" aria-hidden="true">✈️</div>
+      <div>
+        <div class="story-title" id="s-title">Historia</div>
+        <div class="story-dest" id="s-dest">Destino</div>
+      </div>
+    </div>
+    <div class="story-text" id="s-body"></div>
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="btn btn-primary" id="btn-read-done" aria-label="Ya leí la historia, pasar a preguntas">Ya la leí →</button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="screen-questions" class="screen card">
+    <div class="prog-wrap">
+      <div class="prog-label" id="prog-label">Pregunta 1 de 5</div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:20%"></div></div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options-list" id="options-list"></div>
+    <div class="fb-box" id="fb-box" style="display:none;"></div>
+    <div style="display:none; text-align:right;" id="next-q-wrap">
+      <button class="btn btn-primary" id="btn-next-q" aria-label="Siguiente pregunta">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card result-center">
+    <div class="result-icon" id="res-icon" aria-hidden="true">🌟</div>
+    <div class="result-title" id="res-title">¡Buen vuelo!</div>
+    <div class="result-sub" id="res-sub"></div>
+    <div class="score-box">
+      <div class="snum" id="res-num">5</div>
+      <div class="slabel">detalles recordados de 5</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const STORIES = [
+    {
+      id: 0,
+      emoji: '🌅',
+      title: 'El vuelo de Sofía',
+      dest: 'Buenos Aires → Roma',
+      body: `Sofía ocupó el asiento 14A junto a la ventanilla y suspiró aliviada cuando el avión despegó sin turbulencias. Era su primer vuelo nocturno a Roma y el cielo, de un azul profundo salpicado de estrellas, la hipnotizó durante la primera hora. Pidió una manta beige al asistente de vuelo, se recostó y escuchó la lluvia suave sobre el Atlántico antes de quedarse dormida. Cuando abrió los ojos ya veía las costas de España bañadas en luz dorada.`,
+      questions: [
+        { q: '¿Cuál era el número de asiento de Sofía?', opts: ['12B', '14A', '16C', '10F'], ans: '14A' },
+        { q: '¿A qué ciudad viajaba Sofía?', opts: ['París', 'Madrid', 'Roma', 'Lisboa'], ans: 'Roma' },
+        { q: '¿De qué color era la manta que pidió?', opts: ['Azul', 'Beige', 'Gris', 'Blanca'], ans: 'Beige' },
+        { q: '¿Qué veía por la ventanilla en la primera hora?', opts: ['Las luces de la ciudad', 'Nubes rosadas', 'El cielo azul con estrellas', 'El mar verde'], ans: 'El cielo azul con estrellas' },
+        { q: '¿Qué sonido escuchó Sofía antes de dormirse?', opts: ['Música tranquila', 'Lluvia sobre el Atlántico', 'Los motores del avión', 'Voces de pasajeros'], ans: 'Lluvia sobre el Atlántico' }
+      ]
+    },
+    {
+      id: 1,
+      emoji: '☁️',
+      title: 'El vuelo de Martín',
+      dest: 'Santiago → Miami',
+      body: `Martín eligió el asiento 22C del pasillo porque sabía que dormiría mejor sin ventanilla. El vuelo a Miami partió puntual al mediodía con cielos completamente despejados sobre los Andes. Al subir, la azafata le entregó un diario de actualidad y una botella de agua mineral. Martín leyó durante dos horas, luego cerró los ojos y escuchó el zumbido suave de los motores Rolls-Royce que lo arrullaron como una canción de cuna. Aterrizó sintiéndose descansado.`,
+      questions: [
+        { q: '¿En qué asiento iba Martín?', opts: ['22C', '14F', '30A', '18B'], ans: '22C' },
+        { q: '¿A qué ciudad viajaba Martín?', opts: ['Nueva York', 'Miami', 'Cancún', 'Bogotá'], ans: 'Miami' },
+        { q: '¿A qué hora partió el vuelo?', opts: ['Por la mañana', 'Al mediodía', 'Por la tarde', 'Por la noche'], ans: 'Al mediodía' },
+        { q: '¿Qué le entregó la azafata a Martín?', opts: ['Un mapa y auriculares', 'Un diario y agua mineral', 'Una revista y jugo', 'Una almohada y café'], ans: 'Un diario y agua mineral' },
+        { q: '¿Qué marca de motores llevaba el avión según el relato?', opts: ['Pratt & Whitney', 'General Electric', 'Rolls-Royce', 'CFM International'], ans: 'Rolls-Royce' }
+      ]
+    },
+    {
+      id: 2,
+      emoji: '🌙',
+      title: 'El regreso de Laura',
+      dest: 'Madrid → Bogotá',
+      body: `Laura volvía a Bogotá tras un mes de trabajo en Madrid. Tenía el asiento 8F, el último de la fila de primera clase, y desde allí vio cómo las luces de la ciudad se apagaban mientras el avión trepaba entre nubes de algodón. Le sirvieron una sopa de tomate y pan tostado antes de que comenzara la película del vuelo: un documental sobre delfines en el Pacífico. Laura se durmió a los veinte minutos pero soñó con el mar.`,
+      questions: [
+        { q: '¿Cuál era el asiento de Laura?', opts: ['8F', '12A', '4C', '16B'], ans: '8F' },
+        { q: '¿Cuánto tiempo había pasado Laura en Madrid?', opts: ['Dos semanas', 'Un mes', 'Tres meses', 'Una semana'], ans: 'Un mes' },
+        { q: '¿Qué comida le sirvieron a Laura?', opts: ['Pasta y ensalada', 'Pollo con arroz', 'Sopa de tomate y pan tostado', 'Sándwich y fruta'], ans: 'Sopa de tomate y pan tostado' },
+        { q: '¿Sobre qué era el documental del vuelo?', opts: ['Ballenas en el Ártico', 'Delfines en el Pacífico', 'Aves migratorias', 'Corales del Caribe'], ans: 'Delfines en el Pacífico' },
+        { q: '¿A los cuántos minutos se durmió Laura?', opts: ['A los cinco', 'A los diez', 'A los veinte', 'A los cuarenta'], ans: 'A los veinte' }
+      ]
+    },
+    {
+      id: 3,
+      emoji: '🌈',
+      title: 'El primer vuelo de Tomás',
+      dest: 'Lima → Punta Cana',
+      body: `Tomás tenía doce años y era la primera vez que subía a un avión. Ocupó el asiento 26B, en el medio de la fila, entre su mamá y su tío Carlos. Cuando el avión despegó de Lima rumbo a Punta Cana, Tomás sintió una cosquilla en el estómago y luego, mirando por encima del hombro de su mamá, vio el océano Pacífico brillar como un espejo azul. El asistente de vuelo le regaló una figurita metálica de avión. Tomás la guardó en el bolsillo delantero de su mochila roja.`,
+      questions: [
+        { q: '¿Cuántos años tenía Tomás?', opts: ['Diez', 'Once', 'Doce', 'Trece'], ans: 'Doce' },
+        { q: '¿En qué asiento iba Tomás?', opts: ['26A', '26B', '26C', '24B'], ans: '26B' },
+        { q: '¿A dónde viajaba Tomás?', opts: ['Cancún', 'Cartagena', 'Punta Cana', 'Aruba'], ans: 'Punta Cana' },
+        { q: '¿Qué le regaló el asistente de vuelo?', opts: ['Un libro de colores', 'Una figurita metálica de avión', 'Unos auriculares', 'Un postre especial'], ans: 'Una figurita metálica de avión' },
+        { q: '¿Dónde guardó Tomás la figurita?', opts: ['En la bandeja del asiento', 'En el bolsillo de su mamá', 'En el bolsillo delantero de su mochila roja', 'En la mesita plegable'], ans: 'En el bolsillo delantero de su mochila roja' }
+      ]
+    },
+    {
+      id: 4,
+      emoji: '🏔️',
+      title: 'Ana sobre los Andes',
+      dest: 'Buenos Aires → Santiago',
+      body: `El vuelo de Buenos Aires a Santiago dura apenas cincuenta y cinco minutos, pero Ana aprovechó cada segundo. Desde el asiento 4A podía ver la cordillera de los Andes extenderse como una espalda blanca y nevada bajo el sol de agosto. El copiloto anunció que volaban a 9.700 metros de altitud con viento en cola favorable. Ana bebió un té de menta que pidió al embarcar y cerró los ojos entre los picos nevados, sintiendo que el avión flotaba sobre el techo del mundo.`,
+      questions: [
+        { q: '¿Cuánto dura el vuelo según el relato?', opts: ['Una hora', 'Cincuenta y cinco minutos', 'Cuarenta minutos', 'Una hora y media'], ans: 'Cincuenta y cinco minutos' },
+        { q: '¿En qué asiento iba Ana?', opts: ['4A', '6B', '3F', '1A'], ans: '4A' },
+        { q: '¿A qué altitud volaban según el copiloto?', opts: ['8.500 metros', '9.700 metros', '11.000 metros', '10.200 metros'], ans: '9.700 metros' },
+        { q: '¿En qué mes era el vuelo?', opts: ['Julio', 'Agosto', 'Septiembre', 'Junio'], ans: 'Agosto' },
+        { q: '¿Qué bebida pidió Ana al embarcar?', opts: ['Café negro', 'Agua con gas', 'Jugo de naranja', 'Té de menta'], ans: 'Té de menta' }
+      ]
+    }
+  ];
+
+  let currentStory = null;
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  const $ = id => document.getElementById(id);
+
+  function showScreen(id) {
+    ['screen-intro','screen-pick','screen-story','screen-questions','screen-result']
+      .forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  // Build story list
+  function buildPicker() {
+    const list = $('story-list');
+    list.innerHTML = '';
+    STORIES.forEach(st => {
+      const btn = document.createElement('button');
+      btn.className = 'story-pick-btn';
+      btn.setAttribute('aria-label', `Leer: ${st.title}`);
+      btn.innerHTML = `
+        <span class="story-pick-icon" aria-hidden="true">${st.emoji}</span>
+        <div>
+          <div class="story-pick-title">${st.title}</div>
+          <div class="story-pick-dest">${st.dest}</div>
+        </div>`;
+      btn.addEventListener('click', () => loadStory(st));
+      list.appendChild(btn);
+    });
+  }
+
+  function loadStory(st) {
+    currentStory = st;
+    currentQ = 0;
+    score = 0;
+    $('s-emoji').textContent = st.emoji;
+    $('s-title').textContent = st.title;
+    $('s-dest').textContent = st.dest;
+    $('s-body').textContent = st.body;
+    showScreen('screen-story');
+  }
+
+  function loadQuestion(idx) {
+    const q = currentStory.questions[idx];
+    answered = false;
+
+    const total = currentStory.questions.length;
+    $('prog-label').textContent = `Pregunta ${idx + 1} de ${total}`;
+    $('prog-fill').style.width = ((idx + 1) / total * 100) + '%';
+    $('q-text').textContent = q.q;
+
+    const list = $('options-list');
+    list.innerHTML = '';
+    q.opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.setAttribute('aria-label', `Opción: ${opt}`);
+      btn.addEventListener('click', () => onAnswer(btn, opt, q.ans, idx));
+      list.appendChild(btn);
+    });
+
+    $('fb-box').style.display = 'none';
+    $('next-q-wrap').style.display = 'none';
+    showScreen('screen-questions');
+  }
+
+  function onAnswer(btn, chosen, correct, idx) {
+    if (answered) return;
+    answered = true;
+
+    const opts = document.querySelectorAll('.opt-btn');
+    opts.forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correct) b.classList.add('correct');
+    });
+
+    const fb = $('fb-box');
+    if (chosen === correct) {
+      score++;
+      btn.classList.add('correct');
+      fb.className = 'fb-box ok';
+      fb.textContent = '✓ ¡Correcto!';
+    } else {
+      btn.classList.add('wrong');
+      fb.className = 'fb-box err';
+      fb.textContent = `La respuesta correcta era: "${correct}"`;
+    }
+    fb.style.display = 'block';
+
+    const nw = $('next-q-wrap');
+    nw.style.display = 'block';
+    const nb = $('btn-next-q');
+
+    if (idx + 1 < currentStory.questions.length) {
+      nb.textContent = 'Siguiente →';
+      nb.onclick = () => loadQuestion(idx + 1);
+    } else {
+      nb.textContent = 'Ver resultado';
+      nb.onclick = showResult;
+    }
+  }
+
+  function showResult() {
+    const total = currentStory.questions.length;
+    $('res-num').textContent = score;
+    $('res-icon').textContent = score === total ? '🏆' : score >= 3 ? '🌟' : '✈️';
+    $('res-title').textContent = score === total
+      ? '¡Memoria perfecta!'
+      : score >= 3
+        ? '¡Muy buen vuelo!'
+        : 'Buen ejercicio';
+    $('res-sub').textContent = `Recordaste ${score} de ${total} detalle${score !== 1 ? 's' : ''} de la historia. ${score < total ? 'Podés releer el relato y volver a intentarlo.' : '¡Tu memoria episódica está en vuelo de crucero!'}`;
+    showScreen('screen-result');
+  }
+
+  // Events
+  $('btn-to-pick').addEventListener('click', () => { buildPicker(); showScreen('screen-pick'); });
+  $('btn-read-done').addEventListener('click', () => loadQuestion(0));
+  $('btn-again').addEventListener('click', () => { buildPicker(); showScreen('screen-pick'); });
+
+})();
+</script>
+</body>
+</html>

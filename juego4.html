@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 4 · Memory Aeronáutico | Consultorio de Psiquiatría Dagnino</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#f8fafc',
+            'inst-gray': '#64748b'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
+    .no-select { user-select: none; }
+
+    /* Flip */
+    .flip { perspective: 1200px; }
+    .flip-inner { transform-style: preserve-3d; transition: transform .22s ease; }
+    .flipped .flip-inner { transform: rotateY(180deg); }
+    .face { backface-visibility: hidden; }
+    .front { transform: rotateY(180deg); }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+    .shake { animation: shake .22s ease; }
+
+    @media (prefers-reduced-motion: reduce){
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+      .flip-inner { transition: none; }
+      .shake { animation: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- OVERLAY INICIO / COUNTDOWN -->
+  <div id="overlay" class="fixed inset-0 z-[9999] bg-inst-navy/90 backdrop-blur-sm flex items-center justify-center px-6">
+    <div class="w-full max-w-xl bg-white rounded-2xl border border-gray-100 shadow-lg p-6 md:p-8 text-center">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="w-11 h-11 rounded-xl bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="text-left">
+          <p class="text-sm text-inst-gray font-medium">Consultorio Dr. Dagnino</p>
+          <p class="text-xs text-inst-gray/70">Juego 4 · Memory Aeronáutico</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Listo para empezar</h2>
+      <p class="text-inst-gray text-sm leading-relaxed mb-6">
+        Al iniciar, verás una cuenta regresiva 3–2–1 y sonará “abrochar cinturones”.
+        Luego comienza el Memory.
+      </p>
+
+      <div id="countdownBox" class="hidden">
+        <div class="mx-auto w-28 h-28 rounded-2xl bg-inst-light border border-gray-100 flex items-center justify-center text-5xl font-semibold mb-4" id="countdownNum">3</div>
+        <p class="text-inst-gray text-sm" id="countdownHint">Preparando…</p>
+      </div>
+
+      <div id="overlayBtns" class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button id="overlayStart" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-inst-blue text-white font-semibold hover:opacity-95">
+          Iniciar
+        </button>
+        <button id="overlayNoSound" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold hover:bg-inst-light">
+          Iniciar sin sonido
+        </button>
+      </div>
+
+      <p class="text-xs text-inst-gray mt-5">
+        Nota: algunos navegadores requieren una acción del usuario para reproducir audio.
+      </p>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="leading-tight">
+          <p class="text-sm text-inst-gray font-medium">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
+          <p class="text-xs text-inst-gray/70">Juegos cognitivos · Memory Aeronáutico</p>
+        </div>
+      </div>
+
+      <a href="juegos.html"
+         class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+        ← Volver
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-4xl font-light mb-3">Juego 4 · Memory Aeronáutico</h1>
+        <p class="text-white/80 leading-relaxed">
+          Actividad breve para entrenar memoria visual y atención sostenida. Uso sugerido: 3–7 minutos.
+          Si te genera ansiedad o frustración, pausá y retomá más tarde.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+    <div class="grid lg:grid-cols-12 gap-6">
+
+      <!-- Panel -->
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7">
+        <h2 class="text-xl font-semibold mb-2">Panel</h2>
+        <p class="text-inst-gray text-sm leading-relaxed mb-5">
+          Elegí dificultad y empezá. Guardamos tu mejor marca en este dispositivo.
+        </p>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Tiempo</p>
+            <p class="text-2xl font-semibold mt-1" id="time">00:00</p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Movimientos</p>
+            <p class="text-2xl font-semibold mt-1" id="moves">0</p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Aciertos</p>
+            <p class="text-2xl font-semibold mt-1" id="matches">0</p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Mejor marca</p>
+            <p class="text-base font-semibold mt-2" id="best">—</p>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-3">
+          <label class="block">
+            <span class="text-sm text-inst-gray font-medium">Dificultad</span>
+            <select id="difficulty"
+              class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-inst-blue/30">
+              <option value="easy">Fácil (6 pares)</option>
+              <option value="medium" selected>Media (8 pares)</option>
+              <option value="hard">Difícil (12 pares)</option>
+            </select>
+          </label>
+
+          <button id="newGame"
+            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95">
+            Nueva partida (con cuenta regresiva)
+          </button>
+
+          <button id="reveal"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light">
+            Vista previa (3 s)
+          </button>
+
+          <button id="audioToggle"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            aria-pressed="true">
+            🔊 Sonido: Activado
+          </button>
+
+          <button id="voiceToggle"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            aria-pressed="true">
+            🗣️ Voz: Activada (3–2–1)
+          </button>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-5">
+          <h3 class="font-semibold mb-2">Sugerencias</h3>
+          <ul class="list-disc pl-5 text-inst-gray text-sm space-y-1.5">
+            <li>Hacé el juego en un momento de calma.</li>
+            <li>Si te frustrás, pausá: el objetivo es entrenar, no “rendir”.</li>
+            <li>Podés repetir 2–3 veces por semana.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Tablero -->
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div>
+            <p class="text-sm text-inst-gray">Estado</p>
+            <p class="text-lg font-semibold" id="stateText">Listo</p>
+          </div>
+
+          <div class="inline-flex items-center gap-2 rounded-xl bg-inst-light border border-gray-100 px-4 py-2">
+            <span class="text-sm text-inst-gray">Objetivo:</span>
+            <span class="text-sm font-semibold" id="goalText">Encontrá todos los pares.</span>
+          </div>
+        </div>
+
+        <div id="grid" class="grid gap-3 sm:gap-4"></div>
+
+        <div class="mt-6 text-sm text-inst-gray">
+          Tip: podés jugar con teclado (<span class="font-semibold">Tab</span> para navegar y
+          <span class="font-semibold">Enter</span>/<span class="font-semibold">Espacio</span> para voltear).
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="font-semibold">Dr. Dagnino</p>
+          <p class="text-white/80 text-sm">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
+
+          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com" class="underline hover:text-white">consultoriopsiquiatriadag@gmail.com</a>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com" class="underline hover:text-white">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 text-sm text-white/80">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9bNDEo9" target="_blank" rel="noopener" class="underline hover:text-white">Ubicación (Maps)</a>
+          <a href="aviso-legal.html" class="underline hover:text-white">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-8 pt-4 text-center text-xs text-white/60">
+        Copyright © <span id="year"></span> Todos los derechos reservados ·
+        Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <audio id="audioSeatbelt" preload="auto">
+    <source src="seatbelt.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="audioPremio" preload="auto">
+    <source src="premio_excelente.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+  (() => {
+    // ======= DATA =======
+    const PAIRS = [
+      { key:"Altímetro", sym:"ALT", cat:"Instrumento" },
+      { key:"Horizon (ADI)", sym:"ADI", cat:"Instrumento" },
+      { key:"VOR", sym:"VOR", cat:"Navegación" },
+      { key:"ILS", sym:"ILS", cat:"Navegación" },
+      { key:"METAR", sym:"MET", cat:"Meteorología" },
+      { key:"Transponder", sym:"XPDR", cat:"Aviónica" },
+      { key:"Checklist", sym:"CHK", cat:"Procedimiento" },
+      { key:"TWR (Torre)", sym:"TWR", cat:"Comunicaciones" },
+      { key:"Flaps", sym:"FLP", cat:"Controles" },
+      { key:"Trim", sym:"TRM", cat:"Controles" },
+      { key:"FMS", sym:"FMS", cat:"Aviónica" },
+      { key:"Pista", sym:"RWY", cat:"Aeródromo" },
+      { key:"Briefing", sym:"BRF", cat:"Procedimiento" },
+      { key:"QNH", sym:"QNH", cat:"Meteorología" },
+      { key:"Taxi", sym:"TXI", cat:"Aeródromo" },
+      { key:"Mayday", sym:"MAY", cat:"Comunicaciones" },
+    ];
+    const DIFF = { easy: 6, medium: 8, hard: 12 };
+
+    // ======= ELEMENTS =======
+    const elGrid = document.getElementById("grid");
+    const elTime = document.getElementById("time");
+    const elMoves = document.getElementById("moves");
+    const elMatches = document.getElementById("matches");
+    const elBest = document.getElementById("best");
+    const elDifficulty = document.getElementById("difficulty");
+    const elNew = document.getElementById("newGame");
+    const elReveal = document.getElementById("reveal");
+    const elStateText = document.getElementById("stateText");
+    const elAudioToggle = document.getElementById("audioToggle");
+    const elVoiceToggle = document.getElementById("voiceToggle");
+
+    const audioSeatbelt = document.getElementById("audioSeatbelt");
+    const audioPremio = document.getElementById("audioPremio");
+
+    // Overlay
+    const overlay = document.getElementById("overlay");
+    const overlayStart = document.getElementById("overlayStart");
+    const overlayNoSound = document.getElementById("overlayNoSound");
+    const countdownBox = document.getElementById("countdownBox");
+    const countdownNum = document.getElementById("countdownNum");
+    const countdownHint = document.getElementById("countdownHint");
+    const overlayBtns = document.getElementById("overlayBtns");
+
+    // ======= GAME STATE =======
+    let deck = [];
+    let first = null;
+    let second = null;
+    let lock = false;
+    let moves = 0;
+    let matches = 0;
+    let timer = null;
+    let startTs = null;
+    let elapsed = 0;
+
+    // ======= AUDIO STATE =======
+    let soundEnabled = true;
+    let voiceEnabled = true;
+    let audioCtx = null;
+
+    function ensureAudioCtx(){
+      if (!soundEnabled) return null;
+      if (audioCtx) return audioCtx;
+      try{
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return audioCtx;
+      }catch{
+        return null;
+      }
+    }
+
+    async function resumeAudioCtx(){
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      try{ await ctx.resume(); }catch{}
+    }
+
+    async function playSafe(audioEl){
+      if (!soundEnabled) return false;
+      try{
+        audioEl.currentTime = 0;
+        await audioEl.play();
+        return true;
+      }catch{
+        return false;
+      }
+    }
+
+    function beep(freq=660, dur=0.10, gain=0.08){
+      if (!soundEnabled) return;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(gain, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(now);
+      o.stop(now + dur);
+    }
+
+    function chime(type){
+      // type: match | error | win
+      if (!soundEnabled) return;
+      if (type === "match"){
+        beep(784, 0.12, 0.07);
+        setTimeout(()=>beep(988, 0.14, 0.07), 120);
+      } else if (type === "error"){
+        beep(220, 0.10, 0.05);
+      } else if (type === "win"){
+        beep(659, 0.16, 0.08);
+        setTimeout(()=>beep(784, 0.16, 0.08), 160);
+        setTimeout(()=>beep(988, 0.20, 0.08), 340);
+      }
+    }
+
+    function speak(text){
+      if (!voiceEnabled) return;
+      try{
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "es-AR";
+        u.rate = 0.95;
+        u.pitch = 1.0;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      }catch{}
+    }
+
+    function updateAudioButton(){
+      elAudioToggle.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
+      elAudioToggle.textContent = soundEnabled ? "🔊 Sonido: Activado" : "🔇 Sonido: Desactivado";
+    }
+
+    function updateVoiceButton(){
+      elVoiceToggle.setAttribute("aria-pressed", voiceEnabled ? "true" : "false");
+      elVoiceToggle.textContent = voiceEnabled ? "🗣️ Voz: Activada (3–2–1)" : "🗣️ Voz: Desactivada";
+    }
+
+    elAudioToggle.addEventListener("click", async () => {
+      soundEnabled = !soundEnabled;
+      updateAudioButton();
+      if (soundEnabled) await resumeAudioCtx();
+    });
+
+    elVoiceToggle.addEventListener("click", () => {
+      voiceEnabled = !voiceEnabled;
+      updateVoiceButton();
+    });
+
+    // ======= TIMER =======
+    function pad(n){ return String(n).padStart(2, "0"); }
+    function formatTime(ms){
+      const total = Math.floor(ms/1000);
+      const m = Math.floor(total/60);
+      const s = total % 60;
+      return `${pad(m)}:${pad(s)}`;
+    }
+    function tick(){
+      elapsed = Date.now() - startTs;
+      elTime.textContent = formatTime(elapsed);
+    }
+    function startTimer(){
+      if (timer) return;
+      startTs = Date.now() - elapsed;
+      timer = setInterval(tick, 250);
+    }
+    function stopTimer(){
+      clearInterval(timer);
+      timer = null;
+    }
+    function resetStats(){
+      moves = 0; matches = 0; elapsed = 0;
+      elMoves.textContent = "0";
+      elMatches.textContent = "0";
+      elTime.textContent = "00:00";
+      first = null; second = null; lock = false;
+      stopTimer();
+    }
+
+    // ======= BEST SCORE =======
+    function bestKey() { return `memoryAeroBest:${elDifficulty.value}`; }
+    function loadBest(){
+      const raw = localStorage.getItem(bestKey());
+      if (!raw) { elBest.textContent = "—"; return; }
+      try{
+        const { time, moves } = JSON.parse(raw);
+        elBest.textContent = `${formatTime(time)} · ${moves} mov.`;
+      }catch{
+        elBest.textContent = "—";
+      }
+    }
+    function saveBest(){
+      const curr = { time: elapsed, moves };
+      const raw = localStorage.getItem(bestKey());
+      if (!raw){
+        localStorage.setItem(bestKey(), JSON.stringify(curr));
+        return true;
+      }
+      try{
+        const prev = JSON.parse(raw);
+        if (curr.time < prev.time || (curr.time === prev.time && curr.moves < prev.moves)){
+          localStorage.setItem(bestKey(), JSON.stringify(curr));
+          return true;
+        }
+      }catch{
+        localStorage.setItem(bestKey(), JSON.stringify(curr));
+        return true;
+      }
+      return false;
+    }
+
+    // ======= DECK =======
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function buildDeck(){
+      const countPairs = DIFF[elDifficulty.value] || 8;
+      const chosen = PAIRS.slice(0, countPairs);
+      const doubled = chosen.flatMap((p, idx) => ([
+        { id: `${idx}-a`, pairKey: p.key, sym: p.sym, cat: p.cat, matched:false },
+        { id: `${idx}-b`, pairKey: p.key, sym: p.sym, cat: p.cat, matched:false }
+      ]));
+      deck = shuffle(doubled);
+    }
+    function calcCols(nCards){
+      if (nCards <= 12) return 4;
+      if (nCards <= 16) return 4;
+      return 6;
+    }
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function getCardData(id){
+      return deck.find(c => c.id === id);
+    }
+    function setFlipped(btn, flipped){
+      if (flipped) {
+        btn.classList.add("flipped");
+        btn.setAttribute("aria-pressed","true");
+      } else {
+        btn.classList.remove("flipped");
+        btn.setAttribute("aria-pressed","false");
+      }
+    }
+
+    function render(){
+      elGrid.innerHTML = "";
+      const cols = calcCols(deck.length);
+      elGrid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+
+      deck.forEach((card, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.dataset.id = card.id;
+        btn.className = "flip no-select relative w-full aspect-square rounded-2xl border border-gray-100 bg-inst-light/40 hover:bg-inst-light focus:outline-none focus:ring-2 focus:ring-inst-blue/30";
+        btn.setAttribute("aria-pressed","false");
+        btn.setAttribute("aria-label", `Tarjeta ${i+1}`);
+
+        btn.innerHTML = `
+          <div class="flip-inner absolute inset-0">
+            <div class="face back absolute inset-0 rounded-2xl bg-inst-navy text-white border border-white/10 flex items-center justify-center">
+              <div class="text-center px-3">
+                <div class="text-sm font-semibold tracking-wide">AERO · MEMORY</div>
+                <div class="text-white/70 text-xs mt-1">VOLTEAR</div>
+              </div>
+            </div>
+
+            <div class="face front absolute inset-0 rounded-2xl bg-white border border-gray-100 flex items-center justify-center">
+              <div class="text-center px-3">
+                <div class="inline-flex items-center justify-center rounded-xl bg-inst-sky text-inst-navy font-semibold px-3 py-2 text-sm">
+                  ${escapeHtml(card.sym)}
+                </div>
+                <div class="mt-3 text-sm font-semibold">${escapeHtml(card.pairKey)}</div>
+                <div class="mt-1 text-xs text-inst-gray">${escapeHtml(card.cat)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        btn.addEventListener("click", () => flip(btn));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            flip(btn);
+          }
+        });
+
+        elGrid.appendChild(btn);
+      });
+    }
+
+    // ======= GAMEPLAY =======
+    async function onWin(){
+      stopTimer();
+      elStateText.textContent = "Completado ✅";
+      const improved = saveBest();
+      loadBest();
+
+      // audio victoria: premio + chime (si hay sonido)
+      await playSafe(audioPremio);
+      chime("win");
+
+      setTimeout(() => {
+        alert(improved ? "¡Excelente! Nueva mejor marca." : "¡Excelente! Partida completada.");
+      }, 50);
+    }
+
+    function flip(btn){
+      if (lock) return;
+
+      // habilita audio context tras interacción
+      ensureAudioCtx();
+
+      const id = btn.dataset.id;
+      const card = getCardData(id);
+      if (!card || card.matched) return;
+      if (first && first.id === id) return;
+
+      if (!timer && moves === 0 && !first && !second) startTimer();
+
+      setFlipped(btn, true);
+
+      if (!first){
+        first = { id, btn, key: card.pairKey };
+        elStateText.textContent = "En curso (elegí otra tarjeta)";
+        return;
+      }
+
+      second = { id, btn, key: card.pairKey };
+      moves += 1;
+      elMoves.textContent = String(moves);
+
+      if (first.key === second.key){
+        const c1 = getCardData(first.id);
+        const c2 = getCardData(second.id);
+        c1.matched = true;
+        c2.matched = true;
+
+        first.btn.classList.add("ring-2", "ring-emerald-300/60");
+        second.btn.classList.add("ring-2", "ring-emerald-300/60");
+
+        matches += 1;
+        elMatches.textContent = String(matches);
+
+        chime("match");
+
+        first = null; second = null;
+
+        const target = (DIFF[elDifficulty.value] || 8);
+        if (matches === target){
+          onWin();
+        } else {
+          elStateText.textContent = "En curso";
+        }
+        return;
+      }
+
+      lock = true;
+      elStateText.textContent = "No coincide…";
+      chime("error");
+
+      second.btn.classList.add("shake");
+      setTimeout(() => second.btn.classList.remove("shake"), 250);
+
+      setTimeout(() => {
+        setFlipped(first.btn, false);
+        setFlipped(second.btn, false);
+        first = null; second = null;
+        lock = false;
+        elStateText.textContent = "En curso";
+      }, 700);
+    }
+
+    function revealAll(ms=3000){
+      if (lock) return;
+      ensureAudioCtx();
+      lock = true;
+      elStateText.textContent = "Vista previa…";
+      const buttons = [...elGrid.querySelectorAll("button.flip")];
+      buttons.forEach(b => setFlipped(b, true));
+
+      setTimeout(() => {
+        buttons.forEach(b => {
+          const c = getCardData(b.dataset.id);
+          if (!c.matched) setFlipped(b, false);
+        });
+        lock = false;
+        elStateText.textContent = "Listo";
+      }, ms);
+    }
+
+    // ======= INTRO / COUNTDOWN =======
+    function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+    async function runIntroAndStart(){
+      // Bloquea clicks al tablero durante intro
+      lock = true;
+      elStateText.textContent = "Preparando…";
+
+      overlayBtns.classList.add("hidden");
+      countdownBox.classList.remove("hidden");
+
+      await resumeAudioCtx();
+
+      // 3
+      countdownNum.textContent = "3";
+      countdownHint.textContent = "Preparando…";
+      speak("tres");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      // 2
+      countdownNum.textContent = "2";
+      speak("dos");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      // 1
+      countdownNum.textContent = "1";
+      speak("uno");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      countdownNum.textContent = "✓";
+      countdownHint.textContent = "Abrochar cinturones";
+      await playSafe(audioSeatbelt);
+
+      await sleep(650);
+
+      // Cierra overlay y habilita juego
+      overlay.classList.add("hidden");
+      countdownBox.classList.add("hidden");
+      overlayBtns.classList.remove("hidden");
+
+      // Arranca partida nueva
+      newGameCore();
+      lock = false;
+      elStateText.textContent = "Listo";
+    }
+
+    function newGameCore(){
+      resetStats();
+      buildDeck();
+      render();
+      loadBest();
+    }
+
+    // ======= UI EVENTS =======
+    elNew.addEventListener("click", async () => {
+      // Nueva partida con intro (como pediste)
+      overlay.classList.remove("hidden");
+      countdownBox.classList.add("hidden");
+      overlayBtns.classList.remove("hidden");
+      // auto: corre intro directo (esto ya cuenta como gesto del usuario)
+      await runIntroAndStart();
+    });
+
+    elDifficulty.addEventListener("change", () => {
+      loadBest();
+      // Re-generar deck sin intro (para rapidez)
+      newGameCore();
+      elStateText.textContent = "Listo";
+    });
+
+    elReveal.addEventListener("click", () => revealAll(3000));
+
+    // Overlay start buttons
+    overlayStart.addEventListener("click", async () => {
+      soundEnabled = true;
+      updateAudioButton();
+      await runIntroAndStart();
+    });
+
+    overlayNoSound.addEventListener("click", async () => {
+      soundEnabled = false;
+      updateAudioButton();
+      await runIntroAndStart();
+    });
+
+    // ======= INIT =======
+    updateAudioButton();
+    updateVoiceButton();
+    loadBest();
+    // Prepara tablero (pero mantenemos overlay hasta que el usuario toque iniciar)
+    newGameCore();
+    elStateText.textContent = "Listo";
+  })();
+  </script>
+</body>
+</html>

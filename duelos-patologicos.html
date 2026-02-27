@@ -1,0 +1,552 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Duelos patológicos — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para pacientes sobre duelo patológico: qué es, síntomas frecuentes, señales de alarma y un mini ejercicio de registro." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada del tema */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.15) 0%, rgba(14,34,57,.65) 70%, rgba(14,34,57,.75) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 200px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 200px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 700;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{
+      opacity:.9;
+      font-size: 0.95rem;
+    }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    .longread{ line-height: 1.65; }
+
+    /* Audio podcast (igual estilo que fobia-al-vuelo) */
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .audio-player{ width:100%; border-radius: 12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+    .kbd{
+      display:inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      padding:2px 6px;
+      border-radius:6px;
+      border:1px solid rgba(148,163,184,.35);
+      background: rgba(15,30,51,.04);
+      color: #0e2239;
+      font-size: .9em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER / TOPBAR -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Duelos patológicos</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/duelo-portada.webp -->
+        <img src="assets/img/duelo-portada.webp?v=1" alt="Ilustración representativa de duelo" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Duelos patológicos</h1>
+          <p>Cuando el dolor se estanca y te deja sin vida propia. Guía clara + señales de alarma + mini ejercicio de registro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Duración aproximada: 13:30. Podés escuchar primero y después leer, o al revés.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata">
+            <source src="audio/Cuando_el_duelo_se_vuelve_patológico.m4a" type="audio/mp4" />
+            <source src="audio/Cuando_el_duelo_se_vuelve_patológico.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/Cuando_el_duelo_se_vuelve_patológico.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+
+        <p class="card-sub" style="margin-top:10px">
+          Si el audio no carga, revisá que el archivo esté en <span class="kbd">/audio/</span> y que el nombre coincida exactamente
+          (incluyendo tildes).
+        </p>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              El duelo es una respuesta natural ante una pérdida significativa: la muerte de un ser querido, una separación, una enfermedad,
+              la pérdida de un trabajo o de un proyecto de vida. En el duelo sano, el dolor es intenso pero va cambiando con el tiempo:
+              la persona empieza a poder retomar actividades, regular el sueño y el apetito, y reconstruir sentido.
+            </p>
+            <p class="card-sub">
+              El problema aparece cuando el duelo se estanca, se vuelve muy prolongado o incapacita de forma sostenida.
+              A eso lo llamamos duelo patológico (o duelo complicado). En estos casos, el duelo deja de ser un proceso de adaptación
+              y se convierte en un cuadro clínico que requiere intervención.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          No existe un “tiempo exacto” para dejar de sufrir. Pero conviene sospechar duelo complicado cuando pasan los meses y:
+          el sufrimiento no disminuye (o empeora), la persona queda bloqueada, hay deterioro del autocuidado o la vida cotidiana,
+          y el dolor “toma todo el espacio” mental y emocional.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Síntomas frecuentes -->
+    <section class="section" id="sintomas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Síntomas frecuentes</h2>
+            <p class="card-sub">Para ordenar la información, se puede pensar en 4 grupos de síntomas:</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">1) Dolor emocional persistente e intenso</h3>
+            <ul class="card-sub">
+              <li>Tristeza profunda que no cede.</li>
+              <li>Llanto frecuente o “nudo en la garganta” permanente.</li>
+              <li>Vacío, desesperanza o desamparo.</li>
+              <li>Culpa excesiva (“podría haber hecho más”, “fue mi culpa”).</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">2) Bloqueo para retomar la vida</h3>
+            <ul class="card-sub">
+              <li>Incapacidad para volver al trabajo o sostener rutinas.</li>
+              <li>Abandono del autocuidado (alimentación, higiene, salud).</li>
+              <li>Sensación de estar “detenido en el tiempo”.</li>
+              <li>Pérdida de interés por actividades que antes tenían sentido.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">3) Mente centrada en la pérdida</h3>
+            <ul class="card-sub">
+              <li>Rumiación constante sobre la persona o el evento.</li>
+              <li>Búsqueda compulsiva de recuerdos (o evitación total).</li>
+              <li>Dificultad para aceptar la realidad de la pérdida.</li>
+              <li>Idealización extrema o enojo persistente.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">4) Síntomas físicos y ansiedad</h3>
+            <ul class="card-sub">
+              <li>Insomnio o sueño no reparador.</li>
+              <li>Fatiga marcada.</li>
+              <li>Opresión en el pecho, palpitaciones, sensación de ahogo.</li>
+              <li>Crisis de ansiedad o pánico.</li>
+              <li>Dolores corporales, contracturas, molestias gastrointestinales.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Puede coexistir con depresión, trastornos de ansiedad y/o consumo de sustancias. A veces aparece ideación de muerte:
+          no siempre con intención suicida; a veces como deseo de “dejar de sentir”.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>El sufrimiento es intenso y no disminuye con los meses (o empeora).</li>
+          <li>No logra retomar lo básico (trabajo, autocuidado, vínculos).</li>
+          <li>Hay insomnio severo sostenido.</li>
+          <li>Aparecen ataques de pánico o ansiedad intensa.</li>
+          <li>Hay aumento del consumo de alcohol/sedantes/drogas.</li>
+          <li>Hay pensamientos de muerte o desesperanza marcada.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si estás en riesgo inmediato o te sentís fuera de control, buscá asistencia local urgente.
+        </div>
+      </div>
+    </section>
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mini ejercicio (1 minuto)</h2>
+            <p class="card-sub">Objetivo: ponerle número al dolor para ordenarlo y seguirlo en el tiempo.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Elegí “la parte más pesada” hoy (tristeza, culpa, rumiación, soledad, enojo).<br/>
+            2) Marcá intensidad ANTES (0–10).<br/>
+            3) Hacé 3 respiraciones lentas (exhalación más larga).<br/>
+            4) Marcá intensidad DESPUÉS (0–10).<br/>
+            5) Copiá el resumen.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Intensidad ANTES (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="6" />
+            <div class="pill-val" id="beforeVal">6</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Intensidad DESPUÉS (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="focusInput" style="font-weight:600; display:block; margin-bottom:6px;">Foco de hoy (opcional)</label>
+            <input id="focusInput" class="input" type="text" placeholder="Ej: culpa / tristeza / rumiación / soledad / enojo..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="sleepInput" style="font-weight:600; display:block; margin-bottom:6px;">Sueño (opcional)</label>
+            <input id="sleepInput" class="input" type="text" placeholder="Ej: dormí mal / me desperté varias veces / reparador..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Nota breve (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: hoy me pegó fuerte ____; me ayudó ____; lo que necesito es ____;"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con tu terapeuta/médico.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. (Texto extenso, con casi nulo resumen.)</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El duelo es una respuesta natural ante una pérdida significativa. Esa pérdida puede ser la muerte de un ser querido,
+            una separación, una enfermedad, la pérdida de un trabajo o incluso la caída de un proyecto de vida. En el duelo sano,
+            el dolor puede ser muy intenso y ocupar un gran lugar al comienzo, pero con el tiempo cambia: la persona empieza,
+            de forma gradual, a recuperar rutinas, a dormir algo mejor, a tener momentos de alivio, a sostener responsabilidades mínimas
+            y a reconstruir sentido. No es que “se olvida” lo perdido: lo que cambia es la forma en que se integra la pérdida a la vida.
+          </p>
+
+          <p>
+            El duelo patológico (o duelo complicado) aparece cuando el proceso se estanca y deja de cumplir su función adaptativa.
+            No existe un tiempo exacto que marque cuándo “debería” haber pasado, porque cada vínculo y cada contexto son distintos.
+            Sin embargo, se vuelve preocupante cuando pasan los meses y el sufrimiento no disminuye o incluso empeora; cuando la persona
+            queda bloqueada sin poder retomar su vida; cuando aparecen síntomas intensos que afectan el trabajo, los vínculos y el cuidado personal;
+            o cuando se instala un dolor que toma todo el espacio mental y emocional, dejando poco margen para otras áreas de la existencia.
+            En esos casos, el duelo deja de ser solo una etapa dolorosa y pasa a ser un cuadro clínico que requiere intervención.
+          </p>
+
+          <p>
+            Este cuadro puede afectar a cualquier persona, aunque hay factores que aumentan la probabilidad. Entre ellos se encuentran
+            un vínculo muy dependiente o ambivalente con la persona perdida, pérdidas repentinas o traumáticas (accidente, suicidio, violencia),
+            antecedentes de depresión o ansiedad, aislamiento social o falta de apoyo, múltiples pérdidas en un corto período, o estrés sostenido
+            por conflictos familiares, problemas económicos o sobrecarga laboral. La combinación de vulnerabilidad previa, características del evento
+            y falta de sostén posterior puede dejar a la persona sin recursos suficientes para elaborar la pérdida.
+          </p>
+
+          <p>
+            En términos de síntomas, el duelo complicado suele mostrarse como un dolor emocional persistente e intenso: tristeza profunda que no cede,
+            llanto frecuente o un “nudo” permanente, vacío, desesperanza o desamparo, y culpa excesiva con frases como “podría haber hecho más” o “fue mi culpa”.
+            También puede presentarse un bloqueo importante para retomar la vida: dificultad para volver al trabajo, sostener rutinas, mantener el autocuidado,
+            comer o dormir con regularidad, y una sensación de estar detenido en el tiempo. Además, la mente puede quedar capturada por la pérdida:
+            rumiación constante, búsqueda compulsiva de recuerdos o, por el contrario, evitación total de todo lo que recuerde; dificultad para aceptar la realidad
+            de la pérdida; idealización extrema o enojo persistente. A esto se suman síntomas físicos y de ansiedad como insomnio, fatiga, opresión en el pecho,
+            palpitaciones, sensación de ahogo, crisis de ansiedad o pánico, contracturas, dolores corporales o molestias gastrointestinales.
+          </p>
+
+          <p>
+            A veces el duelo normal y la depresión se parecen, pero hay diferencias útiles. En el duelo sano, el dolor suele venir en oleadas
+            y puede coexistir con momentos de conexión, gratitud o recuerdos cálidos. En la depresión, predomina una caída global del ánimo,
+            pérdida de placer casi constante, culpa generalizada y una visión del futuro muy negativa. En el duelo patológico, el sufrimiento queda anclado
+            y rígido: la vida no se reordena y la pérdida se transforma en el centro fijo del funcionamiento.
+          </p>
+
+          <p>
+            El duelo patológico suele mantenerse por una combinación de factores biológicos, psicológicos y ambientales. Puede haber vulnerabilidad
+            a ansiedad o depresión, hiperactivación del sistema de estrés, alteraciones del sueño y del cuerpo. A nivel psicológico, pueden sostenerlo
+            la culpa, la rumiación, la evitación del dolor, la idealización, o el miedo a “traicionar” a la persona perdida si se sigue viviendo.
+            A nivel ambiental, influye la falta de red de apoyo, conflictos familiares, sobrecarga laboral o ausencia de espacios de palabra y contención.
+          </p>
+
+          <p>
+            El duelo patológico se trata y mejora con intervención adecuada. La psicoterapia es el eje central: puede ser una psicoterapia focal en duelo,
+            terapia cognitivo-conductual para trabajar rumiación, culpa y evitación, o enfoques centrados en trauma cuando la pérdida fue traumática.
+            También se entrenan estrategias de regulación emocional, mindfulness y reconexión con proyectos. El objetivo no es olvidar, sino integrar la pérdida
+            sin quedar atrapado. En algunos casos se indica medicación si hay depresión moderada a severa, ansiedad intensa, crisis de pánico, insomnio persistente
+            o bloqueo funcional marcado. Los fármacos se eligen según el perfil clínico y la comorbilidad.
+          </p>
+
+          <p>
+            En el día a día, puede ayudar sostener rutinas mínimas (higiene, comidas, sueño), hablar con alguien de confianza o un profesional,
+            evitar el aislamiento total, regular el consumo de alcohol o sedantes, permitir el dolor sin quedarse “viviendo” dentro de él,
+            marcar objetivos pequeños (salir, caminar, retomar una tarea breve) y construir un espacio simbólico de recuerdo que honre lo perdido
+            sin quedar atrapado en la rumiación. Si el sufrimiento es intenso y no disminuye, si no se logra retomar lo básico, si hay insomnio severo,
+            ataques de pánico, consumo problemático o pensamientos de muerte, se recomienda consultar. Con acompañamiento profesional es posible volver a respirar,
+            recuperar rutinas y reconstruir sentido, sin dejar de honrar lo que se perdió.
+          </p>
+
+          <p style="font-weight:700; margin-top:14px;">
+            El duelo duele, pero no debería destruirte. Cuando el dolor se vuelve crónico y te deja sin vida propia, pedir ayuda es una forma de cuidado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si esto te está afectando, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange = document.getElementById("beforeRange");
+      const afterRange  = document.getElementById("afterRange");
+      const beforeVal   = document.getElementById("beforeVal");
+      const afterVal    = document.getElementById("afterVal");
+      const focusInput  = document.getElementById("focusInput");
+      const sleepInput  = document.getElementById("sleepInput");
+      const noteInput   = document.getElementById("noteInput");
+      const btnCopy     = document.getElementById("btnCopy");
+      const btnReset    = document.getElementById("btnReset");
+      const copyOk      = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const focus = (focusInput.value || "").trim();
+        const sleep = (sleepInput.value || "").trim();
+        const note  = (noteInput.value || "").trim();
+
+        const txt =
+          `Duelo — foco: ${focus || "—"} | Antes: ${beforeRange.value}/10 | Después: ${afterRange.value}/10 | Sueño: ${sleep || "—"} | Fecha/hora: ${nowStr()} | Nota: ${note || "—"}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value = 6;
+        afterRange.value = 5;
+        focusInput.value = "";
+        sleepInput.value = "";
+        noteInput.value = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

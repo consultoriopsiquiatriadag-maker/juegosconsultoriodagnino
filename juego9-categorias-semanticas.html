@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Juego · Categorías semánticas — Sala de espera virtual</title>
+  <meta name="description" content="Juego breve de categorización semántica: elegí la categoría correcta para cada palabra." />
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <meta name="theme-color" content="#0e2239" />
+  <style>
+    .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
+    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .brand .logo{ width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
+    .brand-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand-sub{ opacity:.9; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .game-shell{ margin-top:16px; }
+    .game-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .kpiwrap{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .kpi{ padding:10px 12px; border-radius:14px; border:1px solid rgba(15,30,51,.12); background: rgba(238,242,247,.9); }
+    .kpi .label{ font-size:.8rem; opacity:.8; margin:0; }
+    .kpi .value{ margin:2px 0 0 0; font-weight:800; font-size:1.05rem; color:#0f1e33; }
+    .stage{ margin-top:14px; display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; }
+    @media (max-width: 860px){ .stage{ grid-template-columns: 1fr; } }
+    .word-box{ display:flex; align-items:center; justify-content:center; min-height:150px; border-radius:18px; border:1px solid rgba(15,30,51,.14); background:#fff; text-align:center; padding:18px; }
+    .word{ font-size: clamp(26px, 4vw, 44px); font-weight:900; letter-spacing:.02em; color:#0f1e33; }
+    .subhint{ margin:10px 0 0 0; color:#475569; line-height:1.55; }
+    .choices{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
+    @media (max-width: 520px){ .choices{ grid-template-columns: 1fr; } }
+    .choice-btn{ width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(15,30,51,.16); background: rgba(238,242,247,.9); font-weight:800; color:#0f1e33; cursor:pointer; transition: transform .08s ease; text-align:left; }
+    .choice-btn:active{ transform: scale(.99); }
+    .bar{ height:10px; border-radius:999px; background: rgba(15,30,51,.10); overflow:hidden; border:1px solid rgba(15,30,51,.10); }
+    .bar > div{ height:100%; width:100%; background: rgba(37,99,235,.55); transform-origin:left center; transform: scaleX(1); }
+    .toast{ margin-top:12px; padding:10px 12px; border-radius:14px; border:1px solid rgba(15,30,51,.12); background: rgba(238,242,247,.9); display:none; }
+    .toast.ok{ border-color: rgba(16,185,129,.35); background: rgba(16,185,129,.10); }
+    .toast.bad{ border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.08); }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; border-radius:999px; border:1px solid rgba(148,163,184,.35); background:#fff; color:#0f1e33; font-weight:800; cursor:pointer; text-decoration:none; }
+    .btn-primary{ background:#2563eb; border-color: rgba(37,99,235,.65); color:#fff; }
+    .btn-ghost{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); color:#fff; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+    .form{ display:grid; gap:10px; }
+    .field{ display:grid; gap:6px; }
+    .field label{ font-weight:800; color:#0f1e33; }
+    .field select{ padding:10px 12px; border-radius:14px; border:1px solid rgba(15,30,51,.16); background:#fff; font-weight:700; color:#0f1e33; }
+    :root{ --scale: 100%; }
+    html{ font-size: var(--scale); }
+  </style>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🧠</div>
+        <div class="brand-text" style="min-width:0">
+          <div class="brand-title">Sala de espera virtual</div>
+          <div class="brand-sub">Juego · Categorías semánticas</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap game-shell">
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="game-head">
+          <div>
+            <h1 class="card-title" style="margin:0">Categorías semánticas</h1>
+            <p class="card-sub" style="margin-top:6px">
+              Elegí la categoría correcta para cada palabra. Entrenamiento breve de <b>categorización semántica</b> (memoria de conocimiento).
+            </p>
+          </div>
+          <div class="row">
+            <button class="btn btn-primary" id="btnStart" type="button">▶ Iniciar</button>
+            <button class="btn" id="btnRestart" type="button" hidden>↻ Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="stage" aria-label="Área de juego">
+          <div class="section-card" style="margin:0">
+            <div class="row" style="justify-content:space-between">
+              <div class="kpiwrap">
+                <div class="kpi">
+                  <p class="label">Progreso</p>
+                  <p class="value"><span id="kpiN">0</span>/<span id="kpiTotal">0</span></p>
+                </div>
+                <div class="kpi">
+                  <p class="label">Aciertos</p>
+                  <p class="value" id="kpiOk">0</p>
+                </div>
+                <div class="kpi">
+                  <p class="label">Racha</p>
+                  <p class="value" id="kpiStreak">0</p>
+                </div>
+              </div>
+              <div style="min-width: 180px;">
+                <div class="bar" aria-label="Tiempo de respuesta"><div id="timeBar"></div></div>
+                <p class="subhint" style="margin-top:8px"><b>Tip:</b> si te frustrás, pausá y retomá.</p>
+              </div>
+            </div>
+
+            <div class="word-box" style="margin-top:12px">
+              <div>
+                <div class="word" id="word">—</div>
+                <p class="subhint" id="prompt" style="margin-top:10px">Elegí una categoría para comenzar.</p>
+              </div>
+            </div>
+
+            <div class="choices" id="choices" aria-label="Opciones" style="margin-top:12px"></div>
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="section-card" style="margin:0">
+            <h2 class="card-title" style="margin-top:0">Configuración</h2>
+            <div class="form" style="margin-top:10px">
+              <div class="field">
+                <label for="difficulty">Dificultad</label>
+                <select id="difficulty">
+                  <option value="easy">Fácil (3 opciones)</option>
+                  <option value="medium" selected>Media (4 opciones)</option>
+                  <option value="hard">Difícil (5 opciones)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="rounds">Cantidad de ítems</label>
+                <select id="rounds">
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20" selected>20</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="limit">Tiempo por ítem</label>
+                <select id="limit">
+                  <option value="0">Sin límite</option>
+                  <option value="6" selected>6 segundos</option>
+                  <option value="4">4 segundos</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="domain">Banco de palabras</label>
+                <select id="domain">
+                  <option value="general" selected>General (variado)</option>
+                  <option value="aviacion">Aviación (suave)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="divider" aria-hidden="true"></div>
+
+            <h2 class="card-title" style="margin-top:0">Resultados</h2>
+            <p class="card-sub" id="resultText">Iniciá el juego para ver resultados.</p>
+
+            <div class="row" style="margin-top:10px">
+              <button class="btn" id="btnCopy" type="button" disabled>Copiar resumen</button>
+              <a class="btn" href="turnos.html" data-spa="0">Central de Turnos</a>
+            </div>
+
+            <div class="note" style="margin-top:12px">
+              Psicoeducativo y recreativo. No reemplaza evaluación clínica.
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Accesibilidad: tamaño de texto (persistente)
+    (function(){
+      const key="textScalePct";
+      let pct = parseInt(localStorage.getItem(key) || "100", 10);
+      pct = Math.min(130, Math.max(85, pct));
+      document.documentElement.style.setProperty("--scale", pct + "%");
+      const minus = document.getElementById("btnAminus");
+      const plus  = document.getElementById("btnAplus");
+      minus.addEventListener("click", ()=>{ pct=Math.max(85, pct-5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+      plus.addEventListener("click", ()=>{ pct=Math.min(130, pct+5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+    })();
+
+    // Juego: Categorías semánticas
+    const BANKS = {
+      general: {
+        "Animales": ["perro","gato","caballo","jirafa","delfín","águila","tigre","zorro","ballena","conejo","búho","tortuga"],
+        "Frutas": ["manzana","banana","pera","naranja","uva","mango","anana","kiwi","durazno","ciruela","sandía","limón"],
+        "Muebles": ["silla","mesa","sofá","cómoda","ropero","biblioteca","banqueta","escritorio","armario","repisa","cama","aparador"],
+        "Herramientas": ["martillo","destornillador","llave inglesa","serrucho","alicate","taladro","pinza","cutter","nivel","espátula","sierra","morsa"],
+        "Partes del cuerpo": ["codo","rodilla","hombro","tobillo","muñeca","nariz","pulmón","hígado","espalda","lengua","ojo","costilla"],
+        "Vehículos": ["auto","moto","bicicleta","camión","colectivo","tren","barco","subte","taxi","tranvía","tractor","patineta"],
+        "Profesiones": ["médico","docente","bombero","ingeniero","enfermero","abogado","piloto","panadero","veterinario","arquitecto","electricista","mecánico"],
+        "Emociones": ["alegría","tristeza","miedo","ira","calma","ansiedad","vergüenza","orgullo","culpa","esperanza","sorpresa","asco"]
+      },
+      aviacion: {
+        "Aeronáutica": ["cabina","altímetro","turbina","pista","hangar","fuselaje","radar","briefing","aeródromo","motor","hélice","despegue"],
+        "Meteorología": ["viento","cizalladura","cúmulo","niebla","turbulencia","frente","presión","isobara","llovizna","granizo","tormenta","humedad"],
+        "Partes del cuerpo": ["codo","rodilla","hombro","tobillo","muñeca","nariz","pulmón","hígado","espalda","lengua","ojo","costilla"],
+        "Emociones": ["calma","ansiedad","miedo","confianza","tensión","alivio","irritación","esperanza","vergüenza","orgullo","culpa","sorpresa"],
+        "Vehículos": ["avión","helicóptero","camión","barco","tren","colectivo","auto","moto","subte","taxi","bicicleta","tractor"]
+      }
+    };
+
+    const els = {
+      start: document.getElementById("btnStart"),
+      restart: document.getElementById("btnRestart"),
+      copy: document.getElementById("btnCopy"),
+      diff: document.getElementById("difficulty"),
+      rounds: document.getElementById("rounds"),
+      limit: document.getElementById("limit"),
+      domain: document.getElementById("domain"),
+      word: document.getElementById("word"),
+      prompt: document.getElementById("prompt"),
+      choices: document.getElementById("choices"),
+      toast: document.getElementById("toast"),
+      kpiN: document.getElementById("kpiN"),
+      kpiTotal: document.getElementById("kpiTotal"),
+      kpiOk: document.getElementById("kpiOk"),
+      kpiStreak: document.getElementById("kpiStreak"),
+      timeBar: document.getElementById("timeBar"),
+      resultText: document.getElementById("resultText"),
+    };
+
+    let state = null;
+    let timer = null;
+    let tStart = 0;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+    function nowStr(){
+      const d = new Date();
+      const pad = (n)=> String(n).padStart(2,"0");
+      return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function difficultyCount(){
+      const v = els.diff.value;
+      if(v==="easy") return 3;
+      if(v==="hard") return 5;
+      return 4;
+    }
+    function buildItems(){
+      const bank = BANKS[els.domain.value] || BANKS.general;
+      const cats = Object.keys(bank);
+      const total = parseInt(els.rounds.value, 10);
+      const items = [];
+      for(let i=0;i<total;i++){
+        const correctCat = cats[Math.floor(Math.random()*cats.length)];
+        const wordList = bank[correctCat];
+        const word = wordList[Math.floor(Math.random()*wordList.length)];
+        const optsNeeded = difficultyCount();
+        const distractors = shuffle(cats.filter(c=>c!==correctCat)).slice(0, optsNeeded-1);
+        const options = shuffle([correctCat, ...distractors]);
+        items.push({word, correctCat, options});
+      }
+      return items;
+    }
+
+    function setToast(kind, text){
+      els.toast.className = "toast " + (kind || "");
+      els.toast.textContent = text;
+      els.toast.style.display = "block";
+      setTimeout(()=>{ els.toast.style.display="none"; }, 700);
+    }
+    function updateKpis(){
+      els.kpiN.textContent = state.index;
+      els.kpiTotal.textContent = state.items.length;
+      els.kpiOk.textContent = state.correct;
+      els.kpiStreak.textContent = state.streak;
+    }
+    function clearTimer(){
+      if(timer){ clearInterval(timer); timer=null; }
+      els.timeBar.style.transform = "scaleX(1)";
+    }
+    function startTimer(){
+      clearTimer();
+      const limit = parseInt(els.limit.value, 10);
+      if(!limit) return;
+      const t0 = performance.now();
+      timer = setInterval(()=>{
+        const dt = (performance.now() - t0)/1000;
+        const r = Math.max(0, 1 - dt/limit);
+        els.timeBar.style.transform = `scaleX(${r})`;
+        if(dt >= limit){
+          clearTimer();
+          answer(null, true);
+        }
+      }, 50);
+    }
+
+    function renderQuestion(){
+      if(state.index >= state.items.length){
+        endGame();
+        return;
+      }
+      const it = state.items[state.index];
+      els.word.textContent = it.word.toUpperCase();
+      els.prompt.textContent = "¿A qué categoría pertenece?";
+      els.choices.innerHTML = "";
+      it.options.forEach(opt=>{
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.type = "button";
+        btn.textContent = opt;
+        btn.addEventListener("click", ()=> answer(opt, false));
+        els.choices.appendChild(btn);
+      });
+      updateKpis();
+      tStart = performance.now();
+      startTimer();
+    }
+
+    function answer(selected, isTimeout){
+      const it = state.items[state.index];
+      const rt = Math.max(0, performance.now() - tStart);
+      clearTimer();
+      const ok = (!isTimeout && selected === it.correctCat);
+      state.rts.push(rt);
+      state.index += 1;
+
+      if(ok){
+        state.correct += 1;
+        state.streak += 1;
+        state.bestStreak = Math.max(state.bestStreak, state.streak);
+        setToast("ok", "✅ Correcto");
+      }else{
+        state.streak = 0;
+        const why = isTimeout ? "⏱️ Tiempo" : "❌ Incorrecto";
+        setToast("bad", `${why}. Era: ${it.correctCat}`);
+      }
+      updateKpis();
+      setTimeout(renderQuestion, 320);
+    }
+
+    function endGame(){
+      els.choices.innerHTML = "";
+      els.word.textContent = "Finalizado";
+      els.prompt.textContent = "Buen trabajo. Podés repetir cuando quieras.";
+      const total = state.items.length;
+      const acc = total ? Math.round((state.correct/total)*100) : 0;
+      const avg = state.rts.length ? Math.round(state.rts.reduce((a,b)=>a+b,0)/state.rts.length) : 0;
+      const sum = `Categorías semánticas — ${acc}% (${state.correct}/${total}) · Tiempo medio: ${avg} ms · Mejor racha: ${state.bestStreak} · ${nowStr()}`;
+      els.resultText.textContent = sum;
+      els.copy.disabled = false;
+      els.restart.hidden = false;
+      els.start.disabled = false;
+      state.summary = sum;
+    }
+
+    function startGame(){
+      state = { items: buildItems(), index: 0, correct: 0, streak: 0, bestStreak: 0, rts: [], summary: "" };
+      els.kpiTotal.textContent = state.items.length;
+      els.kpiN.textContent = "0";
+      els.kpiOk.textContent = "0";
+      els.kpiStreak.textContent = "0";
+      els.resultText.textContent = "Jugando…";
+      els.copy.disabled = true;
+      els.start.disabled = true;
+      els.restart.hidden = true;
+      renderQuestion();
+    }
+
+    els.start.addEventListener("click", startGame);
+    els.restart.addEventListener("click", startGame);
+
+    els.copy.addEventListener("click", async ()=>{
+      if(!state || !state.summary) return;
+      try{
+        await navigator.clipboard.writeText(state.summary);
+        setToast("ok", "📋 Copiado");
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = state.summary;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        setToast("ok", "📋 Copiado");
+      }
+    });
+  </script>
+</body>
+</html>

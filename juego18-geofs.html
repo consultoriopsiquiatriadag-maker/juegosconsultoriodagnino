@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 18 · Simulador de vuelo (GeoFS) — Sala de espera virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    .btn-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12.5px;
+      word-break: break-all;
+      background: rgba(14,34,57,.04);
+      border: 1px solid rgba(14,34,57,.10);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: #0e2239;
+    }
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 900px){ .kpi{ grid-template-columns: 1fr; } }
+    .kpi .tile{
+      background: rgba(14,34,57,.03);
+      border: 1px solid rgba(14,34,57,.10);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    .kpi .tile b{ display:block; margin-bottom:4px; }
+    .small-muted{ color: var(--muted, #475569); line-height:1.6; font-size: 14px; }
+    .warn{
+      border-left: 4px solid rgba(245,158,11,.9);
+      background: rgba(245,158,11,.12);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #0e2239;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <!-- Desktop -->
+        <div class="controls-desktop" aria-label="Controles (escritorio)">
+          <button class="btn-ghost" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">⚙️ Ajustes</button>
+          <button class="btn-ghost" id="audioToggle" type="button" aria-pressed="false" data-i18n="audio_off">Activar sonidos</button>
+
+          <div class="volume" aria-label="Control de volumen">
+            <label for="volumeRange" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRange" type="range" min="0" max="100" value="35" />
+          </div>
+
+          <button class="btn-chip" id="langES" type="button" data-lang="es" aria-pressed="true">ES</button>
+          <button class="btn-chip" id="langEN" type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button class="btn-chip" id="langPT" type="button" data-lang="pt" aria-pressed="false">PT</button>
+        </div>
+
+        <!-- Mobile -->
+        <button class="btn-ghost controls-mobile" id="openSettings" type="button"
+                aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">
+          ⚙️ Ajustes
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Settings Sheet ===== -->
+  <div class="settings-sheet" id="settingsSheet" hidden aria-hidden="true">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
+      <div class="sheet-head">
+        <div class="sheet-title" data-i18n="settings_title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button" data-i18n="close_btn">Cerrar ✕</button>
+      </div>
+
+      <div class="sheet-body">
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_font_title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button class="btn-ghost" type="button" data-action="font-down" aria-label="Disminuir tamaño de letra">A-</button>
+              <button class="btn-ghost" type="button" data-action="font-up" aria-label="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_contrast_title">🌓 Contraste</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_motion_title">🪶 Reducir animaciones</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleMotion" data-action="reduce-motion" aria-label="Reducir animaciones">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_line_title">↕️ Interlineado</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleLine" data-action="line-spacing" aria-label="Aumentar interlineado">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_audio_title">🔊 Sonidos</p>
+          <div class="sheet-actions">
+            <button class="btn-ghost" id="audioToggleSheet" type="button" aria-pressed="false" data-action="audio-toggle" data-i18n="audio_off">
+              Activar sonidos
+            </button>
+          </div>
+          <div class="sheet-volume" style="margin-top:10px">
+            <label for="volumeRangeSheet" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRangeSheet" type="range" min="0" max="100" value="35" data-action="volume" />
+          </div>
+        </div>
+
+        <div class="sheet-row lang-row">
+          <p class="sheet-row-title" data-i18n="sheet_lang_title">🌐 Idioma</p>
+          <div class="sheet-actions">
+            <button class="btn-chip" type="button" data-lang="es" aria-pressed="true">ES</button>
+            <button class="btn-chip" type="button" data-lang="en" aria-pressed="false">EN</button>
+            <button class="btn-chip" type="button" data-lang="pt" aria-pressed="false">PT</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin:0" data-i18n="sheet_note">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-label="GeoFS">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="pill" aria-label="Estado">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Juego 18</span>
+        </div>
+
+        <h1 class="hero-title">Simulador de vuelo (GeoFS)</h1>
+
+        <p class="hero-bridge">
+          Un simulador online (tercero). Se abre en una ventana/pestaña para que puedas volver acá cuando quieras.
+        </p>
+
+        <p class="hero-meta">
+          Inicio sugerido: Aeroparque (SABE), pista 31, con un Cessna 172.
+        </p>
+      </div>
+
+      <aside class="hero-side" aria-label="Accesos rápidos">
+        <h3>Accesos</h3>
+        <p>Volvé cuando termines o elegí otro juego.</p>
+        <div class="row">
+          <a href="juegos-ordenado.html">Volver a juegos</a>
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="wrap" aria-label="GeoFS">
+
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Abrir el simulador</h2>
+            <p class="card-sub">Recomendado: ventana emergente (se puede cerrar y volver a esta página).</p>
+          </div>
+          <a class="btn-secondary" href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="warn" role="note" aria-label="Nota">
+          Por diseño, algunos sitios externos bloquean que se “incrusten” dentro de otras páginas.
+          Por eso, GeoFS se abrirá en una ventana o pestaña aparte.
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="btnPopup" type="button">Abrir GeoFS (ventana)</button>
+          <a class="btn-secondary" id="btnTab" href="#" target="_blank" rel="noopener noreferrer">Abrir GeoFS (pestaña)</a>
+          <button class="btn-ghost" id="btnCopy" type="button">Copiar link</button>
+        </div>
+
+        <div style="height:12px"></div>
+        <div class="mono" id="urlBox" aria-label="Link de inicio"></div>
+
+        <div style="height:18px"></div>
+
+        <div class="kpi" aria-label="Ayudas rápidas">
+          <div class="tile">
+            <b>Si no te abre en Aeroparque</b>
+            <div class="small-muted">
+              En GeoFS: menú <b>Location</b> → buscá <b>SABE</b> (Aeroparque) y elegí pista <b>13/31</b>.
+            </div>
+          </div>
+          <div class="tile">
+            <b>Si no queda en Cessna 172</b>
+            <div class="small-muted">
+              Menú <b>Aircraft</b> → elegí <b>Cessna 172</b> (aviación general).
+            </div>
+          </div>
+          <div class="tile">
+            <b>Mejor calidad visual (1 vez)</b>
+            <div class="small-muted">
+              <b>Options</b> → <b>Quality</b> en Alto; y en <b>Imagery</b> usar <b>Super-Resolution</b> o <b>Bing HD</b> (si tenés suscripción).
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <section class="section">
+      <div class="section-card hint-bg">
+        <h3 class="card-title" style="margin-top:0">Sugerencia de uso (modo calma)</h3>
+        <ul style="margin:10px 0 0 0; padding-left:18px; color:#475569; line-height:1.6">
+          <li>Usalo 3 a 10 minutos, como entrenamiento de atención sostenida.</li>
+          <li>Si te activa o te frustra, pausá y volvé después.</li>
+          <li>Si tenés joystick, GeoFS lo suele detectar (según navegador).</li>
+        </ul>
+        <div class="note" style="margin-top:14px">
+          Este recurso es recreativo/psicoeducativo y no reemplaza una evaluación clínica.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== JS: APP CORE (igual que index) ===== -->
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/audio.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <script>
+    (function(){
+      // Aeroparque Jorge Newbery (SABE) — cabecera RWY 31 (coords aproximadas)
+      // Fuente: SkyVector / datos públicos de aeródromo.
+      const LAT = -34.56384;
+      const LON = -58.40750;
+      const HEADING = 313; // RWY 31
+      const AIRCRAFT = 2;  // Cessna 172 (ID usual en GeoFS)
+      const VERSION = "3.82";
+
+      const url = `https://www.geo-fs.com/geofs.php?v=${encodeURIComponent(VERSION)}&aircraft=${AIRCRAFT}&lat=${LAT}&lon=${LON}&alt=0&heading=${HEADING}`;
+
+      const urlBox = document.getElementById('urlBox');
+      const btnTab = document.getElementById('btnTab');
+      const btnPopup = document.getElementById('btnPopup');
+      const btnCopy = document.getElementById('btnCopy');
+
+      urlBox.textContent = url;
+      btnTab.href = url;
+
+      btnPopup.addEventListener('click', () => {
+        const w = Math.min(window.screen.availWidth || 1280, 1400);
+        const h = Math.min(window.screen.availHeight || 800, 900);
+        const left = Math.max(0, Math.round(((window.screen.availWidth || 1400) - w) / 2));
+        const top  = Math.max(0, Math.round(((window.screen.availHeight || 900) - h) / 2));
+        const feat = `popup=yes,width=${w},height=${h},left=${left},top=${top},noopener,noreferrer`;
+        const win = window.open(url, "GeoFS", feat);
+        if(!win){
+          alert("Tu navegador bloqueó la ventana emergente. Probá con 'Abrir GeoFS (pestaña)'.");
+        } else {
+          win.focus();
+        }
+      });
+
+      btnCopy.addEventListener('click', async () => {
+        try{
+          await navigator.clipboard.writeText(url);
+          btnCopy.textContent = "¡Link copiado!";
+          setTimeout(()=>btnCopy.textContent="Copiar link", 1600);
+        }catch(e){
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          btnCopy.textContent = "¡Link copiado!";
+          setTimeout(()=>btnCopy.textContent="Copiar link", 1600);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

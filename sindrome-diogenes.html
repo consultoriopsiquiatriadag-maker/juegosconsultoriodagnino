@@ -1,0 +1,731 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Síndrome de Diógenes — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para familias: síndrome de Diógenes, acumulación, abandono del autocuidado, señales de alarma y cómo acompañar. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+
+    /* Mitos vs realidad */
+    .mito-grid{
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .mito-row{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 540px){
+      .mito-row{ grid-template-columns: 1fr; }
+    }
+    .mito-box{
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    .mito-box.mito{
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.22);
+    }
+    .mito-box.realidad{
+      background: rgba(16,185,129,.08);
+      border: 1px solid rgba(16,185,129,.22);
+    }
+    .mito-box .label{
+      font-size: .82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+      opacity: .7;
+    }
+    .mito-box.mito .label{ color: #dc2626; }
+    .mito-box.realidad .label{ color: #059669; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Síndrome de Diógenes</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/diogenes-portada.webp -->
+        <img src="assets/img/diogenes-portada.webp?v=1" alt="Ilustración abstracta: espacio doméstico acumulado, figura aislada al fondo" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Síndrome de Diógenes</h1>
+          <p>Acumulación extrema, abandono del autocuidado y rechazo a la ayuda. Qué es, por qué ocurre y cómo acompañar.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              El síndrome de Diógenes es un cuadro caracterizado por la combinación de tres elementos:
+              <b>acumulación extrema de objetos y basura</b> en el hogar,
+              <b>abandono severo del autocuidado</b> (higiene, alimentación, salud) y
+              <b>rechazo activo a recibir ayuda</b>, a pesar del deterioro evidente.
+            </p>
+            <p class="card-sub">
+              La persona no percibe el problema, o lo percibe pero no le genera malestar suficiente
+              como para querer cambiar. Esto lo diferencia de quien acumula objetos con angustia
+              y desea dejar de hacerlo: en Diógenes, la mayoría de las veces el pedido de ayuda
+              no viene de quien lo padece, sino de la familia, los vecinos o los servicios sociales.
+            </p>
+            <p class="card-sub">
+              El nombre hace referencia al filósofo griego Diógenes de Sinope, conocido por vivir
+              en extrema austeridad y rechazar las convenciones sociales. La paradoja es que el cuadro
+              que lleva su nombre es casi lo opuesto: no austeridad, sino acumulación descontrolada.
+              La asociación clínica que le dio el nombre reconoció esta ironía, pero el término ya quedó instalado.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Dato clave: afecta predominantemente a adultos mayores que viven solos, aunque puede presentarse
+          a cualquier edad. La soledad, el aislamiento social y los eventos de vida traumáticos son
+          factores de riesgo frecuentes.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Mitos y realidad -->
+    <section class="section" id="mitos">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mitos y realidad</h2>
+            <p class="card-sub">El síndrome de Diógenes genera mucha confusión. Estas son las ideas más frecuentes que hay que revisar.</p>
+          </div>
+        </div>
+
+        <div class="mito-grid">
+
+          <div class="mito-row">
+            <div class="mito-box mito">
+              <div class="label">✗ Mito</div>
+              <p class="card-sub" style="margin:0">"Es una persona sucia que no quiere limpiar."</p>
+            </div>
+            <div class="mito-box realidad">
+              <div class="label">✓ Realidad</div>
+              <p class="card-sub" style="margin:0">Es un cuadro clínico con base neurológica y psiquiátrica. No es una elección de estilo de vida ni una cuestión de valores.</p>
+            </div>
+          </div>
+
+          <div class="mito-row">
+            <div class="mito-box mito">
+              <div class="label">✗ Mito</div>
+              <p class="card-sub" style="margin:0">"Si le ordenamos la casa, se cura."</p>
+            </div>
+            <div class="mito-box realidad">
+              <div class="label">✓ Realidad</div>
+              <p class="card-sub" style="margin:0">Limpiar el hogar sin tratar el cuadro subyacente no resuelve nada. En muchos casos la acumulación vuelve en semanas. Sin abordaje clínico, la intervención doméstica puede incluso generar una crisis.</p>
+            </div>
+          </div>
+
+          <div class="mito-row">
+            <div class="mito-box mito">
+              <div class="label">✗ Mito</div>
+              <p class="card-sub" style="margin:0">"Sabe perfectamente lo que hace; es terquedad."</p>
+            </div>
+            <div class="mito-box realidad">
+              <div class="label">✓ Realidad</div>
+              <p class="card-sub" style="margin:0">La falta de conciencia del problema (anosognosia) es parte del cuadro. La persona genuinamente no percibe el deterioro de la misma forma que lo percibe su entorno.</p>
+            </div>
+          </div>
+
+          <div class="mito-row">
+            <div class="mito-box mito">
+              <div class="label">✗ Mito</div>
+              <p class="card-sub" style="margin:0">"Es lo mismo que el trastorno de acumulación (hoarding)."</p>
+            </div>
+            <div class="mito-box realidad">
+              <div class="label">✓ Realidad</div>
+              <p class="card-sub" style="margin:0">Se parecen pero son distintos. En hoarding hay apego emocional a los objetos y suele haber angustia. En Diógenes la acumulación incluye basura y desechos, el abandono del autocuidado es central, y el insight suele ser menor.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Por qué ocurre -->
+    <section class="section" id="por-que-ocurre">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué ocurre</h2>
+            <p class="card-sub">
+              No hay una causa única. El síndrome de Diógenes es un cuadro multifactorial que casi siempre
+              aparece sobre una combinación de vulnerabilidades:
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Deterioro cognitivo:</b> alteraciones en las funciones ejecutivas (planificación, organización,
+            inhibición de conductas) hacen que la persona pierda progresivamente la capacidad de mantener
+            el orden y el autocuidado. En muchos casos es la primera señal visible de una demencia incipiente.
+          </li>
+          <li>
+            <b>Depresión severa:</b> la apatía, la pérdida de motivación y el retraimiento social
+            pueden llevar al abandono paulatino del hogar y del cuerpo sin que la persona lo perciba
+            como un problema.
+          </li>
+          <li>
+            <b>Trastorno de la personalidad:</b> ciertos rasgos de personalidad —especialmente
+            los esquizoides o los que implican desapego emocional del entorno— predisponen al aislamiento
+            y a la indiferencia ante el deterioro.
+          </li>
+          <li>
+            <b>Aislamiento social sostenido:</b> vivir solo durante años, sin vínculos que funcionen
+            como espejos de la propia conducta, permite que el deterioro avance sin que nadie lo señale.
+          </li>
+          <li>
+            <b>Eventos de vida traumáticos:</b> pérdidas importantes (pareja, trabajo, casa), duelos
+            no procesados o situaciones de abandono pueden actuar como disparadores en personas
+            con vulnerabilidad previa.
+          </li>
+          <li>
+            <b>Consumo problemático de alcohol:</b> es un factor de riesgo frecuente y a menudo
+            subestimado, que acelera el deterioro cognitivo y el abandono del autocuidado.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          En muchos casos el síndrome de Diógenes es la señal visible de algo que venía desarrollándose
+          en silencio durante años: una demencia, una depresión crónica, un aislamiento que se fue profundizando.
+          Tratar solo la acumulación sin investigar el cuadro de fondo es insuficiente.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Condiciones asociadas -->
+    <section class="section" id="condiciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Condiciones asociadas</h2>
+            <p class="card-sub">El síndrome de Diógenes suele aparecer junto a, o como expresión de:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Demencia</b> — Alzheimer, demencia frontotemporal (especialmente frecuente) y demencia vascular.</li>
+          <li><b>Depresión mayor crónica</b> — en particular en adultos mayores con escaso soporte social.</li>
+          <li><b>Trastorno de acumulación (hoarding disorder)</b> — puede coexistir o evolucionar hacia Diógenes.</li>
+          <li><b>Trastorno de la personalidad</b> — especialmente esquizoide, paranoide u obsesivo-compulsivo.</li>
+          <li><b>Esquizofrenia</b> — en pacientes crónicos con largos períodos de descompensación.</li>
+          <li><b>Trastorno bipolar</b> — el abandono del autocuidado puede ser marcador de una fase depresiva grave.</li>
+          <li><b>Consumo problemático de alcohol u otras sustancias</b>.</li>
+          <li><b>Discapacidad física severa</b> — en algunos casos la acumulación y el abandono son secundarios
+          a limitaciones motoras sin causa psiquiátrica primaria.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La demencia frontotemporal merece mención especial: la desinhibición, la pérdida de juicio
+          y la apatía que la caracterizan hacen que el síndrome de Diógenes sea una presentación
+          relativamente frecuente en sus estadios tempranos, muchas veces antes del diagnóstico.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Cómo se manifiesta -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se manifiesta</h2>
+            <p class="card-sub">Lo que suelen observar las familias y el entorno:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Acumulación progresiva de objetos, bolsas, ropa, diarios, envases, alimentos en descomposición o directamente basura en el hogar.</li>
+          <li>Pasillos bloqueados, habitaciones inutilizables, deterioro estructural del espacio doméstico.</li>
+          <li>Abandono de la higiene personal: no bañarse durante semanas o meses, ropa sucia o en mal estado.</li>
+          <li>Alimentación deficiente o caótica: no cocinar, comer productos vencidos, pérdida de peso notable.</li>
+          <li>Rechazo a que nadie entre al hogar, desconfianza o enojo ante cualquier intento de ayuda.</li>
+          <li>Minimización o negación del problema: "así estoy bien", "no me molesta", "no necesito nada".</li>
+          <li>Aislamiento social progresivo: cortar vínculos familiares, no atender el teléfono, no abrir la puerta.</li>
+          <li>Deterioro de la salud física: heridas sin tratar, enfermedades no atendidas, desnutrición.</li>
+          <li>En algunos casos, conflictos con vecinos por olores, plagas o peligros estructurales del domicilio.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El deterioro suele ser gradual y la familia muchas veces lo normaliza durante años antes de reconocerlo
+          como un problema clínico. Cuando finalmente se interviene, el cuadro ya está avanzado.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar de urgencia si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Hay signos de desnutrición o deshidratación visibles (pérdida marcada de peso, confusión, debilidad).</li>
+          <li>Existen heridas, úlceras o infecciones sin tratar que ponen en riesgo la vida.</li>
+          <li>El hogar representa un peligro estructural: riesgo de derrumbe, incendio, plagas o insalubridad severa.</li>
+          <li>La persona no puede valerse por sí misma para actividades básicas (comer, moverse, usar el baño).</li>
+          <li>Hay signos de deterioro cognitivo agudo o acelerado: confusión, desorientación, no reconoce personas.</li>
+          <li>Aparecen ideas de muerte, desesperanza intensa o conductas de riesgo.</li>
+          <li>La persona rechaza atención médica urgente ante un problema de salud evidente.</li>
+          <li>Vecinos o servicios sociales reportan condiciones insalubres o peligrosas para terceros.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          En situaciones de riesgo vital o incapacidad para el autocuidado, puede requerirse intervención
+          de servicios sociales o sanitarios de urgencia, incluso sin el consentimiento de la persona.
+          Consultá con el equipo tratante o con los servicios locales de salud mental comunitaria.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Para familias -->
+    <section class="section" id="para-familias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo acompañar · Guía para familias</h2>
+            <p class="card-sub">
+              El síndrome de Diógenes es uno de los cuadros más frustrantes de acompañar,
+              porque la persona rechaza activamente la ayuda que más necesita.
+              Estas pautas no reemplazan la consulta profesional, pero pueden orientar el primer acercamiento.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>No irrumpir con una limpieza forzada.</b> Entrar al hogar y "ordenar todo" sin el acuerdo de la persona
+            suele destruir la confianza y cerrar definitivamente la puerta al vínculo. El hogar, por más deteriorado
+            que esté, es el espacio de control de esa persona. Invadirlo sin permiso puede generar una crisis severa.
+          </li>
+          <li>
+            <b>Mantener el vínculo antes que "solucionar" el problema.</b> El objetivo inicial no es limpiar
+            la casa: es conservar una relación de confianza que después permita intervenciones más concretas.
+            Visitas frecuentes, llamadas, presencia sin agenda de cambio.
+          </li>
+          <li>
+            <b>Evitar el juicio y la confrontación directa.</b> Frases como "vivís en una mugre" o "esto no puede
+            seguir así" generan defensividad y alejamiento. Comentarios neutros ("¿puedo traerte algo de comer
+            esta semana?") abren más puertas.
+          </li>
+          <li>
+            <b>Buscar una entrada por las necesidades concretas.</b> La persona puede aceptar ayuda médica
+            por un dolor físico antes de aceptar ayuda psiquiátrica. A veces el médico clínico o el geriatra
+            son la primera puerta de entrada al sistema de salud.
+          </li>
+          <li>
+            <b>Involucrar a profesionales especializados.</b> El síndrome de Diógenes requiere un abordaje
+            interdisciplinario: psiquiatría, trabajo social, medicina clínica y, en muchos casos,
+            servicios de salud mental comunitaria que puedan hacer visitas domiciliarias.
+          </li>
+          <li>
+            <b>Prepararse para un proceso largo.</b> No hay soluciones rápidas. El cambio, cuando ocurre,
+            es gradual y con retrocesos. Ajustar las expectativas protege a la familia del agotamiento.
+          </li>
+          <li>
+            <b>Cuidar al cuidador.</b> La culpa ("debería haber actuado antes"), la vergüenza social
+            y el agotamiento son compañeros frecuentes de las familias con Diógenes.
+            El apoyo propio no es opcional: es parte del proceso.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          En situaciones de riesgo vital donde la persona no puede o no quiere cuidarse,
+          la intervención involuntaria puede ser éticamente necesaria y legalmente posible.
+          Consultá con el equipo de salud cuáles son los recursos y los procedimientos disponibles en tu zona.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro para familias (1 minuto)</h2>
+            <p class="card-sub">Registro de carga emocional 0–10 + observaciones del día. Útil para compartir con el profesional tratante.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá tu nivel de carga emocional como familiar/cuidador hoy (0 = ninguna · 10 = máxima).<br/>
+            2) Evaluá el nivel de deterioro/riesgo que observaste hoy (0 = estable · 10 = situación crítica).<br/>
+            3) Anotá si hubo contacto con la persona y cómo fue recibido.<br/>
+            4) Copiá el resumen para llevar a la consulta o guardar en tu registro.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Mi carga emocional hoy (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="beforeVal">5</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Nivel de deterioro/riesgo observado (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="contactoInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Hubo contacto hoy? ¿Cómo fue? (opcional)</label>
+            <input id="contactoInput" class="input" type="text" placeholder="Ej: abrió la puerta / no atendió / permitió entrar / enojado / más tranquilo..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="saludInput" style="font-weight:600; display:block; margin-bottom:6px;">Estado de salud observado (opcional)</label>
+            <input id="saludInput" class="input" type="text" placeholder="Ej: comió algo / no comió / tiene herida sin tratar / más confuso / mejor que ayer..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Observaciones / notas para el profesional (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: hay más acumulación que la semana pasada / rechazó al médico / aceptó que le trajeran comida / conflicto con vecinos..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Profundización sobre el síndrome, su impacto clínico y el abordaje.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El término "síndrome de Diógenes" fue acuñado en 1975 por Clark, Mankikar y Gray para describir
+            un cuadro que ya había sido observado en décadas anteriores bajo distintos nombres.
+            La elección del filósofo griego como referente es una ironía: Diógenes de Sinope predicaba
+            la austeridad radical y el desprendimiento de los bienes materiales. El síndrome que lleva
+            su nombre se caracteriza precisamente por lo opuesto: la incapacidad de desprenderse de nada,
+            incluyendo basura y desechos. La asociación que le dio el nombre reconoció la paradoja
+            pero la nombre quedó instalado en la literatura clínica.
+          </p>
+
+          <p>
+            Desde el punto de vista epidemiológico, el síndrome de Diógenes afecta predominantemente
+            a adultos mayores —la mayoría de los casos descritos en la literatura tienen más de 65 años—
+            que viven solos y tienen escaso contacto social. No discrimina por nivel educativo ni
+            socioeconómico: hay casos bien documentados en personas con alta formación académica
+            y condiciones económicas holgadas. Este dato es importante porque la familia a veces
+            demora la consulta pensando que "alguien así no puede tener ese problema".
+          </p>
+
+          <p>
+            La característica más desconcertante del síndrome, y la que genera mayor frustración familiar,
+            es la anosognosia: la falta de conciencia del problema. La persona genuinamente no percibe
+            el deterioro de la misma manera que lo percibe su entorno. Esto no es negación psicológica
+            en el sentido de "sabe pero no quiere ver": es una alteración en la capacidad de procesar
+            y evaluar la propia situación, que generalmente tiene base neurológica. Intentar convencer
+            a la persona con argumentos lógicos ("mirá en qué estado está tu casa") choca contra
+            esta pared: la persona no puede procesar esa información de la forma esperada.
+          </p>
+
+          <p>
+            La relación con la demencia frontotemporal merece especial atención. Este tipo de demencia
+            afecta las funciones ejecutivas y la conducta antes que la memoria, a diferencia del Alzheimer.
+            La desinhibición, la pérdida del juicio social, la apatía y la incapacidad de planificar
+            hacen que el síndrome de Diógenes sea una presentación relativamente frecuente y temprana
+            de esta enfermedad. En muchos casos, la familia consulta por "el desorden de la casa"
+            sin saber que están ante los primeros signos de una demencia que recién está comenzando.
+            El diagnóstico diferencial es crucial.
+          </p>
+
+          <p>
+            El abordaje del síndrome de Diógenes es uno de los más complejos de la psiquiatría comunitaria
+            porque involucra múltiples dimensiones simultáneas: la salud física de la persona
+            (desnutrición, infecciones, heridas), su salud mental (el cuadro subyacente), la situación
+            habitacional (que puede representar un riesgo para terceros), los aspectos legales
+            (capacidad de la persona para tomar decisiones, posibilidad de intervención involuntaria)
+            y el soporte familiar y social disponible.
+          </p>
+
+          <p>
+            Una de las preguntas más difíciles que enfrentan las familias y los equipos de salud es
+            cuándo intervenir sin el consentimiento de la persona. En general, la intervención involuntaria
+            está justificada cuando hay riesgo vital inminente: desnutrición severa, infecciones graves,
+            peligro estructural del hogar. Pero el camino hacia esa intervención requiere coordinación
+            entre salud, trabajo social y en algunos casos el sistema judicial. No es algo que la familia
+            pueda —ni deba— resolver sola.
+          </p>
+
+          <p>
+            El tratamiento, cuando se logra instalar, apunta a la causa subyacente: antidepresivos
+            si hay depresión mayor, medicación específica si hay demencia, ajuste de la medicación
+            si hay un trastorno psicótico. El trabajo social y la intervención domiciliaria son
+            componentes esenciales: a veces la puerta de entrada es una trabajadora social
+            que construye vínculo gradualmente, sin imponer cambios, hasta que la persona acepta
+            pequeñas ayudas que se van ampliando con el tiempo.
+          </p>
+
+          <p>
+            Para las familias, la experiencia de acompañar el síndrome de Diógenes suele estar marcada
+            por la culpa y la vergüenza social, además del agotamiento. La culpa por no haber visto
+            antes el deterioro, o por no poder "obligar" a la persona a recibir ayuda. La vergüenza
+            ante vecinos, ante el edificio, ante la sociedad. Estas emociones son comprensibles
+            y merecen espacio: hablar con un profesional propio, y no solo con el profesional
+            del familiar, es parte del proceso de acompañamiento sostenible.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. El diagnóstico y el plan de tratamiento siempre deben ser realizados por un profesional de salud.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Necesitás orientación profesional?</h3>
+            <p class="card-sub">
+              Si reconocés estos síntomas en un familiar o tenés dudas sobre el diagnóstico o el manejo,
+              la Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange  = document.getElementById("beforeRange");
+      const afterRange   = document.getElementById("afterRange");
+      const beforeVal    = document.getElementById("beforeVal");
+      const afterVal     = document.getElementById("afterVal");
+      const contactoInput= document.getElementById("contactoInput");
+      const saludInput   = document.getElementById("saludInput");
+      const noteInput    = document.getElementById("noteInput");
+      const btnCopy      = document.getElementById("btnCopy");
+      const btnReset     = document.getElementById("btnReset");
+      const copyOk       = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const contacto = (contactoInput.value || "").trim();
+        const salud    = (saludInput.value || "").trim();
+        const note     = (noteInput.value || "").trim();
+
+        const txt =
+          `Diógenes — Registro familiar | Carga emocional: ${beforeRange.value}/10 | Deterioro/riesgo observado: ${afterRange.value}/10 | Contacto hoy: ${contacto || "—"} | Estado de salud: ${salud || "—"} | Notas: ${note || "—"} | Fecha/hora: ${nowStr()}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value   = 5;
+        afterRange.value    = 5;
+        contactoInput.value = "";
+        saludInput.value    = "";
+        noteInput.value     = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

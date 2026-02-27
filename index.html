@@ -1,0 +1,638 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consultorio de Psiquiatría y Medicina Aeronáutica — Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0e2239">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <link rel="stylesheet" href="assets/css/app.css?v=2">
+  <link rel="stylesheet" href="assets/css/chat.css?v=1">
+
+  <style>
+    .footer-links .footer-review{ font-weight:400; color: rgba(255,255,255,0.85); }
+    /* Footer note: readable sobre fondo oscuro */
+    footer .note{
+      background: none;
+      border-color: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.85);
+    }
+    footer .note strong{ font-weight:400; color: rgba(255,255,255,.85); }
+
+    /* ===== ONLINE DOT (titilando) ===== */
+    .pill .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,.55);
+      animation: onlinePulse 1.35s ease-in-out infinite;
+      display:inline-block;
+    }
+    @keyframes onlinePulse{
+      0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34,197,94,.55); opacity:1; }
+      55%  { transform: scale(1.07);box-shadow: 0 0 0 12px rgba(34,197,94,0); opacity:1; }
+      100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34,197,94,0); opacity:.95; }
+    }
+
+
+    /* ===== HERO REDISEÑADO: FOTO FULL + CARD FLOTANTE ===== */
+    .hero-section{
+      position: relative;
+      overflow: hidden;
+      background: #081a2f;
+      min-height: 580px;
+    }
+
+    .hero-image{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 32% 42%;
+      display: block;
+    }
+
+    /* Gradiente: izquierda transparente → derecha oscura */
+    .hero-section::before{
+      content: “”;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        90deg,
+        rgba(8,26,47,0) 30%,
+        rgba(8,26,47,.40) 52%,
+        rgba(8,26,47,.85) 70%,
+        rgba(8,26,47,.96) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Difuminado inferior */
+    .hero-section::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(8,26,47,.15) 0%,
+        rgba(8,26,47,0) 30%,
+        rgba(8,26,47,0) 55%,
+        rgba(8,26,47,.60) 80%,
+        rgba(8,26,47,.93) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Card glassmorphism flotante */
+    .hero-card{
+      position: absolute;
+      right: 6%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 400px;
+      max-width: 44%;
+      background: rgba(15,30,55,.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+
+    /* Forzar texto claro dentro del card */
+    .hero-card,.hero-card *{
+      color: rgba(255,255,255,.92) !important;
+    }
+    .hero-card h1,.hero-card .hero-title{
+      color: #fff !important;
+      text-shadow: 0 2px 16px rgba(0,0,0,.45);
+    }
+    .hero-card p{
+      color: rgba(255,255,255,.82) !important;
+    }
+
+    /* Móvil: card anclada abajo sobre la imagen */
+    @media (max-width: 900px){
+      .hero-section{
+        min-height: 720px;
+      }
+      .hero-image{
+        object-position: 42% 28%;
+      }
+      .hero-section::before{
+        background: linear-gradient(
+          180deg,
+          rgba(8,26,47,0) 40%,
+          rgba(8,26,47,.55) 70%,
+          rgba(8,26,47,.88) 100%
+        );
+      }
+      .hero-card{
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: auto;
+        bottom: 28px;
+        transform: none;
+        width: auto;
+        max-width: none;
+        border-radius: 16px;
+        padding: 24px 20px;
+      }
+    }
+
+
+  
+
+/* ===== BOTÓN VERDE (WhatsApp / CTA) TITILANDO CONTINUO =====
+   Uso: agregá la clase .btn-pulse-green al botón que quieras resaltar.
+   Opcional: si tu botón es WhatsApp y tiene href wa.me / whatsapp, también pulsa automáticamente si es .btn-primary.
+*/
+.btn-pulse-green,
+a.btn-primary[href*="wa.me"],
+a.btn-primary[href*="whatsapp"]{
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(34,197,94,.55);
+  animation: btnPulseGreen 1.25s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes btnPulseGreen{
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(34,197,94,.55); filter: brightness(1); }
+  60%  { transform: scale(1.03); box-shadow: 0 0 0 14px rgba(34,197,94,0);  filter: brightness(1.06); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(34,197,94,0);    filter: brightness(1); }
+}
+
+/* ===== Ola de transición hero → contenido ===== */
+.hero-wave{
+  margin-top: -2px;
+  line-height: 0;
+  background: #081a2f;  /* mismo fondo del hero-brand */
+}
+.hero-wave svg{
+  width: 100%;
+  height: 64px;
+  display: block;
+}
+@media (max-width: 900px){
+  .hero-wave svg{ height: 40px; }
+}
+
+</style>
+</head>
+
+<body>
+
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-section" aria-label="Portada institucional">
+    <img class="hero-image"
+         src="assets/img/dr-dagnino-backup.webp"
+         alt="Dr. Pedro Nicolas Dagnino en el consultorio"
+         loading="eager"
+         fetchpriority="high">
+
+    <div class="hero-card">
+      <div class="pill" aria-label="Estado del servicio">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-i18n="hero_pill">Espacio virtual disponible</span>
+      </div>
+
+      <h1 class="hero-title" data-i18n="hero_title">Sala de espera virtual</h1>
+
+
+    </div>
+  </section>
+
+  <!-- Transición suave hero → contenido -->
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,32 C240,64 480,0 720,28 C960,56 1200,8 1440,32 L1440,64 L0,64 Z" fill="#f2f5f8"/>
+    </svg>
+  </div>
+
+  <!-- Main -->
+  <main id="spaMain" class="wrap" aria-label="Contenido principal">
+    <div id="homeContent" aria-live="polite">
+<!-- Fragmento de inicio: zócalos del index (NO incluir <html>/<head>/<body>) -->
+
+<!-- Bienvenidos/as -->
+<section class="section">
+  <div class="section-card hint-bg">
+    <div class="card-head">
+      <div>
+        <h2 class="card-title" style="margin:0" data-i18n="welcome_title">Bienvenidos/as</h2>
+        <p class="card-sub" data-i18n="welcome_text">
+          La sala de espera virtual del Consultorio de Psiquiatría del Dr. Dagnino no es solamente un espacio con juegos mnésicos, es un lugar pensado para que puedan sentirse contemplados, incluso antes de una atención en cualquiera de nuestros dispositivos de atención. Un espacio con recursos psicológicos cuidados, accesibles y coherentes con la práctica en salud mental.
+        </p>
+      </div>
+      <a class="btn-secondary" href="aviso-legal.html" data-spa="1" data-i18n="legal_btn">Aviso legal / Privacidad</a>
+    </div>
+
+    <!-- salto visual sutil -->
+    <div class="welcome-split" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Fila 1 – Recursos principales -->
+<section class="section">
+  <div class="grid-4">
+
+    <article class="section-card card-hover hint-bg hint-cog">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title" data-i18n="r1_games_title">Juegos cognitivos</h3>
+          <p class="card-sub" data-i18n="r1_games_desc">Entrenamiento breve y amable.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="juegos.html" data-spa="1" data-i18n="cta_enter">Ingresar</a>
+      </div>
+    </article>
+
+    <article class="section-card card-hover hint-bg hint-mood">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title" data-i18n="r1_emotions_title">Registro emocional</h3>
+          <p class="card-sub" data-i18n="r1_emotions_desc">Explorar y registrar estados emocionales.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="emociones.html" data-spa="1" data-i18n="cta_enter">Ingresar</a>
+      </div>
+    </article>
+
+    <article class="section-card card-hover hint-bg hint-sleep">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title" data-i18n="r1_sleep_title">Higiene del sueño</h3>
+          <p class="card-sub" data-i18n="r1_sleep_desc">Recomendaciones clínicas para dormir mejor.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="higienedelsueno.html" data-spa="1" data-i18n="cta_enter">Ingresar</a>
+      </div>
+    </article>
+
+    <article class="section-card card-hover hint-bg hint-psycho">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title" data-i18n="r1_psycho_title">Psicoeducación</h3>
+          <p class="card-sub" data-i18n="r1_psycho_desc">Comprender para cuidar la salud mental.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="psicoeducacion.html" data-spa="1" data-i18n="cta_enter">Ingresar</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ✅ Temas de Salud mental (debajo de Psicoeducación) -->
+<section class="section">
+  <div class="section-card card-hover hint-bg hint-psycho">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title">Temas de Salud mental</h3>
+        <p class="card-sub">
+          Guías claras y breves por tema: qué es, manifestaciones, señales de alarma y mini ejercicios (registro 0–10 + copiar resumen).
+        </p>
+      </div>
+      <a class="btn-primary" href="temas-salud-mental.html" data-spa="0" aria-label="Abrir Temas de Salud mental">Abrir</a>
+    </div>
+
+    <div class="note" style="margin-top:12px">
+      Incluye: Estrés postraumático · Duelos patológicos · Cuidador del hogar / roles de pareja.
+    </div>
+  </div>
+</section>
+<!-- ✅ Desmitificando tratamientos psiquiátricos (debajo de Temas de Salud mental) -->
+<section class="section">
+  <div class="section-card card-hover hint-bg hint-psycho">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title">Desmitificando tratamientos psiquiátricos</h3>
+        <p class="card-sub">
+          Por qué da miedo consultar, mitos frecuentes sobre psicofármacos y qué esperar de un tratamiento moderno.
+        </p>
+      </div>
+      <a class="btn-primary" href="desmitificando-tratamientos-psiquiatricos.html" data-spa="0" aria-label="Abrir Desmitificando tratamientos psiquiátricos">Abrir</a>
+    </div>
+
+    <div class="note" style="margin-top:12px">
+      Incluye: mitos frecuentes · decisiones informadas · audio podcast.
+    </div>
+  </div>
+</section>
+
+<!-- Próximamente / En construcción -->
+<section class="section">
+  <div class="grid-3">
+
+    <!-- Psicofármacos (ya disponible) -->
+    <article class="section-card card-hover hint-bg hint-psycho">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Psicofármacos</h3>
+          <p class="card-sub">Guía para pacientes con información clara, cuidados y fichas de medicamentos.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="psicofarmacos.html">Abrir</a>
+      </div>
+    </article>
+
+    <!-- Batería de tests psicológicos -->
+    <article class="section-card card-hover hint-bg hint-psycho">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Batería de tests psicológicos</h3>
+          <p class="card-sub">
+            Guía breve para conocer tests psicológicos básicos que podrías realizar durante el tratamiento.
+          </p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="bateria-tests-psicologicos.html" data-spa="0" aria-label="Abrir Batería de tests psicológicos">Abrir</a>
+      </div>
+    </article>
+
+    <!-- Apps para pacientes -->
+    <article class="section-card card-hover hint-bg">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Apps para pacientes</h3>
+          <p class="card-sub">
+            Acceso a aplicaciones específicas: comunicación asistida (niñez) y Checklist Emocional Pre-Vuelo.
+          </p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-primary" href="apps.html" data-spa="0" aria-label="Abrir Apps para pacientes">Abrir</a>
+      </div>
+      <div class="note" style="margin-top:12px">
+        Versión prototipo. En constante actualización.
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Recomendaciones en video -->
+<section class="section">
+  <div class="section-card card-hover hint-bg">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title" data-i18n="reels_title">Recomendaciones en video</h3>
+        <p class="card-sub" data-i18n="reels_desc">Píldoras clínicas y psicoeducativas.</p>
+      </div>
+      <a class="btn-primary" href="reels.html" data-spa="1" data-i18n="cta_open">Abrir</a>
+    </div>
+  </div>
+</section>
+
+<!-- EPS -->
+<section class="section">
+  <div class="section-card card-hover hint-bg">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title" data-i18n="eps_title">Dispositivo de Evaluación Psiquiátrica Situacional</h3>
+        <p class="card-sub" data-i18n="eps_desc">
+          Una instancia de segunda opinión profesional y orientación clínica puntual, en modalidad virtual, destinada a comprender mejor tu situación actual, ordenar dudas y evaluar opciones junto a tu médico tratante.
+        </p>
+        <p class="card-sub" style="margin-top:10px" data-i18n="eps_note">
+          Requiere coordinación previa por Central de Turnos.
+        </p>
+      </div>
+      <a class="btn-primary" href="evaluacion-situacional.html" data-spa="1" data-i18n="cta_learn">Conocer</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Equipo profesional asociado -->
+<section class="section">
+  <div class="section-card hint-bg">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title" data-i18n="team_title">Equipo profesional asociado</h3>
+        <p class="card-sub" data-i18n="team_desc">Accesos por área: salud mental, otras especialidades y centros médicos amigos.</p>
+      </div>
+      <a class="btn-primary" href="equipo.html" data-spa="0" aria-label="Abrir sección Equipo profesional asociado">Abrir</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Central de Turnos + Chat de Apoyo (IA) -->
+<section class="section" id="central-turnos">
+  <div class="turnos-chat-grid">
+
+    <!-- Central de Turnos -->
+    <div class="section-card hint-bg">
+      <div class="turnos-head">
+        <div class="turnos-logo" aria-hidden="true">
+          <img src="logo-central-turnos.png" alt="">
+        </div>
+        <div>
+          <h3 class="card-title" style="margin:0" data-i18n="turnos_title">Central de Turnos</h3>
+          <p class="card-sub" data-i18n="turnos_desc">Canal administrativo general para asesoramiento, dudas y coordinación de turnos.</p>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn-primary" href="turnos.html" data-spa="1" data-i18n="cta_how">¿Cómo funciona?</a>
+        <a class="btn-secondary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer" data-i18n="cta_whatsapp">Contactar por WhatsApp</a>
+      </div>
+
+      <div class="note" data-i18n="turnos_note">
+        Este canal no está destinado a urgencias. Si se encuentra en una situación de emergencia, comuníquese con el sistema local de emergencias.
+      </div>
+    </div>
+
+    <!-- Chat de Apoyo (IA) -->
+    <div class="section-card hint-bg chat-apoyo-panel" id="chatApoyoPanel" aria-label="Chat de Apoyo">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-icon" aria-hidden="true">💬</span>
+          <div>
+            <h3 class="card-title" style="margin:0">Chat de Apoyo</h3>
+            <span class="chat-subtitle">Asistente automático · orientación y recursos</span>
+          </div>
+        </div>
+        <button class="chat-expand-btn" id="chatExpandBtn" aria-label="Expandir chat" title="Expandir">⛶</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages"
+           role="log" aria-live="polite" aria-label="Mensajes del chat"></div>
+
+      <div class="chat-chips" id="chatChips"
+           role="group" aria-label="Opciones rápidas"></div>
+
+      <div class="chat-input-area" id="chatInputArea">
+        <textarea id="chatInput"
+                  placeholder="Escribí tu consulta o elegí una opción..."
+                  rows="1"
+                  aria-label="Escribir mensaje al asistente"></textarea>
+        <button class="chat-send-btn" id="chatSendBtn" aria-label="Enviar mensaje">➤</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Instalar como app (preview icono) -->
+<section class="section">
+  <div class="section-card hint-bg">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title" data-i18n="pwa_title">Instalar como app</h3>
+        <p class="card-sub" data-i18n="pwa_desc">Acceso rápido desde tu teléfono, como una aplicación.</p>
+      </div>
+      <a class="btn-primary" href="instalar.html" data-spa="1" data-i18n="cta_install">Ver instrucciones</a>
+    </div>
+
+    <div class="app-preview">
+      <div class="app-icon" aria-label="Vista previa del ícono de la aplicación">
+        <img src="icon-512.png" alt="Icono de app">
+      </div>
+      <p class="app-steps" data-i18n="pwa_steps">
+        Tip: en Android, tocá “Instalar app”. En iPhone, tocá “Compartir” → “Agregar a pantalla de inicio”.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Noticias de salud mental -->
+<section class="section">
+  <div class="section-card card-hover hint-bg hint-psycho">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title">NOTICIAS DE SALUD MENTAL</h3>
+        <p class="card-sub">
+          Acceso al portal de noticias y actualizaciones curadas por el consultorio.
+        </p>
+      </div>
+      <a class="btn-primary" href="https://noticiasdesaludmentaldagnino.netlify.app" target="_blank" rel="noopener noreferrer"
+         aria-label="Abrir Noticias de Salud Mental">Abrir</a>
+    </div>
+
+    <div class="note" style="margin-top:12px">
+      Se abre en una pestaña nueva.
+    </div>
+  </div>
+</section>
+
+<!-- FIDS removido -->
+  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer" data-i18n="map_open">Abrir en Maps</a>
+          <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer" class="footer-review">Dejar reseña (Google)</a>
+          <a href="aviso-legal.html" data-spa="1" data-i18n="legal_link">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title" data-i18n="footer_title">Ubicación y contacto</p>
+        <div data-i18n="footer_loc">
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong data-i18n="footer_email">Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          <strong>Consultorio de Psiquiatría Dagnino:</strong> queremos saber tu opinión.
+          <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer">Publicá una reseña en nuestro perfil</a>.
+        </div>
+
+        <div class="legal" id="legalBlock">
+          <span data-i18n="footer_legal_1">Copyright ©</span> <span id="yearNow"></span>
+          <span data-i18n="footer_legal_2">Todos los derechos reservados.</span><br>
+          <span data-i18n="footer_legal_3">Desarrollado por PETER-SOFT</span>
+          <span data-i18n="footer_legal_4">Año automático.</span><br><br>
+          <span data-i18n="cookies_note">
+            Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script src="assets/js/chat.js?v=1"></script>
+<script src="assets/js/i18n.js?v=2"></script>
+  <script src="assets/js/audio.js?v=2"></script>
+  <script src="assets/js/spa.js?v=2"></script>
+  <script src="assets/js/app.js?v=2"></script>
+</body>
+</html>

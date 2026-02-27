@@ -1,0 +1,732 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cómo explicarle a un familiar qué me pasa — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía práctica para hablar con un familiar sobre lo que uno está atravesando: cómo prepararse, qué decir, cómo pedir apoyo y manejar reacciones difíciles. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    .topic-hero{
+      overflow:hidden; border-radius:18px; position:relative;
+    }
+    .topic-hero img{
+      width:100%; height:auto; display:block; object-fit:cover; border-radius:18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background:linear-gradient(180deg,rgba(14,34,57,.12) 0%,rgba(14,34,57,.55) 70%,rgba(14,34,57,.72) 100%);
+      border-radius:18px; pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px; color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size:clamp(22px,3.2vw,34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width:72ch; }
+
+    /* Pasos */
+    .steps-list{
+      counter-reset:step-counter;
+      list-style:none; padding:0; margin:12px 0 0 0;
+      display:grid; gap:12px;
+    }
+    .steps-list li{
+      counter-increment:step-counter;
+      display:flex; gap:14px; align-items:flex-start;
+    }
+    .steps-list li::before{
+      content:counter(step-counter);
+      min-width:32px; height:32px; border-radius:50%;
+      background:rgba(37,99,235,.14); border:2px solid rgba(37,99,235,.28);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:.95rem; flex-shrink:0; margin-top:1px;
+    }
+
+    /* Frases modelo */
+    .frase-grid{
+      display:grid; gap:10px; margin-top:12px;
+    }
+    .frase-card{
+      border-radius:14px; padding:14px 16px;
+      background:rgba(37,99,235,.07);
+      border:1px solid rgba(37,99,235,.18);
+      font-size:.96rem; line-height:1.55;
+    }
+    .frase-card .frase-label{
+      font-size:.78rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.04em;
+      opacity:.6; margin-bottom:6px;
+    }
+    .frase-card em{
+      font-style:normal;
+      font-weight:600;
+      opacity:.95;
+    }
+
+    /* Reacciones */
+    .reaccion-grid{
+      display:grid; gap:12px; margin-top:12px;
+    }
+    .reaccion-row{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      align-items:start;
+    }
+    @media(max-width:520px){ .reaccion-row{ grid-template-columns:1fr; } }
+    .reaccion-box{ border-radius:14px; padding:13px 15px; }
+    .reaccion-box.ellos{
+      background:rgba(239,68,68,.07);
+      border:1px solid rgba(239,68,68,.20);
+    }
+    .reaccion-box.vos{
+      background:rgba(16,185,129,.07);
+      border:1px solid rgba(16,185,129,.20);
+    }
+    .reaccion-box .r-label{
+      font-size:.78rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:.04em; margin-bottom:5px; opacity:.65;
+    }
+    .reaccion-box.ellos .r-label{ color:#dc2626; }
+    .reaccion-box.vos .r-label{ color:#059669; }
+
+    /* Mini ejercicio / borrador */
+    .exercise-grid{ display:grid; gap:14px; margin-top:10px; }
+    .range-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .range-row label{ min-width:220px; font-weight:600; }
+    .range-row input[type="range"]{ flex:1; min-width:220px; }
+    .pill-val{
+      padding:6px 10px; border-radius:999px;
+      background:rgba(37,99,235,.12); border:1px solid rgba(37,99,235,.25);
+      font-weight:800; min-width:54px; text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size:.98rem; }
+    textarea.note-input{
+      width:100%; min-height:100px; resize:vertical;
+      border-radius:14px; padding:12px;
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(255,255,255,.85); outline:none;
+    }
+    textarea.note-input:focus{
+      border-color:rgba(37,99,235,.55);
+      box-shadow:0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none; margin-top:10px; padding:10px 12px; border-radius:14px;
+      background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height:1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Cómo explicarle a un familiar qué me pasa</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/explicar-familiar-portada.webp -->
+        <img src="assets/img/explicar-familiar-portada.webp?v=1" alt="Ilustración: dos personas sentadas frente a frente en conversación íntima" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Cómo explicarle a un familiar qué me pasa</h1>
+          <p>Una de las conversaciones más difíciles y más importantes. Cómo prepararla, cómo empezarla y cómo pedir lo que realmente necesitás.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Por qué es difícil -->
+    <section class="section" id="por-que-es-dificil">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué es tan difícil</h2>
+            <p class="card-sub">
+              Hablar de lo que uno está atravesando con alguien cercano debería ser natural.
+              Y sin embargo, para muchas personas es una de las cosas más difíciles de hacer.
+              Entender por qué ayuda a no juzgarse por el miedo.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Miedo a no ser entendido.</b> "No sé si va a comprender lo que me pasa si yo mismo no lo entiendo del todo."</li>
+          <li><b>Miedo a preocupar.</b> "No quiero ser una carga. Ya tienen bastante con lo propio."</li>
+          <li><b>Miedo al juicio.</b> "¿Qué van a pensar de mí? ¿Van a creerme?"</li>
+          <li><b>Miedo a la reacción.</b> "¿Y si se ponen mal, se enojan, minimizan, o no saben qué hacer?"</li>
+          <li><b>Dificultad para poner en palabras.</b> Algunas experiencias —la ansiedad, la disociación, la depresión— son difíciles de traducir al lenguaje cotidiano.</li>
+          <li><b>El estigma internalizado.</b> A veces uno mismo no terminó de aceptar lo que le pasa, y hablar de eso con otro lo hace más real.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Todos estos miedos son válidos y comprensibles. No desaparecen solos,
+          pero sí se pueden trabajar antes de la conversación.
+          Prepararse no es debilidad: es inteligencia emocional.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Antes de la conversación -->
+    <section class="section" id="antes">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Antes de la conversación · Cómo prepararse</h2>
+            <p class="card-sub">
+              Las conversaciones difíciles salen mejor cuando están un poco preparadas.
+              No se trata de armar un guion: se trata de tener claridad sobre tres preguntas clave.
+            </p>
+          </div>
+        </div>
+
+        <ol class="steps-list card-sub">
+          <li>
+            <div>
+              <b>¿Qué quiero que entienda?</b> No hace falta explicar todo de una vez.
+              Elegir una o dos cosas concretas es mucho más efectivo que intentar dar el panorama completo.
+              Por ejemplo: "que últimamente me cuesta mucho salir" o "que tengo momentos de mucha angustia
+              que no puedo controlar".
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>¿Qué necesito de esa persona?</b> Esto es lo más importante y lo que más se olvida.
+              ¿Necesitás que te escuche sin darte consejos? ¿Que te acompañe a una consulta?
+              ¿Que no te pregunte cómo estás cada hora? ¿Que te avise si nota algo?
+              Cuanto más concreto pueda ser el pedido, más fácil es para el otro responder bien.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>¿Qué reacción podría tener y cómo voy a manejarlo?</b>
+              Pensar en los escenarios posibles —que minimice, que se asuste, que quiera "resolver" todo—
+              y decidir de antemano cómo querés responder a cada uno, reduce la posibilidad
+              de que la conversación se desvíe o termine mal.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>Elegir bien el momento y el lugar.</b> No en medio de una discusión, no cuando hay prisa,
+              no a través de un mensaje de texto para algo importante. Un momento tranquilo,
+              cara a cara o por videollamada, sin interrupciones.
+            </div>
+          </li>
+          <li>
+            <div>
+              <b>No esperar el momento perfecto.</b> El momento perfecto no existe.
+              Si estás listo para tener la conversación, ese momento es suficientemente bueno.
+            </div>
+          </li>
+        </ol>
+
+        <div class="note" style="margin-top:14px">
+          Si tenés médico o terapeuta, podés pedirle ayuda para preparar esta conversación.
+          En algunos casos, hacer la reunión con el profesional presente puede ser la mejor opción.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Cómo empezar -->
+    <section class="section" id="como-empezar">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo empezar · Frases concretas</h2>
+            <p class="card-sub">
+              El primer párrafo suele ser el más difícil. Estas frases no son guiones: son puntos de partida
+              que podés adaptar con tus propias palabras.
+            </p>
+          </div>
+        </div>
+
+        <div class="frase-grid">
+
+          <div class="frase-card">
+            <div class="frase-label">Para abrir la conversación</div>
+            <p style="margin:0"><em>"Quiero contarte algo que me está pasando porque me importa que lo sepas. No te pido que lo resuelvas, solo que me escuches."</em></p>
+          </div>
+
+          <div class="frase-card">
+            <div class="frase-label">Si no sabés bien cómo nombrarlo</div>
+            <p style="margin:0"><em>"Estoy pasando por un momento difícil y me cuesta ponerlo en palabras, pero quiero intentarlo porque necesito que estés al tanto."</em></p>
+          </div>
+
+          <div class="frase-card">
+            <div class="frase-label">Si estás en tratamiento</div>
+            <p style="margin:0"><em>"Estoy yendo al médico / al psicólogo por algo que me está afectando. No es una urgencia, pero quería que lo supieras."</em></p>
+          </div>
+
+          <div class="frase-card">
+            <div class="frase-label">Si sentís que te cambiaron</div>
+            <p style="margin:0"><em>"Sé que últimamente estoy diferente. No es algo que tenga que ver con vos: estoy atravesando algo propio y quiero explicarte qué es."</em></p>
+          </div>
+
+          <div class="frase-card">
+            <div class="frase-label">Para pedir lo que necesitás</div>
+            <p style="margin:0"><em>"Lo que más me ayudaría ahora es que me escuches sin tratar de buscarle solución. ¿Podés hacer eso?"</em></p>
+          </div>
+
+          <div class="frase-card">
+            <div class="frase-label">Si el otro quiere ayudar pero no sabe cómo</div>
+            <p style="margin:0"><em>"Te agradezco que quieras ayudar. Por ahora lo más valioso para mí es que sepas lo que me pasa y que no te asustes cuando estoy mal."</em></p>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          No hay una sola forma correcta de empezar. Lo importante es empezar.
+          Una frase imperfecta dicha en voz alta vale más que el párrafo perfecto que nunca se dice.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Qué pedir exactamente -->
+    <section class="section" id="que-pedir">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué pedir exactamente</h2>
+            <p class="card-sub">
+              El apoyo que necesitás puede ser muy distinto al apoyo que el otro va a querer dar.
+              Ser específico sobre qué necesitás reduce los malentendidos y los roces.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>"Necesito que me escuches, no que me des consejos."</b>
+            Es uno de los pedidos más frecuentes y de los más difíciles de cumplir para alguien
+            que quiere ayudar. Aclararlo al principio evita la frustración de ambos.
+          </li>
+          <li>
+            <b>"Necesito que no me preguntes cómo estoy todo el tiempo."</b>
+            La preocupación constante puede sentirse como presión. Acordar una frecuencia
+            de check-in que funcione para los dos puede aliviar esa tensión.
+          </li>
+          <li>
+            <b>"Necesito que no le cuentes a nadie más por ahora."</b>
+            Definir quién sabe y quién no es un derecho de quien está atravesando el proceso.
+          </li>
+          <li>
+            <b>"Necesito que me acompañes a la consulta."</b>
+            A veces el apoyo concreto más valioso es ese: estar ahí físicamente.
+          </li>
+          <li>
+            <b>"Necesito que me avises si notás que me estoy aislando demasiado."</b>
+            Darle al otro un rol activo y específico lo ayuda a sentirse útil sin invadir.
+          </li>
+          <li>
+            <b>"Necesito que sigas tratándome igual."</b>
+            Que no me miren con lástima, que no caminen de puntillas, que la relación
+            no se vuelva toda sobre mi salud mental.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          No es necesario pedir todo en la primera conversación.
+          Empezar con uno o dos pedidos concretos es suficiente.
+          El resto puede irse ajustando con el tiempo.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Reacciones difíciles -->
+    <section class="section" id="reacciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo manejar reacciones difíciles</h2>
+            <p class="card-sub">
+              No todas las conversaciones salen bien. A veces el otro reacciona de formas
+              que duelen o que complican. Anticiparlas ayuda a no quedarse sin respuesta.
+            </p>
+          </div>
+        </div>
+
+        <div class="reaccion-grid">
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"Pero si vos siempre fuiste tan fuerte... eso no puede ser tan grave."</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"Entiendo que te sorprenda. Por eso te lo cuento: porque es real aunque no lo parezca desde afuera."</p>
+            </div>
+          </div>
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"¿Pero qué te puede faltar a vos? Tenés todo." / "Hay gente que está mucho peor."</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"El sufrimiento no se mide comparando. Lo que me pasa es real para mí, independientemente de lo que tenga o de lo que le pase a otros."</p>
+            </div>
+          </div>
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">Se ponen muy angustiados, lloran, hacen de la conversación algo sobre ellos.</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"Entiendo que esto te afecta. Tomemos un momento. Cuando estés más tranquilo/a podemos seguir hablando."</p>
+            </div>
+          </div>
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">Quieren "solucionar" todo enseguida: dar consejos, buscar médicos, cambiar rutinas.</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"Te agradezco las ganas de ayudar. Por ahora lo que más necesito es que me escuches. Ya vamos a ver qué pasos seguir."</p>
+            </div>
+          </div>
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">No dicen nada, se quedan en silencio incómodo o cambian de tema.</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"No necesitás decir nada ahora. Solo quería que lo supieras. Podemos hablar más cuando estés listo/a."</p>
+            </div>
+          </div>
+
+          <div class="reaccion-row">
+            <div class="reaccion-box ellos">
+              <div class="r-label">Reacción difícil</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">No creen en la salud mental, dicen que "es todo de la cabeza" o que "con voluntad alcanza".</p>
+            </div>
+            <div class="reaccion-box vos">
+              <div class="r-label">Posible respuesta</div>
+              <p class="card-sub" style="margin:0; font-size:.93rem;">"Entiendo que pensamos distinto sobre esto. No te pido que cambies tu opinión: te pido que respetes lo que yo estoy eligiendo hacer."</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Si la conversación termina mal, no significa que fue un error tenerla.
+          A veces la primera vez abre una puerta que se procesa en días.
+          No toda conversación importante se resuelve en una sola sesión.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Señales de que fue bien -->
+    <section class="section" id="senales">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de que la conversación fue bien</h2>
+            <p class="card-sub">No tiene que haber sido perfecta para haber sido valiosa. Estas señales indican que valió la pena:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>La persona escuchó sin interrumpir constantemente ni desviar el tema.</li>
+          <li>No minimizó ni comparó tu situación con la de otros.</li>
+          <li>Preguntó qué necesitás en lugar de asumir lo que te haría bien.</li>
+          <li>Respetó el pedido de confidencialidad si lo hiciste.</li>
+          <li>La relación quedó igual o mejor después de la conversación.</li>
+          <li>Te sentís menos solo/a con lo que estás atravesando.</li>
+          <li>Aunque no entendió todo, demostró que quiere entender.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Una conversación que no terminó como esperabas tampoco fue necesariamente un fracaso.
+          A veces revelar algo importante toma más de un intento.
+          Y a veces muestra que esa persona, por ahora, no puede ser tu principal apoyo —
+          lo que también es información valiosa.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio: borrador -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Borrador para la conversación (1 minuto)</h2>
+            <p class="card-sub">Escribir lo que querés decir antes de decirlo ayuda a clarificar y reduce la ansiedad anticipatoria. Podés copiarlo y llevarlo como guía.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            Completá lo que puedas. No es un examen: es una herramienta para vos.
+          </div>
+
+          <div class="range-row">
+            <label for="ansiedadRange">Ansiedad ante la conversación (0–10)</label>
+            <input id="ansiedadRange" type="range" min="0" max="10" step="1" value="7" />
+            <div class="pill-val" id="ansiedadVal">7</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="quienInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Con quién quiero tener esta conversación?</label>
+            <input id="quienInput" class="input" type="text" placeholder="Ej: mi mamá / mi pareja / mi hermano / un amigo cercano..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="queInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Qué quiero que entienda? (una o dos cosas concretas)</label>
+            <textarea id="queInput" class="note-input" placeholder="Ej: que estoy atravesando un momento de mucha ansiedad / que estoy en tratamiento / que necesito más espacio..."></textarea>
+          </div>
+
+          <div>
+            <label class="card-sub" for="pedirInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Qué necesito pedirle?</label>
+            <textarea id="pedirInput" class="note-input" placeholder="Ej: que me escuche sin aconsejarme / que no le cuente a nadie / que me acompañe a la consulta..."></textarea>
+          </div>
+
+          <div>
+            <label class="card-sub" for="miedoInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Qué reacción me preocupa? ¿Cómo podría responder?</label>
+            <textarea id="miedoInput" class="note-input" placeholder="Ej: que se asuste demasiado — si pasa, puedo decirle que no es una urgencia..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar borrador</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en el celular, imprimirlo o compartirlo con tu terapeuta.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Por qué revelar lo que uno atraviesa importa, y cómo hacerlo de forma sostenible.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            Hablar de lo que uno está atravesando con alguien cercano es un acto que tiene nombre
+            en la psicología: <em>autodivulgación</em>. Y tiene efectos medibles en el bienestar.
+            Las personas que pueden compartir sus experiencias difíciles con al menos una persona
+            de confianza tienen sistemáticamente mejores outcomes en salud mental: menor duración
+            de los episodios depresivos, menor intensidad de la ansiedad, mayor adherencia al tratamiento,
+            mayor sensación de no estar solos. La autodivulgación no es un lujo emocional: es un factor
+            protector con evidencia sólida.
+          </p>
+
+          <p>
+            Pero revelar algo importante sobre la propia salud mental a un familiar tiene una dificultad
+            particular que no tiene revelar algo similar a un profesional o a alguien más distante.
+            Con el familiar, la relación está en juego. El riesgo emocional es real: la posibilidad
+            de que el otro reaccione mal, no entienda, o que la dinámica del vínculo cambie para siempre.
+            Ese riesgo no hay que minimizarlo, pero sí se puede gestionar con preparación.
+          </p>
+
+          <p>
+            Una de las decisiones más importantes que hay que tomar antes de la conversación
+            es qué se quiere de ella. Las personas que atraviesan un momento difícil suelen necesitar
+            cosas muy distintas: a veces necesitan ser escuchadas sin más, a veces necesitan ayuda concreta,
+            a veces necesitan que el otro simplemente sepa sin que cambie nada.
+            El problema es que quien escucha, por querer ayudar, tiende a hacer lo que le resulta más natural:
+            dar consejos, buscar soluciones, minimizar para calmar. Si no hay un pedido claro,
+            la brecha entre lo que uno necesita y lo que el otro ofrece puede hacer que la conversación
+            deje a ambos frustrados.
+          </p>
+
+          <p>
+            Hay una distinción que los terapeutas de pareja y familia usan mucho y que es muy útil
+            en este contexto: la diferencia entre pedir <em>empatía</em> y pedir <em>soluciones</em>.
+            La empatía es sentirse comprendido, acompañado, visto. Las soluciones son las acciones concretas
+            que resuelven el problema. Ambas son válidas en distintos momentos,
+            pero rara vez las dos al mismo tiempo. Saber cuál se necesita en cada momento
+            y poder decirlo abiertamente transforma la conversación.
+          </p>
+
+          <p>
+            Otro factor que complica estas conversaciones es el estigma, tanto externo como internalizado.
+            El estigma externo es el miedo a ser juzgado por el otro. El internalizado es más sutil
+            y más dañino: es la voz interna que dice "si lo digo en voz alta, se hace más real",
+            o "si lo nombro, el otro me va a ver diferente —y quizás yo también me vea diferente a mí mismo".
+            Este segundo tipo de estigma a veces hace que la persona postergue la conversación
+            no por miedo al otro, sino por miedo a lo que implica para sí misma.
+          </p>
+
+          <p>
+            Las conversaciones sobre salud mental rara vez son eventos únicos y definitivos.
+            Son procesos. La primera vez puede ser torpe, incompleta, con silencios incómodos.
+            Eso es normal. Lo que se abre en esa primera conversación suele irse profundizando
+            en las siguientes. El objetivo no es que el familiar lo entienda todo en una hora:
+            es que sepa que algo está pasando y que uno confía en él o en ella lo suficiente
+            como para compartirlo.
+          </p>
+
+          <p>
+            Finalmente, vale decir algo sobre las conversaciones que no salen bien.
+            A veces el familiar no puede responder de la manera que uno necesita —no porque no quiera,
+            sino porque no tiene las herramientas, o porque la información lo desborda,
+            o porque su propia historia lo hace reaccionar de forma que no ayuda.
+            Eso duele. Pero no dice nada sobre si uno merece apoyo: dice algo sobre las limitaciones
+            del otro en ese momento. En esos casos, la red de apoyo puede ampliarse:
+            otro familiar, un amigo, un grupo, el propio terapeuta.
+            No hay una sola persona que tenga que sostener todo.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. Si la conversación que necesitás tener involucra una situación
+          de riesgo o crisis, hablalo primero con tu médico o terapeuta.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés preparar esta conversación con ayuda profesional?</h3>
+            <p class="card-sub">
+              A veces la mejor forma de preparar una conversación difícil es hablarla primero
+              con el equipo tratante. La Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const ansiedadRange = document.getElementById("ansiedadRange");
+      const ansiedadVal   = document.getElementById("ansiedadVal");
+      const quienInput    = document.getElementById("quienInput");
+      const queInput      = document.getElementById("queInput");
+      const pedirInput    = document.getElementById("pedirInput");
+      const miedoInput    = document.getElementById("miedoInput");
+      const btnCopy       = document.getElementById("btnCopy");
+      const btnReset      = document.getElementById("btnReset");
+      const copyOk        = document.getElementById("copyOk");
+
+      function upd(){ ansiedadVal.textContent = ansiedadRange.value; }
+      ansiedadRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d=new Date(), pad=n=>String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async ()=>{
+        const quien = (quienInput.value||"").trim();
+        const que   = (queInput.value||"").trim();
+        const pedir = (pedirInput.value||"").trim();
+        const miedo = (miedoInput.value||"").trim();
+
+        const txt =
+`Borrador — Conversación con familiar | Fecha: ${nowStr()}
+
+Ansiedad anticipatoria: ${ansiedadRange.value}/10
+
+¿Con quién?: ${quien||"—"}
+
+¿Qué quiero que entienda?:
+${que||"—"}
+
+¿Qué necesito pedirle?:
+${pedir||"—"}
+
+¿Qué reacción me preocupa y cómo respondo?:
+${miedo||"—"}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }catch(e){
+          const ta=document.createElement("textarea");
+          ta.value=txt; document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }
+      });
+
+      btnReset.addEventListener("click",()=>{
+        ansiedadRange.value=7;
+        quienInput.value=""; queInput.value="";
+        pedirInput.value=""; miedoInput.value="";
+        upd(); copyOk.style.display="none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

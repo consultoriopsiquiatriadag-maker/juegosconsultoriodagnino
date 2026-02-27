@@ -1,0 +1,9 @@
+{
+  "name": "Narcolepsia — Consultorio Dr. Pedro Nicolas Dagnino",
+  "short_name": "Narcolepsia",
+  "start_url": "narcolepsia.html",
+  "display": "standalone",
+  "background_color": "#0e2239",
+  "theme_color": "#0e2239",
+  "icons": []
+}

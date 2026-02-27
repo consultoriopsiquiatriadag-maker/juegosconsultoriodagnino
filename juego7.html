@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 7 · Semáforo (Go/No-Go) | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Juego 7 · Semáforo (Go / No-Go)</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Tocá el botón <strong>solo cuando esté VERDE</strong>. Si está ROJO, no toques.
+            Entrena atención sostenida y control de impulsos.
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
+          <button id="btnPause" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Pausar</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Tiempo</p>
+          <p class="text-2xl font-semibold"><span id="timeLeft">60</span>s</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
+          <p class="text-2xl font-semibold"><span id="score">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Racha: <span id="streak">0</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Errores</p>
+          <p class="text-2xl font-semibold"><span id="errors">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Tardíos (no tocó en verde): <span id="misses">0</span></p>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-6 items-center">
+        <!-- Semáforo -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col items-center">
+          <div class="w-28 bg-inst-navy rounded-2xl p-4 shadow-sm">
+            <div id="lightRed" class="w-12 h-12 rounded-full mx-auto mb-3 opacity-25 bg-red-500"></div>
+            <div id="lightYellow" class="w-12 h-12 rounded-full mx-auto mb-3 opacity-25 bg-yellow-400"></div>
+            <div id="lightGreen" class="w-12 h-12 rounded-full mx-auto opacity-25 bg-green-500"></div>
+          </div>
+
+          <p class="text-inst-gray mt-4 text-sm text-center">
+            Regla: <strong>VERDE = tocá</strong> · <strong>ROJO = no tocás</strong><br>
+            (Amarillo: transición)
+          </p>
+        </div>
+
+        <!-- Botón de respuesta -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-6">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Acción</p>
+          <h2 class="text-xl font-semibold mt-1">Tocar</h2>
+          <button id="tapBtn"
+            class="anim mt-4 w-full py-6 rounded-2xl font-semibold text-lg border border-gray-200 bg-inst-light hover:bg-inst-sky transition"
+            disabled>
+            TOCAR
+          </button>
+
+          <div class="mt-4 text-sm text-inst-gray leading-relaxed">
+            Consejo: hacelo en calma. Si te frustra, pausá y retomá más tarde.
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+        <p class="text-sm text-inst-gray">
+          <strong>Interpretación simple:</strong> más puntaje y menos errores suele reflejar mejor control atencional en este momento.
+          No es un examen ni un diagnóstico.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Config
+    const TOTAL_TIME = 60;         // segundos
+    const MIN_STEP = 650;          // ms
+    const MAX_STEP = 1200;         // ms
+    const GREEN_PROB = 0.62;       // probabilidad de verde (ajustable)
+    const GREEN_WINDOW = 900;      // ms (tiempo máximo recomendado para tocar en verde)
+
+    // State
+    let running = false;
+    let paused = false;
+    let timeLeft = TOTAL_TIME;
+    let score = 0, errors = 0, misses = 0, streak = 0;
+    let timerInterval = null;
+    let phaseTimeout = null;
+
+    let phase = "idle"; // red | yellow | green | idle
+    let greenStartAt = 0;
+    let greenTouched = false;
+
+    // UI
+    const timeEl = document.getElementById("timeLeft");
+    const scoreEl = document.getElementById("score");
+    const errorsEl = document.getElementById("errors");
+    const missesEl = document.getElementById("misses");
+    const streakEl = document.getElementById("streak");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnPause = document.getElementById("btnPause");
+    const btnReset = document.getElementById("btnReset");
+    const tapBtn = document.getElementById("tapBtn");
+
+    const lightRed = document.getElementById("lightRed");
+    const lightYellow = document.getElementById("lightYellow");
+    const lightGreen = document.getElementById("lightGreen");
+
+    function setLights(r, y, g){
+      lightRed.style.opacity = r ? "1" : "0.25";
+      lightYellow.style.opacity = y ? "1" : "0.25";
+      lightGreen.style.opacity = g ? "1" : "0.25";
+    }
+
+    function rand(min, max){ return Math.floor(min + Math.random()*(max-min+1)); }
+
+    function updateUI(){
+      timeEl.textContent = timeLeft;
+      scoreEl.textContent = score;
+      errorsEl.textContent = errors;
+      missesEl.textContent = misses;
+      streakEl.textContent = streak;
+    }
+
+    function clearTimers(){
+      if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+      if(phaseTimeout){ clearTimeout(phaseTimeout); phaseTimeout = null; }
+    }
+
+    function stopGame(){
+      running = false;
+      paused = false;
+      tapBtn.disabled = true;
+      btnPause.disabled = true;
+      btnStart.disabled = false;
+      btnPause.textContent = "Pausar";
+      clearTimers();
+      phase = "idle";
+      setLights(true, false, false);
+    }
+
+    function resetGame(){
+      stopGame();
+      timeLeft = TOTAL_TIME;
+      score = 0; errors = 0; misses = 0; streak = 0;
+      updateUI();
+    }
+
+    function tick(){
+      if(!running || paused) return;
+      timeLeft -= 1;
+      updateUI();
+      if(timeLeft <= 0){
+        stopGame();
+      }
+    }
+
+    function nextPhase(){
+      if(!running || paused) return;
+
+      // Si se terminó una ventana verde y NO tocó, cuenta como "miss"
+      if(phase === "green" && !greenTouched){
+        misses += 1;
+        streak = 0;
+        updateUI();
+      }
+
+      // Elegir fase siguiente
+      const step = rand(MIN_STEP, MAX_STEP);
+      const goGreen = Math.random() < GREEN_PROB;
+
+      // Siempre pasamos por amarillo como transición visual
+      phase = "yellow";
+      setLights(false, true, false);
+      tapBtn.disabled = false; // el botón existe, pero penaliza si tocan en amarillo
+      greenTouched = false;
+
+      phaseTimeout = setTimeout(() => {
+        if(!running || paused) return;
+
+        if(goGreen){
+          phase = "green";
+          setLights(false, false, true);
+          greenStartAt = performance.now();
+          greenTouched = false;
+
+          // Auto-cierre de la ventana verde para contar misses
+          phaseTimeout = setTimeout(() => {
+            if(!running || paused) return;
+            phase = "red";
+            setLights(true, false, false);
+            nextPhase();
+          }, step);
+        } else {
+          phase = "red";
+          setLights(true, false, false);
+
+          phaseTimeout = setTimeout(() => {
+            if(!running || paused) return;
+            nextPhase();
+          }, step);
+        }
+      }, 220); // transición amarilla breve
+    }
+
+    function startGame(){
+      if(running) return;
+      running = true;
+      paused = false;
+      btnStart.disabled = true;
+      btnPause.disabled = false;
+      tapBtn.disabled = false;
+
+      // inicio
+      setLights(true, false, false);
+      updateUI();
+
+      timerInterval = setInterval(tick, 1000);
+      nextPhase();
+    }
+
+    function togglePause(){
+      if(!running) return;
+      paused = !paused;
+      btnPause.textContent = paused ? "Reanudar" : "Pausar";
+      tapBtn.disabled = paused;
+      if(!paused){
+        nextPhase();
+      } else {
+        clearTimeout(phaseTimeout);
+        phaseTimeout = null;
+      }
+    }
+
+    // Respuesta del usuario
+    tapBtn.addEventListener("click", () => {
+      if(!running || paused) return;
+
+      if(phase === "green"){
+        const rt = performance.now() - greenStartAt;
+        greenTouched = true;
+        score += (rt <= GREEN_WINDOW) ? 2 : 1; // bonus por rapidez suave
+        streak += 1;
+        updateUI();
+
+        // Después de tocar en verde, pasamos a rojo rápido
+        phase = "red";
+        setLights(true, false, false);
+      } else {
+        // tocó en rojo o amarillo = error
+        errors += 1;
+        streak = 0;
+        updateUI();
+      }
+    });
+
+    btnStart.addEventListener("click", startGame);
+    btnPause.addEventListener("click", togglePause);
+    btnReset.addEventListener("click", resetGame);
+
+    // estado inicial
+    resetGame();
+  </script>
+</body>
+</html>

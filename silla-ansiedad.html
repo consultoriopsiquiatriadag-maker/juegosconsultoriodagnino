@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ejercicio en Silla 3:00 | Método Dagnino</title>
+  <meta name="description" content="Rutina guiada en silla (3 min) con audio. Objetivo: bajar 1 punto. Registro 0–10 y resumen para copiar." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); scroll-behavior: smooth; }
+    body { background: #eef2f7; }
+    .mono { font-variant-numeric: tabular-nums; }
+    .pill { border-radius: 9999px; }
+    .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+
+    /* ===== Modo foco ===== */
+    body.focus .nav-links,
+    body.focus .details-steps,
+    body.focus .hero-secondary,
+    body.focus .header-sub {
+      display: none !important;
+    }
+    body.focus .focus-pill { display: inline-flex !important; }
+    body.focus .focus-exit { display: inline-flex !important; }
+
+    .focus-pill { display:none; }
+    .focus-exit { display:none; }
+
+    /* ===== Botón principal premium ===== */
+    .btn-main{
+      width:100%;
+      padding:14px 16px;
+      border-radius:18px;
+      font-weight:800;
+      letter-spacing:.2px;
+      color:#fff;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 55%, #0ea5e9 120%);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 16px 46px rgba(37, 99, 235, .32);
+      transition: transform .12s ease, box-shadow .18s ease, opacity .18s ease;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+    }
+    .btn-main:active{ transform: translateY(1px); }
+    .btn-main:disabled{ opacity:.65; cursor:not-allowed; box-shadow:none; transform:none; }
+
+    .btn-sub{
+      border-radius:14px;
+      font-weight:700;
+      border:1px solid rgba(15,30,51,.12);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 12px 34px rgba(15, 30, 51, .10);
+      transition: all .15s ease;
+      padding:10px 12px;
+    }
+    .btn-sub:hover{ background:#fff; }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER NAVY -->
+  <header class="bg-inst-navy text-white sticky top-0 z-50 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
+      <div class="leading-tight">
+        <p class="text-sm font-semibold">Ejercicio en Silla 3:00 · Método Dagnino</p>
+        <p class="header-sub text-xs text-white/70">Audio guiado · objetivo: bajar 1 punto</p>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap justify-end">
+        <span class="focus-pill pill text-xs font-semibold px-3 py-1 bg-white/10 border border-white/15">Modo foco</span>
+
+        <div class="nav-links flex items-center gap-2 flex-wrap justify-end">
+          <a href="psicoeducacion.html"
+             class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg font-semibold soft-ring">
+            ← Psicoeducación
+          </a>
+          <a href="index.html"
+             class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg font-semibold soft-ring">
+            Inicio
+          </a>
+          <div class="inline-flex rounded-lg overflow-hidden border border-white/15 bg-white/10">
+            <button id="fontDown" type="button" class="px-3 py-2 text-sm font-semibold hover:bg-white/10">A-</button>
+            <button id="fontUp" type="button" class="px-3 py-2 text-sm font-semibold hover:bg-white/10 border-l border-white/15">A+</button>
+          </div>
+        </div>
+
+        <button id="btnExitFocus" type="button"
+          class="focus-exit inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg font-semibold soft-ring">
+          Salir del modo foco
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO (ultra corto) -->
+  <section class="bg-white border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+        <div>
+          <p class="text-xs text-inst-gray tracking-wider uppercase mb-2">3 minutos · en una silla</p>
+          <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Bajá 1 punto de activación</h1>
+          <p class="text-inst-gray leading-relaxed max-w-2xl">
+            No hace falta hacerlo perfecto: solo hacerlo. Tocá <strong>Iniciar</strong> y seguí la voz.
+          </p>
+          <p class="hero-secondary text-xs text-inst-gray mt-3">
+            Tip: poné el volumen medio. Si algo molesta, bajá la intensidad.
+          </p>
+        </div>
+
+        <div class="w-full md:w-[360px]">
+          <a href="#rutina"
+             class="btn-main soft-ring inline-flex items-center justify-center">
+            ▶️ Iniciar ahora
+          </a>
+          <p class="text-xs text-inst-gray mt-2 text-center">
+            (Podés marcar “Antes” después si querés)
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-6">
+
+    <!-- REPRODUCTOR (primero: menos fricción) -->
+    <section id="rutina" class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div class="flex-1">
+          <h2 class="text-2xl md:text-3xl font-light mb-2">Audio guiado</h2>
+          <p class="text-inst-gray leading-relaxed">
+            Tocá <strong>Iniciar</strong>. Los pasos quedan ocultos para que no te distraigas.
+          </p>
+
+          <details class="details-steps mt-5 rounded-2xl border border-gray-200 bg-inst-light p-5">
+            <summary class="flex items-center justify-between gap-3">
+              <div class="font-semibold">Ver pasos (opcional)</div>
+              <div class="text-sm text-inst-gray">▼</div>
+            </summary>
+
+            <div class="mt-4 grid md:grid-cols-2 gap-3">
+              <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                <div class="text-xs text-inst-gray">Paso A</div>
+                <div class="font-semibold mt-1">Aterrizaje · 30 s</div>
+                <div class="text-sm text-inst-gray mt-2">Pies al piso + exhalación larga.</div>
+              </div>
+              <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                <div class="text-xs text-inst-gray">Paso B</div>
+                <div class="font-semibold mt-1">Tensión / soltar · 60 s</div>
+                <div class="text-sm text-inst-gray mt-2">Puños y hombros.</div>
+              </div>
+              <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                <div class="text-xs text-inst-gray">Paso C</div>
+                <div class="font-semibold mt-1">Isométricos · 60 s</div>
+                <div class="text-sm text-inst-gray mt-2">Empuje de pies + palmas.</div>
+              </div>
+              <div class="rounded-2xl border border-gray-200 bg-white p-4">
+                <div class="text-xs text-inst-gray">Paso D</div>
+                <div class="font-semibold mt-1">Descarga suave · 30 s</div>
+                <div class="text-sm text-inst-gray mt-2">Cuello + mandíbula.</div>
+              </div>
+            </div>
+          </details>
+
+          <div class="mt-5 rounded-2xl border border-gray-200 bg-inst-sky/40 p-4">
+            <div class="font-semibold">Seguridad simple</div>
+            <p class="text-inst-gray text-sm leading-relaxed mt-1">
+              Si hay <strong>dolor de pecho</strong>, <strong>desmayo</strong> o <strong>falta de aire intensa</strong>, frená y buscá ayuda.
+            </p>
+          </div>
+        </div>
+
+        <!-- PANEL CONTROL -->
+        <div class="w-full lg:w-[380px] rounded-2xl border border-gray-200 bg-white p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="text-xs text-inst-gray">Cronómetro</div>
+              <div id="time" class="mono text-4xl font-extrabold mt-1">03:00</div>
+              <div id="status" class="text-xs text-inst-gray mt-1">Listo.</div>
+            </div>
+            <div class="text-3xl" aria-hidden="true">🪑</div>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-gray-200 bg-inst-light p-4">
+            <div class="font-semibold">Estado</div>
+            <div class="mt-2 flex items-center justify-between gap-2">
+              <div id="stepTag" class="pill text-xs font-semibold px-3 py-1 bg-white border border-gray-200">—</div>
+              <div class="text-xs text-inst-gray">Progreso: <span id="pct" class="font-semibold text-inst-navy">0%</span></div>
+            </div>
+            <div id="stepTitle" class="text-lg font-semibold mt-3">Listo para empezar</div>
+            <div id="stepText" class="text-sm text-inst-gray mt-1">Tocá Iniciar y seguí la voz.</div>
+
+            <div class="mt-4 h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div id="bar" class="h-2 bg-inst-blue rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <!-- ✅ Un solo botón primario -->
+            <button id="btnMain" type="button" class="btn-main soft-ring">▶️ Iniciar</button>
+
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button id="btnResetAll" type="button" class="btn-sub soft-ring">↺ Reiniciar</button>
+              <button id="btnStopAudio" type="button" class="btn-sub soft-ring">🔇 Detener audio</button>
+            </div>
+
+            <div class="mt-3 rounded-2xl border border-gray-200 bg-white p-4">
+              <div class="font-semibold">Audio</div>
+              <p id="audioStatus" class="text-xs text-inst-gray mt-1">
+                Listo. Tocá Iniciar para habilitar audio (móvil lo requiere).
+              </p>
+              <button id="btnTestA" type="button" class="mt-2 btn-sub soft-ring w-full">
+                Probar Paso A
+              </button>
+            </div>
+
+            <p class="text-xs text-inst-gray mt-3">
+              Tip: si te distraés, mirá un punto fijo. Si molesta, bajá intensidad.
+            </p>
+          </div>
+
+          <!-- Botones legacy ocultos (para compatibilidad si algo quedó) -->
+          <button id="btnPlay" type="button" class="hidden"></button>
+          <button id="btnPause" type="button" class="hidden"></button>
+          <button id="btnResume" type="button" class="hidden"></button>
+          <button id="btnReset" type="button" class="hidden"></button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTRO (después: menos fricción) -->
+    <section id="registro" class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Registro (0–10)</h2>
+      <p class="text-inst-gray leading-relaxed mb-6">
+        Opcional al inicio. Recomendado al final. (0 = nada, 10 = máximo)
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-gray-200 bg-inst-light p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-lg font-semibold">Antes</h3>
+            <span class="text-sm text-inst-gray">Valor: <span id="vAntes" class="font-semibold text-inst-navy">5</span></span>
+          </div>
+          <input id="sAntes" type="range" min="0" max="10" value="5" class="w-full mt-3">
+          <p class="text-xs text-inst-gray mt-2">¿Cuánta ansiedad/activación sentís ahora?</p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-200 bg-white p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-lg font-semibold">Después</h3>
+            <span class="text-sm text-inst-gray">Valor: <span id="vDespues" class="font-semibold text-inst-navy">—</span></span>
+          </div>
+          <input id="sDespues" type="range" min="0" max="10" value="5" class="w-full mt-3" disabled>
+          <p class="text-xs text-inst-gray mt-2">Se habilita al finalizar.</p>
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-gray-200 bg-inst-sky/40 p-4">
+        <div class="font-semibold">Micro-objetivo</div>
+        <p class="text-inst-gray text-sm leading-relaxed mt-1">
+          Si bajaste 1 punto, ya cuenta. Si no bajó, igual entrenaste el freno.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Resultado</h2>
+      <p class="text-inst-gray leading-relaxed mb-5">
+        Al finalizar, registrá el “Después” y copiá el resumen.
+      </p>
+
+      <div id="resultBox" class="rounded-2xl border border-gray-200 bg-inst-light p-5">
+        <div class="font-semibold text-lg">Aún no finalizada</div>
+        <div class="text-inst-gray mt-1">Tocá Iniciar para arrancar. Al finalizar se habilita el “Después”.</div>
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5">
+        <h3 class="text-lg font-semibold mb-2">Copiar resumen</h3>
+        <textarea id="summary" class="w-full min-h-[120px] rounded-xl border border-gray-200 p-3 text-sm soft-ring"
+                  placeholder="Al finalizar, acá aparecerá un resumen automático..."></textarea>
+
+        <div class="mt-3 flex flex-wrap gap-3">
+          <button id="btnCopy" type="button"
+            class="rounded-xl bg-inst-navy text-white font-semibold px-5 py-3 hover:bg-inst-blue soft-ring" disabled>
+            Copiar
+          </button>
+          <span id="copyMsg" class="text-sm text-inst-gray self-center"></span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-inst-navy text-white mt-10">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+      <p class="text-sm font-semibold">Consultorio Dr. Pedro Nicolás Dagnino</p>
+      <p class="text-xs text-white/70 mt-1">Ejercicio en silla · Psicoeducación</p>
+      <p class="text-xs text-white/60 mt-4">
+        Material orientativo. Si estás en riesgo, buscá ayuda inmediata en tu ciudad (urgencias / emergencias).
+      </p>
+    </div>
+  </footer>
+
+  <!-- Font size -->
+  <script>
+    (function(){
+      let base = 16;
+      const root = document.documentElement;
+      const up = document.getElementById('fontUp');
+      const down = document.getElementById('fontDown');
+
+      function apply(){
+        root.style.setProperty('--base-font', base + 'px');
+        try { localStorage.setItem('dagnino_font', String(base)); } catch(e){}
+      }
+      try {
+        const saved = parseInt(localStorage.getItem('dagnino_font') || '', 10);
+        if (!Number.isNaN(saved) && saved >= 14 && saved <= 20) base = saved;
+      } catch(e){}
+
+      up?.addEventListener('click', () => { base = Math.min(20, base + 1); apply(); });
+      down?.addEventListener('click', () => { base = Math.max(14, base - 1); apply(); });
+      apply();
+    })();
+  </script>
+
+  <!-- ✅ Lógica principal (ruta absoluta) -->
+  <script src="/js/silla-ansiedad-audio.js" defer></script>
+
+  <!-- Fallback si el JS no cargó -->
+  <script>
+    window.addEventListener("load", () => {
+      const st = document.getElementById("status");
+      if (!window.SILLA_AUDIO_OK && st) {
+        st.innerHTML = '⚠️ No se cargó <b>/js/silla-ansiedad-audio.js</b> (probable 404).';
+        st.classList.add("text-red-600");
+      }
+    });
+  </script>
+
+  <!-- Resultado + copiar -->
+  <script>
+    const sAntes = document.getElementById('sAntes');
+    const vAntes = document.getElementById('vAntes');
+    const sDespues = document.getElementById('sDespues');
+    const vDespues = document.getElementById('vDespues');
+    const resultBox = document.getElementById('resultBox');
+    const summaryEl = document.getElementById('summary');
+    const btnCopy = document.getElementById('btnCopy');
+    const copyMsg = document.getElementById('copyMsg');
+
+    sAntes.addEventListener('input', () => vAntes.textContent = sAntes.value);
+
+    function buildSummary(){
+      const antes = parseInt(sAntes.value, 10);
+      const despues = parseInt(sDespues.value, 10);
+      const delta = antes - despues;
+      const now = new Date();
+      const dt = now.toLocaleString('es-AR', { hour12: false });
+
+      let msg = '';
+      if (delta >= 2) msg = 'Buen descenso. Seguí con una acción tranquila (agua, caminar suave, respirar).';
+      else if (delta === 1) msg = 'Objetivo cumplido: bajaste 1 punto. Esto ya cuenta.';
+      else if (delta === 0) msg = 'Si no bajó, igual entrenaste el freno. Podés repetir 1 vez o pedir apoyo.';
+      else msg = 'Subió un poco. Evitá discusión/pantallas y buscá apoyo si te sentís desbordado/a.';
+
+      summaryEl.value =
+`EJERCICIO EN SILLA — Rutina 3:00 (${dt})
+Antes: ${antes}/10
+Después: ${despues}/10
+Cambio: ${delta >= 0 ? '-' + delta : '+' + Math.abs(delta)} punto(s)
+
+Comentario: ${msg}
+Material orientativo (no diagnóstico).`;
+
+      btnCopy.disabled = false;
+
+      const bandClass = (delta >= 1) ? 'border-green-200 bg-green-50'
+                      : (delta === 0) ? 'border-yellow-200 bg-yellow-50'
+                      : 'border-red-200 bg-red-50';
+
+      const title = (delta >= 1) ? '✅ Resultado: bajó la activación'
+                  : (delta === 0) ? '🟡 Resultado: se mantuvo'
+                  : '🔴 Resultado: subió';
+
+      resultBox.className = `rounded-2xl border p-5 ${bandClass}`;
+      resultBox.innerHTML = `
+        <div class="font-semibold text-lg">${title}</div>
+        <div class="text-inst-gray mt-1"><strong>Antes:</strong> ${antes}/10 · <strong>Después:</strong> ${despues}/10 · <strong>Cambio:</strong> ${delta >= 0 ? '-' + delta : '+' + Math.abs(delta)} punto(s)</div>
+        <div class="text-inst-gray mt-2">${msg}</div>
+      `;
+    }
+
+    document.addEventListener('sillaRutinaFinalizada', () => {
+      sDespues.disabled = false;
+      vDespues.textContent = sDespues.value;
+
+      // Al terminar, llevar al registro (UX: cierre + medición)
+      document.getElementById('registro')?.scrollIntoView({ behavior:'smooth', block:'start' });
+
+      resultBox.className = 'rounded-2xl border border-green-200 bg-green-50 p-5';
+      resultBox.innerHTML = `
+        <div class="font-semibold text-lg">✅ Rutina finalizada</div>
+        <div class="text-inst-gray mt-1">Ahora ajustá tu “Después” (0–10) y copiá el resumen.</div>
+      `;
+    });
+
+    sDespues.addEventListener('input', () => {
+      vDespues.textContent = sDespues.value;
+      if (!sDespues.disabled) buildSummary();
+    });
+
+    btnCopy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(summaryEl.value || '');
+        copyMsg.textContent = 'Copiado ✅';
+        setTimeout(() => copyMsg.textContent = '', 1800);
+      } catch (e) {
+        copyMsg.textContent = 'No se pudo copiar (copiá manual).';
+        setTimeout(() => copyMsg.textContent = '', 2600);
+      }
+    });
+
+    // Salir de modo foco (por si lo activó el JS)
+    document.getElementById('btnExitFocus')?.addEventListener('click', () => {
+      document.body.classList.remove('focus');
+    });
+  </script>
+</body>
+</html>

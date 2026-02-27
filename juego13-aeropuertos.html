@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 13 · Aeropuertos (País) — Sala de espera virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* Overlay estilo "Juego 4" pero adaptado a app.css */
+    .overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(8, 18, 31, .86);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .overlay[hidden] { display: none; }
+    .overlay-card{
+      width: min(680px, 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      padding: 18px;
+    }
+    .overlay-card .inner{
+      background: rgba(255,255,255,.92);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(148,163,184,.18);
+    }
+    .overlay-brand{ display:flex; gap:12px; align-items:center; margin-bottom: 10px; }
+    .overlay-brand .badge{
+      width: 44px; height: 44px; border-radius: 14px;
+      background: #0e2239; display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .overlay-brand .badge img{ width: 26px; height: 26px; object-fit: contain; }
+    .overlay-brand .meta{ line-height:1.2; }
+    .overlay-brand .meta .t1{ font-weight: 800; color:#0f172a; }
+    .overlay-brand .meta .t2{ font-weight: 600; color:#475569; font-size:.92rem; margin-top:3px; }
+    .overlay-title{ font-size: 1.7rem; font-weight: 800; margin: 10px 0 6px; color:#0f172a; }
+    .overlay-text{ color:#475569; line-height:1.6; margin: 0 0 12px 0; }
+    .overlay-btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; }
+    .overlay-note{ font-size:.85rem; color:#64748b; margin-top:12px; }
+
+    .countdownBox { display:none; margin-top: 12px; text-align:center; }
+    .countdownBox.show { display:block; }
+    .countdownNum{
+      margin: 0 auto 10px;
+      width: 92px; height: 92px; border-radius: 18px;
+      background: rgba(2,6,23,.05);
+      border: 1px solid rgba(148,163,184,.22);
+      display:flex; align-items:center; justify-content:center;
+      font-size: 2.6rem; font-weight: 900; color:#0f172a;
+    }
+    .countdownHint{ color:#475569; font-weight: 650; }
+
+    /* Micro-estilos del juego */
+    .game-wrap{ max-width: 920px; margin: 0 auto; }
+    .hud{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; }
+    .hud .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight:700; font-size:.92rem; white-space:nowrap;
+    }
+    .qa{ margin-top: 14px; }
+    .question{ font-weight:900; font-size: 1.35rem; margin: 0; }
+    .airportName{
+      font-weight: 900;
+      font-size: 1.25rem;
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(255,255,255,.08);
+    }
+    .codeRow{ margin-top: 10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .code-badge{
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width: 64px; padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(14,34,57,.08);
+      border: 1px solid rgba(14,34,57,.14);
+      font-weight: 900; letter-spacing: .06em;
+    }
+    .options{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; margin-top: 14px; }
+    @media (max-width: 720px){ .options{ grid-template-columns: 1fr; } }
+    .opt{
+      text-align:left;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,.28);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      font-weight:800;
+      transition: transform .08s ease, filter .12s ease, border-color .12s ease;
+    }
+    .opt:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .opt:disabled{ cursor:not-allowed; opacity:.82; transform:none; }
+    .opt.good{ border-color: rgba(34,197,94,.55); box-shadow: 0 0 0 4px rgba(34,197,94,.16); }
+    .opt.bad{ border-color: rgba(239,68,68,.55); box-shadow: 0 0 0 4px rgba(239,68,68,.14); }
+    .feedback{ margin-top: 12px; padding: 12px 12px; border-radius: 14px;
+      border:1px solid rgba(148,163,184,.25); background: rgba(255,255,255,.06); }
+    .feedback strong{ font-weight:900; }
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
+    .muted-note{ margin-top: 10px; color: var(--muted, #475569); line-height:1.6; }
+  </style>
+</head>
+
+<body>
+
+  <!-- OVERLAY INICIO / COUNTDOWN (inspirado en Juego 4) -->
+  <div id="overlay" class="overlay" aria-label="Inicio del juego">
+    <div class="overlay-card">
+      <div class="inner">
+        <div class="overlay-brand">
+          <div class="badge" aria-hidden="true"><img src="logo-avion.png" alt=""></div>
+          <div class="meta">
+            <div class="t1">Consultorio Dr. Dagnino</div>
+            <div class="t2">Juego 13 · Aeropuertos (País)</div>
+          </div>
+        </div>
+
+        <div class="overlay-title">Listo para empezar</div>
+        <p class="overlay-text">
+          Al iniciar, verás una cuenta regresiva <strong>3–2–1</strong> y sonará “abrochar cinturones”.
+          Luego comienza la trivia. (Opcional: ambiente de aeropuerto si agregás el audio).
+        </p>
+
+        <div id="countdownBox" class="countdownBox" aria-live="polite">
+          <div class="countdownNum" id="countdownNum">3</div>
+          <div class="countdownHint" id="countdownHint">Preparando…</div>
+        </div>
+
+        <div id="overlayBtns" class="overlay-btns">
+          <button id="overlayStart" class="btn-primary" type="button">Iniciar</button>
+          <button id="overlayNoSound" class="btn-secondary" type="button">Iniciar sin sonido</button>
+        </div>
+
+        <div class="overlay-note">
+          Nota: algunos navegadores requieren una acción del usuario para reproducir audio.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header institucional -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="controls-desktop" aria-label="Controles (escritorio)">
+          <button class="btn-ghost" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false">⚙️ Ajustes</button>
+
+          <!-- Este toggle lo usamos para nuestro audio del juego -->
+          <button class="btn-ghost" id="audioToggle" type="button" aria-pressed="true">🔊 Sonido: Activado</button>
+
+          <div class="volume" aria-label="Control de volumen">
+            <label for="volumeRange">Volumen</label>
+            <input id="volumeRange" type="range" min="0" max="100" value="35" />
+          </div>
+
+          <a class="btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a juegos">← Juegos</a>
+        </div>
+
+        <button class="btn-ghost controls-mobile" id="openSettings" type="button"
+                aria-haspopup="dialog" aria-expanded="false">
+          ⚙️ Ajustes
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Settings Sheet (mantenemos la estética del ecosistema) -->
+  <div class="settings-sheet" id="settingsSheet" hidden aria-hidden="true">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
+      <div class="sheet-head">
+        <div class="sheet-title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button">Cerrar ✕</button>
+      </div>
+
+      <div class="sheet-body">
+        <div class="sheet-row">
+          <p class="sheet-row-title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button class="btn-ghost" type="button" data-action="font-down" aria-label="Disminuir tamaño de letra">A-</button>
+              <button class="btn-ghost" type="button" data-action="font-up" aria-label="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🌓 Contraste</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🪶 Reducir animaciones</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleMotion" data-action="reduce-motion" aria-label="Reducir animaciones">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">↕️ Interlineado</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleLine" data-action="line-spacing" aria-label="Aumentar interlineado">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🔊 Sonidos (Juego 13)</p>
+          <div class="sheet-actions">
+            <button class="btn-ghost" id="audioToggleSheet" type="button" aria-pressed="true">
+              🔊 Sonido: Activado
+            </button>
+          </div>
+          <div class="sheet-volume" style="margin-top:10px">
+            <label for="volumeRangeSheet">Volumen</label>
+            <input id="volumeRangeSheet" type="range" min="0" max="100" value="35" />
+          </div>
+        </div>
+
+        <div class="note" style="margin:0">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">Accesos</p>
+          <div class="sheet-actions">
+            <a class="btn-primary" href="index.html" data-spa="0">Inicio</a>
+            <a class="btn-secondary" href="juegos.html" data-spa="0">Juegos</a>
+            <a class="btn-secondary" href="emociones.html" data-spa="0">Emociones</a>
+            <a class="btn-secondary" href="turnos.html" data-spa="0">Turnos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Juego 13 — Aeropuertos por país">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="pill" aria-label="Tipo de juego">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Trivia 4 opciones</span>
+        </div>
+
+        <h1 class="hero-title">Juego 13 · Aeropuertos (¿de qué país?)</h1>
+
+        <p class="hero-bridge">
+          Aparece el <strong>nombre de un aeropuerto</strong>. Elegí entre 4 opciones
+          el <strong>país al que pertenece</strong>.
+        </p>
+
+        <p class="hero-meta">
+          Son <strong>10 preguntas</strong>. Ganás si acertás <strong>10/10</strong>.
+        </p>
+      </div>
+
+      <aside class="hero-side" aria-label="Accesos rápidos">
+        <h3>Accesos</h3>
+        <p>Volvé a juegos o al inicio.</p>
+        <div class="row">
+          <a href="#jugar">Jugar</a>
+          <a href="juegos.html" data-spa="0">Juegos</a>
+          <a href="index.html" data-spa="0">Inicio</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <main class="wrap game-wrap" id="jugar" aria-label="Juego de aeropuertos por país">
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Elegí el país correcto</h2>
+            <p class="card-sub" style="margin:8px 0 0 0">Objetivo: <strong>10 aciertos</strong>.</p>
+          </div>
+
+          <div class="btn-row" style="margin:0">
+            <button class="btn-primary" id="startBtn" type="button">Comenzar</button>
+            <button class="btn-secondary" id="restartBtn" type="button" disabled>Reiniciar</button>
+            <button class="btn-secondary" id="copyBtn" type="button" disabled>Copiar resultado</button>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="hud" aria-label="Progreso">
+          <div class="chips">
+            <span class="chip" id="qChip">Pregunta: —</span>
+            <span class="chip" id="sChip">Aciertos: 0</span>
+          </div>
+          <span class="chip" id="statusChip" aria-live="polite">Listo para empezar</span>
+        </div>
+
+        <div class="qa" id="qa" hidden>
+          <p class="question" id="questionText">—</p>
+
+          <div class="airportName" id="airportName">—</div>
+
+          <div class="codeRow" aria-label="Código del aeropuerto">
+            <span class="code-badge" id="codeBadge">---</span>
+            <span class="chip" id="hintChip">Elegí el país</span>
+          </div>
+
+          <div class="options" id="options" aria-label="Opciones"></div>
+
+          <div class="feedback" id="feedback" hidden aria-live="polite"></div>
+
+          <div class="actions">
+            <button class="btn-primary" id="nextBtn" type="button" disabled>Siguiente</button>
+            <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a Juegos</a>
+          </div>
+
+          <p class="muted-note">
+            Tip: mirá el nombre del aeropuerto. Si dudás, pensá en la ciudad/país donde suele estar ese hub.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Audios (mismo esquema que Juego 4) -->
+  <audio id="audioSeatbelt" preload="auto">
+    <source src="seatbelt.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="audioPremio" preload="auto">
+    <source src="premio_excelente.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Opcional: agregá este archivo para un loop suave de ambiente -->
+  <audio id="audioAmbient" preload="auto" loop>
+    <source src="ambiente_aeropuerto.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- JS core del ecosistema -->
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <script>
+    // ======= DATA =======
+    const AIRPORTS = [{"code": "ATL", "name": "Hartsfield–Jackson Atlanta International Airport", "country": "Estados Unidos"}, {"code": "LAX", "name": "Los Angeles International Airport", "country": "Estados Unidos"}, {"code": "ORD", "name": "O'Hare International Airport", "country": "Estados Unidos"}, {"code": "DFW", "name": "Dallas/Fort Worth International Airport", "country": "Estados Unidos"}, {"code": "DEN", "name": "Denver International Airport", "country": "Estados Unidos"}, {"code": "JFK", "name": "John F. Kennedy International Airport", "country": "Estados Unidos"}, {"code": "EWR", "name": "Newark Liberty International Airport", "country": "Estados Unidos"}, {"code": "SFO", "name": "San Francisco International Airport", "country": "Estados Unidos"}, {"code": "SEA", "name": "Seattle–Tacoma International Airport", "country": "Estados Unidos"}, {"code": "MIA", "name": "Miami International Airport", "country": "Estados Unidos"}, {"code": "BOS", "name": "Boston Logan International Airport", "country": "Estados Unidos"}, {"code": "IAD", "name": "Washington Dulles International Airport", "country": "Estados Unidos"}, {"code": "LAS", "name": "Harry Reid International Airport", "country": "Estados Unidos"}, {"code": "PHX", "name": "Phoenix Sky Harbor International Airport", "country": "Estados Unidos"}, {"code": "IAH", "name": "George Bush Intercontinental Airport", "country": "Estados Unidos"}, {"code": "MCO", "name": "Orlando International Airport", "country": "Estados Unidos"}, {"code": "DTW", "name": "Detroit Metropolitan Wayne County Airport", "country": "Estados Unidos"}, {"code": "MSP", "name": "Minneapolis–Saint Paul International Airport", "country": "Estados Unidos"}, {"code": "CLT", "name": "Charlotte Douglas International Airport", "country": "Estados Unidos"}, {"code": "YYZ", "name": "Toronto Pearson International Airport", "country": "Canadá"}, {"code": "YVR", "name": "Vancouver International Airport", "country": "Canadá"}, {"code": "MEX", "name": "Mexico City International Airport (AICM)", "country": "México"}, {"code": "GRU", "name": "São Paulo/Guarulhos International Airport", "country": "Brasil"}, {"code": "EZE", "name": "Ministro Pistarini International Airport (Ezeiza)", "country": "Argentina"}, {"code": "SCL", "name": "Arturo Merino Benítez International Airport", "country": "Chile"}, {"code": "BOG", "name": "El Dorado International Airport", "country": "Colombia"}, {"code": "LHR", "name": "London Heathrow Airport", "country": "Reino Unido"}, {"code": "LGW", "name": "London Gatwick Airport", "country": "Reino Unido"}, {"code": "CDG", "name": "Paris Charles de Gaulle Airport", "country": "Francia"}, {"code": "AMS", "name": "Amsterdam Airport Schiphol", "country": "Países Bajos"}, {"code": "FRA", "name": "Frankfurt Airport", "country": "Alemania"}, {"code": "MUC", "name": "Munich Airport", "country": "Alemania"}, {"code": "MAD", "name": "Adolfo Suárez Madrid–Barajas Airport", "country": "España"}, {"code": "BCN", "name": "Barcelona–El Prat Airport", "country": "España"}, {"code": "FCO", "name": "Rome Fiumicino Airport (Leonardo da Vinci)", "country": "Italia"}, {"code": "MXP", "name": "Milan Malpensa Airport", "country": "Italia"}, {"code": "ZRH", "name": "Zurich Airport", "country": "Suiza"}, {"code": "IST", "name": "Istanbul Airport", "country": "Turquía"}, {"code": "DOH", "name": "Hamad International Airport", "country": "Qatar"}, {"code": "AUH", "name": "Zayed International Airport (Abu Dhabi)", "country": "Emiratos Árabes Unidos"}, {"code": "DXB", "name": "Dubai International Airport", "country": "Emiratos Árabes Unidos"}, {"code": "SIN", "name": "Singapore Changi Airport", "country": "Singapur"}, {"code": "HKG", "name": "Hong Kong International Airport", "country": "Hong Kong"}, {"code": "ICN", "name": "Incheon International Airport", "country": "Corea del Sur"}, {"code": "HND", "name": "Tokyo Haneda Airport", "country": "Japón"}, {"code": "NRT", "name": "Narita International Airport", "country": "Japón"}, {"code": "PEK", "name": "Beijing Capital International Airport", "country": "China"}, {"code": "PVG", "name": "Shanghai Pudong International Airport", "country": "China"}, {"code": "CAN", "name": "Guangzhou Baiyun International Airport", "country": "China"}, {"code": "SYD", "name": "Sydney Airport (Kingsford Smith)", "country": "Australia"}, {"code": "MEL", "name": "Melbourne Airport", "country": "Australia"}, {"code": "AKL", "name": "Auckland Airport", "country": "Nueva Zelanda"}, {"code": "JNB", "name": "O. R. Tambo International Airport", "country": "Sudáfrica"}, {"code": "CAI", "name": "Cairo International Airport", "country": "Egipto"}, {"code": "ADD", "name": "Addis Ababa Bole International Airport", "country": "Etiopía"}, {"code": "DEL", "name": "Indira Gandhi International Airport", "country": "India"}, {"code": "BOM", "name": "Chhatrapati Shivaji Maharaj International Airport", "country": "India"}, {"code": "BKK", "name": "Suvarnabhumi Airport", "country": "Tailandia"}, {"code": "KUL", "name": "Kuala Lumpur International Airport", "country": "Malasia"}];
+
+    // ======= UTIL =======
+    function shuffle(arr){
+      for(let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function pickUnique(count){
+      const copy = [...AIRPORTS];
+      shuffle(copy);
+      return copy.slice(0, count);
+    }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+    }
+    function uniqueWrongCountries(correctCountry, n=3){
+      const pool = AIRPORTS
+        .map(a => a.country)
+        .filter(c => c !== correctCountry);
+      // unique
+      const uniq = [...new Set(pool)];
+      shuffle(uniq);
+      return uniq.slice(0, n);
+    }
+
+    // ======= SOUND (inspirado en Juego 4) =======
+    // Estado
+    let soundEnabled = true;
+    let voiceEnabled = true;
+    let volumeLevel = 0.35; // 0..1
+    let audioCtx = null;
+
+    // Elements
+    const audioSeatbelt = document.getElementById("audioSeatbelt");
+    const audioPremio = document.getElementById("audioPremio");
+    const audioAmbient = document.getElementById("audioAmbient");
+
+    const overlay = document.getElementById("overlay");
+    const overlayStart = document.getElementById("overlayStart");
+    const overlayNoSound = document.getElementById("overlayNoSound");
+    const countdownBox = document.getElementById("countdownBox");
+    const countdownNum = document.getElementById("countdownNum");
+    const countdownHint = document.getElementById("countdownHint");
+    const overlayBtns = document.getElementById("overlayBtns");
+
+    const audioToggle = document.getElementById("audioToggle");
+    const audioToggleSheet = document.getElementById("audioToggleSheet");
+    const volumeRange = document.getElementById("volumeRange");
+    const volumeRangeSheet = document.getElementById("volumeRangeSheet");
+
+    function applyVolume(){
+      const v = Math.max(0, Math.min(1, volumeLevel));
+      audioSeatbelt.volume = v;
+      audioPremio.volume = v;
+      audioAmbient.volume = Math.min(0.35, v); // ambiente siempre suave
+    }
+
+    function setVolumeFromRange(val){
+      const n = Number(val);
+      if (Number.isFinite(n)) volumeLevel = Math.max(0, Math.min(1, n/100));
+      applyVolume();
+    }
+
+    function ensureAudioCtx(){
+      if (!soundEnabled) return null;
+      if (audioCtx) return audioCtx;
+      try{
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return audioCtx;
+      }catch{
+        return null;
+      }
+    }
+    async function resumeAudioCtx(){
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      try{ await ctx.resume(); }catch{}
+    }
+    async function playSafe(audioEl){
+      if (!soundEnabled) return false;
+      try{
+        audioEl.currentTime = 0;
+        await audioEl.play();
+        return true;
+      }catch{
+        return false;
+      }
+    }
+    async function startAmbient(){
+      if (!soundEnabled) return;
+      if (!audioAmbient) return;
+      try{
+        audioAmbient.loop = true;
+        await audioAmbient.play();
+      }catch{}
+    }
+    function stopAmbient(){
+      try{
+        audioAmbient.pause();
+        audioAmbient.currentTime = 0;
+      }catch{}
+    }
+
+    function beep(freq=660, dur=0.10, gain=0.08){
+      if (!soundEnabled) return;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime((gain * volumeLevel) + 0.0001, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(now);
+      o.stop(now + dur);
+    }
+
+    function chime(type){
+      // type: ok | error | win
+      if (!soundEnabled) return;
+      if (type === "ok"){
+        beep(784, 0.12, 0.07);
+        setTimeout(()=>beep(988, 0.14, 0.07), 120);
+      } else if (type === "error"){
+        beep(220, 0.10, 0.05);
+      } else if (type === "win"){
+        beep(659, 0.16, 0.08);
+        setTimeout(()=>beep(784, 0.16, 0.08), 160);
+        setTimeout(()=>beep(988, 0.20, 0.08), 340);
+      }
+    }
+
+    function speak(text){
+      if (!voiceEnabled) return;
+      try{
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "es-AR";
+        u.rate = 0.95;
+        u.pitch = 1.0;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      }catch{}
+    }
+
+    function updateAudioButtons(){
+      const label = soundEnabled ? "🔊 Sonido: Activado" : "🔇 Sonido: Desactivado";
+      if (audioToggle){
+        audioToggle.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
+        audioToggle.textContent = label;
+      }
+      if (audioToggleSheet){
+        audioToggleSheet.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
+        audioToggleSheet.textContent = label;
+      }
+    }
+
+    function setSoundEnabled(next){
+      soundEnabled = !!next;
+      updateAudioButtons();
+      if (!soundEnabled) stopAmbient();
+    }
+
+    // Toggle desde botones
+    if (audioToggle){
+      audioToggle.addEventListener("click", async () => {
+        setSoundEnabled(!soundEnabled);
+        if (soundEnabled) { await resumeAudioCtx(); await startAmbient(); }
+      });
+    }
+    if (audioToggleSheet){
+      audioToggleSheet.addEventListener("click", async () => {
+        setSoundEnabled(!soundEnabled);
+        if (soundEnabled) { await resumeAudioCtx(); await startAmbient(); }
+      });
+    }
+
+    if (volumeRange){
+      volumeRange.addEventListener("input", (e)=> {
+        setVolumeFromRange(e.target.value);
+        if (volumeRangeSheet) volumeRangeSheet.value = e.target.value;
+      });
+    }
+    if (volumeRangeSheet){
+      volumeRangeSheet.addEventListener("input", (e)=> {
+        setVolumeFromRange(e.target.value);
+        if (volumeRange) volumeRange.value = e.target.value;
+      });
+    }
+
+    // Overlay intro
+    function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+    async function runIntroAndStart(){
+      overlayBtns.style.display = "none";
+      countdownBox.classList.add("show");
+
+      await resumeAudioCtx();
+      applyVolume();
+
+      // 3
+      countdownNum.textContent = "3";
+      countdownHint.textContent = "Preparando…";
+      speak("tres");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      // 2
+      countdownNum.textContent = "2";
+      speak("dos");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      // 1
+      countdownNum.textContent = "1";
+      speak("uno");
+      beep(660, 0.10, 0.07);
+      await sleep(650);
+
+      countdownNum.textContent = "✓";
+      countdownHint.textContent = "Abrochar cinturones";
+      await playSafe(audioSeatbelt);
+
+      await sleep(450);
+
+      // Cierra overlay
+      overlay.setAttribute("hidden", "");
+      // Arranca ambiente (si existe el archivo)
+      await startAmbient();
+
+      // Arranca juego
+      startRound();
+    }
+
+    overlayStart.addEventListener("click", async () => {
+      setSoundEnabled(true);
+      // Esto también cuenta como gesto del usuario
+      ensureAudioCtx();
+      await runIntroAndStart();
+    });
+
+    overlayNoSound.addEventListener("click", async () => {
+      setSoundEnabled(false);
+      ensureAudioCtx();
+      await runIntroAndStart();
+    });
+
+    // ======= QUIZ =======
+    const state = {
+      round: [],
+      idx: 0,
+      score: 0,
+      locked: false,
+      finished: false
+    };
+
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    const qa = document.getElementById("qa");
+    const qChip = document.getElementById("qChip");
+    const sChip = document.getElementById("sChip");
+    const statusChip = document.getElementById("statusChip");
+
+    const questionText = document.getElementById("questionText");
+    const airportName = document.getElementById("airportName");
+    const codeBadge = document.getElementById("codeBadge");
+    const optionsWrap = document.getElementById("options");
+    const feedback = document.getElementById("feedback");
+
+    function setStatus(text){ statusChip.textContent = text; }
+
+    function updateHUD(){
+      qChip.textContent = state.finished ? "Pregunta: —" : `Pregunta: ${state.idx + 1}/10`;
+      sChip.textContent = `Aciertos: ${state.score}`;
+    }
+
+    function renderQuestion(){
+      const item = state.round[state.idx];
+      state.locked = false;
+      feedback.hidden = true;
+      feedback.innerHTML = "";
+      nextBtn.disabled = true;
+
+      questionText.textContent = "¿A qué país pertenece este aeropuerto?";
+      airportName.textContent = item.name;
+      codeBadge.textContent = item.code;
+
+      const wrong = uniqueWrongCountries(item.country, 3);
+      const opts = shuffle([item.country, ...wrong]);
+
+      optionsWrap.innerHTML = "";
+      opts.forEach(country => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt";
+        btn.setAttribute("aria-label", country);
+        btn.innerHTML = `<div style="font-weight:900">${escapeHtml(country)}</div>`;
+        btn.addEventListener("click", () => handleAnswer(btn, country, item.country, item));
+        optionsWrap.appendChild(btn);
+      });
+
+      qa.hidden = false;
+      setStatus("Elegí una opción");
+      updateHUD();
+    }
+
+    function disableOptions(){
+      optionsWrap.querySelectorAll("button.opt").forEach(b => b.disabled = true);
+    }
+
+    function handleAnswer(btn, chosenCountry, correctCountry, item){
+      if (state.locked || state.finished) return;
+      state.locked = true;
+
+      disableOptions();
+
+      // marcar correcta
+      optionsWrap.querySelectorAll("button.opt").forEach(b => {
+        if (b.textContent.trim() === correctCountry) b.classList.add("good");
+      });
+
+      const ok = chosenCountry === correctCountry;
+      if (ok){
+        btn.classList.add("good");
+        state.score += 1;
+        setStatus("✅ Correcto");
+        feedback.hidden = false;
+        feedback.innerHTML = `<strong>¡Bien!</strong> <strong>${escapeHtml(item.name)}</strong> pertenece a <strong>${escapeHtml(correctCountry)}</strong>.`;
+        chime("ok");
+      } else {
+        btn.classList.add("bad");
+        setStatus("❌ Incorrecto");
+        feedback.hidden = false;
+        feedback.innerHTML = `La respuesta correcta era <strong>${escapeHtml(correctCountry)}</strong>.`;
+        chime("error");
+      }
+
+      updateHUD();
+      nextBtn.disabled = false;
+      restartBtn.disabled = false;
+
+      if (state.idx === 9) finishRound();
+    }
+
+    async function finishRound(){
+      state.finished = true;
+      nextBtn.disabled = true;
+
+      const won = state.score >= 10;
+      setStatus(won ? "🏁 ¡Ganaste!" : "🏁 Fin del juego");
+
+      feedback.hidden = false;
+      feedback.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div><strong>Resultado:</strong> ${state.score}/10</div>
+          <div>${won
+            ? "✅ ¡Excelente! 10/10."
+            : "Podés repetir para intentar llegar a 10/10."}</div>
+        </div>
+      `;
+
+      if (won){
+        await playSafe(audioPremio);
+        chime("win");
+      }
+
+      copyBtn.disabled = false;
+    }
+
+    function next(){
+      if (state.finished) return;
+      if (state.idx < 9){
+        state.idx += 1;
+        renderQuestion();
+      }
+    }
+
+    function startRound(){
+      state.round = pickUnique(10);
+      state.idx = 0;
+      state.score = 0;
+      state.locked = false;
+      state.finished = false;
+
+      startBtn.disabled = true;
+      restartBtn.disabled = false;
+      copyBtn.disabled = true;
+
+      renderQuestion();
+      setStatus("Comenzó la ronda");
+    }
+
+    function restart(){
+      // reinicia sin overlay, conserva setting de audio
+      startBtn.disabled = false;
+      setStatus("Listo para empezar");
+      qa.hidden = true;
+
+      state.round = [];
+      state.idx = 0;
+      state.score = 0;
+      state.locked = false;
+      state.finished = false;
+
+      updateHUD();
+      restartBtn.disabled = true;
+      nextBtn.disabled = true;
+      copyBtn.disabled = true;
+
+      feedback.hidden = true;
+      feedback.innerHTML = "";
+    }
+
+    async function copyResult(){
+      const won = state.score >= 10;
+      const msg = `Juego 13 · Aeropuertos (País) — Resultado: ${state.score}/10 — ${won ? "GANÓ" : "NO GANÓ"}`;
+      try {
+        await navigator.clipboard.writeText(msg);
+        setStatus("📋 Resultado copiado");
+      } catch (e){
+        setStatus("No se pudo copiar (bloqueado por el navegador)");
+      }
+    }
+
+    startBtn.addEventListener("click", () => {
+      // Si el overlay ya está oculto, iniciamos directo (sin intro)
+      if (overlay.hasAttribute("hidden")) startRound();
+      else overlay.removeAttribute("hidden");
+    });
+    restartBtn.addEventListener("click", restart);
+    nextBtn.addEventListener("click", next);
+    copyBtn.addEventListener("click", copyResult);
+
+    // Estado inicial
+    updateHUD();
+    updateAudioButtons();
+    applyVolume();
+    // Overlay visible al cargar
+  </script>
+</body>
+</html>

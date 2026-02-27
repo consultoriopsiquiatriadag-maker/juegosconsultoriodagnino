@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENF · Plan en 3 Pasos | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-inst-gray">
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">🧠 ENF</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">Funciones ejecutivas</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">TDAH / Ánimo</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide mt-2">Plan en 3 Pasos</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Elegís una tarea cotidiana y la dividís en <strong>3 pasos concretos</strong> (5–10 minutos cada uno).
+            Entrena iniciación, planificación y reducción de evitación.
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnNew" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Nueva tarea</button>
+          <button id="btnSave" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Guardar</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Sesiones guardadas</p>
+          <p class="text-2xl font-semibold"><span id="savedCount">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Guardado local (este dispositivo).</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Calidad del plan</p>
+          <p class="text-2xl font-semibold"><span id="quality">—</span></p>
+          <p class="text-sm text-inst-gray mt-1">Concreto · breve · accionable.</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Recomendación</p>
+          <p class="text-sm text-inst-gray mt-1">
+            Si te trabás, hacé <strong>solo el Paso 1</strong> por 2 minutos.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Tarea</p>
+        <div class="mt-2">
+          <label class="text-sm font-semibold">Elegí una tarea (o escribí la tuya)</label>
+          <div class="mt-2 grid md:grid-cols-3 gap-2">
+            <select id="taskPreset" class="bg-white border border-gray-200 rounded-xl p-3 font-semibold md:col-span-1">
+              <option value="">— Elegir —</option>
+              <option>Ordenar escritorio 10 min</option>
+              <option>Responder 3 mensajes pendientes</option>
+              <option>Leer 5 páginas</option>
+              <option>Preparar ropa para mañana</option>
+              <option>Hacer una compra simple</option>
+              <option>Pedir un turno / coordinar</option>
+              <option>Empezar un informe (primer borrador)</option>
+              <option>Salir a caminar 10 min</option>
+            </select>
+            <input id="taskCustom" class="bg-white border border-gray-200 rounded-xl p-3 font-semibold md:col-span-2"
+                   placeholder="O escribí tu tarea (ej: 'pagar una boleta')" />
+          </div>
+          <p class="text-xs text-inst-gray mt-2">Regla: una sola tarea, en frase corta.</p>
+        </div>
+
+        <div class="mt-6">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">3 Pasos (concretos)</p>
+
+          <div class="mt-3 grid md:grid-cols-3 gap-3">
+            <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+              <p class="text-sm font-semibold">Paso 1 (inicio)</p>
+              <input id="s1" class="mt-2 w-full bg-white border border-gray-200 rounded-xl p-3 font-semibold" placeholder="Ej: abrir la notebook y el archivo" />
+              <p class="mt-2 text-xs text-inst-gray">Debe ser el “primer ladrillo”.</p>
+            </div>
+
+            <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+              <p class="text-sm font-semibold">Paso 2 (avance)</p>
+              <input id="s2" class="mt-2 w-full bg-white border border-gray-200 rounded-xl p-3 font-semibold" placeholder="Ej: escribir 5 líneas sin corregir" />
+              <p class="mt-2 text-xs text-inst-gray">Pequeño, de 5–10 min.</p>
+            </div>
+
+            <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+              <p class="text-sm font-semibold">Paso 3 (cierre)</p>
+              <input id="s3" class="mt-2 w-full bg-white border border-gray-200 rounded-xl p-3 font-semibold" placeholder="Ej: guardar y anotar siguiente acción" />
+              <p class="mt-2 text-xs text-inst-gray">Deja el próximo inicio fácil.</p>
+            </div>
+          </div>
+
+          <div class="mt-4 flex gap-2 flex-wrap">
+            <button id="btnEvaluate" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Evaluar plan</button>
+            <button id="btnCopy" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Copiar</button>
+            <button id="btnClear" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Limpiar</button>
+          </div>
+
+          <div id="feedback" class="mt-4 hidden bg-inst-light rounded-2xl border border-gray-200 p-4"></div>
+        </div>
+
+        <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-sm text-inst-gray">
+            <strong>Aclaración ENF:</strong> este juego pertenece al <strong>Entrenamiento Neurocognitivo Funcional</strong>.
+            Está orientado a funcionamiento real: iniciar y sostener tareas breves.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const KEY = "enf_plan3_saves_v1";
+
+    const taskPreset = document.getElementById("taskPreset");
+    const taskCustom = document.getElementById("taskCustom");
+    const s1 = document.getElementById("s1");
+    const s2 = document.getElementById("s2");
+    const s3 = document.getElementById("s3");
+
+    const savedCount = document.getElementById("savedCount");
+    const quality = document.getElementById("quality");
+    const feedback = document.getElementById("feedback");
+
+    const btnNew = document.getElementById("btnNew");
+    const btnSave = document.getElementById("btnSave");
+    const btnReset = document.getElementById("btnReset");
+    const btnEvaluate = document.getElementById("btnEvaluate");
+    const btnCopy = document.getElementById("btnCopy");
+    const btnClear = document.getElementById("btnClear");
+
+    function loadSaves(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      }catch{ return []; }
+    }
+    function writeSaves(arr){
+      localStorage.setItem(KEY, JSON.stringify(arr));
+    }
+    function updateSavedCount(){
+      savedCount.textContent = String(loadSaves().length);
+    }
+
+    function getTask(){
+      const t = (taskCustom.value || taskPreset.value || "").trim();
+      return t;
+    }
+
+    function scoreText(x){
+      // heurística simple: concreto/accionable
+      const s = (x||"").trim();
+      if(!s) return 0;
+      const words = s.split(/\s+/).filter(Boolean).length;
+      const tooLong = words > 18;
+      const tooShort = words < 2;
+      const hasVerb = /(abrir|hacer|escribir|leer|enviar|ordenar|llamar|buscar|guardar|anotar|responder|comprar|pagar|preparar|salir|iniciar|crear|copiar|pegar)/i.test(s);
+      let pts = 2;
+      if(hasVerb) pts += 2;
+      if(!tooLong) pts += 1;
+      if(!tooShort) pts += 1;
+      return Math.min(6, pts);
+    }
+
+    function evaluate(){
+      const t = getTask();
+      const p1 = s1.value.trim();
+      const p2 = s2.value.trim();
+      const p3 = s3.value.trim();
+
+      const partsFilled = [t,p1,p2,p3].filter(Boolean).length;
+
+      if(partsFilled < 4){
+        quality.textContent = "—";
+        feedback.classList.remove("hidden");
+        feedback.innerHTML = `
+          <p class="text-sm text-inst-gray">
+            ⚠️ Completá <strong>tarea</strong> + <strong>3 pasos</strong>.
+            Si te cuesta, empezá por el <strong>Paso 1</strong> y dejalo bien simple.
+          </p>
+        `;
+        return;
+      }
+
+      const pts = scoreText(p1) + scoreText(p2) + scoreText(p3);
+      let label = "Bien";
+      if(pts >= 15) label = "Muy bien";
+      if(pts <= 10) label = "Ajustable";
+
+      quality.textContent = label;
+
+      const tips = [];
+      const longOnes = [p1,p2,p3].filter(x => x.split(/\s+/).length > 18).length;
+      if(longOnes) tips.push("Acortá uno de los pasos (5–10 min).");
+      if(!/(guardar|anotar|dejar listo|dejar preparado)/i.test(p3)) tips.push("Paso 3: dejá el próximo inicio fácil (guardar/anotar).");
+      if(!/(abrir|empezar|iniciar|poner|sacar|crear)/i.test(p1)) tips.push("Paso 1: un inicio físico/visible (abrir/poner/crear).");
+      if(tips.length === 0) tips.push("Perfecto: mantenelo simple y hacelo hoy.");
+
+      feedback.classList.remove("hidden");
+      feedback.innerHTML = `
+        <div class="text-sm text-inst-gray">
+          <p class="font-semibold text-inst-navy">Feedback</p>
+          <p class="mt-1">Tu plan está <strong>${label.toLowerCase()}</strong>. Recordá: mejor “pequeño y hecho” que “grande e ideal”.</p>
+          <ul class="mt-3 space-y-1 list-disc pl-5">
+            ${tips.map(x=>`<li>${x}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    function clearAll(){
+      taskPreset.value = "";
+      taskCustom.value = "";
+      s1.value = "";
+      s2.value = "";
+      s3.value = "";
+      quality.textContent = "—";
+      feedback.classList.add("hidden");
+    }
+
+    function newTask(){
+      clearAll();
+      // sugerir un preset al azar
+      const opts = Array.from(taskPreset.options).slice(1).map(o=>o.value);
+      if(opts.length){
+        taskPreset.value = opts[Math.floor(Math.random()*opts.length)];
+      }
+    }
+
+    function save(){
+      const t = getTask();
+      const p1 = s1.value.trim();
+      const p2 = s2.value.trim();
+      const p3 = s3.value.trim();
+
+      if(!t || !p1 || !p2 || !p3){
+        feedback.classList.remove("hidden");
+        feedback.innerHTML = `<p class="text-sm text-inst-gray">⚠️ Para guardar, completá tarea + 3 pasos.</p>`;
+        return;
+      }
+
+      const arr = loadSaves();
+      arr.unshift({ t, p1, p2, p3, at: new Date().toISOString() });
+      writeSaves(arr.slice(0, 20)); // guardamos últimas 20
+      updateSavedCount();
+
+      feedback.classList.remove("hidden");
+      feedback.innerHTML = `<p class="text-sm text-inst-gray">✅ Guardado local. Podés copiarlo y usarlo hoy.</p>`;
+    }
+
+    async function copy(){
+      const t = getTask();
+      const p1 = s1.value.trim();
+      const p2 = s2.value.trim();
+      const p3 = s3.value.trim();
+
+      const text = `PLAN EN 3 PASOS\nTarea: ${t || "—"}\n1) ${p1 || "—"}\n2) ${p2 || "—"}\n3) ${p3 || "—"}`;
+      try{
+        await navigator.clipboard.writeText(text);
+        feedback.classList.remove("hidden");
+        feedback.innerHTML = `<p class="text-sm text-inst-gray">📋 Copiado. Pegalo en WhatsApp / Notas / Evernote.</p>`;
+      }catch{
+        feedback.classList.remove("hidden");
+        feedback.innerHTML = `<p class="text-sm text-inst-gray">⚠️ No se pudo copiar automáticamente. Seleccioná y copiá manualmente.</p>
+          <pre class="mt-2 bg-white border border-gray-200 rounded-xl p-3 text-xs overflow-auto">${text}</pre>`;
+      }
+    }
+
+    taskPreset.addEventListener("change", ()=>{
+      if(taskPreset.value){
+        // si elige preset, limpiamos custom para evitar mezcla
+        taskCustom.value = "";
+      }
+    });
+
+    btnNew.addEventListener("click", newTask);
+    btnSave.addEventListener("click", save);
+    btnReset.addEventListener("click", ()=>{
+      clearAll();
+      updateSavedCount();
+    });
+    btnEvaluate.addEventListener("click", evaluate);
+    btnCopy.addEventListener("click", copy);
+    btnClear.addEventListener("click", clearAll);
+
+    updateSavedCount();
+    clearAll();
+  </script>
+</body>
+</html>

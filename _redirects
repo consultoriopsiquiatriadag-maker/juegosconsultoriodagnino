@@ -1,0 +1,20 @@
+# ── Consultorio Dr. Dagnino – Netlify Redirects ─────────────────────────────
+
+# Raíz → index.html (rewrite silencioso, sin cambiar la URL)
+/    /index.html    200
+
+# SPA fallback: cualquier ruta sin extensión → index.html
+# Esto maneja el caso de URLs que el SPA haya pusheado al historial
+# y que no correspondan a archivos HTML existentes.
+# Las rutas con extensión (.html, .js, .css, .png, etc.) pasan directo.
+/juegos      /juegos.html      200
+/emociones   /emociones.html   200
+/turnos      /turnos.html      200
+/instalar    /instalar.html    200
+/equipo      /equipo.html      200
+/reels       /reels.html       200
+/apps        /apps.html        200
+/psicoeducacion  /psicoeducacion.html  200
+
+# Catch-all para rutas desconocidas → index.html (SPA routing)
+/*    /index.html    200

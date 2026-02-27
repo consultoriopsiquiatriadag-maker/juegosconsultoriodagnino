@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipo – Otras Especialidades | Consultorio Dr. Dagnino</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background:#eef2f7; font-family:Inter,system-ui,sans-serif; }
+    .card-hover{ transition:all .25s ease }
+    .card-hover:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 48px rgba(15,30,51,.18)
+    }
+  </style>
+</head>
+
+<body class="text-inst-navy antialiased">
+
+<main>
+  <!-- HERO -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-14 md:py-16">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-2 mb-6">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          <span class="text-sm text-white/90">Equipo profesional asociado</span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-semibold mb-4">
+          Otras Especialidades Médicas
+        </h1>
+
+        <p class="text-white/85 text-lg md:text-xl leading-relaxed mb-6">
+          Profesionales asociados que complementan el abordaje integral del Consultorio
+          de Psiquiatría y Medicina Aeronáutica.
+        </p>
+
+        <a href="index.html"
+           class="inline-flex items-center gap-2 bg-white text-inst-navy px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky transition">
+          ← Volver al inicio
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID PROFESIONALES -->
+  <section class="max-w-7xl mx-auto px-6 py-14">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Dr. Omer Facundo Chiarulli -->
+      <div class="card-hover bg-white rounded-2xl p-7 border border-gray-200 shadow-sm text-center">
+        <img src="/Asociados_otras_especialidades/omer-facundo-chiarulli.jpg"
+             alt="Dr. Omer Facundo Chiarulli"
+             class="w-32 h-32 object-cover rounded-full mx-auto mb-4 border">
+
+        <h3 class="text-xl font-semibold mb-1">
+          Dr. Omer Facundo Chiarulli
+        </h3>
+
+        <p class="text-inst-gray text-sm leading-relaxed mb-4">
+          Médico especialista en Medicina Interna, Oncología Clínica y Tratamiento del Dolor.
+        </p>
+
+        <a href="https://www.instagram.com/omar_chiarulli?igsh=ZmZocjViYnhqNXJr"
+           target="_blank"
+           class="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-inst-blue text-white font-semibold hover:bg-blue-700 transition">
+          Instagram
+        </a>
+      </div>
+
+      <!-- Dra. Guadalupe Justo -->
+      <div class="card-hover bg-white rounded-2xl p-7 border border-gray-200 shadow-sm text-center">
+        <img src="/Asociados_otras_especialidades/guadalupe-justo.jpg"
+             alt="Dra. Guadalupe Justo"
+             class="w-32 h-32 object-cover rounded-full mx-auto mb-4 border">
+
+        <h3 class="text-xl font-semibold mb-1">
+          Dra. Guadalupe Justo
+        </h3>
+
+        <p class="text-inst-gray text-sm leading-relaxed mb-4">
+          Médica especialista en Terapia Intensiva, Medicina Integrativa y Funcional.
+          Medicina Estética.
+        </p>
+
+        <a href="https://www.instagram.com/dra.guadajusto"
+           target="_blank"
+           class="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-inst-blue text-white font-semibold hover:bg-blue-700 transition">
+          Instagram
+        </a>
+      </div>
+
+      <!-- Dra. Marcia Espósito -->
+      <div class="card-hover bg-white rounded-2xl p-7 border border-gray-200 shadow-sm text-center">
+        <img src="/Asociados_otras_especialidades/marcia-esposito.jpg"
+             alt="Dra. Marcia Espósito"
+             class="w-32 h-32 object-cover rounded-full mx-auto mb-4 border">
+
+        <h3 class="text-xl font-semibold mb-1">
+          Dra. Marcia Espósito
+        </h3>
+
+        <p class="text-inst-gray text-sm leading-relaxed mb-4">
+          Médica especialista en Medicina Interna y Tratamiento del Dolor Crónico.
+        </p>
+
+        <a href="https://wa.me/5491165131061"
+           target="_blank"
+           class="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition">
+          WhatsApp
+        </a>
+      </div>
+
+      <!-- Placeholder 1 -->
+      <div class="bg-white rounded-2xl p-7 border border-dashed border-gray-300 shadow-sm text-center opacity-80">
+        <h3 class="text-lg font-semibold mb-2">Profesional a incorporar</h3>
+        <p class="text-inst-gray text-sm mb-4">
+          Próximamente se sumará un nuevo profesional a esta sección.
+        </p>
+        <span class="inline-block px-4 py-2 rounded-full bg-inst-light text-inst-gray text-sm font-semibold">
+          🚧 En construcción
+        </span>
+      </div>
+
+      <!-- Placeholder 2 -->
+      <div class="bg-white rounded-2xl p-7 border border-dashed border-gray-300 shadow-sm text-center opacity-80">
+        <h3 class="text-lg font-semibold mb-2">Profesional a incorporar</h3>
+        <p class="text-inst-gray text-sm mb-4">
+          Estamos ampliando el equipo interdisciplinario.
+        </p>
+        <span class="inline-block px-4 py-2 rounded-full bg-inst-light text-inst-gray text-sm font-semibold">
+          🚧 En construcción
+        </span>
+      </div>
+
+      <!-- Placeholder 3 -->
+      <div class="bg-white rounded-2xl p-7 border border-dashed border-gray-300 shadow-sm text-center opacity-80">
+        <h3 class="text-lg font-semibold mb-2">Profesional a incorporar</h3>
+        <p class="text-inst-gray text-sm mb-4">
+          Esta sección se actualizará próximamente.
+        </p>
+        <span class="inline-block px-4 py-2 rounded-full bg-inst-light text-inst-gray text-sm font-semibold">
+          🚧 En construcción
+        </span>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

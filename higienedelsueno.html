@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Higiene del Sueño — Checklist | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+</head>
+
+<body>
+
+
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <!-- Desktop: se conserva lo que ya tenías -->
+        <div class="controls-desktop" aria-label="Controles (escritorio)">
+          <button class="btn-ghost" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+
+          
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">⚙️ Ajustes</button>
+<button class="btn-ghost" id="audioToggle" type="button" aria-pressed="false" data-i18n="audio_off">Activar sonidos</button>
+
+          <div class="volume" aria-label="Control de volumen">
+            <label for="volumeRange" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRange" type="range" min="0" max="100" value="35" />
+          </div>
+
+          <button class="btn-chip" id="langES" type="button" data-lang="es" aria-pressed="true">ES</button>
+          <button class="btn-chip" id="langEN" type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button class="btn-chip" id="langPT" type="button" data-lang="pt" aria-pressed="false">PT</button>
+        </div>
+
+        <!-- Mobile: botón premium -->
+        <button class="btn-ghost controls-mobile" id="openSettings" type="button"
+                aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">
+          ⚙️ Ajustes
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Settings Sheet (nuevo, fuera de #spaMain para no romper SPA) ===== -->
+  <div class="settings-sheet" id="settingsSheet" hidden aria-hidden="true">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
+      <div class="sheet-head">
+        <div class="sheet-title" data-i18n="settings_title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button" data-i18n="close_btn">Cerrar ✕</button>
+      </div>
+
+      <div class="sheet-body">
+                <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_font_title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button class="btn-ghost" type="button" data-action="font-down" aria-label="Disminuir tamaño de letra">A-</button>
+              <button class="btn-ghost" type="button" data-action="font-up" aria-label="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+        
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_contrast_title">🌓 Contraste</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_motion_title">🪶 Reducir animaciones</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleMotion" data-action="reduce-motion" aria-label="Reducir animaciones">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_line_title">↕️ Interlineado</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleLine" data-action="line-spacing" aria-label="Aumentar interlineado">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+</div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_audio_title">🔊 Sonidos</p>
+          <div class="sheet-actions">
+            <button class="btn-ghost" id="audioToggleSheet" type="button" aria-pressed="false" data-action="audio-toggle" data-i18n="audio_off">
+              Activar sonidos
+            </button>
+          </div>
+          <div class="sheet-volume" style="margin-top:10px">
+            <label for="volumeRangeSheet" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRangeSheet" type="range" min="0" max="100" value="35" data-action="volume" />
+          </div>
+        </div>
+
+        <div class="sheet-row lang-row">
+          <p class="sheet-row-title" data-i18n="sheet_lang_title">🌐 Idioma</p>
+          <div class="sheet-actions">
+            <!-- sin IDs (evitamos duplicados), pero sí data-lang para reutilizar tu i18n -->
+            <button class="btn-chip" type="button" data-lang="es" aria-pressed="true">ES</button>
+            <button class="btn-chip" type="button" data-lang="en" aria-pressed="false">EN</button>
+            <button class="btn-chip" type="button" data-lang="pt" aria-pressed="false">PT</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin:0" data-i18n="sheet_note">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Hero (homogeneizado a emociones.html) ===== -->
+<section class="hero" aria-label="Higiene del sueño — Checklist">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="pill" aria-label="Tipo de recurso">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Checklist interactivo</span>
+      </div>
+
+      <h1 class="hero-title">Higiene del sueño — Checklist</h1>
+
+</div>
+
+    <aside class="hero-side" aria-label="Accesos rápidos">
+      <h3>Accesos</h3>
+      <p>Volver al inicio o a recursos principales.</p>
+      <div class="row">
+        <a href="index.html" data-spa="0">Inicio</a>
+        <a href="emociones.html" data-spa="0">Emociones</a>
+        <a href="juegos.html" data-spa="0">Juegos</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== Audio (podcast) ===== -->
+<section class="section" id="audio">
+  <div class="wrap">
+    <div class="section-card hint-bg">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+          <p class="card-sub">Explico cómo usar el checklist y para qué sirve (duración aprox. 2 minutos).</p>
+        </div>
+        <span class="pill" aria-label="Audio disponible"><span class="dot" aria-hidden="true"></span> Podcast</span>
+      </div>
+
+      <div style="margin-top:12px; display:flex; flex-direction:column; gap:10px;">
+        <audio id="podcastAudio" controls preload="metadata" style="width:100%; border-radius:12px;">
+          <source src="audio/Higiene_del_sueno_Checklist.m4a" type="audio/mp4" />
+          <source src="audio/Higiene_del_sueno_Checklist.m4a" type="audio/x-m4a" />
+          Tu navegador no soporta audio.
+        </audio>
+
+        <div class="btn-row" style="margin-top:2px">
+          <a class="btn-secondary" href="#checklist">Ir al checklist</a>
+          <a class="btn-secondary" href="audio/Higiene_del_sueno_Checklist.m4a" download>Descargar audio</a>
+        </div>
+
+        <div class="note">
+          Tip: si estás usando los controles de volumen del sitio, el audio acompaña el volumen general.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- ===== Main SPA container ===== -->
+  
+  <!-- ===== Main ===== -->
+  <main id="spaMain" class="wrap" aria-label="Contenido principal">
+
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Higiene del sueño — Checklist</h2>
+            <p class="card-sub">Marcá lo que actualmente cumplís. Al final, podés copiar tu resultado.</p>
+          </div>
+          <div class="btn-row" style="justify-content:flex-end; gap:10px">
+            <button class="btn-secondary" id="copyBtn" type="button">Copiar resultado</button>
+            <button class="btn-secondary" id="nextTodoBtn" type="button">Próximo pendiente</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:10px">
+          <strong>Cómo usar:</strong> (1) Marcá lo que ya hacés hoy. (2) Elegí 1–2 cambios para esta semana. (3) Copiá el resultado si querés guardarlo.
+        </div>
+
+        <div class="divider" aria-hidden="true" style="margin:18px 0"></div>
+
+        <!-- Layout 2 columnas (desktop) -->
+        <div class="sleep-grid">
+          <!-- Izquierda: lista -->
+          <div>
+            <div class="sleep-list" id="list" aria-label="Lista de ítems"></div>
+
+            <div class="note" style="margin-top:14px">
+              <strong>Nota:</strong> esta lista es orientativa y no reemplaza una consulta médica. Si el insomnio es severo o persistente, conviene evaluarlo en consulta.
+            </div>
+          </div>
+
+          <!-- Derecha: resumen -->
+          <aside class="sleep-aside" aria-label="Resumen">
+            <div class="section-card" style="padding:16px">
+              <div class="sleep-kpis">
+                <div>
+                  <div class="card-sub" style="margin:0">Cumplimiento</div>
+                  <div class="sleep-big" id="score">0 de 25</div>
+                </div>
+                <div class="sleep-pill" aria-label="Porcentaje">
+                  <span class="dot" aria-hidden="true"></span>
+                  <span id="pct">0%</span>
+                </div>
+              </div>
+
+              <div class="sleep-bar" aria-label="Barra de progreso">
+                <div class="sleep-bar-fill" id="barFill"></div>
+              </div>
+
+              <div class="divider" aria-hidden="true" style="margin:14px 0"></div>
+
+              <div>
+                <div class="card-sub" style="margin:0">Sugerencia rápida</div>
+                <div class="sleep-hint" id="hint">—</div>
+              </div>
+
+              <div class="btn-row" style="margin-top:14px">
+                <button class="btn-secondary" id="checkAllBtn" type="button">Marcar todo</button>
+                <button class="btn-secondary" id="uncheckAllBtn" type="button">Desmarcar todo</button>
+                <button class="btn-secondary" id="resetBtn" type="button" style="width:100%">Reset</button>
+              </div>
+
+              <div class="note" style="margin-top:12px">
+                Tip: objetivo práctico = sumar <strong>1 cambio por semana</strong>.
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <style>
+    /* Alineado al look del index: usa tus tokens visuales y sólo agrega layout específico */
+    .sleep-grid{ display:grid; gap:16px; }
+    @media(min-width: 980px){ .sleep-grid{ grid-template-columns: 1fr 360px; align-items:start; } }
+    .sleep-aside{ position:relative; }
+    @media(min-width: 980px){ .sleep-aside{ position: sticky; top: 92px; } }
+
+    .sleep-kpis{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+    .sleep-big{ font-size:28px; line-height:1.1; font-weight:600; margin-top:6px; color:#0e2239; }
+    .sleep-pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(37,99,235,.10); color:#2563eb; font-weight:700;
+      border: 1px solid rgba(37,99,235,.15);
+      height: fit-content;
+    }
+    .sleep-bar{ height:12px; border-radius:999px; background:#e5e7eb; overflow:hidden; border:1px solid #e2e8f0; margin-top:12px; }
+    .sleep-bar-fill{ height:100%; width:0%; background: rgba(37,99,235,.55); }
+
+    .sleep-hint{ font-size:20px; font-weight:700; color:#0e2239; margin-top:6px; }
+
+    .sleep-item{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:14px 14px; border-radius:18px;
+      border:1px solid #eef2f7;
+      background:#ffffff;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      cursor:pointer;
+      margin-bottom:10px;
+      box-shadow: 0 8px 20px rgba(15,23,42,.06);
+      border-left: 4px solid transparent;
+    }
+    .sleep-item:hover{ transform: translateY(-1px); border-color:#e2e8f0; box-shadow: 0 12px 26px rgba(15,23,42,.08); }
+    .sleep-item.checked{ border-left-color: rgba(37,99,235,.60); }
+    .sleep-item.focus-ring{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+    .sleep-item-title{ font-weight:700; color:#0e2239; }
+    .sleep-item-desc{ margin-top:6px; color:#475569; }
+    .sleep-check{ margin-top:3px; width:18px; height:18px; }
+  </style>
+
+  <script>
+    // ===== Checklist data (25 ítems) =====
+    const items = [
+      { t: "Horario regular", d: "Me acuesto y me levanto a horarios similares, incluso fines de semana." },
+      { t: "Pantallas", d: "Evito pantallas intensas 60–90 min antes de dormir (o uso modo nocturno + brillo bajo)." },
+      { t: "Luz matinal", d: "Tomo luz natural por la mañana (10–20 min) para regular el ritmo circadiano." },
+      { t: "Cama = dormir", d: "Uso la cama solo para dormir o intimidad; no para trabajar o scrollear." },
+      { t: "Si no duermo, me levanto", d: "Si pasan ~20–30 min sin sueño, me levanto y vuelvo cuando aparezca somnolencia." },
+      { t: "Cafeína", d: "Evito cafeína desde media tarde (ideal: después de las 15–16 hs no consumir)." },
+      { t: "Alcohol", d: "Evito alcohol cerca de la hora de dormir (empeora la arquitectura del sueño)." },
+      { t: "Nicotina", d: "Evito nicotina por la noche (estimulante)." },
+      { t: "Cena liviana", d: "Ceno liviano y con tiempo (2–3 h antes de acostarme)." },
+      { t: "Siestas", d: "Si hago siesta, es corta (10–30 min) y no muy tarde." },
+      { t: "Actividad física", d: "Hago actividad física regularmente, idealmente no muy tarde." },
+      { t: "Rutina de desaceleración", d: "Tengo un ritual breve: ducha tibia, lectura suave, respiración, etc." },
+      { t: "Ambiente oscuro", d: "Dormitorio oscuro (o máscara), sin luces directas." },
+      { t: "Silencio/ruido", d: "Ambiente silencioso (o ruido blanco si ayuda)." },
+      { t: "Temperatura", d: "Temperatura fresca/confortable en el dormitorio." },
+      { t: "Despertar nocturno", d: "Si me despierto, evito mirar la hora y vuelvo a una técnica calma." },
+      { t: "Preocupaciones", d: "Anoto preocupaciones/tareas antes de acostarme para “sacarlas” de la cabeza." },
+      { t: "Luz nocturna baja", d: "De noche uso luz tenue y cálida; evito luz blanca intensa." },
+      { t: "Música/sonidos", d: "Uso sonidos suaves si me ayudan, evitando estímulos activantes." },
+      { t: "Sueño suficiente", d: "Priorizo 7–9 h según necesidad, evitando deudas de sueño." },
+      { t: "Regularidad fin de semana", d: "No me desvelo mucho los fines de semana para no “correr” el reloj biológico." },
+      { t: "Estrés", d: "Tengo una técnica breve para estrés (respiración, relajación muscular, mindfulness)." },
+      { t: "Exposición a luz tarde", d: "Evito luz muy intensa tarde/noche (incluye pantallas y lámparas potentes)." },
+      { t: "Medicaciones", d: "No cambio medicación por mi cuenta; consulto si algo afecta el sueño." },
+      { t: "Consulta si persiste", d: "Si el problema dura > 3 meses o es severo, consulto para evaluación." }
+    ];
+
+    const KEY = "sleepChecklist_v1";
+    const listEl = document.getElementById("list");
+    const scoreEl = document.getElementById("score");
+    const pctEl = document.getElementById("pct");
+    const hintEl = document.getElementById("hint");
+    const barFill = document.getElementById("barFill");
+
+    function loadState(){
+      try{ return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+      catch{ return []; }
+    }
+    function saveState(arr){
+      localStorage.setItem(KEY, JSON.stringify(arr));
+    }
+
+    function compute(){
+      const checks = [...document.querySelectorAll('input[type="checkbox"][data-idx]')];
+      const done = checks.filter(c => c.checked).length;
+      const total = checks.length;
+      const pct = total ? Math.round((done/total)*100) : 0;
+
+      scoreEl.textContent = `${done} de ${total}`;
+      pctEl.textContent = `${pct}%`;
+      barFill.style.width = `${pct}%`;
+
+      // Sugerencia rápida simple
+      const suggestions = [
+        { min: 0, max: 20, text: "Empezá por horario + pantallas" },
+        { min: 21, max: 45, text: "Sumá luz matinal + rutina breve" },
+        { min: 46, max: 70, text: "Ajustá cafeína + siestas" },
+        { min: 71, max: 90, text: "Pulí ambiente + técnica de estrés" },
+        { min: 91, max: 100, text: "¡Muy bien! Sostener consistencia" }
+      ];
+      const s = suggestions.find(x => pct >= x.min && pct <= x.max) || suggestions[0];
+      hintEl.textContent = s.text;
+
+      // Persistencia
+      const saved = checks.map(c => c.checked);
+      saveState(saved);
+    }
+
+    function render(){
+      const saved = loadState();
+      listEl.innerHTML = "";
+      items.forEach((it, idx) => {
+        const label = document.createElement("label");
+        label.className = "sleep-item";
+        label.innerHTML = `
+          <input class="sleep-check" type="checkbox" data-idx="${idx}" ${saved[idx] ? "checked" : ""} />
+          <div>
+            <div class="sleep-item-title">${idx+1}. ${it.t}</div>
+            <div class="sleep-item-desc">${it.d}</div>
+          </div>
+        `;
+        if(saved[idx]) label.classList.add("checked");
+        listEl.appendChild(label);
+      });
+
+      listEl.addEventListener("change", (e) => {
+        if(e.target && e.target.matches('input[type="checkbox"][data-idx]')){
+          const card = e.target.closest("label");
+          if(card){
+            if(e.target.checked) card.classList.add("checked");
+            else card.classList.remove("checked");
+          }
+          compute();
+        }
+      });
+
+      compute();
+    }
+
+    function scrollToNextTodo(){
+      const checks = [...document.querySelectorAll('input[type="checkbox"][data-idx]')];
+      const next = checks.find(c => !c.checked);
+      if(!next){ alert("¡Excelente! No hay pendientes ✅"); return; }
+      document.querySelectorAll(".focus-ring").forEach(el => el.classList.remove("focus-ring"));
+      const card = next.closest("label");
+      if(card){
+        card.classList.add("focus-ring");
+        card.scrollIntoView({ behavior:"smooth", block:"center" });
+      }
+    }
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      const checks = [...document.querySelectorAll('input[type="checkbox"][data-idx]')];
+      const done = checks.map((c,i)=> ({ i:i+1, t: items[i].t, ok: c.checked }));
+      const ok = done.filter(x=>x.ok).length;
+      const text = [
+        "Higiene del sueño — Checklist",
+        `Cumplimiento: ${ok} de ${items.length} (${Math.round((ok/items.length)*100)}%)`,
+        "",
+        ...done.map(x => `${x.ok ? "✅" : "⬜"} ${x.i}. ${x.t}`)
+      ].join("\n");
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Resultado copiado ✅");
+      }catch{
+        prompt("Copiá el texto:", text);
+      }
+    });
+
+    document.getElementById("nextTodoBtn").addEventListener("click", scrollToNextTodo);
+    document.getElementById("checkAllBtn").addEventListener("click", () => {
+      document.querySelectorAll('input[type="checkbox"][data-idx]').forEach(c => c.checked = true);
+      document.querySelectorAll(".sleep-item").forEach(el => el.classList.add("checked"));
+      compute();
+    });
+    document.getElementById("uncheckAllBtn").addEventListener("click", () => {
+      document.querySelectorAll('input[type="checkbox"][data-idx]').forEach(c => c.checked = false);
+      document.querySelectorAll(".sleep-item").forEach(el => el.classList.remove("checked"));
+      compute();
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      localStorage.removeItem(KEY);
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
+
+<footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer" data-i18n="map_open">Abrir en Maps</a>
+          <a href="aviso-legal.html" data-spa="1" data-i18n="legal_link">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title" data-i18n="footer_title">Ubicación y contacto</p>
+        <div data-i18n="footer_loc">
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong data-i18n="footer_email">Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="legal" id="legalBlock">
+          <span data-i18n="footer_legal_1">Copyright ©</span> <span id="yearNow"></span>
+          <span data-i18n="footer_legal_2">Todos los derechos reservados.</span><br>
+          <span data-i18n="footer_legal_3">Desarrollado por PETER-SOFT</span>
+          <span data-i18n="footer_legal_4">Año automático.</span><br><br>
+          <span data-i18n="cookies_note">
+            Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JS: GA pageviews helper (requested) ===== -->
+  
+
+  <!-- ===== JS: APP CORE (SPA + Audio + i18n + A11y) ===== -->
+  
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/audio.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+
+<script>
+  // Sync con el control de volumen global si existe (patrón del ecosistema)
+  (function(){
+    const audio = document.getElementById("podcastAudio");
+    const vol = document.getElementById("volumeRange");
+    if(!audio || !vol) return;
+    const apply = ()=> { audio.volume = Math.max(0, Math.min(1, (Number(vol.value)||35)/100)); };
+    vol.addEventListener("input", apply);
+    apply();
+  })();
+</script>
+
+</body>

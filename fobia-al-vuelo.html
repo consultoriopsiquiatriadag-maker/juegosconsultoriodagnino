@@ -1,0 +1,645 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fobia al vuelo (Aerofobia) — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para pacientes sobre fobia al vuelo (aerofobia): qué es, síntomas, factores subyacentes, educación aeronáutica, señales de alarma y un mini ejercicio práctico." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Imagen de portada del tema */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.62) 70%, rgba(14,34,57,.78) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 200px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 700;
+      min-width: 54px;
+      text-align:center;
+    }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    /* Chips “sensación normal” */
+    .chiprow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    .longread{ line-height: 1.65; }
+    .kbd{
+      display:inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      padding:2px 6px;
+      border-radius:6px;
+      border:1px solid rgba(148,163,184,.35);
+      background: rgba(15,30,51,.04);
+      color: #0e2239;
+      font-size: .9em;
+    }
+  
+    /* Audio podcast */
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .audio-player{ width:100%; border-radius: 12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER / TOPBAR (ecosistema) -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Fobia al vuelo (Aerofobia)</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/aerofobia-portada.webp -->
+        <img src="assets/img/aerofobia-portada.webp?v=1" alt="Ilustración representativa de fobia al vuelo" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Fobia al vuelo (Aerofobia)</h1>
+          <p>Guía clara desde la Psiquiatría y la Medicina Aeronáutica: síntomas, por qué pasa, qué sensaciones son normales y un mini ejercicio práctico.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast (NotebookLM) -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Duración aproximada: 4:47. Podés escuchar primero y después leer, o al revés.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata">
+            <source src="audio/No_es_el_avión,_es_tu_ansiedad.m4a" type="audio/mp4" />
+            <source src="audio/No_es_el_avión,_es_tu_ansiedad.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/No_es_el_avión,_es_tu_ansiedad.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+
+        <p class="card-sub" style="margin-top:10px">
+          Si el audio no carga, revisá que el archivo esté en <span class="kbd">/audio/</span> y que el nombre coincida exactamente
+          (incluyendo tildes y comas).
+        </p>
+      </div>
+    </section>
+
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              La fobia al vuelo (aerofobia) es un trastorno de ansiedad donde aparece un miedo intenso, irracional y persistente a viajar en avión.
+              Lo más importante: muchas veces <strong>no es miedo al avión</strong>, sino a las <strong>sensaciones internas</strong> (taquicardia, falta de aire,
+              mareo, pérdida de control) que la ansiedad dispara. El alivio inmediato suele ser <strong>evitar</strong> volar; pero la evitación mantiene el problema a largo plazo.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          “Saber” que el avión es seguro no siempre calma al cuerpo: la ansiedad no razona, reacciona. La buena noticia: se puede entrenar.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Síntomas frecuentes -->
+    <section class="section" id="sintomas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Síntomas más frecuentes</h2>
+            <p class="card-sub">Pueden aparecer días antes del viaje, durante el embarque, despegue, turbulencia o aterrizaje.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Ansiedad anticipatoria</h3>
+            <ul class="card-sub">
+              <li>Miedo días antes del vuelo.</li>
+              <li>Rumiación: “¿y si pasa algo?”</li>
+              <li>Necesidad de controlar (asientos, rutas, clima, noticias).</li>
+              <li>Insomnio previo o irritabilidad.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Síntomas físicos</h3>
+            <ul class="card-sub">
+              <li>Palpitaciones, sudoración, temblores.</li>
+              <li>Mareos, náuseas, molestias gastrointestinales.</li>
+              <li>Sensación de falta de aire (hiperventilación).</li>
+              <li>Tensión muscular, dolor de cabeza.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Síntomas cognitivos/emocionales</h3>
+            <ul class="card-sub">
+              <li>Pensamientos catastróficos (“me va a pasar algo”).</li>
+              <li>Foco excesivo en ruidos, movimientos o anuncios.</li>
+              <li>Sensación de pérdida de control.</li>
+              <li>Vergüenza por “no poder”.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Evitación</h3>
+            <ul class="card-sub">
+              <li>Evitar viajar en avión.</li>
+              <li>Elegir rutas interminables por tierra.</li>
+              <li>Cancelar viajes laborales/personales.</li>
+              <li>Evitar hablar del tema o ver contenido aeronáutico.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Causas y factores -->
+    <section class="section" id="causas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Causas y factores subyacentes</h2>
+            <p class="card-sub">
+              En muchos casos, el miedo a volar es la “punta del iceberg”. Puede reflejar estrés personal, traumas previos, crisis recientes o
+              conflictos emocionales. También puede coexistir con otros miedos: alturas, encierro, agorafobia, miedo a perder el control.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          A veces la fobia aparece “sin trauma evidente”: el sistema nervioso aprende a asociar el vuelo con alarma por acumulación de estrés, pérdidas o cambios vitales.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Conocer cómo funciona un avión -->
+    <section class="section" id="como-funciona-avion">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Conocer cómo funciona un avión ayuda</h2>
+            <p class="card-sub">
+              Muchas veces el temor nace en la falta de conocimiento. Entender lo básico reduce incertidumbre y baja la interpretación catastrófica.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Sustentación (la “física” del vuelo)</h3>
+            <p class="card-sub">
+              Un avión no vuela “por milagro”: las alas generan sustentación al desplazarse por el aire.
+              El avión se apoya en masas de aire; tiende naturalmente a sostenerse, no a “caer”.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Sensaciones típicas tras el despegue</h3>
+            <p class="card-sub">
+              Es común sentir una “caída” breve: el piloto ajusta potencia/configuración para pasar a un ascenso estable y eficiente.
+              Es un ajuste esperado, no un error.
+            </p>
+
+            <div class="chiprow">
+              <span class="chip">🔊 cambios de ruido</span>
+              <span class="chip">📉 sensación de “baja”</span>
+              <span class="chip">⚙️ reconfiguración</span>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Turbulencia</h3>
+            <p class="card-sub">
+              La turbulencia es “aire en movimiento”. Puede sentirse incómoda, pero no equivale a peligro.
+              La estructura está diseñada para tolerarla con márgenes amplios.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Aterrizaje</h3>
+            <p class="card-sub">
+              Disminuir velocidad puede generar balanceos o inclinaciones leves. Son ajustes normales para alinearse y tocar pista de forma segura.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          “Movimientos” no es sinónimo de “peligro”. Muchas alarmas vienen de interpretar sensaciones normales como señales catastróficas.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Terapias complementarias -->
+    <section class="section" id="experiencia-aeronautica">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Terapias complementarias desde la experiencia directa</h2>
+            <p class="card-sub">
+              En algunos casos ayuda el contacto progresivo con el mundo aeronáutico (en entornos controlados).
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Simuladores de vuelo (como entrenamiento de pilotos).</li>
+          <li>Volar como pasajero en aeronaves livianas (acompañado por el piloto).</li>
+          <li>Ver preparación del vuelo y medidas de seguridad en cada etapa.</li>
+          <li>Hacer preguntas técnicas para “desactivar” mitos típicos.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Esto se decide caso a caso: no es “tirarte al agua”, es exposición gradual con sentido.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Tratamiento -->
+    <section class="section" id="tratamiento">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo podemos ayudarte</h2>
+            <p class="card-sub">
+              La combinación de Psiquiatría y Medicina Aeronáutica permite un abordaje especializado: emocional + técnico, con herramientas prácticas.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">✅ Terapia Cognitivo-Conductual (TCC)</h3>
+            <p class="card-sub">
+              Para identificar pensamientos automáticos (“va a pasar algo”), reencuadrar interpretaciones y entrenar habilidades de regulación.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">✅ Exposición gradual</h3>
+            <p class="card-sub">
+              De menor a mayor: videos, aeropuerto, embarque, simulación, vuelo corto. El objetivo es que el cuerpo aprenda: “puedo”.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">✅ Tratamiento farmacológico puntual</h3>
+            <p class="card-sub">
+              Cuando se necesita, se planifica para disminuir síntomas agudos (no como “muleta eterna”, sino como herramienta estratégica).
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">✅ Educación aeronáutica</h3>
+            <p class="card-sub">
+              Explicaciones simples sobre despegue, turbulencia, ruidos y aterrizaje para bajar incertidumbre y sensación de descontrol.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          El primer paso es reconocer el problema. No es debilidad: es un sistema de alarma entrenado de forma equivocada.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Conviene pedir ayuda profesional sin demora si aparece alguno de estos puntos:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Ataques de pánico repetidos o miedo intenso que ya condiciona decisiones importantes.</li>
+          <li>Evitación marcada que limita trabajo, estudio o vínculos.</li>
+          <li>Consumo de alcohol/medicación sin control para poder viajar.</li>
+          <li>Insomnio grave o irritabilidad sostenida por el viaje.</li>
+          <li>Ideas de hacerse daño, desesperanza intensa o pérdida de control.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si estás en una emergencia o riesgo inmediato, buscá asistencia local urgente.
+        </div>
+      </div>
+    </section>
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mini ejercicio (1 minuto)</h2>
+            <p class="card-sub">
+              Objetivo: ordenar el malestar en números y reducir 1 punto con respiración + reencuadre técnico.
+            </p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="note" style="margin:0">
+            <strong>Pasos (60–90 s):</strong><br/>
+            1) Elegí el momento del vuelo que más te activa (ej: <span class="kbd">despegue</span>, <span class="kbd">turbulencia</span>, <span class="kbd">aterrizaje</span>).<br/>
+            2) Marcá malestar “antes” (0–10).<br/>
+            3) Hacé 3 respiraciones lentas (exhalación más larga).<br/>
+            4) Decí una frase de reencuadre: <em>“Esto es incómodo, pero es normal y seguro. Mi cuerpo está en alarma.”</em><br/>
+            5) Marcá “después” (0–10) y copiá el resumen.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Malestar ANTES (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="6" />
+            <div class="pill-val" id="beforeVal">6</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Malestar DESPUÉS (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="momentInput" style="font-weight:600; display:block; margin-bottom:6px;">Momento que me activa (opcional)</label>
+            <input id="momentInput" class="input" type="text" placeholder="Ej: despegue / turbulencia / aterrizaje / embarque..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Nota breve (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: Hoy pensé ____; hice 3 respiraciones; recordé que ____; bajé a ____/10."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o enviarlo a tu terapeuta/médico.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. (Texto extenso, con muy poco resumen.)</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            La aerofobia es un cuadro de ansiedad donde el vuelo se transforma en disparador de alarma. A veces comienza por un episodio puntual
+            (turbulencia fuerte, noticia de accidente, experiencia desagradable), pero muchas otras aparece en momentos de estrés general: cambios,
+            duelos, crisis vitales, sobrecarga laboral o agotamiento. En esas circunstancias, el sistema nervioso está “más sensible” y busca un objeto
+            donde volcar el miedo. El avión, por su componente de “pérdida de control” (no manejar, no poder bajarse, no ver el camino) es un disparador típico.
+          </p>
+
+          <p>
+            La persona puede entender racionalmente que volar es seguro, pero el cuerpo dispara síntomas como taquicardia, falta de aire, mareo, sudoración
+            y pensamientos catastróficos. No es debilidad: es una alarma activada de forma equivocada. Evitar el vuelo calma en el momento, pero refuerza
+            el circuito: el cerebro aprende “escapar fue la solución”. Por eso, el tratamiento eficaz combina educación, regulación fisiológica y exposición gradual.
+          </p>
+
+          <p>
+            Una parte importante del abordaje es diferenciar sensaciones normales del vuelo de señales de peligro. Cambios de ruido tras el despegue,
+            balanceos al aterrizar o turbulencia suelen ser interpretados como amenaza, cuando en realidad son ajustes esperables dentro de una operación normal.
+            Comprender lo básico de la sustentación y la aerodinámica reduce incertidumbre. En paralelo, se trabaja el miedo a las sensaciones internas:
+            aprender que la ansiedad es intensa pero no peligrosa, y que puede atravesarse sin escapar.
+          </p>
+
+          <p>
+            En psicoterapia, la TCC suele enfocarse en pensamientos automáticos (“me voy a desmayar”, “va a caer”), en la conducta de evitación y en habilidades
+            de regulación. La exposición gradual es clave: acercarse al estímulo de forma progresiva y controlada, entrenando al cuerpo a tolerar la activación.
+            En algunos casos se planifica medicación puntual, con criterio clínico, como herramienta estratégica para momentos específicos, no como única solución.
+          </p>
+
+          <p>
+            Superar la aerofobia no es “valentía extrema”. Es reentrenar un sistema nervioso que aprendió a disparar alarma en el contexto del vuelo.
+            Con un plan y acompañamiento, muchas personas recuperan la libertad de viajar y disfrutar experiencias personales y laborales.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés un abordaje personalizado?</h3>
+            <p class="card-sub">
+              Podemos armar un plan con psicoeducación + exposición gradual + herramientas prácticas (y medicación puntual si corresponde).
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS del ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange = document.getElementById("beforeRange");
+      const afterRange  = document.getElementById("afterRange");
+      const beforeVal   = document.getElementById("beforeVal");
+      const afterVal    = document.getElementById("afterVal");
+      const momentInput = document.getElementById("momentInput");
+      const noteInput   = document.getElementById("noteInput");
+      const btnCopy     = document.getElementById("btnCopy");
+      const btnReset    = document.getElementById("btnReset");
+      const copyOk      = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const moment = (momentInput.value || "").trim();
+        const note = (noteInput.value || "").trim();
+
+        const txt =
+          `Aerofobia — Momento activador: ${moment || "—"} | Antes: ${beforeRange.value}/10 | Después: ${afterRange.value}/10 | Fecha/hora: ${nowStr()} | Nota: ${note || "—"}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value = 6;
+        afterRange.value = 5;
+        momentInput.value = "";
+        noteInput.value = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

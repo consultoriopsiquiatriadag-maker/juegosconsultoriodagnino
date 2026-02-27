@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 3 · Atención Aeronáutica | Consultorio Dr. Dagnino</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#f8fafc',
+            'inst-gray': '#64748b'
+          },
+          fontFamily: { 'sans': ['Inter','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
+    @media (prefers-reduced-motion: reduce){
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER -->
+  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="leading-tight">
+          <p class="text-sm text-inst-gray font-medium">
+            Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino
+          </p>
+          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Juego 3</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="juegos.html"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          ← Volver
+        </a>
+
+        <!-- Audio controls -->
+        <button id="audioToggle"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
+          aria-pressed="true">
+          🔊 Audio activo
+        </button>
+
+        <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
+          <span class="text-xs text-inst-gray">Vol</span>
+          <input id="audioVolume" type="range" min="0" max="100" value="25" class="w-28">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-4xl font-light mb-3">Juego 3 · Atención Aeronáutica</h1>
+        <p class="text-white/80 leading-relaxed">
+          Aparecen palabras. Elegí si pertenece a la aviación o no. Es un juego simple, breve y sin presión.
+          Si te equivocás, no pasa nada: seguí con la siguiente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+    <div class="grid lg:grid-cols-12 gap-6">
+
+      <!-- Panel -->
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+        <h2 class="text-xl font-semibold mb-2">Panel</h2>
+        <p class="text-inst-gray text-sm leading-relaxed mb-5">
+          Objetivo: entrenar atención y discriminación simple. Duración sugerida: 1–3 minutos.
+        </p>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Ronda</p>
+            <p class="text-2xl font-semibold mt-1" id="roundN">1</p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Ítem</p>
+            <p class="text-2xl font-semibold mt-1"><span id="idx">0</span>/<span id="total">12</span></p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Aciertos</p>
+            <p class="text-2xl font-semibold mt-1" id="hits">0</p>
+          </div>
+          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
+            <p class="text-xs text-inst-gray">Errores</p>
+            <p class="text-2xl font-semibold mt-1" id="miss">0</p>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-3">
+          <label class="block">
+            <span class="text-sm text-inst-gray font-medium">Cantidad de ítems</span>
+            <select id="length"
+              class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-inst-blue/30">
+              <option value="8">Corta (8)</option>
+              <option value="12" selected>Estándar (12)</option>
+              <option value="16">Larga (16)</option>
+            </select>
+          </label>
+
+          <button id="start"
+            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95">
+            Iniciar ronda
+          </button>
+
+          <button id="skip"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            disabled>
+            Pasar palabra
+          </button>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-5">
+          <h3 class="font-semibold mb-2">Sugerencias</h3>
+          <ul class="list-disc pl-5 text-inst-gray text-sm space-y-1.5">
+            <li>Elegí una respuesta y seguí: no busques “perfección”.</li>
+            <li>Si te genera ansiedad, usá “Corta (8)”.</li>
+            <li>Podés hacerlo 1–2 veces por semana.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Juego -->
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div>
+            <p class="text-sm text-inst-gray">Estado</p>
+            <p class="text-lg font-semibold" id="state">Listo</p>
+          </div>
+
+          <div class="w-full sm:w-72">
+            <div class="h-2 rounded-full bg-inst-light border border-gray-100 overflow-hidden">
+              <div id="bar" class="h-full bg-inst-blue" style="width:0%"></div>
+            </div>
+            <p class="text-xs text-inst-gray mt-2">Progreso de la ronda</p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-100 bg-inst-light p-6 md:p-8 text-center">
+          <p class="text-sm text-inst-gray mb-2">Palabra</p>
+          <div class="text-3xl md:text-4xl font-light tracking-tight" id="word">
+            Presioná “Iniciar ronda”
+          </div>
+          <p class="text-xs text-inst-gray mt-3" id="hint">
+            Elegí: “Aviación” o “No aviación”.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 mt-6">
+          <button id="btnAero"
+            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30"
+            disabled>
+            ✈️ Aviación
+          </button>
+
+          <button id="btnNo"
+            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30"
+            disabled>
+            🧺 No aviación
+          </button>
+        </div>
+
+        <div class="mt-5 rounded-2xl border border-gray-100 bg-white p-4">
+          <p class="text-sm text-inst-gray">Mensaje</p>
+          <p class="text-base font-semibold mt-1" id="feedback">—</p>
+        </div>
+
+        <div id="finish" class="hidden mt-6 rounded-2xl border border-gray-100 bg-inst-light p-6">
+          <h3 class="text-lg font-semibold mb-2">Ronda finalizada ✅</h3>
+          <p class="text-inst-gray text-sm mb-4" id="summary"></p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button id="again"
+              class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95">
+              Nueva ronda
+            </button>
+            <a href="juegos.html"
+              class="w-full sm:w-auto rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-5 py-2.5 hover:bg-white text-center">
+              Volver a juegos
+            </a>
+          </div>
+        </div>
+
+        <p class="text-xs text-inst-gray mt-6">
+          Este recurso es de estimulación cognitiva general y no constituye evaluación diagnóstica.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="font-semibold">Dr. Dagnino</p>
+          <p class="text-white/80 text-sm">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
+          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com" class="underline hover:text-white">consultoriopsiquiatriadag@gmail.com</a>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com" class="underline hover:text-white">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3 text-sm text-white/80">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9bNDEo9" target="_blank" rel="noopener" class="underline hover:text-white">Ubicación (Maps)</a>
+          <a href="aviso-legal.html" class="underline hover:text-white">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-8 pt-4 text-center text-xs text-white/60">
+        Copyright © <span id="year"></span> Todos los derechos reservados ·
+        Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AUDIOS -->
+  <audio id="audioAirportChime" preload="auto">
+    <source src="audio/airport_chime.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="audioWelcomeVoice" preload="auto">
+    <source src="audio/welcome_flight_dagnino.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="audioPremio" preload="auto">
+    <source src="audio/premio_excelente.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    (() => {
+      // ===== AUDIO MANAGER (autocontenido) =====
+      const audioToggle = document.getElementById("audioToggle");
+      const audioVolume = document.getElementById("audioVolume");
+
+      let audioEnabled = true;
+
+      function setAudioUI(){
+        audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+        audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+      }
+
+      function getVol(){
+        const v = Number(audioVolume?.value ?? 25);
+        const vol = Math.max(0, Math.min(100, v)) / 100;
+        return isFinite(vol) ? vol : 0.25;
+      }
+
+      async function playAudioEl(el){
+        if (!audioEnabled || !el) return;
+        el.volume = getVol();
+        try{
+          el.currentTime = 0;
+          await el.play();
+        }catch{
+          // si el navegador bloquea, no rompemos el juego
+        }
+      }
+
+      audioToggle.addEventListener("click", () => {
+        audioEnabled = !audioEnabled;
+        setAudioUI();
+      });
+
+      audioVolume?.addEventListener("input", () => {
+        // no hace falta nada extra, se usa en cada play
+      });
+
+      setAudioUI();
+
+      // ===== GAME DATA =====
+      const BANK = [
+        { t:"Avión", a:true }, { t:"Ala", a:true }, { t:"Pista", a:true }, { t:"Torre", a:true },
+        { t:"Cabina", a:true }, { t:"Despegue", a:true }, { t:"Aterrizaje", a:true }, { t:"Pasajero", a:true },
+        { t:"Ventana", a:true }, { t:"Cinturón", a:true }, { t:"Embarque", a:true }, { t:"Equipaje", a:true },
+        { t:"Turbina", a:true }, { t:"Helicóptero", a:true }, { t:"Aeropuerto", a:true }, { t:"Hélice", a:true },
+        { t:"Azafata", a:true }, { t:"Piloto", a:true }, { t:"Control", a:true }, { t:"Hangar", a:true },
+
+        { t:"Heladera", a:false }, { t:"Bicicleta", a:false }, { t:"Paraguas", a:false }, { t:"Sartén", a:false },
+        { t:"Zapato", a:false }, { t:"Cuchara", a:false }, { t:"Ascensor", a:false }, { t:"Peluche", a:false },
+        { t:"Lámpara", a:false }, { t:"Almohada", a:false }, { t:"Campera", a:false }, { t:"Cepillo", a:false },
+        { t:"Mochila", a:false }, { t:"Planta", a:false }, { t:"Martillo", a:false }, { t:"Televisor", a:false },
+        { t:"Guitarra", a:false }, { t:"Silla", a:false }, { t:"Termo", a:false }, { t:"Cuaderno", a:false },
+      ];
+
+      // ===== ELEMENTS =====
+      const elRoundN = document.getElementById("roundN");
+      const elIdx = document.getElementById("idx");
+      const elTotal = document.getElementById("total");
+      const elHits = document.getElementById("hits");
+      const elMiss = document.getElementById("miss");
+      const elState = document.getElementById("state");
+      const elWord = document.getElementById("word");
+      const elHint = document.getElementById("hint");
+      const elBar = document.getElementById("bar");
+      const elFeedback = document.getElementById("feedback");
+
+      const selLen = document.getElementById("length");
+      const btnStart = document.getElementById("start");
+      const btnSkip = document.getElementById("skip");
+      const btnAero = document.getElementById("btnAero");
+      const btnNo = document.getElementById("btnNo");
+
+      const boxFinish = document.getElementById("finish");
+      const elSummary = document.getElementById("summary");
+      const btnAgain = document.getElementById("again");
+
+      // Audios
+      const audioChime = document.getElementById("audioAirportChime");
+      const audioVoice = document.getElementById("audioWelcomeVoice");
+      const audioPremio = document.getElementById("audioPremio");
+
+      // ===== STATE =====
+      let round = 1;
+      let items = [];
+      let i = 0;
+      let hits = 0;
+      let miss = 0;
+      let running = false;
+      let welcomePlayedThisRound = false;
+
+      function shuffle(arr){
+        const a = arr.slice();
+        for(let k=a.length-1;k>0;k--){
+          const j = Math.floor(Math.random()*(k+1));
+          [a[k],a[j]] = [a[j],a[k]];
+        }
+        return a;
+      }
+
+      function setEnabled(on){
+        btnSkip.disabled = !on;
+        btnAero.disabled = !on;
+        btnNo.disabled = !on;
+      }
+
+      function render(){
+        elRoundN.textContent = String(round);
+        elHits.textContent = String(hits);
+        elMiss.textContent = String(miss);
+        elTotal.textContent = String(items.length);
+        elIdx.textContent = String(Math.min(i, items.length));
+        const pct = items.length ? (i / items.length) * 100 : 0;
+        elBar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+      }
+
+      function showItem(){
+        if(i >= items.length){
+          finish();
+          return;
+        }
+        const it = items[i];
+        elWord.textContent = it.t;
+        elHint.textContent = "Elegí: “Aviación” o “No aviación”.";
+        elState.textContent = "En curso";
+        render();
+      }
+
+      async function playWelcomeSequence(){
+        if (welcomePlayedThisRound) return;
+        welcomePlayedThisRound = true;
+
+        await playAudioEl(audioChime);
+        setTimeout(() => { playAudioEl(audioVoice); }, 1200); // ajustable
+      }
+
+      function playPrizeSound(){
+        playAudioEl(audioPremio);
+      }
+
+      function startRound(){
+        const n = Number(selLen.value) || 12;
+
+        // Bienvenida: se dispara con el click del usuario (permite audio en móvil)
+        playWelcomeSequence();
+
+        items = shuffle(BANK).slice(0, n);
+        i = 0;
+        hits = 0;
+        miss = 0;
+        running = true;
+
+        boxFinish.classList.add("hidden");
+        elFeedback.textContent = "—";
+        setEnabled(true);
+        btnStart.textContent = "Reiniciar ronda";
+
+        showItem();
+      }
+
+      function gentleFeedback(ok, it){
+        if(ok){
+          elFeedback.textContent = "✅ Correcto. Seguimos.";
+        } else {
+          elFeedback.textContent = `🙂 Casi. “${it.t}” se considera ${it.a ? "aviación" : "no aviación"}.`;
+        }
+      }
+
+      function answer(isAero){
+        if(!running) return;
+        const it = items[i];
+        const ok = (isAero === it.a);
+        if(ok) hits++; else miss++;
+        gentleFeedback(ok, it);
+        i++;
+        setTimeout(showItem, 280);
+        render();
+      }
+
+      function skip(){
+        if(!running) return;
+        const it = items[i];
+        elFeedback.textContent = `Pasada: “${it.t}”.`;
+        i++;
+        setTimeout(showItem, 180);
+        render();
+      }
+
+      function finish(){
+        running = false;
+        setEnabled(false);
+
+        // Premio al finalizar
+        playPrizeSound();
+
+        elState.textContent = "Finalizado ✅";
+        elWord.textContent = "Ronda terminada";
+        elHint.textContent = "Buen trabajo. Si querés, podés hacer otra ronda.";
+        elBar.style.width = "100%";
+
+        const total = items.length || 0;
+        const acc = total ? Math.round((hits/total)*100) : 0;
+
+        elSummary.textContent =
+          `Resultados: ${hits} aciertos, ${miss} errores. Precisión aproximada: ${acc}%. ` +
+          `Si te sentiste cansado/a, lo ideal es dejarlo acá y volver otro día.`;
+
+        boxFinish.classList.remove("hidden");
+
+        round++;
+        welcomePlayedThisRound = false;
+        btnStart.textContent = "Iniciar ronda";
+        render();
+      }
+
+      // ===== EVENTS =====
+      btnStart.addEventListener("click", startRound);
+      btnSkip.addEventListener("click", skip);
+      btnAero.addEventListener("click", () => answer(true));
+      btnNo.addEventListener("click", () => answer(false));
+      btnAgain.addEventListener("click", startRound);
+
+      window.addEventListener("keydown", (e) => {
+        if(!running) return;
+        const k = e.key.toLowerCase();
+        if(k === "a") answer(true);
+        if(k === "n") answer(false);
+        if(k === "s") skip();
+      });
+
+      render();
+      setEnabled(false);
+    })();
+  </script>
+</body>
+</html>

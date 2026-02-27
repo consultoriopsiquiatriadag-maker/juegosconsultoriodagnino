@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 16 · Ruta de vuelo — Sala de espera virtual</title>
+  <meta name="description" content="Memoria visuoespacial: observá la secuencia de aeropuertos iluminados y repetila en el mismo orden." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .topbar {
+      background: var(--dark);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .topbar-brand { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .topbar-sub { font-size: 12px; opacity: .8; }
+    .btn-back {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.25); }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover:not(:disabled) { opacity: .88; }
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--dark);
+    }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg); }
+
+    /* STATUS BAR */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      background: rgba(14,108,196,.12);
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-muted {
+      background: rgba(14,34,57,.07);
+      color: var(--muted);
+    }
+
+    /* MUSIC TOGGLE */
+    .music-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(14,34,57,.06);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--muted);
+      transition: background .2s;
+    }
+    .music-btn:hover { background: rgba(14,34,57,.10); }
+    .music-btn.active { color: var(--blue); border-color: rgba(14,108,196,.3); }
+
+    /* GRID */
+    .airport-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .airport-btn {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s, border-color .2s, transform .15s, box-shadow .2s;
+      padding: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .airport-btn:hover:not(:disabled) {
+      border-color: var(--blue);
+      background: rgba(14,108,196,.05);
+    }
+    .airport-btn:active:not(:disabled) { transform: scale(.95); }
+    .airport-btn:disabled { cursor: not-allowed; }
+
+    .airport-code {
+      font-size: clamp(15px, 3.5vw, 20px);
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: .04em;
+    }
+    .airport-city {
+      font-size: clamp(9px, 2vw, 11px);
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* States */
+    .airport-btn.lit {
+      background: #0e6cc4;
+      border-color: #0e6cc4;
+      box-shadow: 0 0 0 4px rgba(14,108,196,.3);
+    }
+    .airport-btn.lit .airport-code { color: #fff; }
+    .airport-btn.lit .airport-city { color: rgba(255,255,255,.8); }
+
+    .airport-btn.correct {
+      background: #d1fae5;
+      border-color: #10b981;
+    }
+    .airport-btn.correct .airport-code { color: #065f46; }
+
+    .airport-btn.wrong {
+      background: #fee2e2;
+      border-color: #ef4444;
+    }
+    .airport-btn.wrong .airport-code { color: #991b1b; }
+
+    .airport-btn.hint {
+      background: #fef3c7;
+      border-color: #f59e0b;
+    }
+    .airport-btn.hint .airport-code { color: #92400e; }
+
+    /* INSTRUCTION SCREEN */
+    #screen-intro .intro-icon {
+      font-size: 48px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    #screen-intro ul {
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    /* RESULT SCREEN */
+    .result-icon { font-size: 64px; text-align: center; margin-bottom: 12px; }
+    .result-title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+    .result-sub { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+    .result-score {
+      background: rgba(14,108,196,.08);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .result-score .score-num { font-size: 42px; font-weight: 900; color: var(--blue); }
+    .result-score .score-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+    /* SCREENS */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* MESSAGE */
+    .msg-box {
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      margin: 12px 0;
+      min-height: 44px;
+    }
+    .msg-box.success { background: #d1fae5; color: #065f46; }
+    .msg-box.error { background: #fee2e2; color: #991b1b; }
+    .msg-box.info { background: rgba(14,108,196,.10); color: var(--blue); }
+    .msg-box.hidden { visibility: hidden; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="topbar" role="banner">
+  <div>
+    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
+    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+  </div>
+  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+</header>
+
+<main>
+  <!-- INTRO SCREEN -->
+  <div id="screen-intro" class="screen active card">
+    <div class="intro-icon" aria-hidden="true">✈️</div>
+    <h1>Ruta de vuelo</h1>
+    <p class="subtitle">Memoria visuoespacial — Juego 16</p>
+    <ul>
+      <li>El juego iluminará aeropuertos en secuencia.</li>
+      <li>Memorizá el orden y repetilo tocando los aeropuertos.</li>
+      <li>Comenzás con 3 aeropuertos. Cada acierto suma uno más.</li>
+    </ul>
+    <div style="display:flex; justify-content:center;">
+      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar juego">Comenzar</button>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="screen-game" class="screen">
+    <div class="status-bar">
+      <span class="badge" id="level-badge">Secuencia: 3</span>
+      <span class="badge badge-muted" id="phase-badge">Observá</span>
+      <button class="music-btn" id="music-toggle" aria-label="Activar música de fondo" title="Música binaural suave">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+        Música: OFF
+      </button>
+    </div>
+
+    <div class="airport-grid" id="airport-grid" role="group" aria-label="Grid de aeropuertos"></div>
+
+    <div class="msg-box hidden" id="msg-box" role="status" aria-live="polite"></div>
+
+    <div id="retry-controls" style="display:none; text-align:center; margin-top:12px;">
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-retry-same" aria-label="Reintentar el mismo nivel">Reintentar nivel</button>
+        <button class="btn btn-secondary" id="btn-retry-down" aria-label="Bajar un nivel">Bajar un nivel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="screen-result" class="screen card">
+    <div class="result-icon" aria-hidden="true" id="result-icon">🏆</div>
+    <div class="result-title" id="result-title">¡Excelente!</div>
+    <div class="result-sub" id="result-sub">Completaste el desafío</div>
+    <div class="result-score">
+      <div class="score-num" id="score-num">6</div>
+      <div class="score-label">aeropuertos en secuencia máxima</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-play-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+  </div>
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const AIRPORTS = [
+    { code: 'EZE', city: 'Buenos Aires' },
+    { code: 'GRU', city: 'São Paulo' },
+    { code: 'SCL', city: 'Santiago' },
+    { code: 'BOG', city: 'Bogotá' },
+    { code: 'LIM', city: 'Lima' },
+    { code: 'MIA', city: 'Miami' },
+    { code: 'MAD', city: 'Madrid' },
+    { code: 'CDG', city: 'París' },
+    { code: 'JFK', city: 'Nueva York' }
+  ];
+
+  let sequence = [];
+  let userInput = [];
+  let currentLevel = 3;
+  let maxLevel = 3;
+  let phase = 'watch'; // 'watch' | 'input' | 'feedback'
+  let audioCtx = null;
+  let musicNode = null;
+  let musicOn = false;
+
+  // DOM refs
+  const screenIntro = document.getElementById('screen-intro');
+  const screenGame = document.getElementById('screen-game');
+  const screenResult = document.getElementById('screen-result');
+  const grid = document.getElementById('airport-grid');
+  const levelBadge = document.getElementById('level-badge');
+  const phaseBadge = document.getElementById('phase-badge');
+  const msgBox = document.getElementById('msg-box');
+  const retryControls = document.getElementById('retry-controls');
+  const musicToggle = document.getElementById('music-toggle');
+
+  // Build grid
+  function buildGrid() {
+    grid.innerHTML = '';
+    AIRPORTS.forEach((ap, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'airport-btn';
+      btn.dataset.idx = idx;
+      btn.setAttribute('aria-label', `Aeropuerto ${ap.code} — ${ap.city}`);
+      btn.innerHTML = `<span class="airport-code">${ap.code}</span><span class="airport-city">${ap.city}</span>`;
+      btn.addEventListener('click', () => onAirportClick(idx));
+      grid.appendChild(btn);
+    });
+  }
+
+  function getBtn(idx) {
+    return grid.querySelector(`[data-idx="${idx}"]`);
+  }
+
+  function clearAllStates() {
+    grid.querySelectorAll('.airport-btn').forEach(b => {
+      b.classList.remove('lit', 'correct', 'wrong', 'hint');
+    });
+  }
+
+  // Generate sequence
+  function generateSequence(len) {
+    const seq = [];
+    let prev = -1;
+    for (let i = 0; i < len; i++) {
+      let next;
+      do { next = Math.floor(Math.random() * 9); } while (next === prev);
+      seq.push(next);
+      prev = next;
+    }
+    return seq;
+  }
+
+  // Play sequence animation
+  async function playSequence(seq) {
+    setPhase('watch');
+    disableGrid(true);
+    clearAllStates();
+    await delay(600);
+    for (let i = 0; i < seq.length; i++) {
+      const btn = getBtn(seq[i]);
+      btn.classList.add('lit');
+      await delay(700);
+      btn.classList.remove('lit');
+      await delay(200);
+    }
+    await delay(300);
+    setPhase('input');
+    disableGrid(false);
+    showMsg('¡Tu turno! Tocá los aeropuertos en el mismo orden.', 'info');
+  }
+
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function disableGrid(disabled) {
+    grid.querySelectorAll('.airport-btn').forEach(b => { b.disabled = disabled; });
+  }
+
+  function setPhase(p) {
+    phase = p;
+    const labels = { watch: 'Observá', input: 'Tu turno', feedback: '' };
+    phaseBadge.textContent = labels[p] || '';
+  }
+
+  function showMsg(text, type) {
+    msgBox.textContent = text;
+    msgBox.className = `msg-box ${type}`;
+  }
+
+  function hideMsg() {
+    msgBox.textContent = '';
+    msgBox.className = 'msg-box hidden';
+  }
+
+  async function onAirportClick(idx) {
+    if (phase !== 'input') return;
+
+    const pos = userInput.length;
+    const btn = getBtn(idx);
+    userInput.push(idx);
+
+    if (idx === sequence[pos]) {
+      btn.classList.add('correct');
+      await delay(350);
+      btn.classList.remove('correct');
+
+      if (userInput.length === sequence.length) {
+        // Full sequence correct!
+        setPhase('feedback');
+        disableGrid(true);
+        showMsg('¡Secuencia correcta! 🎉', 'success');
+        if (currentLevel > maxLevel) maxLevel = currentLevel;
+        await delay(1200);
+
+        if (currentLevel >= 9) {
+          // Won the game!
+          showResult();
+          return;
+        }
+        currentLevel++;
+        levelBadge.textContent = `Secuencia: ${currentLevel}`;
+        sequence = generateSequence(currentLevel);
+        userInput = [];
+        retryControls.style.display = 'none';
+        hideMsg();
+        await delay(400);
+        playSequence(sequence);
+      }
+    } else {
+      // Wrong!
+      setPhase('feedback');
+      disableGrid(true);
+      btn.classList.add('wrong');
+      showMsg('Secuencia incorrecta. Así era la ruta correcta:', 'error');
+
+      // Show correct sequence as hint
+      await delay(600);
+      clearAllStates();
+      for (let i = 0; i < sequence.length; i++) {
+        getBtn(sequence[i]).classList.add('hint');
+        await delay(500);
+      }
+      await delay(500);
+
+      if (currentLevel > maxLevel) maxLevel = currentLevel;
+      retryControls.style.display = 'block';
+    }
+  }
+
+  function startLevel(lvl) {
+    currentLevel = lvl;
+    userInput = [];
+    levelBadge.textContent = `Secuencia: ${currentLevel}`;
+    retryControls.style.display = 'none';
+    hideMsg();
+    clearAllStates();
+    sequence = generateSequence(currentLevel);
+    playSequence(sequence);
+  }
+
+  function showResult() {
+    showScreen(screenResult);
+    const icon = document.getElementById('result-icon');
+    const title = document.getElementById('result-title');
+    const sub = document.getElementById('result-sub');
+    const scoreNum = document.getElementById('score-num');
+
+    scoreNum.textContent = maxLevel;
+    if (maxLevel >= 9) {
+      icon.textContent = '🏆';
+      title.textContent = '¡Increíble! ¡Ruta perfecta!';
+      sub.textContent = 'Dominaste las 9 escalas.';
+    } else if (maxLevel >= 6) {
+      icon.textContent = '🌟';
+      title.textContent = '¡Muy bien hecho!';
+      sub.textContent = `¡Llegaste a secuencias de ${maxLevel} aeropuertos!`;
+    } else if (maxLevel >= 4) {
+      icon.textContent = '✈️';
+      title.textContent = 'Buen vuelo';
+      sub.textContent = `Alcanzaste secuencias de ${maxLevel} aeropuertos.`;
+    } else {
+      icon.textContent = '🛫';
+      title.textContent = 'Comienzo del viaje';
+      sub.textContent = `Practicaste con secuencias de ${maxLevel} aeropuertos.`;
+    }
+  }
+
+  function showScreen(el) {
+    [screenIntro, screenGame, screenResult].forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Music (binaural-style gentle oscillator at ~40Hz)
+  function toggleMusic() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (musicOn) {
+      if (musicNode) { try { musicNode.stop(); } catch(e) {} musicNode = null; }
+      musicOn = false;
+      musicToggle.textContent = '';
+      musicToggle.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg> Música: OFF`;
+      musicToggle.classList.remove('active');
+    } else {
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gain.connect(audioCtx.destination);
+
+      // Two oscillators slightly detuned for binaural-like effect
+      const osc1 = audioCtx.createOscillator();
+      osc1.type = 'sine';
+      osc1.frequency.value = 200;
+      osc1.connect(gain);
+      osc1.start();
+
+      const osc2 = audioCtx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.value = 240;
+      osc2.connect(gain);
+      osc2.start();
+
+      musicNode = { stop: () => { osc1.stop(); osc2.stop(); gain.disconnect(); } };
+      musicOn = true;
+      musicToggle.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg> Música: ON`;
+      musicToggle.classList.add('active');
+    }
+  }
+
+  // Event listeners
+  document.getElementById('btn-start').addEventListener('click', () => {
+    showScreen(screenGame);
+    buildGrid();
+    maxLevel = 3;
+    startLevel(3);
+  });
+
+  document.getElementById('btn-retry-same').addEventListener('click', () => {
+    userInput = [];
+    retryControls.style.display = 'none';
+    hideMsg();
+    clearAllStates();
+    sequence = generateSequence(currentLevel);
+    playSequence(sequence);
+  });
+
+  document.getElementById('btn-retry-down').addEventListener('click', () => {
+    const lvl = Math.max(3, currentLevel - 1);
+    startLevel(lvl);
+  });
+
+  document.getElementById('btn-play-again').addEventListener('click', () => {
+    showScreen(screenGame);
+    buildGrid();
+    maxLevel = 3;
+    startLevel(3);
+  });
+
+  musicToggle.addEventListener('click', toggleMusic);
+
+})();
+</script>
+</body>
+</html>

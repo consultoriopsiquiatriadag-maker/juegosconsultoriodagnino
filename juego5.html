@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 5 · Colores y atención | Sala de Espera Virtual</title>
+
+  <!-- Tailwind + Inter (consistente con /juegos.html) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); scroll-behavior: smooth; }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce) {
+      .anim { animation: none !important; transition: none !important; }
+    }
+    .anim { transition: all .2s ease; }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main>
+    <!-- HERO -->
+    <section class="bg-inst-navy text-white">
+      <div class="max-w-5xl mx-auto px-6 py-12">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="max-w-2xl">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-5">
+              <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <span class="text-white/90 text-sm">Juego 5 · Atención e inhibición</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-semibold tracking-wide mb-3">
+              COLORES Y ATENCIÓN
+            </h1>
+            <p class="text-white/85 text-lg leading-relaxed">
+              Elegí el <span class="font-semibold">color de la tinta</span> (no la palabra). Duración sugerida: 2 a 4 minutos.
+            </p>
+          </div>
+
+          <div class="flex gap-3">
+            <a href="juegos.html"
+              class="anim inline-flex items-center gap-2 bg-white text-inst-navy px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky">
+              ← Volver a juegos
+            </a>
+            <a href="index.html"
+              class="anim inline-flex items-center gap-2 bg-white/15 text-white px-5 py-3 rounded-lg font-semibold hover:bg-white/25">
+              Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENIDO -->
+    <section class="max-w-5xl mx-auto px-6 py-10">
+      <div class="grid lg:grid-cols-5 gap-6">
+        <!-- Panel de juego -->
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-inst-navy/5">
+                <svg class="w-5 h-5 text-inst-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6l4 2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </span>
+              <div>
+                <p class="text-sm text-inst-gray">Tiempo</p>
+                <p class="text-xl font-semibold"><span id="timeLeft">60</span>s</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="text-right">
+                <p class="text-sm text-inst-gray">Puntaje</p>
+                <p class="text-xl font-semibold"><span id="score">0</span></p>
+              </div>
+              <div class="text-right">
+                <p class="text-sm text-inst-gray">Racha</p>
+                <p class="text-xl font-semibold"><span id="streak">0</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-gray-200 bg-inst-light p-6 md:p-8">
+            <p class="text-sm text-inst-gray mb-2">Indicá el color de la tinta:</p>
+            <div class="min-h-[120px] flex items-center justify-center">
+              <div id="stimulus"
+                   class="text-4xl md:text-5xl font-bold tracking-wide select-none">
+                —
+              </div>
+            </div>
+            <p id="feedback" class="mt-3 text-sm text-inst-gray text-center">Tocá “Iniciar” para comenzar.</p>
+          </div>
+
+          <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <button data-color="rojo" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue">
+              Rojo
+            </button>
+            <button data-color="azul" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue">
+              Azul
+            </button>
+            <button data-color="verde" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue">
+              Verde
+            </button>
+            <button data-color="amarillo" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue">
+              Amarillo
+            </button>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button id="startBtn" class="anim inline-flex items-center gap-2 bg-inst-blue text-white px-6 py-3 rounded-lg font-semibold hover:opacity-95">
+              Iniciar (60s)
+            </button>
+            <button id="pauseBtn" class="anim inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky" disabled>
+              Pausar
+            </button>
+            <button id="resetBtn" class="anim inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky">
+              Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel info -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
+            <h2 class="text-xl font-semibold mb-2">Cómo funciona</h2>
+            <ul class="list-disc pl-5 text-inst-gray space-y-2">
+              <li>Ignorá la palabra.</li>
+              <li>Elegí el <span class="font-semibold">color de la tinta</span>.</li>
+              <li>Es normal equivocarse: buscá ritmo, no perfección.</li>
+            </ul>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
+            <h2 class="text-xl font-semibold mb-2">Sugerencia breve</h2>
+            <p class="text-inst-gray leading-relaxed">
+              Si aparece frustración, hacé una pausa de 10 segundos y retomá. La idea es entrenar atención e inhibición, no rendir examen.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
+            <h2 class="text-xl font-semibold mb-2">Accesibilidad</h2>
+            <p class="text-inst-gray leading-relaxed">
+              Botones grandes y contraste alto. Si el movimiento molesta, el sistema puede reducir animaciones (según configuración del dispositivo).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Juego Stroop suave: elegir el color de la tinta
+    const WORDS = ["ROJO","AZUL","VERDE","AMARILLO"];
+    const COLORS = {
+      rojo: "#ef4444",
+      azul: "#2563eb",
+      verde: "#22c55e",
+      amarillo: "#eab308"
+    };
+
+    const state = {
+      running: false,
+      paused: false,
+      timeLeft: 60,
+      score: 0,
+      streak: 0,
+      correctColorKey: null,
+      timerId: null
+    };
+
+    const elStim = document.getElementById("stimulus");
+    const elTime = document.getElementById("timeLeft");
+    const elScore = document.getElementById("score");
+    const elStreak = document.getElementById("streak");
+    const elFeedback = document.getElementById("feedback");
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function nextTrial(){
+      const word = rand(WORDS);
+      const colorKey = rand(Object.keys(COLORS));
+
+      // Evita que palabra y color coincidan demasiado seguido (suaviza frustración)
+      // Si coincide, 50% de chance de forzar discrepancia
+      if (word === colorKey.toUpperCase() && Math.random() < 0.5){
+        const other = Object.keys(COLORS).filter(k => k.toUpperCase() !== word);
+        state.correctColorKey = rand(other);
+      } else {
+        state.correctColorKey = colorKey;
+      }
+
+      elStim.textContent = word;
+      elStim.style.color = COLORS[state.correctColorKey];
+      elFeedback.textContent = "Elegí el color de la tinta.";
+    }
+
+    function updateUI(){
+      elTime.textContent = state.timeLeft;
+      elScore.textContent = state.score;
+      elStreak.textContent = state.streak;
+      pauseBtn.disabled = !state.running;
+      startBtn.disabled = state.running;
+      pauseBtn.textContent = state.paused ? "Reanudar" : "Pausar";
+    }
+
+    function tick(){
+      if (!state.running || state.paused) return;
+      state.timeLeft -= 1;
+      updateUI();
+      if (state.timeLeft <= 0){
+        endGame();
+      }
+    }
+
+    function startGame(){
+      state.running = true;
+      state.paused = false;
+      state.timeLeft = 60;
+      state.score = 0;
+      state.streak = 0;
+      nextTrial();
+      updateUI();
+      elFeedback.textContent = "Comenzó. Foco en el color.";
+      state.timerId = setInterval(tick, 1000);
+    }
+
+    function endGame(){
+      state.running = false;
+      state.paused = false;
+      if (state.timerId) clearInterval(state.timerId);
+      state.timerId = null;
+      updateUI();
+      elStim.textContent = "Fin";
+      elStim.style.color = "#0f1e33";
+      elFeedback.textContent = `Puntaje final: ${state.score}. Si querés, repetí 1 vez más.`;
+    }
+
+    function resetGame(){
+      state.running = false;
+      state.paused = false;
+      if (state.timerId) clearInterval(state.timerId);
+      state.timerId = null;
+      state.timeLeft = 60;
+      state.score = 0;
+      state.streak = 0;
+      state.correctColorKey = null;
+      elStim.textContent = "—";
+      elStim.style.color = "#0f1e33";
+      elFeedback.textContent = "Tocá “Iniciar” para comenzar.";
+      updateUI();
+    }
+
+    function togglePause(){
+      if (!state.running) return;
+      state.paused = !state.paused;
+      elFeedback.textContent = state.paused ? "Pausa. Respiración suave y retomá cuando quieras." : "Continuamos.";
+      updateUI();
+    }
+
+    function answer(colorKey){
+      if (!state.running || state.paused) return;
+      const ok = colorKey === state.correctColorKey;
+      if (ok){
+        state.score += 1;
+        state.streak += 1;
+        elFeedback.textContent = "✔ Bien.";
+      } else {
+        state.score = Math.max(0, state.score - 1);
+        state.streak = 0;
+        elFeedback.textContent = "✖ No pasa nada. Volvé al color.";
+      }
+      updateUI();
+      nextTrial();
+    }
+
+    document.querySelectorAll("button[data-color]").forEach(btn=>{
+      btn.addEventListener("click", () => answer(btn.dataset.color));
+    });
+    startBtn.addEventListener("click", startGame);
+    pauseBtn.addEventListener("click", togglePause);
+    resetBtn.addEventListener("click", resetGame);
+
+    resetGame();
+  </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 8 · Checklist pre-flight | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Juego 8 · Checklist pre-flight (rápido)</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Vas a ver una mini-checklist de <strong>5 ítems por 4 segundos</strong>.
+            Luego marcás cuáles estaban. Entrena atención + memoria.
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
+          <button id="btnNext" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Siguiente</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Ronda</p>
+          <p class="text-2xl font-semibold"><span id="round">0</span>/<span id="roundMax">8</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
+          <p class="text-2xl font-semibold"><span id="score">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Aciertos totales: <span id="hits">0</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Precisión</p>
+          <p class="text-2xl font-semibold"><span id="acc">—</span></p>
+          <p class="text-sm text-inst-gray mt-1">Falsos positivos: <span id="fp">0</span></p>
+        </div>
+      </div>
+
+      <!-- Pantalla: mostrar checklist -->
+      <div id="stageShow" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Pre-flight (mirá y recordá)</p>
+        <h2 class="text-xl font-semibold mt-1">Checklist</h2>
+        <p class="text-inst-gray mt-2">Vas a verla por <strong><span id="showSec">4</span>s</strong>.</p>
+
+        <div class="mt-4 bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <ul id="checklistList" class="space-y-2 text-inst-navy font-semibold"></ul>
+        </div>
+
+        <div class="mt-4 text-sm text-inst-gray">
+          Consejo: respirá, mirá la lista completa y recordá “la idea general”.
+        </div>
+      </div>
+
+      <!-- Pantalla: elegir -->
+      <div id="stagePick" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6 hidden">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Selección</p>
+        <h2 class="text-xl font-semibold mt-1">¿Cuáles estaban?</h2>
+        <p class="text-inst-gray mt-2">Marcá los ítems que viste recién. Luego tocá <strong>Evaluar</strong>.</p>
+
+        <div class="mt-4 grid sm:grid-cols-2 gap-3" id="optionsGrid"></div>
+
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <button id="btnEval" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Evaluar</button>
+          <button id="btnClear" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Limpiar selección</button>
+        </div>
+
+        <div id="feedback" class="mt-4 hidden bg-inst-light rounded-2xl border border-gray-200 p-4"></div>
+      </div>
+
+      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+        <p class="text-sm text-inst-gray">
+          <strong>Nota:</strong> esto es un entrenamiento breve. Si te genera frustración, hacé menos rondas y retomá en otro momento.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Config
+    const SHOW_SECONDS = 4;
+    const ROUNDS_MAX = 8;
+    const ITEMS_PER_ROUND = 5;
+    const OPTIONS_PER_ROUND = 10; // 5 correctos + 5 distractores
+
+    // Banco de ítems temático (pre-flight)
+    const BANK = [
+      "Documentación (licencia / ID)",
+      "Meteo (METAR/TAF)",
+      "Combustible (cantidad)",
+      "Aceite (nivel)",
+      "Luces (check)",
+      "Flaps (check)",
+      "Trim (neutral)",
+      "Frenos (check)",
+      "Batería / alternador",
+      "Radio / comunicación",
+      "Transponder (set)",
+      "Altímetro (ajuste)",
+      "Cinturón / arnés",
+      "Puertas / cierres",
+      "Instrumentos (scan)",
+      "Presión neumáticos",
+      "Superficies de mando",
+      "Plan de vuelo / ruta",
+      "Velocidades (V-speeds)",
+      "Briefing de emergencia",
+      "Pista / viento cruzado",
+      "Peso y balance",
+      "Checklists a bordo",
+      "Antihielo (si aplica)"
+    ];
+
+    // State
+    let round = 0;
+    let score = 0;
+    let hits = 0;
+    let totalSelections = 0;
+    let falsePositives = 0;
+
+    let currentCorrect = [];
+    let currentOptions = [];
+    let revealed = false;
+    let timer = null;
+
+    // UI
+    const roundEl = document.getElementById("round");
+    const roundMaxEl = document.getElementById("roundMax");
+    const scoreEl = document.getElementById("score");
+    const hitsEl = document.getElementById("hits");
+    const accEl = document.getElementById("acc");
+    const fpEl = document.getElementById("fp");
+
+    const stageShow = document.getElementById("stageShow");
+    const stagePick = document.getElementById("stagePick");
+
+    const checklistList = document.getElementById("checklistList");
+    const optionsGrid = document.getElementById("optionsGrid");
+    const feedback = document.getElementById("feedback");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnNext = document.getElementById("btnNext");
+    const btnReset = document.getElementById("btnReset");
+    const btnEval = document.getElementById("btnEval");
+    const btnClear = document.getElementById("btnClear");
+
+    const showSecEl = document.getElementById("showSec");
+    roundMaxEl.textContent = ROUNDS_MAX;
+    showSecEl.textContent = SHOW_SECONDS;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function pickUnique(fromArr, n, excludeSet = new Set()){
+      const pool = fromArr.filter(x => !excludeSet.has(x));
+      return shuffle(pool).slice(0, n);
+    }
+
+    function updateUI(){
+      roundEl.textContent = round;
+      scoreEl.textContent = score;
+      hitsEl.textContent = hits;
+      fpEl.textContent = falsePositives;
+
+      const acc = totalSelections > 0 ? Math.round((hits / totalSelections) * 100) : null;
+      accEl.textContent = acc === null ? "—" : (acc + "%");
+    }
+
+    function resetAll(){
+      round = 0; score = 0; hits = 0; totalSelections = 0; falsePositives = 0;
+      currentCorrect = []; currentOptions = [];
+      revealed = false;
+      if(timer){ clearInterval(timer); timer = null; }
+      btnNext.disabled = true;
+      stagePick.classList.add("hidden");
+      stageShow.classList.remove("hidden");
+      feedback.classList.add("hidden");
+      checklistList.innerHTML = "";
+      optionsGrid.innerHTML = "";
+      updateUI();
+    }
+
+    function renderShowList(items){
+      checklistList.innerHTML = "";
+      items.forEach(it=>{
+        const li = document.createElement("li");
+        li.className = "flex items-center gap-2";
+        li.innerHTML = `
+          <span class="w-5 h-5 rounded-md bg-white border border-gray-200 inline-flex items-center justify-center text-inst-blue font-black">✓</span>
+          <span>${it}</span>
+        `;
+        checklistList.appendChild(li);
+      });
+    }
+
+    function renderOptions(options){
+      optionsGrid.innerHTML = "";
+      options.forEach(opt=>{
+        const id = "opt-" + Math.random().toString(16).slice(2);
+        const wrap = document.createElement("label");
+        wrap.className = "bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-inst-sky transition";
+        wrap.innerHTML = `
+          <input type="checkbox" class="mt-1 accent-[${'#2563eb'}]" data-opt="${opt}" aria-label="${opt}">
+          <span class="text-sm font-semibold text-inst-navy leading-snug">${opt}</span>
+        `;
+        optionsGrid.appendChild(wrap);
+      });
+    }
+
+    function startRound(){
+      if(timer){ clearInterval(timer); timer = null; }
+      feedback.classList.add("hidden");
+      btnNext.disabled = true;
+
+      round += 1;
+      if(round > ROUNDS_MAX){
+        // Final simple
+        stagePick.classList.add("hidden");
+        stageShow.classList.remove("hidden");
+        checklistList.innerHTML = `
+          <li class="text-inst-gray font-semibold">
+            Fin del juego. Puntaje: <span class="text-inst-navy">${score}</span> · Precisión: <span class="text-inst-navy">${accEl.textContent}</span>
+          </li>
+        `;
+        btnStart.disabled = false;
+        return;
+      }
+
+      // Elegir 5 correctos
+      currentCorrect = pickUnique(BANK, ITEMS_PER_ROUND);
+      const correctSet = new Set(currentCorrect);
+
+      // Elegir 5 distractores
+      const distractors = pickUnique(BANK, OPTIONS_PER_ROUND - ITEMS_PER_ROUND, correctSet);
+
+      currentOptions = shuffle([...currentCorrect, ...distractors]);
+
+      // Mostrar 4s
+      revealed = true;
+      stageShow.classList.remove("hidden");
+      stagePick.classList.add("hidden");
+      renderShowList(currentCorrect);
+      updateUI();
+
+      let sec = SHOW_SECONDS;
+      showSecEl.textContent = sec;
+
+      timer = setInterval(()=>{
+        sec -= 1;
+        showSecEl.textContent = Math.max(sec,0);
+        if(sec <= 0){
+          clearInterval(timer);
+          timer = null;
+          goPick();
+        }
+      }, 1000);
+    }
+
+    function goPick(){
+      revealed = false;
+      stageShow.classList.add("hidden");
+      stagePick.classList.remove("hidden");
+      renderOptions(currentOptions);
+      feedback.classList.add("hidden");
+      btnNext.disabled = true;
+    }
+
+    function clearSelection(){
+      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.checked = false);
+    }
+
+    function evaluate(){
+      const chosen = [];
+      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+        if(cb.checked) chosen.push(cb.getAttribute("data-opt"));
+      });
+
+      const correctSet = new Set(currentCorrect);
+      const chosenSet = new Set(chosen);
+
+      let roundHits = 0;
+      let roundFP = 0;
+
+      chosen.forEach(x=>{
+        totalSelections += 1;
+        if(correctSet.has(x)){
+          hits += 1;
+          roundHits += 1;
+        } else {
+          falsePositives += 1;
+          roundFP += 1;
+        }
+      });
+
+      // Puntaje: +2 por acierto, -1 por falso positivo.
+      score += (roundHits * 2) - (roundFP * 1);
+      if(score < 0) score = 0;
+
+      updateUI();
+
+      // Feedback
+      const missed = currentCorrect.filter(x => !chosenSet.has(x));
+
+      feedback.classList.remove("hidden");
+      feedback.innerHTML = `
+        <div class="text-sm text-inst-gray">
+          <p class="font-semibold text-inst-navy">Resultado de la ronda</p>
+          <p class="mt-1">✅ Aciertos: <strong>${roundHits}</strong> · ⚠️ Falsos positivos: <strong>${roundFP}</strong> · ❓ Olvidados: <strong>${missed.length}</strong></p>
+          <div class="mt-3 grid md:grid-cols-2 gap-3">
+            <div class="bg-white border border-gray-200 rounded-xl p-3">
+              <p class="text-xs uppercase tracking-wider text-inst-gray">Ítems correctos</p>
+              <p class="mt-1 text-sm font-semibold text-inst-navy">${currentCorrect.join(" · ")}</p>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-3">
+              <p class="text-xs uppercase tracking-wider text-inst-gray">Tu selección</p>
+              <p class="mt-1 text-sm font-semibold text-inst-navy">${chosen.length ? chosen.join(" · ") : "—"}</p>
+            </div>
+          </div>
+          <p class="mt-3">
+            <strong>Tip:</strong> probá agrupar mentalmente (instrumentos / combustible / comunicaciones / seguridad).
+          </p>
+        </div>
+      `;
+
+      btnNext.disabled = false;
+      btnStart.disabled = true;
+    }
+
+    // Eventos
+    btnStart.addEventListener("click", ()=>{
+      btnStart.disabled = true;
+      startRound();
+    });
+
+    btnNext.addEventListener("click", ()=>{
+      startRound();
+    });
+
+    btnReset.addEventListener("click", ()=>{
+      btnStart.disabled = false;
+      resetAll();
+    });
+
+    btnEval.addEventListener("click", evaluate);
+    btnClear.addEventListener("click", clearSelection);
+
+    // init
+    resetAll();
+  </script>
+</body>
+</html>

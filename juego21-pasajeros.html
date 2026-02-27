@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 21 · Pasajeros — Sala de espera virtual</title>
+  <meta name="description" content="Memoria asociativa: memorizá nombre, asiento e ícono de cada pasajero y respondé preguntas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: var(--dark);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .topbar-brand { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .topbar-sub { font-size: 12px; opacity: .8; }
+    .btn-back {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.25); }
+
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; text-align:center; }
+    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; text-align:center; margin-bottom:20px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--dark);
+    }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* DIFFICULTY PICKER */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    @media(max-width: 480px) { .diff-grid { grid-template-columns: 1fr; } }
+    .diff-btn {
+      padding: 16px 12px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color .2s, background .2s, transform .15s;
+    }
+    .diff-btn:hover { border-color: var(--blue); background: rgba(14,108,196,.04); }
+    .diff-btn:active { transform: scale(.97); }
+    .diff-btn.selected { border-color: var(--blue); background: rgba(14,108,196,.08); }
+    .diff-title { font-weight: 700; font-size: 15px; color: var(--dark); }
+    .diff-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* TIMER BAR */
+    .timer-wrap { margin-bottom: 14px; }
+    .timer-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .timer-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .timer-fill { height: 100%; background: #0e6cc4; border-radius: 999px; transition: width 1s linear; }
+
+    /* PASSENGER CARDS */
+    .passengers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .pax-card {
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      padding: 14px 12px;
+      text-align: center;
+      transition: opacity .5s;
+    }
+    .pax-icon { font-size: 32px; margin-bottom: 6px; }
+    .pax-name { font-weight: 700; font-size: 15px; color: var(--dark); }
+    .pax-seat { font-size: 13px; color: var(--blue); font-weight: 600; margin-top: 2px; }
+
+    /* PROGRESS */
+    .prog-wrap { margin-bottom: 14px; }
+    .prog-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .prog-bar { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 999px; transition: width .4s ease; }
+
+    /* QUESTION */
+    .q-text { font-size: 16px; font-weight: 600; margin: 12px 0 16px; line-height: 1.4; }
+    .opts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    @media(max-width:360px) { .opts-grid { grid-template-columns: 1fr; } }
+    .opt-btn {
+      padding: 14px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      text-align: center;
+    }
+    .opt-btn:hover { border-color: var(--blue); background: rgba(14,108,196,.05); }
+    .opt-btn.correct { border-color: #10b981; background: #d1fae5; color: #065f46; font-weight: 700; }
+    .opt-btn.wrong   { border-color: #ef4444; background: #fee2e2; color: #991b1b; }
+    .opt-btn:disabled { cursor: default; }
+
+    .fb-box {
+      font-size: 14px; font-weight: 500;
+      padding: 10px 14px; border-radius: 10px; margin-bottom: 10px;
+    }
+    .fb-box.ok  { background: #d1fae5; color: #065f46; }
+    .fb-box.err { background: #fee2e2; color: #991b1b; }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-big { font-size: 56px; margin-bottom: 10px; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .score-box { background: rgba(14,108,196,.08); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .score-box .snum { font-size: 40px; font-weight: 900; color: var(--blue); }
+    .score-box .slabel { font-size: 13px; color: var(--muted); }
+
+    footer {
+      text-align: center; padding: 20px 16px; font-size: 12px;
+      color: var(--muted); border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar" role="banner">
+  <div>
+    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
+    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+  </div>
+  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active card">
+    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">🧑‍✈️</div>
+    <h1>Pasajeros</h1>
+    <p class="subtitle">Memoria asociativa — Juego 21</p>
+    <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
+      <li>Verás las tarjetas de tus compañeros de vuelo durante unos segundos.</li>
+      <li>Memorízalas: nombre, asiento y objeto de cada uno.</li>
+      <li>Luego responderás 5 preguntas sobre ellos.</li>
+    </ul>
+    <h3 style="font-size:15px; font-weight:600; margin-bottom:10px; text-align:center;">Elegí la dificultad:</h3>
+    <div class="diff-grid">
+      <button class="diff-btn selected" id="diff-easy" data-diff="easy" aria-pressed="true">
+        <div class="diff-title">Fácil</div>
+        <div class="diff-sub">4 pasajeros · 15 s</div>
+      </button>
+      <button class="diff-btn" id="diff-normal" data-diff="normal" aria-pressed="false">
+        <div class="diff-title">Normal</div>
+        <div class="diff-sub">5 pasajeros · 20 s</div>
+      </button>
+      <button class="diff-btn" id="diff-hard" data-diff="hard" aria-pressed="false">
+        <div class="diff-title">Desafío</div>
+        <div class="diff-sub">6 pasajeros · 15 s</div>
+      </button>
+    </div>
+    <div style="display:flex; justify-content:center;">
+      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
+    </div>
+  </div>
+
+  <!-- MEMORIZE SCREEN -->
+  <div id="screen-memo" class="screen card">
+    <div class="timer-wrap">
+      <div class="timer-label">
+        <span>Conocé a tus compañeros de vuelo</span>
+        <span id="timer-num">20</span>
+      </div>
+      <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+    </div>
+    <div class="passengers-grid" id="passengers-grid"></div>
+  </div>
+
+  <!-- QUESTION SCREEN -->
+  <div id="screen-q" class="screen card">
+    <div class="prog-wrap">
+      <div class="prog-label" id="prog-label">Pregunta 1 de 5</div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:20%"></div></div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts-grid" id="opts-grid"></div>
+    <div class="fb-box" id="fb-box" style="display:none;"></div>
+    <div style="display:none; text-align:right;" id="next-q-wrap">
+      <button class="btn btn-primary" id="btn-next-q">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card result-center">
+    <div class="result-big" id="res-icon" aria-hidden="true">🌟</div>
+    <div class="result-title" id="res-title">¡Buen vuelo!</div>
+    <div class="result-sub" id="res-sub"></div>
+    <div class="score-box">
+      <div class="snum" id="res-num">5</div>
+      <div class="slabel" id="res-label">respuestas correctas de 5</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const ALL_PASSENGERS = [
+    { name: 'Carlos',   seat: '12A', icon: '🎩', iconName: 'Sombrero' },
+    { name: 'Valentina',seat: '14B', icon: '🎒', iconName: 'Mochila' },
+    { name: 'Diego',    seat: '7C',  icon: '📚', iconName: 'Libro' },
+    { name: 'Luciana',  seat: '21F', icon: '🎧', iconName: 'Auriculares' },
+    { name: 'Ramón',    seat: '33D', icon: '📷', iconName: 'Cámara' },
+    { name: 'Florencia',seat: '5A',  icon: '🌂', iconName: 'Paraguas' },
+    { name: 'Sebastián',seat: '18E', icon: '⌚', iconName: 'Reloj' },
+    { name: 'Ana',      seat: '2C',  icon: '🎵', iconName: 'Música' }
+  ];
+
+  const DIFFS = {
+    easy:   { count: 4, time: 15 },
+    normal: { count: 5, time: 20 },
+    hard:   { count: 6, time: 15 }
+  };
+
+  let difficulty = 'easy';
+  let passengers = [];
+  let questions = [];
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+  let timerInterval = null;
+  let timerLeft = 20;
+
+  const $ = id => document.getElementById(id);
+
+  function showScreen(id) {
+    ['screen-intro','screen-memo','screen-q','screen-result']
+      .forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  // Difficulty selection
+  document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.diff-btn').forEach(b => { b.classList.remove('selected'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-pressed','true');
+      difficulty = btn.dataset.diff;
+    });
+  });
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildPassengers() {
+    const cfg = DIFFS[difficulty];
+    passengers = shuffle(ALL_PASSENGERS).slice(0, cfg.count);
+    return cfg;
+  }
+
+  function buildQuestions() {
+    questions = [];
+    // Alternate name→seat and seat→icon, ensuring 5 questions
+    const pool = [...passengers];
+    const shuffled = shuffle(pool);
+
+    for (let i = 0; i < 5; i++) {
+      const pax = shuffled[i % shuffled.length];
+      if (i % 2 === 0) {
+        // name → seat
+        const wrongSeats = shuffle(passengers.filter(p => p.seat !== pax.seat)).map(p => p.seat);
+        const extraSeats = ['9B','28C','41A','17F'].filter(s => !passengers.some(p => p.seat === s));
+        const opts = shuffle([pax.seat, ...[...wrongSeats, ...extraSeats].slice(0, 3)]);
+        questions.push({ text: `¿En qué asiento iba ${pax.name}?`, opts, ans: pax.seat, type: 'text' });
+      } else {
+        // seat → icon
+        const wrongIcons = shuffle(passengers.filter(p => p.iconName !== pax.iconName)).map(p => `${p.icon} ${p.iconName}`);
+        const extraIcons = [['🌸','Flor'],['🧳','Valija'],['🎪','Circo'],['🌿','Planta']].filter(x => !passengers.some(p => p.iconName === x[1])).map(x => `${x[0]} ${x[1]}`);
+        const correctOpt = `${pax.icon} ${pax.iconName}`;
+        const opts = shuffle([correctOpt, ...[...wrongIcons, ...extraIcons].slice(0, 3)]);
+        questions.push({ text: `¿Qué llevaba el pasajero del asiento ${pax.seat}?`, opts, ans: correctOpt, type: 'text' });
+      }
+    }
+  }
+
+  function startMemo() {
+    const cfg = buildPassengers();
+    buildQuestions();
+    currentQ = 0;
+    score = 0;
+
+    // Build passenger grid
+    const grid = $('passengers-grid');
+    grid.innerHTML = '';
+    passengers.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'pax-card';
+      div.innerHTML = `<div class="pax-icon" aria-hidden="true">${p.icon}</div><div class="pax-name">${p.name}</div><div class="pax-seat">${p.seat}</div>`;
+      grid.appendChild(div);
+    });
+
+    // Timer
+    timerLeft = cfg.time;
+    $('timer-num').textContent = timerLeft;
+    $('timer-fill').style.transition = 'none';
+    $('timer-fill').style.width = '100%';
+
+    showScreen('screen-memo');
+
+    clearInterval(timerInterval);
+    setTimeout(() => {
+      $('timer-fill').style.transition = `width ${cfg.time}s linear`;
+      $('timer-fill').style.width = '0%';
+    }, 50);
+
+    timerInterval = setInterval(() => {
+      timerLeft--;
+      $('timer-num').textContent = Math.max(0, timerLeft);
+      if (timerLeft <= 0) {
+        clearInterval(timerInterval);
+        loadQuestion(0);
+      }
+    }, 1000);
+  }
+
+  function loadQuestion(idx) {
+    answered = false;
+    const q = questions[idx];
+    const total = questions.length;
+
+    $('prog-label').textContent = `Pregunta ${idx + 1} de ${total}`;
+    $('prog-fill').style.width = ((idx + 1) / total * 100) + '%';
+    $('q-text').textContent = q.text;
+
+    const grid = $('opts-grid');
+    grid.innerHTML = '';
+    q.opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.setAttribute('aria-label', `Opción: ${opt}`);
+      btn.addEventListener('click', () => onAnswer(btn, opt, q.ans, idx));
+      grid.appendChild(btn);
+    });
+
+    $('fb-box').style.display = 'none';
+    $('next-q-wrap').style.display = 'none';
+    showScreen('screen-q');
+  }
+
+  function onAnswer(btn, chosen, correct, idx) {
+    if (answered) return;
+    answered = true;
+
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correct) b.classList.add('correct');
+    });
+
+    const fb = $('fb-box');
+    if (chosen === correct) {
+      score++;
+      btn.classList.add('correct');
+      fb.className = 'fb-box ok';
+      fb.textContent = '¡Correcto! 🎉';
+    } else {
+      btn.classList.add('wrong');
+      fb.className = 'fb-box err';
+      fb.textContent = `La respuesta era: "${correct}"`;
+    }
+    fb.style.display = 'block';
+
+    const nw = $('next-q-wrap');
+    nw.style.display = 'block';
+    const nb = $('btn-next-q');
+
+    if (idx + 1 < questions.length) {
+      nb.textContent = 'Siguiente →';
+      nb.onclick = () => loadQuestion(idx + 1);
+    } else {
+      nb.textContent = 'Ver resultado';
+      nb.onclick = showResult;
+    }
+  }
+
+  function showResult() {
+    const total = questions.length;
+    $('res-num').textContent = score;
+    $('res-label').textContent = `respuestas correctas de ${total}`;
+    $('res-icon').textContent = score === total ? '🏆' : score >= 3 ? '🌟' : '✈️';
+    $('res-title').textContent = score === total ? '¡Memoria de élite!' : score >= 3 ? '¡Buen vuelo!' : 'Ejercicio completado';
+    $('res-sub').textContent = score === total
+      ? '¡Recordaste a todos los pasajeros perfectamente!'
+      : score >= 3
+        ? `${score} de ${total} asociaciones correctas. ¡Muy bien!`
+        : `${score} de ${total} correctas. Cada práctica fortalece la memoria.`;
+    showScreen('screen-result');
+  }
+
+  $('btn-start').addEventListener('click', startMemo);
+  $('btn-again').addEventListener('click', () => { showScreen('screen-intro'); });
+
+})();
+</script>
+</body>
+</html>

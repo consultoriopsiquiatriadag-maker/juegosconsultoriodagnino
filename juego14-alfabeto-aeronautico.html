@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 14 · Alfabeto aeronáutico (ICAO) — Sala de espera virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    .wrap-narrow{ max-width: 980px; margin: 0 auto; }
+
+    .grid{ display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:12px; }
+    @media (max-width: 920px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 680px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
+
+    .tile{
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap:10px;
+      cursor:pointer;
+      transition: transform .08s ease, filter .12s ease;
+      user-select:none;
+    }
+    .tile:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .tile:active{ transform: translateY(0px); }
+    .tile .big{ font-weight: 900; font-size: 1.35rem; letter-spacing:.02em; }
+    .tile .sub{ font-weight: 800; color: var(--muted, #475569); }
+    .tile .mini{ font-size:.85rem; color: var(--muted, #64748b); font-weight:700; }
+
+    .controls-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; }
+    .tts-bar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .tts-range{ display:flex; align-items:center; gap:10px; padding: 10px 12px; border-radius: 14px; border:1px solid rgba(148,163,184,.22); background: rgba(255,255,255,.06); }
+    .tts-range label{ font-weight:800; }
+    .tts-range input{ width: 160px; }
+
+    .split{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
+    @media (max-width: 900px){ .split{ grid-template-columns: 1fr; } }
+
+    .quiz-options{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; margin-top: 12px; }
+    @media (max-width: 720px){ .quiz-options{ grid-template-columns: 1fr; } }
+
+    .opt{
+      text-align:left;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,.28);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      font-weight:900;
+      transition: transform .08s ease, filter .12s ease, border-color .12s ease;
+    }
+    .opt:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .opt:disabled{ cursor:not-allowed; opacity:.82; transform:none; }
+    .opt.good{ border-color: rgba(34,197,94,.55); box-shadow: 0 0 0 4px rgba(34,197,94,.16); }
+    .opt.bad{ border-color: rgba(239,68,68,.55); box-shadow: 0 0 0 4px rgba(239,68,68,.14); }
+
+    .kbd{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 4px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(255,255,255,.06);
+      font-weight: 900;
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    .resultBox{ margin-top: 10px; border-radius: 16px; border:1px solid rgba(148,163,184,.22); background: rgba(255,255,255,.06); padding: 12px; }
+    .resultRow{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .tag{ display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 999px; border:1px solid rgba(148,163,184,.22); background: rgba(255,255,255,.06); font-weight: 800; }
+    .tag .dot{ width: 8px; height: 8px; border-radius:999px; background:#94a3b8; }
+    .tag.ok .dot{ background:#22c55e; }
+    .tag.bad .dot{ background:#ef4444; }
+
+    .copyArea{ width:100%; padding:12px; border-radius: 14px; border:1px solid rgba(148,163,184,.22); background: rgba(255,255,255,.05); color: inherit; font-weight: 800; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="controls-desktop" aria-label="Controles (escritorio)">
+          <button class="btn-ghost" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false">⚙️ Ajustes</button>
+
+          <a class="btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a juegos">← Juegos</a>
+        </div>
+
+        <button class="btn-ghost controls-mobile" id="openSettings" type="button"
+                aria-haspopup="dialog" aria-expanded="false">
+          ⚙️ Ajustes
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="settings-sheet" id="settingsSheet" hidden aria-hidden="true">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
+      <div class="sheet-head">
+        <div class="sheet-title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button">Cerrar ✕</button>
+      </div>
+      <div class="sheet-body">
+        <div class="sheet-row">
+          <p class="sheet-row-title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button class="btn-ghost" type="button" data-action="font-down" aria-label="Disminuir tamaño de letra">A-</button>
+              <button class="btn-ghost" type="button" data-action="font-up" aria-label="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🌓 Contraste</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🪶 Reducir animaciones</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleMotion" data-action="reduce-motion" aria-label="Reducir animaciones">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">↕️ Interlineado</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input type="checkbox" id="toggleLine" data-action="line-spacing" aria-label="Aumentar interlineado">
+              <span class="a11y-slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="note" style="margin:0">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">Accesos</p>
+          <div class="sheet-actions">
+            <a class="btn-primary" href="index.html" data-spa="0">Inicio</a>
+            <a class="btn-secondary" href="juegos.html" data-spa="0">Juegos</a>
+            <a class="btn-secondary" href="emociones.html" data-spa="0">Emociones</a>
+            <a class="btn-secondary" href="turnos.html" data-spa="0">Turnos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Juego 14 — Alfabeto aeronáutico">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="pill" aria-label="Tipo de recurso">
+          <span class="dot" aria-hidden="true"></span>
+          <span>TTS · Aprendizaje + práctica</span>
+        </div>
+
+        <h1 class="hero-title">Juego 14 · Alfabeto aeronáutico (ICAO)</h1>
+
+        <p class="hero-bridge">
+          Aprendé cómo los pilotos “deletrean” letras por radio (<strong>Alfa, Bravo, Charlie…</strong>).
+          Después, armá una palabra o una matrícula y escuchala en lenguaje aeronáutico.
+        </p>
+
+        <p class="hero-meta">
+          Incluye práctica con audio por <strong>TTS</strong> (voz del dispositivo).
+        </p>
+      </div>
+
+      <aside class="hero-side" aria-label="Accesos rápidos">
+        <h3>Accesos</h3>
+        <p>Ir a aprender, practicar o armar palabras.</p>
+        <div class="row">
+          <a href="#aprender">Aprender</a>
+          <a href="#practicar">Practicar</a>
+          <a href="#armar">Armar</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="wrap wrap-narrow" aria-label="Contenido principal">
+    <section class="section" id="aprender" aria-label="Aprender">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">1) Aprender</h2>
+            <p class="card-sub" style="margin:8px 0 0 0">
+              Tocá una ficha para escuchar la letra en lenguaje aeronáutico.
+            </p>
+          </div>
+
+          <div class="tts-bar" aria-label="Controles de voz">
+            <button class="btn-secondary" id="ttsToggle" type="button" aria-pressed="true">🔊 TTS: Activado</button>
+            <div class="tts-range">
+              <label for="rateRange">Velocidad</label>
+              <input id="rateRange" type="range" min="70" max="120" step="1" value="95" />
+              <span class="kbd" id="rateLabel">0.95×</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="split" style="align-items:start">
+          <div>
+            <h3 style="margin:0 0 10px 0">Letras (A–Z)</h3>
+            <div class="grid" id="gridLetters" aria-label="Letras"></div>
+
+            <div style="margin-top:14px">
+              <h3 style="margin:0 0 10px 0">Números (0–9) — opcional</h3>
+              <div class="grid" id="gridDigits" aria-label="Números"></div>
+            </div>
+          </div>
+
+          <aside class="section-card hint-bg" style="margin:0">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title" style="margin:0">¿Para qué sirve?</h3>
+                <p class="card-sub" style="margin:8px 0 0 0">
+                  Por radio se busca claridad: letras parecidas (B/D/P/T) pueden confundirse.
+                  Con el alfabeto aeronáutico se reduce el error.
+                </p>
+              </div>
+            </div>
+
+            <div class="divider" aria-hidden="true"></div>
+
+            <p class="note" style="margin:0">
+              Tip: practicá en voz alta, lento al principio. Después subí la velocidad.
+            </p>
+
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn-primary" id="demoLV" type="button">Ejemplo LV-PND</button>
+              <button class="btn-secondary" id="stopSpeak" type="button">Detener voz</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="practicar" aria-label="Practicar">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">2) Practicar (quiz con audio)</h2>
+            <p class="card-sub" style="margin:8px 0 0 0">
+              Escuchás una palabra (por ejemplo “<strong>November</strong>”) y elegís la letra correcta.
+            </p>
+          </div>
+
+          <div class="btn-row" style="margin:0">
+            <button class="btn-primary" id="quizStart" type="button">Comenzar</button>
+            <button class="btn-secondary" id="quizRepeat" type="button" disabled>Repetir audio</button>
+            <button class="btn-secondary" id="quizReset" type="button" disabled>Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="controls-row" aria-label="Progreso">
+          <div style="display:flex; flex-wrap:wrap; gap:8px">
+            <span class="tag" id="qTag"><span class="dot"></span>Pregunta: —</span>
+            <span class="tag" id="sTag"><span class="dot"></span>Aciertos: 0</span>
+          </div>
+          <span class="tag" id="statusTag"><span class="dot"></span>Listo</span>
+        </div>
+
+        <div class="resultBox" id="quizBox" hidden>
+          <div class="resultRow">
+            <span class="tag" id="heardTag"><span class="dot"></span>Audio: —</span>
+            <span class="tag" id="hintTag"><span class="dot"></span>Elegí la letra</span>
+          </div>
+
+          <div class="quiz-options" id="quizOptions" style="margin-top:12px"></div>
+
+          <div class="resultBox" id="quizFeedback" style="margin-top:12px" hidden></div>
+
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn-primary" id="quizNext" type="button" disabled>Siguiente</button>
+            <button class="btn-secondary" id="quizCopy" type="button" disabled>Copiar resultado</button>
+          </div>
+        </div>
+
+        <p class="muted-note" style="margin-top:10px">
+          Objetivo: <strong>10/10</strong>. Si te cuesta, bajá la velocidad TTS o repetí el audio.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="armar" aria-label="Armar palabras">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">3) Armar una palabra o matrícula</h2>
+            <p class="card-sub" style="margin:8px 0 0 0">
+              Escribí una palabra (o una matrícula) y escuchala deletreada.
+            </p>
+          </div>
+
+          <div class="btn-row" style="margin:0">
+            <button class="btn-secondary" id="fillExample" type="button">Cargar LV-PND</button>
+            <button class="btn-secondary" id="clearInput" type="button">Limpiar</button>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <label for="wordInput" style="font-weight:900; display:block; margin-bottom:8px">Tu texto</label>
+        <input id="wordInput" class="copyArea mono" placeholder="Ej: LV-PND / Dagnino / Resistencia" />
+
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn-primary" id="btnSpeakWord" type="button">🔊 Escuchar</button>
+          <button class="btn-secondary" id="btnShowMap" type="button">Ver conversión</button>
+          <button class="btn-secondary" id="btnCopyWord" type="button">Copiar conversión</button>
+        </div>
+
+        <div class="resultBox" id="mapBox" hidden aria-label="Conversión a lenguaje aeronáutico">
+          <div style="font-weight:900; margin-bottom:8px">Conversión</div>
+          <div id="mapOutput" style="line-height:1.7"></div>
+        </div>
+
+        <div class="divider" aria-hidden="true" style="margin-top:16px"></div>
+
+        <h3 style="margin:0 0 8px 0">¿Qué es la “patente” de un avión?</h3>
+        <p class="note" style="margin:0">
+          La matrícula (registro) identifica a una aeronave ante la autoridad aeronáutica. En Argentina es común ver
+          el prefijo <span class="kbd mono">LV</span> (país) y luego letras que individualizan la aeronave.
+        </p>
+
+        <div class="resultBox" style="margin-top:12px">
+          <div style="font-weight:900; margin-bottom:8px">Ejemplo didáctico</div>
+          <div class="mono" style="font-size:1.05rem; font-weight:900">LV-PND</div>
+          <div style="margin-top:8px; line-height:1.7">
+            <span class="kbd mono">LV</span> → <strong>Lima · Victor</strong> (denominación de país) <br/>
+            <span class="kbd mono">PND</span> → <strong>Papa · November · Delta</strong> (identifica esa aeronave ante la autoridad — p.ej. ANAC)
+          </div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn-primary" id="speakLV" type="button">🔊 Escuchar “LV-PND”</button>
+          </div>
+        </div>
+
+        <p class="muted-note" style="margin-top:10px">
+          Nota: esto es un recurso educativo. Para comunicaciones reales se siguen procedimientos y fraseología aeronáutica.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Volver">
+      <div class="btn-row">
+        <a class="btn-secondary" href="juegos.html" data-spa="0">← Volver a Juegos</a>
+        <a class="btn-secondary" href="index.html" data-spa="0">Inicio</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <script>
+    const LETTERS = [{"ch": "A", "word": "Alfa"}, {"ch": "B", "word": "Bravo"}, {"ch": "C", "word": "Charlie"}, {"ch": "D", "word": "Delta"}, {"ch": "E", "word": "Echo"}, {"ch": "F", "word": "Foxtrot"}, {"ch": "G", "word": "Golf"}, {"ch": "H", "word": "Hotel"}, {"ch": "I", "word": "India"}, {"ch": "J", "word": "Juliett"}, {"ch": "K", "word": "Kilo"}, {"ch": "L", "word": "Lima"}, {"ch": "M", "word": "Mike"}, {"ch": "N", "word": "November"}, {"ch": "O", "word": "Oscar"}, {"ch": "P", "word": "Papa"}, {"ch": "Q", "word": "Quebec"}, {"ch": "R", "word": "Romeo"}, {"ch": "S", "word": "Sierra"}, {"ch": "T", "word": "Tango"}, {"ch": "U", "word": "Uniform"}, {"ch": "V", "word": "Victor"}, {"ch": "W", "word": "Whisky"}, {"ch": "X", "word": "X-ray"}, {"ch": "Y", "word": "Yankee"}, {"ch": "Z", "word": "Zulu"}];
+    const DIGITS  = [{"ch": "0", "word": "Zero"}, {"ch": "1", "word": "Wun"}, {"ch": "2", "word": "Too"}, {"ch": "3", "word": "Tree"}, {"ch": "4", "word": "Fower"}, {"ch": "5", "word": "Fife"}, {"ch": "6", "word": "Six"}, {"ch": "7", "word": "Seven"}, {"ch": "8", "word": "Ait"}, {"ch": "9", "word": "Niner"}];
+
+    // --- TTS state ---
+    let ttsEnabled = true;
+    let ttsRate = 0.95; // 0.70 .. 1.20
+    const rateRange = document.getElementById("rateRange");
+    const rateLabel = document.getElementById("rateLabel");
+    const ttsToggle = document.getElementById("ttsToggle");
+
+    function setRateFromUI() {
+      const v = Number(rateRange.value || 95);
+      ttsRate = Math.max(0.7, Math.min(1.2, v / 100));
+      rateLabel.textContent = ttsRate.toFixed(2) + "×";
+      localStorage.setItem("ttsRate", String(ttsRate));
+    }
+    function setTtsEnabled(next) {
+      ttsEnabled = !!next;
+      ttsToggle.setAttribute("aria-pressed", ttsEnabled ? "true" : "false");
+      ttsToggle.textContent = ttsEnabled ? "🔊 TTS: Activado" : "🔇 TTS: Desactivado";
+      localStorage.setItem("ttsEnabled", ttsEnabled ? "1" : "0");
+      if(!ttsEnabled) {
+        try { window.speechSynthesis.cancel(); } catch(e) {}
+      }
+    }
+
+    function speak(text, opts={}) {
+      if (!ttsEnabled) return;
+      try {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = opts.lang || "es-AR";
+        u.rate = opts.rate ?? ttsRate;
+        u.pitch = opts.pitch ?? 1.0;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    function speakSequence(words, opts={}) {
+      if (!ttsEnabled) return;
+      try {
+        window.speechSynthesis.cancel();
+        const lang = opts.lang || "es-AR";
+        const rate = opts.rate ?? ttsRate;
+        words.forEach((w) => {
+          const u = new SpeechSynthesisUtterance(w);
+          u.lang = lang;
+          u.rate = rate;
+          u.pitch = 1.0;
+          window.speechSynthesis.speak(u);
+        });
+      } catch (e) {}
+    }
+
+    function stopSpeak() {
+      try { window.speechSynthesis.cancel(); } catch(e) {}
+    }
+
+    // --- Build maps ---
+    const mapLetter = new Map(LETTERS.map(x => [x.ch, x.word]));
+    const mapDigit  = new Map(DIGITS.map(x => [x.ch, x.word]));
+
+    function toPhoneticTokens(text) {
+      const out = [];
+      const clean = String(text || "").toUpperCase();
+      for (const ch of clean) {
+        if (mapLetter.has(ch)) out.push(mapLetter.get(ch));
+        else if (mapDigit.has(ch)) out.push(mapDigit.get(ch));
+        else if (ch === "-") out.push("guion");
+        else if (ch === " ") out.push("|");
+      }
+      return out;
+    }
+
+    function renderGrid(el, items) {
+      el.innerHTML = "";
+      items.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tile";
+        btn.setAttribute("aria-label", `${item.ch} ${item.word}`);
+        btn.innerHTML = `
+          <div>
+            <div class="big">${item.ch}</div>
+            <div class="sub">${item.word}</div>
+          </div>
+          <div class="mini">Tocar · Escuchar</div>
+        `;
+        btn.addEventListener("click", () => {
+          speak(`${item.ch}. ${item.word}`, {lang:"en-US"});
+        });
+        el.appendChild(btn);
+      });
+    }
+
+    function demoLVPND() {
+      const seq = ["Lima", "Victor", "dash", "Papa", "November", "Delta"];
+      speakSequence(seq, {lang:"en-US"});
+    }
+
+    // --- QUIZ ---
+    const quiz = { round: [], idx: 0, score: 0, locked: false, finished: false, current: null };
+
+    const quizStart = document.getElementById("quizStart");
+    const quizRepeat = document.getElementById("quizRepeat");
+    const quizReset = document.getElementById("quizReset");
+    const quizNext = document.getElementById("quizNext");
+    const quizCopy = document.getElementById("quizCopy");
+
+    const quizBox = document.getElementById("quizBox");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizFeedback = document.getElementById("quizFeedback");
+
+    const qTag = document.getElementById("qTag");
+    const sTag = document.getElementById("sTag");
+    const statusTag = document.getElementById("statusTag");
+    const heardTag = document.getElementById("heardTag");
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function updateQuizHUD() {
+      qTag.innerHTML = `<span class="dot"></span>Pregunta: ${quiz.finished ? "—" : `${quiz.idx + 1}/10`}`;
+      sTag.innerHTML = `<span class="dot"></span>Aciertos: ${quiz.score}`;
+    }
+
+    function setQuizStatus(text) {
+      statusTag.innerHTML = `<span class="dot"></span>${text}`;
+    }
+
+    function pickUniqueLetters(count=10) {
+      const copy = [...LETTERS];
+      shuffle(copy);
+      return copy.slice(0, count);
+    }
+
+    function buildQuizOptions(correct) {
+      const pool = LETTERS.filter(x => x.ch !== correct.ch);
+      shuffle(pool);
+      const wrong = pool.slice(0, 3);
+      return shuffle([correct, ...wrong]);
+    }
+
+    function disableQuizOptions() {
+      quizOptions.querySelectorAll("button.opt").forEach(b => b.disabled = true);
+    }
+
+    function renderQuizQuestion() {
+      quiz.locked = false;
+      quizFeedback.hidden = true;
+      quizFeedback.innerHTML = "";
+      quizNext.disabled = true;
+
+      const item = quiz.round[quiz.idx];
+      quiz.current = item;
+
+      heardTag.innerHTML = `<span class="dot"></span>Audio: <span class="mono">${item.word}</span>`;
+      speak(item.word, {lang:"en-US"});
+
+      const opts = buildQuizOptions(item);
+      quizOptions.innerHTML = "";
+      opts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt";
+        btn.innerHTML = `<div style="font-weight:900; font-size:1.1rem">${opt.ch}</div>
+                         <div style="color: var(--muted, #475569); font-weight:800">${opt.word}</div>`;
+        btn.addEventListener("click", () => handleQuizAnswer(btn, opt, item));
+        quizOptions.appendChild(btn);
+      });
+
+      quizBox.hidden = false;
+      quizRepeat.disabled = false;
+      quizReset.disabled = false;
+      quizCopy.disabled = true;
+      setQuizStatus("Elegí la letra");
+      updateQuizHUD();
+    }
+
+    function handleQuizAnswer(btn, chosen, correct) {
+      if (quiz.locked || quiz.finished) return;
+      quiz.locked = true;
+
+      disableQuizOptions();
+
+      quizOptions.querySelectorAll("button.opt").forEach(b => {
+        if (b.textContent.includes(correct.ch)) b.classList.add("good");
+      });
+
+      const ok = chosen.ch === correct.ch;
+      if (ok) {
+        btn.classList.add("good");
+        quiz.score += 1;
+        setQuizStatus("✅ Correcto");
+        quizFeedback.hidden = false;
+        quizFeedback.innerHTML = `<strong>Bien.</strong> Era <span class="kbd mono">${correct.ch}</span> — ${correct.word}.`;
+      } else {
+        btn.classList.add("bad");
+        setQuizStatus("❌ Incorrecto");
+        quizFeedback.hidden = false;
+        quizFeedback.innerHTML = `La correcta era <span class="kbd mono">${correct.ch}</span> — <strong>${correct.word}</strong>.`;
+      }
+
+      updateQuizHUD();
+      quizNext.disabled = false;
+
+      if (quiz.idx === 9) finishQuiz();
+    }
+
+    function finishQuiz() {
+      quiz.finished = true;
+      quizNext.disabled = true;
+      quizRepeat.disabled = true;
+
+      const won = quiz.score >= 10;
+      setQuizStatus(won ? "🏁 ¡Ganaste!" : "🏁 Fin del juego");
+
+      quizFeedback.hidden = false;
+      quizFeedback.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div><strong>Resultado:</strong> ${quiz.score}/10</div>
+          <div>${won ? "✅ Excelente." : "Podés repetir para llegar a 10/10."}</div>
+        </div>
+      `;
+      quizCopy.disabled = false;
+    }
+
+    function quizStartRound() {
+      quiz.round = pickUniqueLetters(10);
+      quiz.idx = 0;
+      quiz.score = 0;
+      quiz.locked = false;
+      quiz.finished = false;
+      quiz.current = null;
+
+      quizStart.disabled = true;
+      renderQuizQuestion();
+      setQuizStatus("Comenzó la ronda");
+    }
+
+    function quizResetRound() {
+      quizStart.disabled = false;
+      quizRepeat.disabled = true;
+      quizReset.disabled = true;
+      quizNext.disabled = true;
+      quizCopy.disabled = true;
+
+      quizBox.hidden = true;
+      quizFeedback.hidden = true;
+      quizFeedback.innerHTML = "";
+      setQuizStatus("Listo");
+      quiz.finished = false;
+      quiz.score = 0;
+      quiz.idx = 0;
+      updateQuizHUD();
+    }
+
+    function quizNextQ() {
+      if (quiz.finished) return;
+      if (quiz.idx < 9) {
+        quiz.idx += 1;
+        renderQuizQuestion();
+      }
+    }
+
+    function quizRepeatAudio() {
+      if (!quiz.current) return;
+      speak(quiz.current.word, {lang:"en-US"});
+    }
+
+    async function quizCopyResult() {
+      const won = quiz.score >= 10;
+      const msg = `Juego 14 · Alfabeto aeronáutico — Resultado: ${quiz.score}/10 — ${won ? "GANÓ" : "NO GANÓ"}`;
+      try {
+        await navigator.clipboard.writeText(msg);
+        setQuizStatus("📋 Resultado copiado");
+      } catch(e) {
+        setQuizStatus("No se pudo copiar");
+      }
+    }
+
+    // --- Word builder ---
+    const wordInput = document.getElementById("wordInput");
+    const btnSpeakWord = document.getElementById("btnSpeakWord");
+    const btnShowMap = document.getElementById("btnShowMap");
+    const btnCopyWord = document.getElementById("btnCopyWord");
+    const mapBox = document.getElementById("mapBox");
+    const mapOutput = document.getElementById("mapOutput");
+
+    function buildMapOutput(text) {
+      const tokens = toPhoneticTokens(text);
+      if (!tokens.length) return "";
+      return tokens.map(t => t === "|" ? "<span style='opacity:.55'>/</span>" : `<span class="kbd">${t}</span>`).join(" ");
+    }
+
+    function speakWord() {
+      const val = wordInput.value || "";
+      const tokens = toPhoneticTokens(val).filter(t => t !== "|");
+      if (!tokens.length) {
+        speak("Escribí una palabra o matrícula primero.", {lang:"es-AR"});
+        return;
+      }
+      speakSequence(tokens.map(t => t === "guion" ? "dash" : t), {lang:"en-US"});
+    }
+
+    async function copyMap() {
+      const val = wordInput.value || "";
+      const tokens = toPhoneticTokens(val);
+      const plain = tokens.map(t => t === "|" ? "/" : t).join(" ");
+      try {
+        await navigator.clipboard.writeText(plain);
+      } catch(e) {}
+    }
+
+    // --- Bind UI ---
+    renderGrid(document.getElementById("gridLetters"), LETTERS);
+    renderGrid(document.getElementById("gridDigits"), DIGITS);
+
+    document.getElementById("demoLV").addEventListener("click", demoLVPND);
+    document.getElementById("speakLV").addEventListener("click", demoLVPND);
+    document.getElementById("stopSpeak").addEventListener("click", stopSpeak);
+
+    document.getElementById("fillExample").addEventListener("click", () => {
+      wordInput.value = "LV-PND";
+      mapOutput.innerHTML = buildMapOutput(wordInput.value);
+      mapBox.hidden = false;
+    });
+    document.getElementById("clearInput").addEventListener("click", () => {
+      wordInput.value = "";
+      mapBox.hidden = true;
+      mapOutput.innerHTML = "";
+      stopSpeak();
+    });
+
+    btnSpeakWord.addEventListener("click", speakWord);
+    btnShowMap.addEventListener("click", () => {
+      mapOutput.innerHTML = buildMapOutput(wordInput.value);
+      mapBox.hidden = false;
+    });
+    btnCopyWord.addEventListener("click", async () => {
+      await copyMap();
+      speak("Copiado.", {lang:"es-AR"});
+    });
+
+    quizStart.addEventListener("click", quizStartRound);
+    quizReset.addEventListener("click", quizResetRound);
+    quizRepeat.addEventListener("click", quizRepeatAudio);
+    quizNext.addEventListener("click", quizNextQ);
+    quizCopy.addEventListener("click", quizCopyResult);
+
+    ttsToggle.addEventListener("click", () => setTtsEnabled(!ttsEnabled));
+    rateRange.addEventListener("input", setRateFromUI);
+
+    (function initTts() {
+      const savedEnabled = localStorage.getItem("ttsEnabled");
+      if (savedEnabled === "0") setTtsEnabled(false);
+
+      const savedRate = Number(localStorage.getItem("ttsRate"));
+      if (Number.isFinite(savedRate) && savedRate >= 0.7 && savedRate <= 1.2) {
+        ttsRate = savedRate;
+        rateRange.value = String(Math.round(ttsRate * 100));
+        rateLabel.textContent = ttsRate.toFixed(2) + "×";
+      } else {
+        setRateFromUI();
+      }
+
+      updateQuizHUD();
+    })();
+  </script>
+</body>
+</html>

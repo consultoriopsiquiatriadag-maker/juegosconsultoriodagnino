@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Síndrome de Fregoli — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para familias: síndrome de Fregoli, por qué ocurre, diferencias con Capgras, condiciones asociadas, cómo acompañar y señales de alarma. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+
+    /* Tabla comparativa Capgras vs Fregoli */
+    .compare-table{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: .96rem;
+    }
+    .compare-table th{
+      background: rgba(37,99,235,.10);
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid rgba(37,99,235,.18);
+    }
+    .compare-table td{
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(148,163,184,.18);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td{ border-bottom: none; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Síndrome de Fregoli</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/fregoli-portada.png -->
+        <img src="assets/img/fregoli-portada.webp" alt="Ilustración abstracta: múltiples máscaras que ocultan un único rostro" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Síndrome de Fregoli</h1>
+          <p>Cuando distintas personas parecen ser siempre la misma, disfrazada. Qué es, por qué ocurre y cómo acompañar.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              El síndrome de Fregoli es un trastorno de identificación delirante en el que la persona está
+              <b>convencida</b> de que diferentes individuos —desconocidos en la calle, vecinos, compañeros
+              de trabajo— son en realidad <b>una misma persona</b> que cambia de apariencia para seguirla,
+              vigilarla o hacerle daño.
+            </p>
+            <p class="card-sub">
+              A diferencia del síndrome de Capgras —donde la persona conocida parece un impostor distinto—,
+              en Fregoli ocurre lo opuesto: personas desconocidas y visualmente distintas son percibidas
+              como una sola que se disfraza. El nombre proviene del actor italiano Leopoldo Fregoli,
+              famoso a principios del siglo XX por su asombrosa capacidad para transformarse en escena
+              adoptando múltiples identidades.
+            </p>
+            <p class="card-sub">
+              El delirio suele tener una carga <b>persecutoria intensa</b>: la persona "disfrazada" generalmente
+              es percibida como amenazante, con intenciones de espiar, controlar o dañar a quien padece el síndrome.
+              Esto lo diferencia clínicamente de Capgras, donde el componente persecutorio puede o no estar presente.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Fue descripto por primera vez en 1927 por Courbon y Fail. Es más infrecuente que Capgras y menos conocido,
+          pero comparte con él el mecanismo central de una desconexión en el procesamiento del reconocimiento facial.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Capgras vs Fregoli -->
+    <section class="section" id="diferencias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Diferencias con Capgras</h2>
+            <p class="card-sub">
+              Son opuestos en su dirección, aunque comparten el mismo sustrato: una falla en la integración
+              entre percepción facial y respuesta emocional.
+            </p>
+          </div>
+        </div>
+
+        <table class="compare-table" aria-label="Comparación entre síndrome de Capgras y síndrome de Fregoli">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Capgras</th>
+              <th>Fregoli</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Creencia central</b></td>
+              <td>Una persona conocida fue reemplazada por un impostor diferente.</td>
+              <td>Personas distintas son en realidad la misma, disfrazada.</td>
+            </tr>
+            <tr>
+              <td><b>Dirección del error</b></td>
+              <td>Igual → distinto (conocido parece extraño).</td>
+              <td>Distinto → igual (extraños parecen la misma persona).</td>
+            </tr>
+            <tr>
+              <td><b>Falla predominante</b></td>
+              <td>Respuesta emocional ausente ante cara conocida.</td>
+              <td>Respuesta emocional familiar ante caras desconocidas.</td>
+            </tr>
+            <tr>
+              <td><b>Componente persecutorio</b></td>
+              <td>Variable; puede o no estar presente.</td>
+              <td>Casi siempre presente y central al delirio.</td>
+            </tr>
+            <tr>
+              <td><b>Contexto más frecuente</b></td>
+              <td>Demencias, esquizofrenia, lesiones cerebrales.</td>
+              <td>Esquizofrenia paranoide, trastornos del espectro psicótico.</td>
+            </tr>
+            <tr>
+              <td><b>Riesgo de agresividad</b></td>
+              <td>Moderado, hacia el "impostor" cercano.</td>
+              <td>Alto, por la carga persecutoria intensa.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note" style="margin-top:14px">
+          Pueden coexistir en el mismo paciente, junto con otras variantes como el síndrome de intermetamorfosis
+          o el síndrome del doble subjetivo. En esos casos se habla de <em>síndrome de identificación delirante mixto</em>.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Por qué ocurre -->
+    <section class="section" id="por-que-ocurre">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué ocurre</h2>
+            <p class="card-sub">
+              En Capgras falla la respuesta emocional ante la cara conocida. En Fregoli ocurre algo diferente:
+              la respuesta emocional de familiaridad se activa <b>de forma incorrecta</b> ante caras desconocidas.
+              El cerebro "reconoce" emocionalmente a alguien que visualmente no debería reconocer.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Hiperactivación de la ruta afectiva:</b> en lugar de la desconexión que ocurre en Capgras,
+            aquí hay una activación excesiva o mal dirigida de la respuesta emocional de familiaridad.
+            Distintos rostros disparan la misma señal interna de "conozco a esta persona".
+          </li>
+          <li>
+            <b>Integración con ideas persecutorias:</b> el cerebro, para dar coherencia a esa señal
+            de familiaridad con desconocidos, construye la narrativa del disfraz: "si siento que los conozco
+            aunque sean distintos, deben ser la misma persona con distintos disfraces".
+          </li>
+          <li>
+            <b>Alteraciones en lóbulo temporal y sistema límbico derecho:</b> regiones involucradas
+            en la memoria de caras y en la carga emocional del reconocimiento muestran actividad anómala
+            en estudios de casos con Fregoli.
+          </li>
+          <li>
+            <b>Rol de la dopamina:</b> a diferencia de Capgras —más asociado a lesiones estructurales—,
+            Fregoli aparece con más frecuencia en contextos donde el sistema dopaminérgico está alterado,
+            como en psicosis agudas y estados maníacos con componente psicótico.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El delirio persecutorio no es un "agregado" secundario: es parte del mecanismo. La familiaridad
+          sin explicación razonable genera desconfianza, y la desconfianza se organiza en persecución.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Condiciones asociadas -->
+    <section class="section" id="condiciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Condiciones asociadas</h2>
+            <p class="card-sub">El síndrome de Fregoli puede aparecer en el contexto de:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Esquizofrenia paranoide</b> — el contexto más frecuente, especialmente en episodios agudos.</li>
+          <li><b>Trastorno esquizoafectivo</b> — combinando síntomas del espectro psicótico con alteraciones del ánimo.</li>
+          <li><b>Trastorno bipolar con episodios maníacos o mixtos con características psicóticas</b>.</li>
+          <li><b>Psicosis aguda breve</b> — puede aparecer como síntoma central en un primer episodio.</li>
+          <li><b>Lesiones cerebrales focales</b> — traumatismos y ACV en regiones temporales y frontales derechas.</li>
+          <li><b>Epilepsia del lóbulo temporal</b> — especialmente en períodos peri-ictales.</li>
+          <li><b>Encefalitis autoinmune</b> — en particular con anticuerpos anti-NMDA.</li>
+          <li><b>Intoxicación por estimulantes</b> (cocaína, anfetaminas) — que pueden desencadenar estados paranoides agudos.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          A diferencia de Capgras, el Fregoli es más raro en demencias y más frecuente en psicosis funcionales
+          con componente paranoide activo. Este dato orienta el diagnóstico diferencial.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Cómo se manifiesta -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se manifiesta</h2>
+            <p class="card-sub">Lo que suelen observar las familias y el entorno:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>La persona señala desconocidos en la calle, el transporte o el trabajo como "la misma de siempre, disfrazada".</li>
+          <li>Describe con detalle quién es ese "perseguidor" y cómo cambia de apariencia entre una aparición y la siguiente.</li>
+          <li>Evita salir de casa, cambiar rutas o frecuentar lugares donde cree que el perseguidor la sigue.</li>
+          <li>Acusa a personas del entorno próximo de "ser cómplices" del perseguidor o de no creerle.</li>
+          <li>Puede confrontar a desconocidos en la calle, convencida de que los reconoce, lo que genera situaciones de riesgo.</li>
+          <li>Estado de hipervigilancia constante: analiza las caras del entorno buscando confirmar el reconocimiento.</li>
+          <li>Angustia intensa, insomnio, dificultad para concentrarse en cualquier otra cosa.</li>
+          <li>El delirio tiende a ser más dinámico y expansivo que el de Capgras: nuevas personas pueden sumarse al "perseguidor".</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La carga persecutoria hace del Fregoli un delirio con mayor potencial de agresividad que Capgras.
+          Las confrontaciones con desconocidos pueden escalar rápidamente. Este riesgo debe evaluarse temprano.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar de urgencia si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>La persona confronta físicamente a desconocidos que identifica como el "perseguidor".</li>
+          <li>Hay conductas de seguimiento o acoso hacia alguien del entorno identificado como la "persona disfrazada".</li>
+          <li>La persona se niega a salir del hogar completamente, con impacto severo en su funcionamiento.</li>
+          <li>Aparece agitación intensa, amenazas verbales o conductas de autodefensa ante el supuesto perseguidor.</li>
+          <li>El delirio escala rápidamente: más personas, más situaciones, más certeza de peligro inminente.</li>
+          <li>Hay planes concretos de "confrontar" o "enfrentar" al perseguidor.</li>
+          <li>La persona abandona el tratamiento porque cree que el médico también "es el mismo".</li>
+          <li>Aparecen síntomas neurológicos nuevos: confusión, convulsiones, fiebre, alteraciones del habla.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El riesgo de agresividad hacia terceros es real en Fregoli y no debe minimizarse.
+          Si hay situaciones de confrontación activa, buscá asistencia de urgencia local sin demora.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Para familias -->
+    <section class="section" id="para-familias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo acompañar · Guía para familias</h2>
+            <p class="card-sub">
+              El Fregoli desafía a las familias de una forma particular: el perseguidor está "afuera",
+              en el mundo público. Esto hace que las salidas, los espacios sociales y el día a día
+              se vuelvan terreno de conflicto constante.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>No confrontar el delirio en el momento de la activación.</b> Si la persona señala a alguien
+            en la calle como el "perseguidor", no es el momento de discutirlo. Redirigir con calma
+            ("vamos a seguir caminando") suele ser más efectivo que intentar convencer.
+          </li>
+          <li>
+            <b>Anticipar situaciones de riesgo.</b> Identificar los contextos donde el delirio se activa
+            con más fuerza (transporte público, lugares concurridos, ciertos horarios) y planificar
+            cómo manejarlos antes de que ocurran.
+          </li>
+          <li>
+            <b>No reírse ni minimizar.</b> Para la persona, el perseguidor es completamente real
+            y la amenaza es genuina. La minimización genera desconfianza hacia el familiar y aislamiento.
+          </li>
+          <li>
+            <b>Mantener canales abiertos con el equipo tratante.</b> El Fregoli con componente persecutorio
+            activo requiere seguimiento estrecho. Informar cualquier escalada o conducta de riesgo
+            sin esperar a la próxima consulta programada.
+          </li>
+          <li>
+            <b>Proteger a terceros si es necesario.</b> Si la persona tiende a confrontar a desconocidos,
+            es responsabilidad del acompañante intervenir a tiempo para evitar incidentes.
+            Esto puede requerir coordinación con el equipo tratante sobre protocolos de manejo en la vía pública.
+          </li>
+          <li>
+            <b>Cuidar al cuidador.</b> La hipervigilancia constante de la persona se contagia:
+            los familiares terminan monitoreando el entorno junto a ella, agotándose.
+            El autocuidado y el apoyo propio son indispensables.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Un desafío específico del Fregoli: la persona puede llegar a creer que el propio médico
+          es "el mismo disfrazado". Esto puede llevar al abandono del tratamiento.
+          Es importante informar al equipo tratante si esto ocurre, ya que puede requerir ajustes en la estrategia terapéutica.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro para familias (1 minuto)</h2>
+            <p class="card-sub">Registro de carga emocional 0–10 + observaciones del día. Útil para compartir con el profesional tratante.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá tu nivel de carga emocional como familiar/cuidador hoy (0 = ninguna · 10 = máxima).<br/>
+            2) Evaluá la intensidad del delirio que observaste hoy (0 = sin episodios · 10 = muy intenso).<br/>
+            3) Anotá si hubo situaciones de riesgo o confrontaciones con terceros.<br/>
+            4) Copiá el resumen para llevar a la consulta o guardar en tu registro.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Mi carga emocional hoy (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="beforeVal">5</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Intensidad del delirio observada (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="situacionInput" style="font-weight:600; display:block; margin-bottom:6px;">¿Hubo situaciones de riesgo o confrontación? (opcional)</label>
+            <input id="situacionInput" class="input" type="text" placeholder="Ej: confrontó a un desconocido / se negó a salir / perseguidor nuevo / sin incidentes..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="medicacionInput" style="font-weight:600; display:block; margin-bottom:6px;">Medicación (opcional)</label>
+            <input id="medicacionInput" class="input" type="text" placeholder="Ej: tomó / rechazó / tomó a medias / hubo que insistir..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Observaciones / notas para el profesional (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: dijo que el vecino era el perseguidor / más tranquilo en casa / angustia al salir / durmió mal..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Profundización sobre el síndrome, su neurobiología y su impacto clínico.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El síndrome de Fregoli toma su nombre del actor italiano Leopoldo Fregoli (1867–1936),
+            célebre en toda Europa por su habilidad para transformarse en escena y encarnar docenas de personajes
+            distintos en una misma función. Courbon y Fail eligieron ese nombre en 1927 para describir a una paciente
+            que creía que dos actrices famosas la perseguían tomando la apariencia de distintas personas de su entorno.
+            El nombre captura perfectamente la esencia del delirio: la idea de que alguien —como Fregoli en el escenario—
+            puede adoptar infinitas apariencias para seguir siendo, en el fondo, siempre el mismo.
+          </p>
+
+          <p>
+            Desde el punto de vista neurocognitivo, el Fregoli es en cierto modo el espejo invertido del Capgras.
+            En Capgras, la ruta afectiva del reconocimiento facial no responde ante caras conocidas: la persona
+            ve el rostro correcto pero no siente la familiaridad esperada. En Fregoli, la ruta afectiva se activa
+            de forma incorrecta ante caras desconocidas: la persona siente familiaridad donde no debería haberla.
+            En ambos casos, el cerebro enfrenta una disonancia entre la percepción visual y la respuesta emocional,
+            y produce un delirio para resolverla. La dirección del error es opuesta, pero el mecanismo subyacente
+            guarda una lógica similar.
+          </p>
+
+          <p>
+            Lo que hace del Fregoli un cuadro clínicamente más urgente que el Capgras —en general— es la dimensión
+            persecutoria. En Capgras, el "impostor" suele ser percibido como un sustituto neutral o desconcertante,
+            alguien que ocupa el lugar de un ser querido pero no necesariamente con intenciones amenazantes.
+            En Fregoli, el "disfrazado" casi siempre tiene un propósito: vigilar, espiar, controlar, dañar.
+            Esto genera un estado de alerta sostenida que agota a la persona y la lleva a conductas de autodefensa
+            que pueden ser peligrosas para ella misma y para terceros.
+          </p>
+
+          <p>
+            Un aspecto clínicamente relevante es la tendencia del delirio de Fregoli a expandirse.
+            Al inicio puede haber un único "perseguidor". Con el tiempo, y especialmente si el cuadro
+            subyacente no se trata, el delirio puede incorporar a más personas, más situaciones,
+            más "evidencias". Este proceso de elaboración delirante hace que el mundo percibido
+            por la persona se vuelva progresivamente más hostil y más lleno de señales amenazantes.
+            La vida cotidiana —un viaje en colectivo, una compra en el supermercado, una llamada telefónica—
+            se convierte en territorio de persecución.
+          </p>
+
+          <p>
+            El riesgo de que la persona abandone el tratamiento es una complicación específica del Fregoli.
+            Si el delirio se extiende al equipo terapéutico —el médico, el psicólogo, el enfermero
+            son "el mismo disfrazado"— la persona puede interrumpir la medicación o dejar de asistir
+            a las consultas, precisamente en el momento en que más necesita el tratamiento.
+            Este escenario requiere una planificación anticipada entre el equipo y la familia:
+            quién acompaña, cómo se mantiene el vínculo terapéutico, qué hacer si la persona
+            rechaza al profesional de referencia.
+          </p>
+
+          <p>
+            El tratamiento del Fregoli depende de la causa subyacente. En psicosis funcionales
+            (esquizofrenia, trastorno esquizoafectivo, episodios maníacos psicóticos),
+            los antipsicóticos son el tratamiento de primera línea y suelen reducir significativamente
+            la intensidad del delirio. En causas orgánicas —encefalitis, epilepsia, lesiones focales—
+            el tratamiento de la causa de base es prioritario. La respuesta al tratamiento puede ser
+            notable: en muchos casos, el delirio de Fregoli remite completamente con la estabilización
+            del cuadro psicótico subyacente.
+          </p>
+
+          <p>
+            Para las familias, el Fregoli genera un tipo de agotamiento particular. No se trata solo
+            del desgaste de acompañar un delirio: es el agotamiento de moverse por el mundo
+            en estado de alerta constante, anticipando confrontaciones, monitoreando el entorno,
+            interviniendo antes de que las situaciones escalen. El autocuidado del familiar no es secundario:
+            es una condición necesaria para que el acompañamiento sea sostenible a mediano y largo plazo.
+            Buscar apoyo propio —terapia, grupos de familias, información— no es abandonar a la persona:
+            es asegurarse de poder seguir estando.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. El diagnóstico y el plan de tratamiento siempre deben ser realizados por un profesional de salud.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Necesitás orientación profesional?</h3>
+            <p class="card-sub">
+              Si reconocés estos síntomas en un familiar o tenés dudas sobre el diagnóstico o el manejo,
+              la Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange    = document.getElementById("beforeRange");
+      const afterRange     = document.getElementById("afterRange");
+      const beforeVal      = document.getElementById("beforeVal");
+      const afterVal       = document.getElementById("afterVal");
+      const situacionInput = document.getElementById("situacionInput");
+      const medicacionInput= document.getElementById("medicacionInput");
+      const noteInput      = document.getElementById("noteInput");
+      const btnCopy        = document.getElementById("btnCopy");
+      const btnReset       = document.getElementById("btnReset");
+      const copyOk         = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const situacion  = (situacionInput.value || "").trim();
+        const medicacion = (medicacionInput.value || "").trim();
+        const note       = (noteInput.value || "").trim();
+
+        const txt =
+          `Fregoli — Registro familiar | Carga emocional: ${beforeRange.value}/10 | Intensidad delirio observada: ${afterRange.value}/10 | Situaciones de riesgo: ${situacion || "—"} | Medicación: ${medicacion || "—"} | Notas: ${note || "—"} | Fecha/hora: ${nowStr()}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value    = 5;
+        afterRange.value     = 5;
+        situacionInput.value = "";
+        medicacionInput.value= "";
+        noteInput.value      = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

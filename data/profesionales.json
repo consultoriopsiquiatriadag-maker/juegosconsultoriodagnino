@@ -1,0 +1,74 @@
+[
+  {
+    "_instrucciones": {
+      "descripcion": "Directorio de profesionales para el Chat de Apoyo del Consultorio Dr. Dagnino.",
+      "como_agregar": "Copiá uno de los objetos de ejemplo, modificá los campos y guardá el archivo.",
+      "campos_obligatorios": ["id", "nombre", "especialidades"],
+      "campos_opcionales": ["descripcion_corta", "modalidad", "ubicacion", "contacto_url", "turnos_url", "centro_asociado", "tags"],
+      "contacto_url_nota": "Puede ser un link de WhatsApp (wa.me/...), email (mailto:...) o URL de perfil.",
+      "turnos_url_nota": "Link directo para sacar turno. Puede quedar vacío ('') si no aplica.",
+      "tags_nota": "Palabras clave de búsqueda (en minúsculas). Ej: ['ansiedad', 'adultos', 'tcc']",
+      "IMPORTANTE": "Eliminar este objeto '_instrucciones' cuando el directorio esté en producción."
+    }
+  },
+  {
+    "id": "pro-001",
+    "nombre": "Lic. María González",
+    "especialidades": ["Psicología clínica", "Terapia cognitivo-conductual"],
+    "descripcion_corta": "Especializada en ansiedad, depresión y duelos en adultos. Abordaje TCC con foco en recursos del paciente.",
+    "modalidad": "Presencial y virtual",
+    "ubicacion": "Palermo, CABA",
+    "contacto_url": "",
+    "turnos_url": "",
+    "centro_asociado": "Consultorio Dr. Dagnino",
+    "tags": ["ansiedad", "depresión", "adultos", "tcc", "duelos", "psicología"]
+  },
+  {
+    "id": "pro-002",
+    "nombre": "Dr. Hernán Ramírez",
+    "especialidades": ["Psiquiatría", "Medicina del sueño"],
+    "descripcion_corta": "Psiquiatra con especialización en trastornos del sueño, narcolepsia e hipersomnia. Evaluación y tratamiento farmacológico.",
+    "modalidad": "Presencial",
+    "ubicacion": "Recoleta, CABA",
+    "contacto_url": "",
+    "turnos_url": "",
+    "centro_asociado": "",
+    "tags": ["sueño", "insomnio", "narcolepsia", "psiquiatría", "farmacología", "adultos"]
+  },
+  {
+    "id": "pro-003",
+    "nombre": "Lic. Carolina Suárez",
+    "especialidades": ["Psicología infanto-juvenil", "Neuropsicología"],
+    "descripcion_corta": "Especialista en evaluación y tratamiento psicológico de niños y adolescentes. Dificultades de aprendizaje y TDAH.",
+    "modalidad": "Presencial y virtual",
+    "ubicacion": "Belgrano, CABA",
+    "contacto_url": "",
+    "turnos_url": "",
+    "centro_asociado": "",
+    "tags": ["niños", "adolescentes", "neuropsicología", "tdah", "aprendizaje", "infancia"]
+  },
+  {
+    "id": "pro-004",
+    "nombre": "Lic. Sofía Torres",
+    "especialidades": ["Psicología de parejas", "Terapia sistémica"],
+    "descripcion_corta": "Terapia de pareja y familiar. Comunicación, conflictos vinculares y etapas de vida. Enfoque sistémico-narrativo.",
+    "modalidad": "Presencial y virtual",
+    "ubicacion": "San Telmo, CABA",
+    "contacto_url": "",
+    "turnos_url": "",
+    "centro_asociado": "",
+    "tags": ["pareja", "familia", "sistémica", "vínculos", "comunicación", "adultos"]
+  },
+  {
+    "id": "pro-005",
+    "nombre": "Dr. Martín Acosta",
+    "especialidades": ["Neurología", "Medicina aeronáutica"],
+    "descripcion_corta": "Neurólogo con experiencia en evaluaciones de aptitud psicofísica aeronáutica y trastornos neurológicos en adultos.",
+    "modalidad": "Presencial",
+    "ubicacion": "Puerto Madero, CABA",
+    "contacto_url": "",
+    "turnos_url": "",
+    "centro_asociado": "Consultorio Dr. Dagnino",
+    "tags": ["neurología", "aeronáutica", "aptitud psicofísica", "pilotos", "adultos"]
+  }
+]

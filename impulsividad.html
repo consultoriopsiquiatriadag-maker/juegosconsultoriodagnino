@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Impulsividad e Ira | Autochequeo Interactivo</title>
+  <meta name="description" content="Autochequeo interactivo sobre impulsividad, impulsividad contenida e ira. Orientativo, no diagnóstico." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); scroll-behavior: smooth; }
+    body { background: #eef2f7; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.14); }
+    .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER NAVY -->
+  <header class="bg-inst-navy text-white sticky top-0 z-50 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
+      <div class="leading-tight">
+        <p class="text-sm font-semibold">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
+        <p class="text-xs text-white/70">Sala de Espera Virtual · Impulsividad e Ira</p>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap justify-end">
+        <a href="psicoeducacion-ejercicios.html"
+           class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg font-semibold soft-ring">
+          ← Psicoeducación
+        </a>
+        <a href="index.html"
+           class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg font-semibold soft-ring">
+          Inicio
+        </a>
+        <div class="inline-flex rounded-lg overflow-hidden border border-white/15 bg-white/10">
+          <button id="fontDown" type="button" class="px-3 py-2 text-sm font-semibold hover:bg-white/10">A-</button>
+          <button id="fontUp" type="button" class="px-3 py-2 text-sm font-semibold hover:bg-white/10 border-l border-white/15">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-white border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <p class="text-xs text-inst-gray tracking-wider uppercase mb-2">Autochequeo · 2–4 minutos</p>
+      <h1 class="text-3xl md:text-4xl font-semibold mb-3">Impulsividad e Ira</h1>
+      <p class="text-inst-gray leading-relaxed max-w-3xl">
+        Esto no es un diagnóstico. Sirve para <strong>orientarte</strong> y elegir una conducta segura “en caliente”.
+      </p>
+    </div>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-6">
+
+    <!-- SEMÁFORO -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm card-hover">
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Semáforo rápido</h2>
+      <p class="text-inst-gray leading-relaxed mb-5">
+        Elegí el color que más se parezca a tu estado ahora. Esto ajusta la recomendación final.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-3">
+        <button id="btnGreen" class="soft-ring rounded-2xl border border-gray-200 p-5 text-left hover:bg-inst-light">
+          <div class="text-sm text-inst-gray">🟢 Verde</div>
+          <div class="font-semibold mt-1">Estoy tenso pero con control</div>
+          <div class="text-sm text-inst-gray mt-2">Puedo pausar y elegir.</div>
+        </button>
+        <button id="btnYellow" class="soft-ring rounded-2xl border border-gray-200 p-5 text-left hover:bg-inst-light">
+          <div class="text-sm text-inst-gray">🟡 Amarillo</div>
+          <div class="font-semibold mt-1">Estoy al borde / me cuesta frenar</div>
+          <div class="text-sm text-inst-gray mt-2">Riesgo de reaccionar mal.</div>
+        </button>
+        <button id="btnRed" class="soft-ring rounded-2xl border border-red-200 bg-red-50 p-5 text-left hover:bg-red-100">
+          <div class="text-sm text-inst-gray">🔴 Rojo</div>
+          <div class="font-semibold mt-1">Estoy fuera de control o en riesgo</div>
+          <div class="text-sm text-inst-gray mt-2">Prioridad: seguridad inmediata.</div>
+        </button>
+      </div>
+
+      <div id="trafficInfo" class="mt-5 rounded-2xl border border-gray-200 bg-inst-light p-4">
+        <div class="font-semibold">Estado seleccionado: <span id="trafficState">—</span></div>
+        <div class="text-sm text-inst-gray mt-1" id="trafficHint">Elegí un color para continuar.</div>
+      </div>
+    </section>
+
+    <!-- CHECKLIST + SLIDERS -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm card-hover">
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Autochequeo</h2>
+      <p class="text-inst-gray leading-relaxed mb-6">
+        Marcá lo que te pasa hoy. Luego ajustá los valores (0–10).
+      </p>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <!-- Checklist -->
+        <div class="rounded-2xl border border-gray-200 bg-white p-5">
+          <h3 class="text-lg font-semibold mb-3">Checklist (sí / no)</h3>
+
+          <div class="space-y-3 text-sm">
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="2" />
+              <div>
+                <div class="font-semibold">Me cuesta esperar / quiero resolver ya</div>
+                <div class="text-inst-gray">Urgencia por actuar o contestar.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="2" />
+              <div>
+                <div class="font-semibold">Tengo ganas de mandar un mensaje “en caliente”</div>
+                <div class="text-inst-gray">WhatsApp / redes / llamada.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="3" />
+              <div>
+                <div class="font-semibold">Estoy irritable / me enoja todo</div>
+                <div class="text-inst-gray">Baja tolerancia, respuestas cortantes.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="3" />
+              <div>
+                <div class="font-semibold">Siento tensión corporal (mandíbula, cuello, puños)</div>
+                <div class="text-inst-gray">El cuerpo está “listo para pelear”.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="4" />
+              <div>
+                <div class="font-semibold">Tengo fantasías de “descargar” (romper/gritar)</div>
+                <div class="text-inst-gray">No necesariamente lo haría, pero aparece la idea.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3 rounded-xl bg-inst-light/60 border border-gray-200">
+              <input class="mt-1 chk" type="checkbox" data-w="4" />
+              <div>
+                <div class="font-semibold">Estoy “conteniendo” y me siento a punto de explotar</div>
+                <div class="text-inst-gray">Impulsividad contenida / acumulación.</div>
+              </div>
+            </label>
+          </div>
+
+          <p class="text-xs text-inst-gray mt-4 leading-relaxed">
+            Nota: “Contener” no es malo. El punto es <strong>qué hacés después</strong> con esa energía.
+          </p>
+        </div>
+
+        <!-- Sliders -->
+        <div class="rounded-2xl border border-gray-200 bg-white p-5">
+          <h3 class="text-lg font-semibold mb-3">Intensidad (0–10)</h3>
+
+          <div class="space-y-5">
+            <div>
+              <div class="flex items-center justify-between">
+                <label class="font-semibold">Impulso de actuar (0–10)</label>
+                <span class="text-sm text-inst-gray">Valor: <span id="vImp">5</span></span>
+              </div>
+              <input id="sImp" type="range" min="0" max="10" value="5" class="w-full">
+              <p class="text-xs text-inst-gray mt-1">Ej: contestar ya, discutir, comprar, manejar rápido, decidir sin pensar.</p>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between">
+                <label class="font-semibold">Ira / enojo (0–10)</label>
+                <span class="text-sm text-inst-gray">Valor: <span id="vIra">5</span></span>
+              </div>
+              <input id="sIra" type="range" min="0" max="10" value="5" class="w-full">
+              <p class="text-xs text-inst-gray mt-1">Ej: irritabilidad, ganas de discutir, tono elevado, resentimiento.</p>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between">
+                <label class="font-semibold">Tensión corporal (0–10)</label>
+                <span class="text-sm text-inst-gray">Valor: <span id="vTen">5</span></span>
+              </div>
+              <input id="sTen" type="range" min="0" max="10" value="5" class="w-full">
+              <p class="text-xs text-inst-gray mt-1">Ej: mandíbula, puños, hombros altos, presión en pecho.</p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button id="btnCalc" class="rounded-xl bg-inst-blue text-white font-semibold px-5 py-3 hover:opacity-95 soft-ring">
+              Ver resultado
+            </button>
+            <button id="btnReset" class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-5 py-3 hover:bg-inst-light soft-ring">
+              Reiniciar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm card-hover">
+      <h2 class="text-2xl md:text-3xl font-light mb-2">Resultado orientativo</h2>
+      <p class="text-inst-gray leading-relaxed mb-5">
+        Te da una lectura simple y una conducta recomendada <strong>para ahora</strong>.
+      </p>
+
+      <div id="resultBox" class="rounded-2xl border border-gray-200 bg-inst-light p-5">
+        <div class="font-semibold text-lg">Aún no calculado</div>
+        <div class="text-inst-gray mt-1">Completá el autochequeo y tocá “Ver resultado”.</div>
+      </div>
+
+      <!-- Plan inmediato -->
+      <div class="mt-6 grid md:grid-cols-3 gap-3">
+        <div class="rounded-2xl bg-white border border-gray-200 p-4">
+          <div class="text-xs text-inst-gray">Paso 1</div>
+          <div class="font-semibold mt-1">Pausa 60 segundos</div>
+          <div class="text-sm text-inst-gray mt-2">Exhalación larga 6–8s × 6.</div>
+        </div>
+        <div class="rounded-2xl bg-white border border-gray-200 p-4">
+          <div class="text-xs text-inst-gray">Paso 2</div>
+          <div class="font-semibold mt-1">Regla “no envío”</div>
+          <div class="text-sm text-inst-gray mt-2">No mensajes/decisiones por 30 min.</div>
+        </div>
+        <div class="rounded-2xl bg-white border border-gray-200 p-4">
+          <div class="text-xs text-inst-gray">Paso 3</div>
+          <div class="font-semibold mt-1">Descarga segura</div>
+          <div class="text-sm text-inst-gray mt-2">Caminar 10 min o agua fría en manos/cara.</div>
+        </div>
+      </div>
+
+      <!-- Copiar resumen -->
+      <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5">
+        <h3 class="text-lg font-semibold mb-2">Copiar resumen</h3>
+        <p class="text-inst-gray text-sm mb-3">
+          Útil para anotarlo o mandarlo a alguien de confianza.
+        </p>
+        <textarea id="summary" class="w-full min-h-[120px] rounded-xl border border-gray-200 p-3 text-sm soft-ring"
+                  placeholder="Acá va a aparecer un resumen automático luego del resultado..."></textarea>
+        <div class="mt-3 flex flex-wrap gap-3">
+          <button id="btnCopy" class="rounded-xl bg-inst-navy text-white font-semibold px-5 py-3 hover:bg-inst-blue soft-ring">
+            Copiar
+          </button>
+          <span id="copyMsg" class="text-sm text-inst-gray self-center"></span>
+        </div>
+      </div>
+
+      <p class="text-xs text-inst-gray mt-5 leading-relaxed">
+        Si estás en <strong>rojo</strong> (riesgo de agresión, autolesión o pérdida de control), priorizá seguridad y buscá ayuda inmediata.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER NAVY -->
+  <footer class="bg-inst-navy text-white mt-10">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+      <p class="text-sm font-semibold">Consultorio Dr. Pedro Nicolás Dagnino</p>
+      <p class="text-xs text-white/70 mt-1">Impulsividad e Ira · Autochequeo orientativo</p>
+      <p class="text-xs text-white/60 mt-4">
+        Si estás en riesgo o pensás en hacerte daño, buscá ayuda inmediata en tu ciudad (urgencias / emergencias).
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // ----------------------------
+    // Font size controls
+    // ----------------------------
+    (function(){
+      let base = 16;
+      const root = document.documentElement;
+      const up = document.getElementById('fontUp');
+      const down = document.getElementById('fontDown');
+
+      function apply(){
+        root.style.setProperty('--base-font', base + 'px');
+        try { localStorage.setItem('dagnino_font', String(base)); } catch(e){}
+      }
+
+      try {
+        const saved = parseInt(localStorage.getItem('dagnino_font') || '', 10);
+        if (!Number.isNaN(saved) && saved >= 14 && saved <= 20) base = saved;
+      } catch(e){}
+
+      up?.addEventListener('click', () => { base = Math.min(20, base + 1); apply(); });
+      down?.addEventListener('click', () => { base = Math.max(14, base - 1); apply(); });
+
+      apply();
+    })();
+
+    // ----------------------------
+    // Semáforo
+    // ----------------------------
+    let traffic = null; // "green" | "yellow" | "red"
+    const trafficState = document.getElementById('trafficState');
+    const trafficHint  = document.getElementById('trafficHint');
+
+    function setTraffic(t){
+      traffic = t;
+      if (t === 'green') {
+        trafficState.textContent = '🟢 Verde';
+        trafficHint.textContent = 'Buen momento para entrenar pausa + elección. Evitá actuar por “impulso chico”.';
+      } else if (t === 'yellow') {
+        trafficState.textContent = '🟡 Amarillo';
+        trafficHint.textContent = 'Riesgo moderado. Aplicá “no envío” + descarga segura. Postergá decisiones 30–60 min.';
+      } else if (t === 'red') {
+        trafficState.textContent = '🔴 Rojo';
+        trafficHint.textContent = 'Prioridad: seguridad. Alejate del estímulo, pedí ayuda, evitá conducir/consumo.';
+      } else {
+        trafficState.textContent = '—';
+        trafficHint.textContent = 'Elegí un color para continuar.';
+      }
+    }
+
+    document.getElementById('btnGreen').addEventListener('click', ()=> setTraffic('green'));
+    document.getElementById('btnYellow').addEventListener('click', ()=> setTraffic('yellow'));
+    document.getElementById('btnRed').addEventListener('click', ()=> setTraffic('red'));
+
+    // ----------------------------
+    // Sliders UI
+    // ----------------------------
+    const sImp = document.getElementById('sImp');
+    const sIra = document.getElementById('sIra');
+    const sTen = document.getElementById('sTen');
+    const vImp = document.getElementById('vImp');
+    const vIra = document.getElementById('vIra');
+    const vTen = document.getElementById('vTen');
+
+    function bindSlider(sl, out){
+      const fn = ()=> out.textContent = sl.value;
+      sl.addEventListener('input', fn);
+      fn();
+    }
+    bindSlider(sImp, vImp);
+    bindSlider(sIra, vIra);
+    bindSlider(sTen, vTen);
+
+    // ----------------------------
+    // Cálculo orientativo
+    // ----------------------------
+    const resultBox = document.getElementById('resultBox');
+    const summaryEl = document.getElementById('summary');
+
+    function getChecklistScore(){
+      let score = 0;
+      document.querySelectorAll('.chk').forEach(chk => {
+        if (chk.checked) score += parseInt(chk.getAttribute('data-w') || '1', 10);
+      });
+      return score;
+    }
+
+    function classify({imp, ira, ten, chkScore, traffic}){
+      // Heurística simple:
+      // - Impulsividad activa: alto impulso + checklist alto
+      // - Impulsividad contenida: ira/tensión alta + checkbox “contengo/exploto”
+      // - Ira predominante: ira alta + tensión alta
+      // - Ajuste por semáforo
+      const contains = Array.from(document.querySelectorAll('.chk')).some((c, idx)=> {
+        // el checkbox "contengo/exploto" es el último del checklist (data-w=4) -> mejor por texto:
+        const labelText = c.parentElement?.innerText || '';
+        return c.checked && labelText.toLowerCase().includes('conteniendo');
+      });
+
+      let risk = 0;
+      risk += imp * 1.2 + ira * 1.1 + ten * 0.9 + chkScore * 1.0;
+
+      if (traffic === 'yellow') risk += 4;
+      if (traffic === 'red') risk += 9;
+
+      let label = '';
+      let focus = '';
+      if (contains && (ira >= 6 || ten >= 6)) {
+        label = 'Impulsividad contenida / acumulación';
+        focus = 'Necesitás descargar de forma segura y programada (sin estallar).';
+      } else if (imp >= 7 && chkScore >= 7) {
+        label = 'Impulsividad activa (riesgo de actuar “en caliente”)';
+        focus = 'Tu tarea ahora es pausar y postergar decisiones/mensajes.';
+      } else if (ira >= 7 && ten >= 6) {
+        label = 'Ira predominante';
+        focus = 'Primero bajá activación corporal, después conversás/decidís.';
+      } else {
+        label = 'Activación moderada';
+        focus = 'Buen momento para entrenar pausa + una descarga breve.';
+      }
+
+      let band = 'verde';
+      if (risk >= 26) band = 'rojo';
+      else if (risk >= 18) band = 'amarillo';
+
+      return {label, focus, risk: Math.round(risk), band};
+    }
+
+    function recommendation(band, label){
+      if (band === 'rojo') {
+        return [
+          '1) Seguridad: alejate del estímulo (persona/lugar) y bajá activación (respiración + agua fría).',
+          '2) No conducir / no discutir / no alcohol.',
+          '3) Pedí ayuda inmediata: persona de confianza + urgencias si sentís pérdida de control.'
+        ];
+      }
+      if (band === 'amarillo') {
+        return [
+          '1) Regla “no envío” 30–60 min (WhatsApp/redes/llamadas).',
+          '2) Descarga segura 10 min: caminar rápido / flexiones suaves / ducha tibia.',
+          '3) Después: escribí 3 líneas (hecho, emoción, pedido concreto).'
+        ];
+      }
+      return [
+        '1) Pausa 60 s: exhalación larga 6–8 s × 6.',
+        '2) Elegí 1 acción pro-salud (agua, comida, descanso, salir al aire).',
+        '3) Si vas a hablar: tono bajo + una frase de pedido (sin reproches).'
+      ];
+    }
+
+    function renderResult(res, inputs){
+      const bandColor =
+        res.band === 'rojo' ? 'border-red-200 bg-red-50' :
+        res.band === 'amarillo' ? 'border-yellow-200 bg-yellow-50' :
+        'border-green-200 bg-green-50';
+
+      const bandEmoji = res.band === 'rojo' ? '🔴' : res.band === 'amarillo' ? '🟡' : '🟢';
+      const rec = recommendation(res.band, res.label);
+
+      resultBox.className = `rounded-2xl border p-5 ${bandColor}`;
+      resultBox.innerHTML = `
+        <div class="font-semibold text-lg">${bandEmoji} ${res.label}</div>
+        <div class="text-inst-gray mt-1">${res.focus}</div>
+        <div class="mt-3 text-sm">
+          <div class="font-semibold">Nivel estimado:</div>
+          <div class="text-inst-gray">Puntaje orientativo: <strong>${res.risk}</strong> · Banda: <strong>${res.band.toUpperCase()}</strong></div>
+        </div>
+        <div class="mt-4">
+          <div class="font-semibold">Qué hacer ahora</div>
+          <ul class="list-disc pl-5 mt-2 text-inst-gray space-y-1.5">
+            ${rec.map(x => `<li>${x}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+
+      const now = new Date();
+      const dt = now.toLocaleString('es-AR', { hour12: false });
+
+      summaryEl.value =
+`IMPULSIVIDAD / IRA — Resumen (${dt})
+Semáforo: ${traffic ? traffic.toUpperCase() : 'NO SELECCIONADO'}
+Checklist (puntaje): ${inputs.chkScore}
+Impulso: ${inputs.imp}/10 · Ira: ${inputs.ira}/10 · Tensión: ${inputs.ten}/10
+Resultado: ${res.label} (Banda ${res.band.toUpperCase()}, puntaje ${res.risk})
+
+Plan inmediato:
+- ${recommendation(res.band, res.label).join('\n- ')}
+
+Nota: material orientativo (no diagnóstico).`;
+    }
+
+    document.getElementById('btnCalc').addEventListener('click', () => {
+      const chkScore = getChecklistScore();
+      const imp = parseInt(sImp.value, 10);
+      const ira = parseInt(sIra.value, 10);
+      const ten = parseInt(sTen.value, 10);
+
+      const res = classify({imp, ira, ten, chkScore, traffic});
+      renderResult(res, {chkScore, imp, ira, ten});
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      setTraffic(null);
+      document.querySelectorAll('.chk').forEach(chk => chk.checked = false);
+      sImp.value = 5; sIra.value = 5; sTen.value = 5;
+      vImp.textContent = '5'; vIra.textContent = '5'; vTen.textContent = '5';
+      resultBox.className = 'rounded-2xl border border-gray-200 bg-inst-light p-5';
+      resultBox.innerHTML = '<div class="font-semibold text-lg">Aún no calculado</div><div class="text-inst-gray mt-1">Completá el autochequeo y tocá “Ver resultado”.</div>';
+      summaryEl.value = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Copy
+    document.getElementById('btnCopy').addEventListener('click', async () => {
+      const msg = document.getElementById('copyMsg');
+      try {
+        await navigator.clipboard.writeText(summaryEl.value || '');
+        msg.textContent = 'Copiado ✅';
+        setTimeout(() => msg.textContent = '', 1800);
+      } catch (e) {
+        msg.textContent = 'No se pudo copiar (probá seleccionar y copiar manualmente).';
+        setTimeout(() => msg.textContent = '', 2600);
+      }
+    });
+  </script>
+</body>
+</html>

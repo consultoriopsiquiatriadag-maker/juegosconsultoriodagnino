@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emociones — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* Fondo (avión) + overlay para contraste */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      pointer-events:none;
+      z-index: -1;
+    }
+
+    /* Grid simple para 2 cards */
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    @media (max-width: 820px){ .grid-2{ grid-template-columns:1fr; } }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional (sin idiomas, sin doble ajustes) ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-label="Emociones">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="pill" aria-label="Estado">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Recursos emocionales</span>
+        </div>
+
+        <h1 class="hero-title">Emociones</h1>
+
+        <p class="hero-bridge">
+          Elegí el recurso que necesitás: registro breve, chat guiado o ejercicio de sueño.
+        </p>
+
+        <p class="hero-meta">
+          Estos recursos no realizan diagnósticos ni reemplazan una consulta. Si estás en crisis o urgencia, utilizá los canales de emergencia locales.
+        </p>
+      </div>
+
+      <aside class="hero-side" aria-label="Accesos rápidos">
+        <h3>Accesos</h3>
+        <p>Volver al inicio o a recursos principales.</p>
+        <div class="row">
+          <a href="index.html" data-spa="0">Inicio</a>
+          <a href="turnos.html" data-spa="0">Central de Turnos</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" aria-label="Selector de recursos">
+
+    <!-- Selector principal -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Elegí tu recurso</h2>
+            <p class="card-sub" style="margin-top:8px">
+              Podés hacer el <strong>registro emocional</strong> (rápido y concreto), usar el <strong>chat guiado</strong> para calmarte y enfocarte,
+              o hacer un <strong>ejercicio para conciliar el sueño</strong>.
+            </p>
+            <p class="card-sub" style="margin-top:8px">
+              Los recorridos y recursos están supervisados por el Dr. Pedro Nicolás Dagnino.
+            </p>
+          </div>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="btn-row" style="flex-wrap:wrap">
+          <a class="btn-primary" href="registro-emocional.html" data-spa="0" aria-label="Ir a registro emocional">📝 Registro emocional</a>
+          <a class="btn-secondary" href="chat-guiado.html" data-spa="0" aria-label="Ir a chat guiado">💬 Chat guiado</a>
+          <a class="btn-secondary" href="sueno.html" data-spa="0" aria-label="Ir a ejercicio de sueño">🌧️ Conciliar el sueño</a>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Si estás en emergencia, pedí ayuda inmediata a tu sistema local de emergencias.
+        </div>
+      </div>
+    </section>
+
+    <!-- Dos zócalos “más recursos en construcción” -->
+    <section class="section" aria-label="Recursos en construcción">
+      <div class="grid-2">
+        <article class="section-card hint-bg">
+          <h3 class="card-title">🧩 Más recursos en construcción</h3>
+          <p class="card-sub">
+            Estamos incorporando nuevas herramientas breves para calma, foco y sueño. Próximamente vas a ver más opciones aquí.
+          </p>
+          <span class="badge-soft">Próximamente</span>
+        </article>
+
+        <article class="section-card hint-bg">
+          <h3 class="card-title">🛠️ Nuevos ejercicios guiados</h3>
+          <p class="card-sub">
+            Se están preparando audios y ejercicios paso a paso: respiración, relajación muscular, visualizaciones simples y rutinas de cierre del día.
+          </p>
+          <span class="badge-soft">En desarrollo</span>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer (simple y consistente) ===== -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong>Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="legal" id="legalBlock">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT — Año automático.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JS mínimo para UI (sin idiomas) ===== -->
+  <script>
+    (function(){
+      const qs = (s)=>document.querySelector(s);
+
+      const sheet = qs("#settingsSheet");
+      const openBtn = qs("#openSettings");
+      const openBtnDesktop = qs("#openSettingsDesktop");
+      const closeBackdrop = qs("#closeSettings");
+      const closeBtn = qs("#closeSettingsBtn");
+
+      const btnAminus = qs("#btnAminus");
+      const btnAplus = qs("#btnAplus");
+      const textScaleRange = qs("#textScaleRange");
+      const toggleContrast = qs("#toggleContrast");
+      const toggleMotion = qs("#toggleMotion");
+      const toggleLine = qs("#toggleLine");
+
+      const audioToggle = qs("#audioToggle");
+      const audioToggleSheet = qs("#audioToggleSheet");
+      const volumeRange = qs("#volumeRange");
+      const volumeRangeSheet = qs("#volumeRangeSheet");
+
+      // Persistencia simple
+      const store = {
+        get(k, d){ try{ const v = localStorage.getItem(k); return v===null? d : JSON.parse(v);}catch{ return d; } },
+        set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+      };
+
+      // Estado
+      let scale = store.get("ui_text_scale", 100);
+      let hiContrast = store.get("ui_contrast", false);
+      let reduceMotion = store.get("ui_reduce_motion", false);
+      let lineSpacing = store.get("ui_line_spacing", false);
+      let audioEnabled = store.get("ui_audio_enabled", false);
+      let vol = store.get("ui_volume", 0.35);
+
+      function apply(){
+        document.documentElement.style.setProperty("--text-scale", scale + "%");
+        document.documentElement.classList.toggle("hi-contrast", !!hiContrast);
+        document.documentElement.classList.toggle("reduce-motion", !!reduceMotion);
+        document.documentElement.classList.toggle("line-spacing", !!lineSpacing);
+
+        if(textScaleRange) textScaleRange.value = String(scale);
+        if(toggleContrast) toggleContrast.checked = !!hiContrast;
+        if(toggleMotion) toggleMotion.checked = !!reduceMotion;
+        if(toggleLine) toggleLine.checked = !!lineSpacing;
+
+        if(volumeRange) volumeRange.value = String(Math.round(vol*100));
+        if(volumeRangeSheet) volumeRangeSheet.value = String(Math.round(vol*100));
+
+        const label = audioEnabled ? "Sonidos activados" : "Activar sonidos";
+        if(audioToggle) audioToggle.textContent = label;
+        if(audioToggleSheet) audioToggleSheet.textContent = label;
+        if(audioToggle) audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+        if(audioToggleSheet) audioToggleSheet.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+
+        // Año footer
+        const y = document.getElementById("yearNow");
+        if(y) y.textContent = String(new Date().getFullYear());
+      }
+
+      function openSheet(){
+        if(!sheet) return;
+        sheet.hidden = false;
+        sheet.setAttribute("aria-hidden","false");
+        (openBtn||openBtnDesktop)?.setAttribute("aria-expanded","true");
+      }
+      function closeSheet(){
+        if(!sheet) return;
+        sheet.hidden = true;
+        sheet.setAttribute("aria-hidden","true");
+        (openBtn||openBtnDesktop)?.setAttribute("aria-expanded","false");
+      }
+
+      openBtn?.addEventListener("click", openSheet);
+      openBtnDesktop?.addEventListener("click", openSheet);
+      closeBackdrop?.addEventListener("click", closeSheet);
+      closeBtn?.addEventListener("click", closeSheet);
+
+      btnAminus?.addEventListener("click", ()=>{
+        scale = Math.max(85, scale - 5);
+        store.set("ui_text_scale", scale);
+        apply();
+      });
+      btnAplus?.addEventListener("click", ()=>{
+        scale = Math.min(130, scale + 5);
+        store.set("ui_text_scale", scale);
+        apply();
+      });
+      textScaleRange?.addEventListener("input", ()=>{
+        scale = Number(textScaleRange.value || 100);
+        store.set("ui_text_scale", scale);
+        apply();
+      });
+
+      toggleContrast?.addEventListener("change", ()=>{
+        hiContrast = !!toggleContrast.checked;
+        store.set("ui_contrast", hiContrast);
+        apply();
+      });
+      toggleMotion?.addEventListener("change", ()=>{
+        reduceMotion = !!toggleMotion.checked;
+        store.set("ui_reduce_motion", reduceMotion);
+        apply();
+      });
+      toggleLine?.addEventListener("change", ()=>{
+        lineSpacing = !!toggleLine.checked;
+        store.set("ui_line_spacing", lineSpacing);
+        apply();
+      });
+
+      function setVolFromPct(pct){
+        vol = Math.max(0, Math.min(1, pct/100));
+        store.set("ui_volume", vol);
+        apply();
+      }
+      volumeRange?.addEventListener("input", ()=> setVolFromPct(Number(volumeRange.value||35)));
+      volumeRangeSheet?.addEventListener("input", ()=> setVolFromPct(Number(volumeRangeSheet.value||35)));
+
+      function toggleAudio(){
+        audioEnabled = !audioEnabled;
+        store.set("ui_audio_enabled", audioEnabled);
+        apply();
+      }
+      audioToggle?.addEventListener("click", toggleAudio);
+      audioToggleSheet?.addEventListener("click", toggleAudio);
+
+      apply();
+    })();
+  </script>
+</body>
+</html>

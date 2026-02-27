@@ -1,0 +1,505 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Narcolepsia — Síntomas y autoevaluación | Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para pacientes: síntomas frecuentes de narcolepsia y recursos de autoevaluación (Epworth + checklist + registro 7 días). Sin texto en portada. Podcast en preparación." />
+
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <meta name="theme-color" content="#0e2239" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Narcolepsia</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada (SIN TEXTO) -->
+    <section class="section" aria-label="Portada">
+      <div class="topic-hero">
+        <img src="assets/img/narcolepsia-portada.webp?v=1" alt="Ilustración sobre somnolencia diurna y evaluación del sueño" />
+        <div class="overlay"></div>
+      </div>
+    </section>
+
+<!-- 🎧 Podcast -->
+    <section class="section" id="audio-podcast">
+      <div class="section-card hint-bg">
+        <div class="card-head" style="align-items:flex-start;">
+          <div>
+            <h2 class="card-title" style="margin:0">Podcast</h2>
+            <p class="card-sub" style="margin-top:6px">
+              Reproducí el audio para una explicación guiada sobre narcolepsia (sin reemplazar la consulta médica).
+            </p>
+          </div>
+          <div class="btn-row" style="gap:10px; margin-top:2px;">
+            <a class="btn-secondary" href="#autoevaluacion">Ir a autoevaluación</a>
+          </div>
+        </div>
+
+        <audio controls preload="metadata" style="width:100%; margin-top:12px">
+          <source src="audio/Narcolepsia_cuando_el_sueño_invade_la_vigilia.m4a" type="audio/mp4">
+          Tu navegador no soporta audio HTML5.
+        </audio>
+
+        <div class="note" style="margin-top:12px">
+          Si no se reproduce, verificá que el archivo esté en la carpeta <b>audio/</b> con el nombre exacto indicado.
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+    <!-- Subtítulo breve -->
+    <section class="section" aria-label="Introducción">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h1 class="card-title" style="font-size:1.35rem; margin:0">Narcolepsia · síntomas y autoevaluación</h1>
+            <p class="card-sub" style="margin-top:8px">
+              Si el sueño te “vence” de día, no es pereza: puede ser un problema de regulación sueño–vigilia.
+              Esta guía te ayuda a reconocer señales típicas y registrar datos útiles para una consulta.
+            </p>
+          </div>
+          <div class="btn-row" style="justify-content:flex-end;">
+            <a class="btn-primary" href="#autoevaluacion">Ir a autoevaluación</a>
+            <a class="btn-secondary" href="#alarmas">Seguridad</a>
+          </div>
+        </div>
+
+        <div class="note">
+          Esta página es informativa y no reemplaza evaluación médica. Si hay riesgo (micro-sueños conduciendo/maquinaria),
+          priorizá seguridad y consulta.
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es (en simple)</h2>
+            <p class="card-sub">
+              La <b>narcolepsia</b> es un trastorno neurológico del sueño en el que la vigilia no se mantiene “estable”.
+              El síntoma central suele ser la <b>somnolencia diurna excesiva</b> (sueño persistente o ataques de sueño).
+              Puede acompañarse de fenómenos tipo REM “colándose” en la vigilia: <b>parálisis del sueño</b>, <b>alucinaciones</b>
+              al dormir o despertar, y en algunos casos <b>cataplejía</b> (debilidad muscular súbita por emociones).
+            </p>
+          </div>
+          <span class="badge" title="Pista clínica">Objetivo: identificar señales</span>
+        </div>
+
+        <div class="grid-2" style="margin-top:14px">
+          <div>
+            <h3 class="card-title" style="margin:0; font-size:1.05rem">Pistas típicas</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Sueño persistente de día, incluso durmiendo “bien” de noche.</li>
+              <li>“Ataques de sueño”: sueño súbito e irresistible; siestas muy cortas que pueden aliviar.</li>
+              <li>Conductas automáticas: seguís haciendo algo con poca conciencia y luego recordás poco (ej. escribir “garabatos”).</li>
+              <li>Sueño nocturno cortado (despertares, sueño fragmentado).</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="card-title" style="margin:0; font-size:1.05rem">Si aparece cataplejía</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Debilidad súbita con <b>risa</b>, sorpresa, enojo o excitación.</li>
+              <li>La persona suele estar <b>consciente</b>.</li>
+              <li>Puede ser leve (párpados/mandíbula) o más intensa (aflojan rodillas/caída).</li>
+            </ul>
+            <div class="note" style="margin-top:12px">
+              Si tuviste episodios compatibles con cataplejía, es un dato clave para orientar el diagnóstico.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Síntomas -->
+    <section class="section" id="sintomas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Síntomas que conviene conocer</h2>
+            <p class="card-sub">No hace falta tenerlos todos. Lo central es la somnolencia diurna excesiva.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:14px">
+          <div>
+            <h3 class="card-title" style="margin:0; font-size:1.05rem">Núcleo</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li><b>Somnolencia diurna excesiva</b> + “ataques de sueño”.</li>
+              <li><b>Parálisis del sueño</b> al dormirse o al despertar (con conciencia).</li>
+              <li><b>Alucinaciones</b> vívidas al iniciar el sueño o al despertar.</li>
+              <li><b>Cataplejía</b> (solo en un subtipo): pérdida súbita de tono muscular por emoción.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="card-title" style="margin:0; font-size:1.05rem">Frecuentes asociados</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li><b>Sueño nocturno fragmentado</b> (despertares, sueño poco continuo).</li>
+              <li>Vigilia “intermedia”: sensación de no estar del todo dormido ni despierto.</li>
+              <li>Siestas breves que mejoran la alerta por un rato.</li>
+            </ul>
+            <div class="note" style="margin-top:12px">
+              Ojo: hay causas más comunes de somnolencia (deuda de sueño, apnea, fármacos, alcohol/sedantes, depresión/ansiedad).
+              Por eso sirve registrar datos antes de concluir.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Autoevaluación -->
+    <section class="section" id="autoevaluacion">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Autoevaluación</h2>
+            <p class="card-sub">Dos herramientas: Epworth (sueño diurno) y checklist de pistas.</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopySummary" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnResetAll" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con tu médico.</div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <!-- Epworth -->
+        <section aria-label="Epworth">
+          <h3 class="card-title" style="margin:0; font-size:1.05rem">1) Escala de Somnolencia de Epworth (ESS)</h3>
+          <p class="card-sub">
+            Marcá la probabilidad de dormirte en cada situación: 0 (nunca) · 1 (leve) · 2 (moderada) · 3 (alta).
+          </p>
+
+          <div style="margin-top:12px; overflow:auto;">
+            <table class="table" aria-label="Tabla Epworth">
+              <thead>
+                <tr>
+                  <th>Situación</th>
+                  <th style="width:160px">Puntaje</th>
+                </tr>
+              </thead>
+              <tbody id="essBody"></tbody>
+            </table>
+          </div>
+
+          <div class="btn-row" style="margin-top:12px">
+            <span class="badge" id="essTotalBadge" title="Suma ESS">ESS: 0/24</span>
+            <span class="badge" id="essLevelBadge">Nivel: —</span>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Interpretación orientativa: 0–10 esperable · 11–12 leve · 13–15 moderada · 16–24 severa.
+          </div>
+        </section>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <!-- Checklist -->
+        <section aria-label="Checklist narcolepsia">
+          <h3 class="card-title" style="margin:0; font-size:1.05rem">2) Checklist de “pistas narcolépticas”</h3>
+          <p class="card-sub">Marcá lo que te pasa en las últimas semanas/meses.</p>
+
+          <div class="grid-2" style="margin-top:12px">
+            <div>
+              <label class="card-sub" style="display:block; font-weight:800; margin-bottom:8px">Somnolencia y ataques</label>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_eds"> Somnolencia casi diaria ≥ 3 meses</label><br/>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_attacks"> Ataques de sueño (súbitos/irresistibles)</label><br/>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_auto"> Conductas automáticas (hacer algo y luego recordar poco)</label><br/>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_fragment"> Sueño nocturno fragmentado/despertares frecuentes</label>
+            </div>
+
+            <div>
+              <label class="card-sub" style="display:block; font-weight:800; margin-bottom:8px">Fenómenos REM</label>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_sp"> Parálisis del sueño repetida</label><br/>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_hall"> Alucinaciones vívidas al dormir o despertar</label><br/>
+              <label class="card-sub"><input type="checkbox" class="clue" id="c_cata"> Episodios compatibles con cataplejía</label>
+
+              <div style="margin-top:10px">
+                <label class="card-sub" for="cataTrigger" style="font-weight:800; display:block; margin-bottom:6px">Gatillo emocional (si aplica)</label>
+                <input id="cataTrigger" class="input" type="text" placeholder="Ej: risa, sorpresa, enojo, excitación…" />
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-row" style="margin-top:12px">
+            <span class="badge" id="clueCountBadge">Pistas: 0</span>
+            <span class="badge" id="riskBadge">Orientación: —</span>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Si ESS es moderado/severo y hay varias pistas (especialmente cataplejía), vale la pena consultar en medicina del sueño.
+          </div>
+        </section>
+
+        <div class="divider" aria-hidden="true"></div>
+
+</div>
+    </section>
+
+    <!-- Alarmas / seguridad -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Seguridad y señales de alarma</h2>
+            <p class="card-sub">Prioridad: evitar accidentes y deterioro funcional.</p>
+          </div>
+          <span class="badge red">Alta prioridad si hay riesgo</span>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Micro-sueños o ataques de sueño conduciendo, en altura o con maquinaria/herramientas.</li>
+          <li>Caídas/colapsos compatibles con cataplejía.</li>
+          <li>Somnolencia severa con accidentes, ausentismo o deterioro social/laboral marcado.</li>
+          <li>Empeoramiento rápido o uso creciente de alcohol/sedantes para “controlar” el sueño.</li>
+          <li>Depresión intensa, desesperanza o ideas de muerte.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si existe riesgo inmediato, buscá asistencia local urgente.
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">La Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Page JS -->
+  <script>
+    (function(){
+      // Helpers
+      const $ = (id)=> document.getElementById(id);
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      // 1) Epworth
+      const essItems = [
+        "Sentado leyendo",
+        "Mirando TV",
+        "Sentado inactivo en un lugar público",
+        "Pasajero en auto 1 hora sin parar",
+        "Acostado descansando por la tarde",
+        "Sentado conversando",
+        "Sentado tranquilo después de almorzar (sin alcohol)",
+        "En auto detenido unos minutos en tránsito"
+      ];
+
+      const essBody = $("essBody");
+      const essTotalBadge = $("essTotalBadge");
+      const essLevelBadge = $("essLevelBadge");
+
+      function essRow(i, label){
+        const tr = document.createElement("tr");
+        const td1 = document.createElement("td");
+        td1.textContent = label;
+        const td2 = document.createElement("td");
+        const sel = document.createElement("select");
+        sel.className = "ess";
+        sel.setAttribute("aria-label", "Puntaje Epworth");
+        [0,1,2,3].forEach(v=>{
+          const opt = document.createElement("option");
+          opt.value = String(v);
+          opt.textContent = String(v);
+          sel.appendChild(opt);
+        });
+        sel.value = "0";
+        td2.appendChild(sel);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        return tr;
+      }
+
+      essItems.forEach((t,i)=> essBody.appendChild(essRow(i,t)));
+
+      function essTotal(){
+        const sels = Array.from(document.querySelectorAll("select.ess"));
+        const total = sels.reduce((s,el)=> s + (parseInt(el.value,10)||0), 0);
+        essTotalBadge.textContent = `ESS: ${total}/24`;
+
+        let level = "—";
+        let cls = "";
+        if(total <= 10){ level = "Esperable"; cls="green"; }
+        else if(total <= 12){ level = "Leve"; cls="amber"; }
+        else if(total <= 15){ level = "Moderada"; cls="amber"; }
+        else { level = "Severa"; cls="red"; }
+        essLevelBadge.textContent = `Nivel: ${level}`;
+        essLevelBadge.className = "badge " + cls;
+        return total;
+      }
+      document.addEventListener("input", (e)=>{
+        if(e.target && e.target.classList && e.target.classList.contains("ess")){
+          essTotal();
+        }
+      });
+      essTotal();
+
+      // 2) Checklist
+      const clueCountBadge = $("clueCountBadge");
+      const riskBadge = $("riskBadge");
+      const cataTrigger = $("cataTrigger");
+
+      function clueState(){
+        const clues = Array.from(document.querySelectorAll("input.clue"));
+        const yes = clues.filter(c=> c.checked).map(c=> c.id);
+        const count = yes.length;
+        clueCountBadge.textContent = `Pistas: ${count}`;
+
+        const ess = essTotal();
+        const hasCata = $("c_cata").checked;
+
+        let label = "—";
+        let cls = "";
+        if(ess >= 16 || (ess >= 13 && count >= 3) || (hasCata && ess >= 11)){
+          label = "Alta sospecha (consultar)";
+          cls = "red";
+        }else if(ess >= 13 || count >= 3){
+          label = "Intermedia (registrar y consultar)";
+          cls = "amber";
+        }else if(ess >= 11 || count >= 2){
+          label = "Leve (vigilar y registrar)";
+          cls = "green";
+        }else{
+          label = "Baja (revisar hábitos/otras causas)";
+          cls = "green";
+        }
+        riskBadge.textContent = `Orientación: ${label}`;
+        riskBadge.className = "badge " + cls;
+
+        return {count, ess, hasCata};
+      }
+      document.querySelectorAll("input.clue").forEach(el=>{
+        el.addEventListener("change", clueState);
+      });
+      clueState();
+
+      // Copy summary
+      const btnCopySummary = $("btnCopySummary");
+      const btnResetAll = $("btnResetAll");
+      const copyOk = $("copyOk");
+
+      function getEssResponses(){
+        const sels = Array.from(document.querySelectorAll("select.ess"));
+        return sels.map((el, idx)=> `${idx+1}:${el.value}`).join(" ");
+      }
+      function getClues(){
+        const map = [
+          ["c_eds","EDS ≥3m"],
+          ["c_attacks","Ataques"],
+          ["c_auto","Automáticas"],
+          ["c_fragment","Fragmentado"],
+          ["c_sp","Parálisis"],
+          ["c_hall","Alucin."],
+          ["c_cata","Cataplejía"]
+        ];
+        const yes = map.filter(([id,_])=> $(id).checked).map(([_,lab])=> lab);
+        return yes.length ? yes.join(", ") : "—";
+      }
+        return out.join("\n");
+      }
+
+      async function copyText(txt){
+        try{
+          await navigator.clipboard.writeText(txt);
+          return true;
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      btnCopySummary.addEventListener("click", async ()=>{
+        const state = clueState();
+        const trig = (cataTrigger.value || "").trim();
+        const txt =
+`Narcolepsia (autoeval) — ESS: ${state.ess}/24 (${essLevelBadge.textContent.replace("Nivel: ","")})
+Epworth (1–8): ${getEssResponses()}
+Pistas: ${state.count} | ${getClues()}${state.hasCata ? (" | Gatillo: " + (trig||"—")) : ""}
+Fecha/hora: ${nowStr()}`;
+        await copyText(txt);
+        copyOk.style.display = "block";
+        setTimeout(()=> copyOk.style.display = "none", 3800);
+      });
+
+      btnResetAll.addEventListener("click", ()=>{
+        document.querySelectorAll("select.ess").forEach(el=> el.value = "0");
+        document.querySelectorAll("input.clue").forEach(el=> el.checked = false);
+        cataTrigger.value = "";
+        essTotal();
+        clueState();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

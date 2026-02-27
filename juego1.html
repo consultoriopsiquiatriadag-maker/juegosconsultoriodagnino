@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Juego 1 – Mnésico | Consultorio Dr. Dagnino</title>
+
+  <!-- Tailwind + tipografía -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#f8fafc',
+            'inst-gray': '#64748b'
+          },
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-hover { transition: none !important; }
+      .card-hover:hover { transform: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER (homogéneo con index) -->
+  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="leading-tight">
+          <p class="text-sm text-inst-gray font-medium">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
+          <p class="text-xs text-inst-gray/70">Juegos cognitivos · Juego 1</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Botón de sonido (se muestra solo si el navegador bloquea autoplay) -->
+        <button id="soundBtn" type="button" style="display:none"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          🔊 Activar sonido
+        </button>
+
+        <a href="juegos.html"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          ← Juegos
+        </a>
+
+        <a href="index.html"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          Inicio
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO (como las páginas internas) -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-10">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-4xl font-light mb-2">Juego 1</h1>
+        <p class="text-white/80 leading-relaxed">
+          Ejercicio breve de atención. No es un examen. Si te genera tensión o frustración, pausá y retomá más tarde.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <main class="py-10 md:py-12">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm card-hover">
+
+        <!-- Barra superior del juego -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100"
+                  id="catPill">Categoría de hoy: —</span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100"
+                  id="lvlPill">Nivel: Medio</span>
+          </div>
+
+          <button id="finishEarly" type="button"
+            class="inline-flex justify-center text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+            Finalizar
+          </button>
+        </div>
+
+        <p class="text-inst-gray leading-relaxed">
+          <strong class="text-inst-navy">Tu tarea:</strong> tocá solo las palabras que pertenezcan a la categoría indicada.
+          <br><span class="text-inst-gray/80">No es un examen. Es un ejercicio breve de atención.</span>
+        </p>
+
+        <!-- Niveles -->
+        <div class="flex flex-wrap gap-2 mt-5" aria-label="Niveles">
+          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
+                  data-level="easy" type="button">Fácil</button>
+          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light"
+                  data-level="medium" type="button">Medio</button>
+          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
+                  data-level="hard" type="button">Difícil</button>
+        </div>
+
+        <!-- KPI -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-5">
+          <div class="font-semibold" id="kpi">Aciertos: 0 | Objetivo en curso</div>
+          <div class="text-inst-gray" id="hint">Buscá y tocá: <strong id="catStrong">—</strong></div>
+        </div>
+
+        <!-- Grid opciones -->
+        <div id="options" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6"></div>
+
+        <!-- Resultado -->
+        <div id="result" class="hidden mt-5 rounded-2xl border border-gray-100 bg-inst-light p-5"></div>
+
+        <!-- Acciones -->
+        <div class="flex flex-wrap gap-2 mt-6">
+          <button id="restart" type="button"
+            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+            Reiniciar
+          </button>
+
+          <a href="juego2.html"
+            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-blue text-white hover:opacity-90">
+            Ir a Juego 2 →
+          </a>
+
+          <a href="index.html"
+            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light">
+            Volver a la sala de espera
+          </a>
+        </div>
+
+        <p class="text-xs text-inst-gray mt-6 leading-relaxed">
+          Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER (mobile-first homogéneo) -->
+  <footer class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="font-semibold">Dr. Dagnino</p>
+          <p class="text-white/80 text-sm">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
+
+          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com" class="underline hover:text-white">
+              consultoriopsiquiatriadag@gmail.com
+            </a>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com" class="underline hover:text-white">
+              secretaria.dr.dagnino@gmail.com
+            </a>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 text-sm text-white/80">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener" class="underline hover:text-white">
+            Ubicación (Maps)
+          </a>
+          <a href="aviso-legal.html" class="underline hover:text-white">
+            Aviso legal / Privacidad
+          </a>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-8 pt-4 text-center text-xs text-white/60">
+        Copyright © <span id="year"></span> Todos los derechos reservados ·
+        Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Audio -->
+  <audio id="audioGracias" preload="auto" src="gracias.mp3"></audio>
+  <audio id="audioPremio" preload="auto" src="premio_excelente.mp3"></audio>
+
+<script>
+/* =========================================================
+   DESBLOQUEO JUEGO 2 SOLO SI SE ESCUCHÓ EL PREMIO
+   - Marcamos game1Completed SOLO en el evento "ended" del audio premio.
+   - Si el audio no llega a reproducirse, NO se desbloquea.
+========================================================= */
+
+/* =========================
+   AUDIO desbloqueo
+========================= */
+const soundBtn = document.getElementById("soundBtn");
+const audioGracias = document.getElementById("audioGracias");
+const audioPremio  = document.getElementById("audioPremio");
+let audioUnlocked = false;
+
+async function unlockAudio(){
+  try{
+    audioPremio.volume = 0.0001;
+    await audioPremio.play();
+    audioPremio.pause();
+    audioPremio.currentTime = 0;
+    audioPremio.volume = 1;
+    audioUnlocked = true;
+    soundBtn.style.display = "none";
+  }catch(e){
+    audioUnlocked = false;
+    soundBtn.style.display = "inline-flex";
+  }
+}
+soundBtn.addEventListener("click", async ()=>{ await unlockAudio(); });
+
+async function playSafe(audioEl){
+  try{
+    if(!audioUnlocked) await unlockAudio();
+    await audioEl.play();
+    return true;
+  }catch(e){
+    soundBtn.style.display = "inline-flex";
+    return false;
+  }
+}
+
+/* =========================
+   PROGRESO (merge seguro)
+========================= */
+function getProgress(){
+  const base = { game1Completed:false, game2Completed:false, game3Completed:false };
+  const raw = localStorage.getItem("mn_progress");
+  if(!raw) return base;
+  try{ return Object.assign(base, JSON.parse(raw)); }catch(e){ return base; }
+}
+function setProgress(p){
+  localStorage.setItem("mn_progress", JSON.stringify(p));
+}
+
+/* Guardar completado SOLO cuando terminó el audio de premio */
+audioPremio.addEventListener("ended", ()=>{
+  const p = getProgress();
+  p.game1Completed = true;
+  setProgress(p);
+});
+
+/* =========================
+   CATEGORÍA DIARIA
+========================= */
+const CATS = [
+  { key:"frutas", label:"Frutas" },
+  { key:"objetos", label:"Objetos" },
+  { key:"profesiones", label:"Profesiones" }
+];
+function dayIndex(){
+  const d = new Date();
+  const n = Math.floor(d.getTime() / (1000*60*60*24));
+  return n % CATS.length;
+}
+const todayCat = CATS[dayIndex()];
+document.getElementById("catPill").textContent = "Categoría de hoy: " + todayCat.label.toUpperCase();
+document.getElementById("catStrong").textContent = todayCat.label.toUpperCase();
+
+/* =========================
+   DATA
+========================= */
+const DATA = {
+  frutas: [
+    "Manzana","Banana","Naranja","Pera","Mandarina","Uva","Durazno","Ciruela","Kiwi","Frutilla",
+    "Sandía","Melón","Mango","Papaya","Ananá","Pomelo","Cereza","Higo","Granada","Lima"
+  ],
+  objetos: [
+    "Silla","Mesa","Lámpara","Vaso","Taza","Plato","Cuchara","Tenedor","Cuchillo","Llave",
+    "Libro","Lapicera","Cuaderno","Celular","Control","Reloj","Mochila","Auriculares","Cartera","Botella"
+  ],
+  profesiones: [
+    "Médico","Psiquiatra","Psicólogo","Enfermero","Docente","Abogado","Ingeniero","Arquitecto","Contador","Piloto",
+    "Mecánico","Electricista","Carpintero","Cocinero","Periodista","Diseñador","Programador","Farmacéutico","Kinesiólogo","Odontólogo"
+  ],
+  distractores: [
+    "Perro","Gato","Caballo","Tigre","León","Pájaro","Elefante","Jirafa","Rana","Pez",
+    "Auto","Camión","Bicicleta","Avión","Tren","Barco","Semáforo","Puente","Calle","Edificio",
+    "Azul","Rojo","Verde","Amarillo","Negro","Blanco","Nube","Lluvia","Viento","Sol",
+    "Argentina","Chaco","Resistencia","Montevideo","Pilar","Marruecos","Casablanca","Hospital","Escuela","Terminal"
+  ]
+};
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function pick(arr, n){ return shuffle(arr).slice(0,n); }
+
+/* =========================
+   NIVELES
+========================= */
+const LEVELS = {
+  easy:   { name:"Fácil",  target:8,  total:20, correctPool:10 },
+  medium: { name:"Medio",  target:10, total:26, correctPool:12 },
+  hard:   { name:"Difícil",target:12, total:32, correctPool:14 }
+};
+
+let levelKey = "medium";
+let target = LEVELS[levelKey].target;
+let totalOptions = LEVELS[levelKey].total;
+let correctCountInGrid = LEVELS[levelKey].correctPool;
+
+const lvlPill = document.getElementById("lvlPill");
+const kpi = document.getElementById("kpi");
+const optionsBox = document.getElementById("options");
+const resultBox = document.getElementById("result");
+
+let hits = 0;
+let selected = new Set();
+let correctInThisGame = new Set();
+let finished = false;
+
+function setLevelUI(){
+  lvlPill.textContent = "Nivel: " + LEVELS[levelKey].name;
+
+  document.querySelectorAll(".levelBtn").forEach(b=>{
+    const isActive = b.dataset.level === levelKey;
+    // activo: bg-white + borde gris
+    b.classList.toggle("bg-white", isActive);
+    b.classList.toggle("bg-inst-light", !isActive);
+  });
+}
+
+function updateKPI(){
+  const estado = hits >= target ? "Objetivo alcanzado" : "Objetivo en curso";
+  kpi.textContent = `Aciertos: ${hits} | ${estado}`;
+}
+
+function buildBoard(){
+  const correctPool = DATA[todayCat.key];
+
+  const distractPool =
+    DATA.distractores
+      .concat(DATA[todayCat.key==="frutas" ? "objetos" : "frutas"])
+      .concat(DATA[todayCat.key==="profesiones" ? "objetos" : "profesiones"])
+      .filter(x => !correctPool.includes(x));
+
+  const correctPicked = pick(correctPool, correctCountInGrid);
+  correctInThisGame = new Set(correctPicked);
+
+  const distractNeeded = Math.max(0, totalOptions - correctPicked.length);
+  const distractPicked = pick(distractPool, distractNeeded);
+
+  return shuffle(correctPicked.concat(distractPicked));
+}
+
+function renderBoard(){
+  optionsBox.innerHTML = "";
+  const board = buildBoard();
+  board.forEach(word=>{
+    const el = document.createElement("div");
+    el.className = "option rounded-xl border border-gray-100 bg-inst-light px-4 py-3 text-center font-semibold cursor-pointer hover:bg-white select-none";
+    el.textContent = word;
+    el.addEventListener("click", ()=>selectWord(word, el));
+    optionsBox.appendChild(el);
+  });
+}
+
+function lockOptions(){
+  document.querySelectorAll(".option").forEach(o=>o.classList.add("pointer-events-none"));
+}
+
+function showResultSuccess(){
+  resultBox.classList.remove("hidden");
+  resultBox.innerHTML = `
+    <h3 class="text-lg font-extrabold text-green-700">✨ Objetivo alcanzado</h3>
+    <div class="text-inst-gray mt-2 leading-relaxed">
+      Muchas gracias por participar en nuestra sala de espera virtual.
+      <br>Tu premio simbólico se reproducirá a continuación.
+    </div>
+  `;
+}
+
+function showResultThanks(){
+  resultBox.classList.remove("hidden");
+  resultBox.innerHTML = `
+    <h3 class="text-lg font-extrabold text-inst-navy">✅ Muchas gracias por participar</h3>
+    <div class="text-inst-gray mt-2 leading-relaxed">
+      Podés volver a la sala de espera virtual cuando quieras.
+    </div>
+  `;
+}
+
+async function finish(success){
+  if(finished) return;
+  finished = true;
+  lockOptions();
+
+  if(success){
+    showResultSuccess();
+    const started = await playSafe(audioPremio);
+
+    // Si no pudo iniciar el audio (bloqueo), NO desbloqueamos juego 2.
+    // El desbloqueo se hace únicamente al terminar (ended) el audio premio.
+    if(!started){
+      resultBox.innerHTML += `
+        <div class="text-inst-gray mt-3 leading-relaxed">
+          Para recibir el premio simbólico, tocá <strong>“Activar sonido”</strong> y luego reiniciá o repetí el juego.
+        </div>
+      `;
+    }
+  }else{
+    showResultThanks();
+    await playSafe(audioGracias);
+  }
+}
+
+function selectWord(word, el){
+  if(finished) return;
+  if(selected.has(word)) return;
+
+  selected.add(word);
+
+  if(correctInThisGame.has(word)){
+    hits++;
+    el.classList.add("border-green-200","bg-green-50","text-green-800");
+  }else{
+    el.classList.add("opacity-50");
+  }
+
+  el.classList.add("pointer-events-none");
+  updateKPI();
+
+  if(hits >= target){
+    finish(true);
+  }
+}
+
+function startNewGame(){
+  hits = 0;
+  selected = new Set();
+  finished = false;
+  resultBox.classList.add("hidden");
+  resultBox.innerHTML = "";
+  updateKPI();
+  renderBoard();
+}
+
+document.getElementById("restart").addEventListener("click", startNewGame);
+document.getElementById("finishEarly").addEventListener("click", ()=>finish(false));
+
+document.querySelectorAll(".levelBtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    levelKey = btn.dataset.level;
+    target = LEVELS[levelKey].target;
+    totalOptions = LEVELS[levelKey].total;
+    correctCountInGrid = LEVELS[levelKey].correctPool;
+    setLevelUI();
+    startNewGame();
+  });
+});
+
+/* INIT */
+setLevelUI();
+unlockAudio(); // intenta; si falla muestra botón
+startNewGame();
+</script>
+
+</body>
+</html>

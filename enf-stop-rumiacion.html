@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENF · Stop Rumiación | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-inst-gray">
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">🧠 ENF</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">Inhibición</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">Ánimo / ansiedad</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide mt-2">Stop Rumiación</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Es un ejercicio tipo <strong>Go/No-Go</strong>.
+            Tocás <strong>SOLO</strong> cuando aparece una palabra <strong>neutra</strong> (GO).
+            No toques cuando sea <strong>cargada/emocional</strong> (NO-GO).
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
+          <button id="btnPause" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Pausar</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-4 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Ronda</p>
+          <p class="text-2xl font-semibold"><span id="round">0</span>/<span id="roundMax">30</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Aciertos GO</p>
+          <p class="text-2xl font-semibold"><span id="hits">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Tocaste cuando debías.</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Falsos GO</p>
+          <p class="text-2xl font-semibold"><span id="falseGo">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Tocaste cuando NO.</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Precisión</p>
+          <p class="text-2xl font-semibold"><span id="acc">—</span></p>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Estímulo</p>
+
+        <div class="mt-3 grid md:grid-cols-3 gap-4 items-stretch">
+          <div class="md:col-span-2">
+            <button id="bigTap"
+              class="w-full bg-inst-light border border-gray-200 rounded-2xl p-8 hover:bg-inst-sky transition min-h-[180px] flex flex-col items-center justify-center text-center"
+              disabled>
+              <div id="word" class="text-4xl md:text-5xl font-black tracking-wide">—</div>
+              <div id="hint" class="mt-4 text-sm font-semibold text-inst-gray">Tocá SOLO si es NEUTRA</div>
+            </button>
+
+            <div id="status" class="mt-4 hidden bg-inst-light rounded-2xl border border-gray-200 p-4"></div>
+          </div>
+
+          <div class="bg-inst-light rounded-2xl border border-gray-200 p-5">
+            <p class="text-xs uppercase tracking-wider text-inst-gray">Config</p>
+            <div class="mt-3">
+              <label class="text-sm font-semibold">Velocidad (ms)</label>
+              <select id="speed" class="mt-2 w-full bg-white border border-gray-200 rounded-xl p-3 font-semibold">
+                <option value="1200">1200 (suave)</option>
+                <option value="950" selected>950 (normal)</option>
+                <option value="800">800 (rápido)</option>
+              </select>
+            </div>
+
+            <div class="mt-4">
+              <label class="text-sm font-semibold">Proporción NO-GO</label>
+              <select id="nogoratio" class="mt-2 w-full bg-white border border-gray-200 rounded-xl p-3 font-semibold">
+                <option value="0.35">35%</option>
+                <option value="0.45" selected>45%</option>
+                <option value="0.55">55%</option>
+              </select>
+              <p class="text-xs text-inst-gray mt-2">Más NO-GO = más control inhibitorio.</p>
+            </div>
+
+            <div class="mt-4 text-sm text-inst-gray">
+              Tip: buscá <strong>regularidad</strong> (no velocidad). El objetivo es entrenar “no irse con el impulso”.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+        <p class="text-sm text-inst-gray">
+          <strong>Aclaración ENF:</strong> este juego pertenece al <strong>Entrenamiento Neurocognitivo Funcional</strong>.
+          Si te angustia, pausá y retomá con velocidad “suave”.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ROUNDS_MAX = 30;
+
+    const NEUTRAL = [
+      "mesa","puerta","camino","taza","libro","luz","cielo","caja","planta","ventana",
+      "papel","radio","silla","vaso","reloj","tecla","parque","traje","nube","pared"
+    ];
+
+    const EMO = [
+      "fracaso","culpa","miedo","peligro","rechazo","vergüenza","error","pérdida","amenaza","soledad",
+      "ansiedad","catástrofe","descontrol","tristeza","incertidumbre"
+    ];
+
+    // State
+    let round = 0;
+    let hits = 0;
+    let falseGo = 0;
+    let totalGo = 0;
+    let running = false;
+    let paused = false;
+    let timer = null;
+
+    let currentIsNeutral = null;
+    let clickedThisStimulus = false;
+
+    // UI
+    const roundEl = document.getElementById("round");
+    const roundMaxEl = document.getElementById("roundMax");
+    const hitsEl = document.getElementById("hits");
+    const falseGoEl = document.getElementById("falseGo");
+    const accEl = document.getElementById("acc");
+
+    const bigTap = document.getElementById("bigTap");
+    const wordEl = document.getElementById("word");
+    const hintEl = document.getElementById("hint");
+    const statusEl = document.getElementById("status");
+
+    const speedSel = document.getElementById("speed");
+    const ratioSel = document.getElementById("nogoratio");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnPause = document.getElementById("btnPause");
+    const btnReset = document.getElementById("btnReset");
+
+    roundMaxEl.textContent = ROUNDS_MAX;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateUI(){
+      roundEl.textContent = round;
+      hitsEl.textContent = hits;
+      falseGoEl.textContent = falseGo;
+      const total = hits + falseGo;
+      const acc = total > 0 ? Math.round((hits/total)*100) : null;
+      accEl.textContent = acc === null ? "—" : (acc + "%");
+    }
+
+    function pickStimulus(){
+      const noGoRatio = Number(ratioSel.value);
+      const isEmo = Math.random() < noGoRatio;
+      if(isEmo){
+        currentIsNeutral = false;
+        return shuffle(EMO)[0];
+      } else {
+        currentIsNeutral = true;
+        totalGo += 1;
+        return shuffle(NEUTRAL)[0];
+      }
+    }
+
+    function showStatus(msg){
+      statusEl.classList.remove("hidden");
+      statusEl.innerHTML = `<p class="text-sm text-inst-gray">${msg}</p>`;
+    }
+
+    function next(){
+      if(!running || paused) return;
+
+      round += 1;
+      if(round > ROUNDS_MAX){
+        stopRun(true);
+        return;
+      }
+
+      clickedThisStimulus = false;
+      const w = pickStimulus();
+      wordEl.textContent = w;
+
+      // Señal sutil de categoría (sin “asustar”)
+      hintEl.textContent = "Tocá SOLO si es NEUTRA";
+      wordEl.style.color = currentIsNeutral ? "#0f1e33" : "#475569";
+
+      // si era GO y no tocó, no penalizamos; solo registramos el intento omitido como “oportunidad”
+      updateUI();
+    }
+
+    function stopRun(finished=false){
+      running = false;
+      paused = false;
+      if(timer){ clearInterval(timer); timer = null; }
+      bigTap.disabled = true;
+      btnPause.disabled = true;
+      btnStart.disabled = false;
+
+      const total = hits + falseGo;
+      const acc = total > 0 ? Math.round((hits/total)*100) : 0;
+
+      showStatus(finished
+        ? `<strong>Fin del ejercicio.</strong> Aciertos GO: <strong>${hits}</strong> · Falsos GO: <strong>${falseGo}</strong> · Precisión: <strong>${acc}%</strong>.`
+        : `Ejercicio detenido. Podés reiniciar cuando quieras.`
+      );
+    }
+
+    function startRun(){
+      // reset parcial por corrida
+      round = 0; hits = 0; falseGo = 0; totalGo = 0;
+      running = true; paused = false;
+      statusEl.classList.add("hidden");
+      btnStart.disabled = true;
+      btnPause.disabled = false;
+      bigTap.disabled = false;
+
+      const interval = Number(speedSel.value);
+      next();
+      timer = setInterval(next, interval);
+      updateUI();
+    }
+
+    function togglePause(){
+      if(!running) return;
+      paused = !paused;
+      if(paused){
+        btnPause.textContent = "Reanudar";
+        showStatus(`Pausado. Respirás 2 veces y cuando quieras reanudás.`);
+      } else {
+        btnPause.textContent = "Pausar";
+        statusEl.classList.add("hidden");
+      }
+    }
+
+    function resetAll(){
+      if(timer){ clearInterval(timer); timer = null; }
+      round = 0; hits = 0; falseGo = 0; totalGo = 0;
+      running = false; paused = false;
+      currentIsNeutral = null;
+      wordEl.textContent = "—";
+      wordEl.style.color = "#0f1e33";
+      bigTap.disabled = true;
+      btnPause.disabled = true;
+      btnPause.textContent = "Pausar";
+      btnStart.disabled = false;
+      statusEl.classList.add("hidden");
+      updateUI();
+    }
+
+    bigTap.addEventListener("click", ()=>{
+      if(!running || paused) return;
+      if(clickedThisStimulus) return; // evita doble click
+      clickedThisStimulus = true;
+
+      if(currentIsNeutral){
+        hits += 1;
+        showStatus(`✅ Bien: era NEUTRA. Volvé al ritmo.`);
+      } else {
+        falseGo += 1;
+        showStatus(`⚠️ Alto: era NO-GO. Repetí mentalmente “NO TOCAR” y seguí.`);
+      }
+      updateUI();
+    });
+
+    btnStart.addEventListener("click", startRun);
+    btnPause.addEventListener("click", togglePause);
+    btnReset.addEventListener("click", resetAll);
+
+    resetAll();
+  </script>
+</body>
+</html>

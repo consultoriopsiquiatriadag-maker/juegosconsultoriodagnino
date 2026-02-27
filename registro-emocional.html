@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro emocional | Consultorio Dr. Dagnino</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#f8fafc',
+            'inst-gray': '#64748b'
+          },
+          fontFamily: { 'sans': ['Inter','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
+    .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+    @media (prefers-reduced-motion: reduce){
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER -->
+  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="leading-tight">
+          <p class="text-sm text-inst-gray font-medium">
+            Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino
+          </p>
+          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Registro emocional</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="emociones.html"
+           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          ← Volver
+        </a>
+
+        <button id="audioToggle"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
+          aria-pressed="false">
+          🔇 Audio silenciado
+        </button>
+
+        <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
+          <span class="text-xs text-inst-gray">Vol</span>
+          <input id="audioVolume" type="range" min="0" max="100" value="18" class="w-28">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-4xl font-light mb-3">Registro emocional</h1>
+        <p class="text-white/80 leading-relaxed">
+          Un espacio breve para poner en palabras cómo te sentís hoy. No es un test ni una evaluación.
+          Si algo te incomoda, podés parar y continuar cuando lo desees.
+        </p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href="#musica"
+             class="inline-flex justify-center items-center rounded-xl bg-inst-blue text-white font-semibold px-5 py-3 hover:opacity-95 soft-ring">
+            🎧 Elegir música y comenzar
+          </a>
+          <a href="#actividad"
+             class="inline-flex justify-center items-center rounded-xl bg-white/10 border border-white/15 text-white font-semibold px-5 py-3 hover:bg-white/10 soft-ring">
+            Continuar sin música
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+    <div class="grid gap-6">
+
+      <section class="space-y-6">
+
+        <!-- MÚSICA -->
+        <div id="musica" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Música de fondo (opcional)</h2>
+              <p class="text-inst-gray text-sm leading-relaxed">
+                Elegí una música suave para acompañar este momento. Podés cambiarla o pausarla cuando quieras.
+              </p>
+            </div>
+
+            <div class="flex gap-2">
+              <button id="btnPlay"
+                class="rounded-xl bg-inst-blue text-white font-semibold px-4 py-2.5 hover:opacity-95 soft-ring">
+                ▶️ Reproducir
+              </button>
+              <button id="btnStop"
+                class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-2.5 hover:bg-inst-light soft-ring">
+                ⏹️ Detener
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 grid gap-3">
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-inst-light/60 hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="none" class="mt-1" checked>
+              <div>
+                <div class="font-semibold">Sin música</div>
+                <div class="text-sm text-inst-gray">Continuar en silencio.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m1" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 1 · Respiración lenta</div>
+                <div class="text-sm text-inst-gray">Ambiente spa, ritmo estable y suave.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m2" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 2 · Ambiente calmo</div>
+                <div class="text-sm text-inst-gray">Lofi relajante, sin sobresaltos.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m3" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 3 · Piano suave</div>
+                <div class="text-sm text-inst-gray">Piano lento, ideal para introspección.</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="mt-4 text-xs text-inst-gray">
+            Tip: si estás en un lugar público, bajá el volumen o usá auriculares.
+          </div>
+        </div>
+
+        <!-- ACTIVIDAD -->
+        <div id="actividad" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <h2 class="text-xl font-semibold mb-1">Actividad</h2>
+          <p class="text-inst-gray text-sm leading-relaxed">
+            Elegí una emoción principal, marcá intensidad y (si querés) completá una frase breve.
+          </p>
+
+          <!-- Emociones -->
+          <div class="mt-5">
+            <p class="text-sm text-inst-gray mb-2">1) ¿Qué emoción se parece más a tu día de hoy?</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3" id="emotionGrid"></div>
+          </div>
+
+          <!-- Intensidad -->
+          <div class="mt-6">
+            <div class="flex items-center justify-between gap-4">
+              <p class="text-sm text-inst-gray">2) ¿Qué intensidad tiene? (0–10)</p>
+              <div class="text-sm font-semibold"><span id="intVal">5</span>/10</div>
+            </div>
+            <input id="intensity" type="range" min="0" max="10" value="5" class="w-full mt-3">
+            <p class="text-xs text-inst-gray mt-2">
+              0 = casi nada · 10 = muy intensa. Podés ajustar cuantas veces quieras.
+            </p>
+          </div>
+
+          <!-- Ubicación corporal -->
+          <div class="mt-6">
+            <p class="text-sm text-inst-gray mb-2">3) (Opcional) ¿Dónde lo sentís más?</p>
+            <select id="where"
+              class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm soft-ring">
+              <option value="">— Elegir (opcional) —</option>
+              <option>Pecho</option>
+              <option>Estómago</option>
+              <option>Garganta</option>
+              <option>Cabeza</option>
+              <option>Hombros/cuello</option>
+              <option>Espalda</option>
+              <option>Otro / no estoy seguro</option>
+            </select>
+          </div>
+
+          <!-- Frase -->
+          <div class="mt-6">
+            <p class="text-sm text-inst-gray mb-2">4) (Opcional) Completá esta frase</p>
+            <div class="rounded-2xl border border-gray-100 bg-inst-light p-4">
+              <p class="text-sm text-inst-gray mb-2">“Hoy me siento así porque…”</p>
+              <textarea id="because" rows="3"
+                class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm soft-ring"
+                placeholder="Escribí lo que te salga, en una o dos líneas (opcional)."></textarea>
+            </div>
+          </div>
+
+          <!-- Resumen -->
+          <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-5">
+            <p class="text-sm text-inst-gray">Resumen</p>
+            <pre id="summary"
+              class="mt-2 whitespace-pre-wrap text-sm bg-inst-light border border-gray-100 rounded-xl p-4">—</pre>
+
+            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+              <button id="btnUpdate"
+                class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95 soft-ring">
+                Actualizar resumen
+              </button>
+              <button id="btnCopy2"
+                class="w-full sm:w-auto rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-5 py-2.5 hover:bg-inst-light soft-ring">
+                Copiar
+              </button>
+              <button id="btnClear"
+                class="w-full sm:w-auto rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-5 py-2.5 hover:bg-inst-light soft-ring">
+                Reiniciar registro
+              </button>
+            </div>
+
+            <p class="mt-3 text-xs text-inst-gray">
+              Si querés compartirlo, podés pegarlo en WhatsApp o en una nota para tu próxima consulta.
+            </p>
+          </div>
+
+          <!-- Créditos -->
+          <div class="mt-6 text-xs text-inst-gray leading-relaxed">
+            <div class="font-semibold text-inst-navy mb-1">Créditos de música</div>
+            <div id="creditsBox" class="space-y-1">
+              <div id="creditsNone">Sin música seleccionada.</div>
+              <div id="creditsM1" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/rockot-1947599/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=253179" target="_blank" rel="noopener">Rockot</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=253179" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+              <div id="creditsM2" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/ambientaudiovision-25188255/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=269654" target="_blank" rel="noopener">Amir Firouzfard</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=269654" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+              <div id="creditsM3" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/original_soundtrack-50153119/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431679" target="_blank" rel="noopener">Viacheslav Starostin</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431679" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="border-t border-white/10 pt-4 text-center text-xs text-white/60">
+        Copyright © <span id="year"></span> · Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <audio id="bgMusic" preload="auto" loop></audio>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+  (() => {
+    const audioToggle = document.getElementById("audioToggle");
+    const audioVolume = document.getElementById("audioVolume");
+    const bgMusic = document.getElementById("bgMusic");
+    const btnPlay = document.getElementById("btnPlay");
+    const btnStop = document.getElementById("btnStop");
+    const trackRadios = [...document.querySelectorAll('input[name="track"]')];
+
+    const creditsNone = document.getElementById("creditsNone");
+    const creditsM1 = document.getElementById("creditsM1");
+    const creditsM2 = document.getElementById("creditsM2");
+    const creditsM3 = document.getElementById("creditsM3");
+
+    let audioEnabled = false;
+    let currentTrack = "none";
+
+    const TRACKS = {
+      none: { label: "Sin música", src: "" },
+      m1: { label: "Música 1 · Respiración lenta", src: "audio/spa-ambient-10min-253179.mp3" },
+      m2: { label: "Música 2 · Ambiente calmo", src: "audio/frosted-cafe-de-lofi-269654.mp3" },
+      m3: { label: "Música 3 · Piano suave", src: "audio/relaxing-soft-piano-music-431679.mp3" },
+    };
+
+    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+    function getVol(){
+      const v = Number(audioVolume?.value ?? 18);
+      return clamp01((isFinite(v) ? v : 18) / 100);
+    }
+
+    function setAudioUI(){
+      audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+      audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+    }
+
+    function showCredits(key){
+      creditsNone.classList.toggle("hidden", key !== "none");
+      creditsM1.classList.toggle("hidden", key !== "m1");
+      creditsM2.classList.toggle("hidden", key !== "m2");
+      creditsM3.classList.toggle("hidden", key !== "m3");
+    }
+
+    async function fadeTo(target, ms=1200){
+      target = clamp01(target);
+      const start = bgMusic.volume;
+      const startTime = performance.now();
+      const dur = Math.max(120, ms);
+      return new Promise(resolve => {
+        function step(now){
+          const t = Math.min(1, (now - startTime) / dur);
+          bgMusic.volume = start + (target - start) * t;
+          if (t < 1) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    async function stopMusic(){
+      if (!bgMusic || bgMusic.paused) return;
+      await fadeTo(0, 800);
+      try { bgMusic.pause(); } catch {}
+    }
+
+    async function playMusic(){
+      if (!audioEnabled) return;
+      const track = TRACKS[currentTrack];
+      if (!track || currentTrack === "none") return;
+
+      if (bgMusic.src && !bgMusic.src.endsWith(track.src)) {
+        await stopMusic();
+        bgMusic.src = track.src;
+      } else if (!bgMusic.src) {
+        bgMusic.src = track.src;
+      }
+
+      bgMusic.volume = 0;
+      try { await bgMusic.play(); } catch { return; }
+      await fadeTo(getVol(), 1200);
+    }
+
+    audioToggle.addEventListener("click", async () => {
+      audioEnabled = !audioEnabled;
+      setAudioUI();
+      if (!audioEnabled) await stopMusic();
+    });
+
+    audioVolume?.addEventListener("input", () => {
+      const v = getVol();
+      if (!bgMusic.paused) bgMusic.volume = v;
+    });
+
+    trackRadios.forEach(r => {
+      r.addEventListener("change", async () => {
+        currentTrack = r.value;
+        showCredits(currentTrack);
+        if (currentTrack === "none") { await stopMusic(); return; }
+        if (audioEnabled && !bgMusic.paused) await playMusic();
+      });
+    });
+
+    btnPlay.addEventListener("click", async () => {
+      if (currentTrack === "none") return;
+      if (!audioEnabled) { audioEnabled = true; setAudioUI(); }
+      await playMusic();
+    });
+
+    btnStop.addEventListener("click", async () => { await stopMusic(); });
+
+    setAudioUI();
+    showCredits("none");
+
+    // ===== Actividad emocional =====
+    const EMOTIONS = [
+      { key:"Calma", emoji:"🫶", tone:"bg-emerald-50" },
+      { key:"Alegría", emoji:"🙂", tone:"bg-yellow-50" },
+      { key:"Ansiedad", emoji:"😣", tone:"bg-sky-50" },
+      { key:"Tristeza", emoji:"😔", tone:"bg-indigo-50" },
+      { key:"Enojo", emoji:"😠", tone:"bg-rose-50" },
+      { key:"Cansancio", emoji:"😮‍💨", tone:"bg-slate-50" },
+    ];
+
+    const emotionGrid = document.getElementById("emotionGrid");
+    const intensity = document.getElementById("intensity");
+    const intVal = document.getElementById("intVal");
+    const where = document.getElementById("where");
+    const because = document.getElementById("because");
+    const summary = document.getElementById("summary");
+    const btnUpdate = document.getElementById("btnUpdate");
+    const btnCopy2 = document.getElementById("btnCopy2");
+    const btnClear = document.getElementById("btnClear");
+
+    let selectedEmotion = "";
+
+    function renderEmotions(){
+      emotionGrid.innerHTML = "";
+      EMOTIONS.forEach(e => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `w-full text-left rounded-2xl border border-gray-100 ${e.tone} hover:bg-inst-light px-4 py-4 soft-ring`;
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="text-2xl" aria-hidden="true">${e.emoji}</div>
+            <div>
+              <div class="font-semibold">${e.key}</div>
+              <div class="text-xs text-inst-gray">Seleccionar</div>
+            </div>
+          </div>
+        `;
+        btn.addEventListener("click", () => {
+          selectedEmotion = e.key;
+          updateSummary(true);
+          [...emotionGrid.querySelectorAll("button")].forEach(b => b.classList.remove("ring-2","ring-inst-blue/30"));
+          btn.classList.add("ring-2","ring-inst-blue/30");
+        });
+        emotionGrid.appendChild(btn);
+      });
+    }
+
+    function buildSummary(){
+      const iVal = Number(intensity.value);
+      const whereVal = where.value.trim();
+      const becauseVal = because.value.trim();
+
+      const lines = [];
+      lines.push("Registro emocional (personal)");
+      lines.push(`• Emoción principal: ${selectedEmotion || "—"}`);
+      lines.push(`• Intensidad: ${isFinite(iVal) ? iVal : "—"}/10`);
+      if (whereVal) lines.push(`• ¿Dónde lo siento?: ${whereVal}`);
+      if (becauseVal) lines.push(`• “Hoy me siento así porque…” ${becauseVal}`);
+      lines.push("");
+      lines.push("Nota: este registro no constituye una evaluación diagnóstica.");
+      return lines.join("\n");
+    }
+
+    function updateSummary(){
+      intVal.textContent = String(intensity.value);
+      summary.textContent = buildSummary();
+    }
+
+    async function copyText(txt){
+      try { await navigator.clipboard.writeText(txt); return true; }
+      catch {
+        const ta = document.createElement("textarea");
+        ta.value = txt; document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch {}
+        document.body.removeChild(ta);
+        return true;
+      }
+    }
+
+    btnUpdate.addEventListener("click", updateSummary);
+
+    btnCopy2.addEventListener("click", async () => {
+      updateSummary();
+      await copyText(summary.textContent);
+      btnCopy2.textContent = "✅ Copiado";
+      setTimeout(() => (btnCopy2.textContent = "Copiar"), 1200);
+    });
+
+    btnClear.addEventListener("click", () => {
+      selectedEmotion = "";
+      intensity.value = 5;
+      where.value = "";
+      because.value = "";
+      intVal.textContent = "5";
+      summary.textContent = "—";
+      [...emotionGrid.querySelectorAll("button")].forEach(b => b.classList.remove("ring-2","ring-inst-blue/30"));
+    });
+
+    intensity.addEventListener("input", updateSummary);
+    where.addEventListener("change", updateSummary);
+    because.addEventListener("input", updateSummary);
+
+    renderEmotions();
+    intVal.textContent = String(intensity.value);
+    summary.textContent = "—";
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(powershell -Command \"Get-ChildItem ''G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\assets\\\\img'' | Select-Object Name, @{N=''KB'';E={[math]::Round\\($_Length/1KB,1\\)}} | Format-Table -AutoSize\")",
+      "Bash(powershell -NoProfile -Command \"Get-ChildItem ''G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\assets\\\\img'' | ForEach-Object { ''{0,-50} {1,8} KB'' -f $_Name, [math]::Round\\($_Length/1KB,1\\) }\")",
+      "Bash(powershell -NoProfile -File -:*)",
+      "Bash(powershell -NoProfile -Command \"& { Get-ChildItem ''G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\assets\\\\img'' | Sort-Object Length -Descending | ForEach-Object { Write-Host \\($_Name + ''  '' + [math]::Round\\($_Length/1KB,1\\) + '' KB''\\) } }\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\list_imgs.ps1\")",
+      "Bash(magick:*)",
+      "Bash(convert:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\check_tools.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\check_magick.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\find_magick.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\optimizar_imagenes.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\actualizar_refs_webp.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\optimizar_nuevas.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\generar_juegos.ps1\")"
+    ]
+  }
+}

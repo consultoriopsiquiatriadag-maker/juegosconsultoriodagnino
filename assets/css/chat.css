@@ -1,0 +1,439 @@
+/* =====================================================
+   CHAT DE APOYO (IA) — Consultorio Dr. Dagnino
+   assets/css/chat.css  |  v1.0  (2026-02-21)
+
+   CONFIGURACIÓN:
+   - Colores principales: var(--inst-navy, #0e2239)
+   - Breakpoint mobile: 768px
+   - Para ajustar altura del panel: .chat-apoyo-panel { height: Xpx }
+   ===================================================== */
+
+/* ── 1. GRID WRAPPER: Central de Turnos + Chat ─────── */
+.turnos-chat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .turnos-chat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 2. PANEL DEL CHAT ─────────────────────────────── */
+.chat-apoyo-panel {
+  /* Sobrescribir padding del section-card base */
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  min-height: 440px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── 3. HEADER DEL CHAT ────────────────────────────── */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: rgba(14, 34, 57, 0.04);
+  border-bottom: 1px solid rgba(14, 34, 57, 0.09);
+  flex-shrink: 0;
+  gap: 10px;
+}
+
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--inst-navy, #0e2239);
+  letter-spacing: -.01em;
+}
+
+.chat-subtitle {
+  font-size: 11px;
+  color: var(--muted, #64748b);
+  display: block;
+  margin-top: 2px;
+}
+
+.chat-expand-btn {
+  background: none;
+  border: 1px solid rgba(14, 34, 57, 0.14);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--inst-navy, #0e2239);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.chat-expand-btn:hover {
+  background: rgba(14, 34, 57, 0.07);
+  border-color: rgba(14, 34, 57, 0.26);
+}
+
+.chat-expand-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* ── 4. ÁREA DE MENSAJES ───────────────────────────── */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(14, 34, 57, 0.14);
+  border-radius: 4px;
+}
+
+/* ── 5. BURBUJAS ───────────────────────────────────── */
+.chat-msg {
+  display: flex;
+  max-width: 90%;
+}
+
+.chat-msg.bot  { align-self: flex-start; }
+.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.chat-msg.full { max-width: 100%; align-self: stretch; }
+
+.chat-bubble {
+  padding: 9px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.chat-msg.bot .chat-bubble {
+  background: #f0f4f8;
+  color: #0f172a;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-msg.user .chat-bubble {
+  background: var(--inst-navy, #0e2239);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* ── 6. TYPING INDICATOR ───────────────────────────── */
+.chat-typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 9px 14px;
+  background: #f0f4f8;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-typing span {
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border-radius: 50%;
+  animation: chatTypeDot 1.1s ease-in-out infinite;
+}
+
+.chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes chatTypeDot {
+  0%, 80%, 100% { transform: scale(0.72); opacity: 0.45; }
+  40%           { transform: scale(1);    opacity: 1;    }
+}
+
+/* ── 7. CHIPS / OPCIONES RÁPIDAS ───────────────────── */
+.chat-chips {
+  padding: 8px 14px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(14, 34, 57, 0.07);
+  min-height: 0;
+}
+
+.chat-chips:empty {
+  padding: 0;
+  border: none;
+}
+
+.chat-chip {
+  background: #fff;
+  border: 1px solid rgba(14, 34, 57, 0.17);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: var(--inst-navy, #0e2239);
+  cursor: pointer;
+  transition: background 0.14s, border-color 0.14s, color 0.14s, transform 0.1s;
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 1.4;
+  text-decoration: none !important;
+}
+
+.chat-chip:hover {
+  background: var(--inst-navy, #0e2239);
+  color: #fff;
+  border-color: var(--inst-navy, #0e2239);
+  transform: translateY(-1px);
+}
+
+.chat-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.chat-chip.chip-primary {
+  background: var(--inst-navy, #0e2239);
+  color: #fff;
+  border-color: var(--inst-navy, #0e2239);
+}
+
+.chat-chip.chip-primary:hover {
+  background: #1a3a5c;
+  border-color: #1a3a5c;
+}
+
+.chat-chip.chip-danger {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.chat-chip.chip-danger:hover {
+  background: #991b1b;
+  color: #fff;
+  border-color: #991b1b;
+}
+
+.chat-chip.chip-wa {
+  background: #16a34a;
+  color: #fff;
+  border-color: #15803d;
+}
+
+.chat-chip.chip-wa:hover {
+  background: #15803d;
+  border-color: #166534;
+}
+
+/* ── 8. INPUT AREA ─────────────────────────────────── */
+.chat-input-area {
+  display: flex;
+  gap: 7px;
+  padding: 9px 14px 13px;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(14, 34, 57, 0.08);
+  background: rgba(255,255,255, 0.6);
+}
+
+.chat-input-area textarea {
+  flex: 1;
+  border: 1px solid rgba(14, 34, 57, 0.17);
+  border-radius: 10px;
+  padding: 8px 11px;
+  font-size: 13.5px;
+  font-family: inherit;
+  resize: none;
+  min-height: 36px;
+  max-height: 88px;
+  line-height: 1.4;
+  color: #0f172a;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.chat-input-area textarea:focus {
+  outline: none;
+  border-color: var(--inst-navy, #0e2239);
+  box-shadow: 0 0 0 3px rgba(14, 34, 57, 0.09);
+}
+
+.chat-input-area textarea::placeholder {
+  color: #94a3b8;
+}
+
+.chat-send-btn {
+  background: var(--inst-navy, #0e2239);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
+  align-self: flex-end;
+  font-family: inherit;
+}
+
+.chat-send-btn:hover {
+  background: #1a3a5c;
+  transform: translateY(-1px);
+}
+
+.chat-send-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* ── 9. DISCLAIMER OVERLAY ─────────────────────────── */
+.chat-disclaimer {
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 252, 255, 0.98);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  text-align: center;
+  gap: 12px;
+  border-radius: inherit;
+}
+
+.chat-disclaimer-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.chat-disclaimer h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--inst-navy, #0e2239);
+}
+
+.chat-disclaimer p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 32ch;
+}
+
+.chat-disclaimer-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── 10. TARJETAS DE RECURSOS EN CHAT ──────────────── */
+.chat-resource-card {
+  background: #fff;
+  border: 1px solid rgba(14, 34, 57, 0.11);
+  border-radius: 11px;
+  padding: 10px 13px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.chat-resource-card strong {
+  display: block;
+  color: var(--inst-navy, #0e2239);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.chat-resource-card span {
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+/* ── 11. CAJAS ESPECIALES ──────────────────────────── */
+.chat-safety-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 11px;
+  padding: 13px 15px;
+  font-size: 13.5px;
+  color: #78350f;
+  line-height: 1.6;
+}
+
+.chat-crisis-box {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 11px;
+  padding: 14px 15px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #991b1b;
+}
+
+.chat-crisis-box strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+
+/* ── 12. MODO EXPANDIDO (fullscreen en mobile) ──────── */
+.chat-apoyo-panel.chat-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  height: 100dvh;
+  border-radius: 0;
+  max-height: 100dvh;
+  /* Compensar header sticky */
+  top: 0;
+}
+
+/* ── 13. RESPONSIVE AJUSTES ────────────────────────── */
+@media (max-width: 768px) {
+  .chat-apoyo-panel {
+    height: 430px;
+  }
+}
+
+/* Reducir animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  .chat-typing span { animation: none; opacity: 0.6; }
+  .chat-chip { transition: none; }
+  .chat-expand-btn { transition: none; }
+}

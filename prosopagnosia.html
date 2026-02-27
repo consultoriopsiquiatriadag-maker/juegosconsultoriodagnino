@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prosopagnosia — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía sobre prosopagnosia: incapacidad de reconocer caras, causas, cómo se manifiesta, estrategias compensatorias y cómo acompañar. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    .topic-hero{
+      overflow:hidden; border-radius:18px; position:relative;
+    }
+    .topic-hero img{
+      width:100%; height:auto; display:block; object-fit:cover; border-radius:18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background:linear-gradient(180deg,rgba(14,34,57,.12) 0%,rgba(14,34,57,.55) 70%,rgba(14,34,57,.72) 100%);
+      border-radius:18px; pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px; color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size:clamp(22px,3.2vw,34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width:72ch; }
+
+    /* Espectro visual */
+    .spectrum-bar{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .spectrum-item{
+      border-radius:14px;
+      padding:14px;
+      text-align:center;
+    }
+    .spectrum-item.leve{
+      background:rgba(251,146,60,.10);
+      border:1px solid rgba(251,146,60,.28);
+    }
+    .spectrum-item.moderada{
+      background:rgba(239,68,68,.10);
+      border:1px solid rgba(239,68,68,.28);
+    }
+    .spectrum-item.severa{
+      background:rgba(109,40,217,.10);
+      border:1px solid rgba(109,40,217,.28);
+    }
+    .spectrum-item .s-label{
+      font-weight:800; font-size:.85rem;
+      text-transform:uppercase; letter-spacing:.04em;
+      margin-bottom:6px; opacity:.75;
+    }
+    .spectrum-item.leve .s-label{ color:#ea580c; }
+    .spectrum-item.moderada .s-label{ color:#dc2626; }
+    .spectrum-item.severa .s-label{ color:#7c3aed; }
+    @media(max-width:480px){ .spectrum-bar{ grid-template-columns:1fr; } }
+
+    /* Estrategias compensatorias */
+    .estrategia-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .estrategia-card{
+      border-radius:16px;
+      border:1px solid rgba(148,163,184,.22);
+      background:rgba(255,255,255,.06);
+      padding:16px;
+    }
+    .estrategia-card .ec-icon{ font-size:1.8rem; margin-bottom:8px; }
+    .estrategia-card .ec-title{ font-weight:700; margin-bottom:4px; font-size:.97rem; }
+    .estrategia-card .ec-para{ font-size:.91rem; opacity:.88; }
+
+    /* Mini ejercicio */
+    .exercise-grid{ display:grid; gap:14px; margin-top:10px; }
+    .range-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .range-row label{ min-width:220px; font-weight:600; }
+    .range-row input[type="range"]{ flex:1; min-width:220px; }
+    .pill-val{
+      padding:6px 10px; border-radius:999px;
+      background:rgba(37,99,235,.12); border:1px solid rgba(37,99,235,.25);
+      font-weight:800; min-width:54px; text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size:.98rem; }
+    textarea.note-input{
+      width:100%; min-height:84px; resize:vertical;
+      border-radius:14px; padding:12px;
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(255,255,255,.85); outline:none;
+    }
+    textarea.note-input:focus{
+      border-color:rgba(37,99,235,.55);
+      box-shadow:0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none; margin-top:10px; padding:10px 12px; border-radius:14px;
+      background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height:1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Prosopagnosia</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/prosopagnosia-portada.png -->
+        <img src="assets/img/prosopagnosia-portada.webp" alt="Ilustración abstracta: rostros difuminados, sin rasgos distinguibles" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Prosopagnosia</h1>
+          <p>La incapacidad de reconocer caras, incluso las más familiares. Qué es, cómo impacta y cómo convivir con ella.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              La prosopagnosia —del griego <em>prosopon</em> (cara) y <em>agnosia</em> (desconocimiento)—
+              es la incapacidad total o parcial de <b>reconocer caras</b>, incluyendo las de personas
+              muy conocidas o incluso el propio rostro en el espejo o en fotos.
+            </p>
+            <p class="card-sub">
+              La persona ve la cara correctamente —no hay problema en la visión—
+              pero el cerebro no puede convertir esa información visual en una identidad.
+              Es como si cada cara fuera siempre nueva, sin importar cuántas veces se haya visto antes.
+            </p>
+            <p class="card-sub">
+              A diferencia de los síndromes de Capgras y Fregoli, donde el reconocimiento falla
+              en su componente <em>emocional</em>, en la prosopagnosia el fallo es
+              <em>perceptivo-cognitivo</em>: el sistema visual no logra extraer
+              la identidad a partir de los rasgos del rostro. Las personas con prosopagnosia
+              aprenden a reconocer a los demás por la voz, la forma de caminar, el peinado,
+              la ropa o el contexto donde los encuentran.
+            </p>
+          </div>
+        </div>
+        <div class="note" style="margin-top:12px">
+          Dato frecuentemente ignorado: la prosopagnosia es mucho más común de lo que se cree.
+          Se estima que entre el 2 % y el 2,5 % de la población tiene algún grado de dificultad
+          significativa para reconocer caras. La mayoría nunca recibe un diagnóstico
+          porque aprendió a compensarla sin saber que lo estaba haciendo.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Espectro -->
+    <section class="section" id="espectro">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Un espectro, no un todo o nada</h2>
+            <p class="card-sub">La prosopagnosia no es igual en todos los casos. Se presenta en un rango de intensidad:</p>
+          </div>
+        </div>
+
+        <div class="spectrum-bar">
+          <div class="spectrum-item leve">
+            <div class="s-label">Leve</div>
+            <p class="card-sub" style="margin:0; font-size:.91rem;">
+              Dificultad para reconocer caras fuera de contexto o después de mucho tiempo sin ver a alguien.
+              Puede parecer "despistado" o "no muy sociable". Funciona bien en entornos familiares.
+            </p>
+          </div>
+          <div class="spectrum-item moderada">
+            <div class="s-label">Moderada</div>
+            <p class="card-sub" style="margin:0; font-size:.91rem;">
+              No reconoce conocidos en entornos inesperados. Dificultad para seguir películas
+              con muchos personajes similares. Requiere estrategias compensatorias activas.
+            </p>
+          </div>
+          <div class="spectrum-item severa">
+            <div class="s-label">Severa</div>
+            <p class="card-sub" style="margin:0; font-size:.91rem;">
+              No reconoce familiares cercanos, ni su propio rostro en fotos o el espejo.
+              El impacto en la vida cotidiana y social es significativo y requiere adaptaciones importantes.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Muchas personas con prosopagnosia leve o moderada pasan décadas creyendo que simplemente
+          "son malos para los nombres" o que "no se fijan en la gente". La etiqueta diagnóstica,
+          cuando llega, suele traer alivio: finalmente hay un nombre para algo que siempre estuvo ahí.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Por qué ocurre -->
+    <section class="section" id="por-que-ocurre">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué ocurre</h2>
+            <p class="card-sub">Existen dos formas según su origen:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Prosopagnosia adquirida:</b> aparece como consecuencia de una lesión cerebral.
+            Las causas más frecuentes son accidentes cerebrovasculares, traumatismos de cráneo
+            y tumores que afectan la región occipito-temporal derecha, especialmente el
+            <em>giro fusiforme</em>, área clave en el procesamiento de rostros.
+            En este caso, la persona tenía reconocimiento facial normal y lo pierde.
+          </li>
+          <li>
+            <b>Prosopagnosia del desarrollo (o congénita):</b> la persona nació con esta dificultad
+            o la desarrolló en la infancia sin que haya una lesión identificable.
+            Es la forma más frecuente y la que suele pasar desapercibida durante décadas.
+            Tiene un componente genético importante: es frecuente encontrar varios miembros
+            de una misma familia con la misma dificultad.
+          </li>
+        </ul>
+
+        <p class="card-sub" style="margin-top:10px">
+          En ambos casos, el área comprometida es la <b>región temporal inferior derecha</b>,
+          que incluye el giro fusiforme facial (FFA, por sus siglas en inglés).
+          Esta región está especializada en procesar configuraciones de rasgos faciales como un todo
+          integrado. Cuando falla, la cara se procesa como una colección de partes
+          (nariz, ojos, boca) sin poder ensamblarlas en una identidad.
+        </p>
+
+        <div class="note" style="margin-top:12px">
+          La prosopagnosia del desarrollo se asocia con frecuencia al autismo y al TDAH,
+          aunque también aparece de forma aislada. No es un síntoma exclusivo de ninguna de esas condiciones.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Cómo se manifiesta -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se manifiesta en el día a día</h2>
+            <p class="card-sub">Lo que la persona experimenta y lo que el entorno puede observar:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>No reconoce a personas conocidas cuando las ve en un contexto diferente al habitual (ej: al compañero de trabajo en el supermercado).</li>
+          <li>Dificultad para seguir películas, series o noticias con múltiples personajes de rasgos similares.</li>
+          <li>No reconoce a actores o figuras públicas a menos que tengan rasgos muy distintivos.</li>
+          <li>En casos severos, no reconoce a familiares directos o su propio rostro en fotos.</li>
+          <li>Estrategias compensatorias automáticas: identifica a las personas por la voz, el peinado, la ropa, la forma de caminar o el contexto donde aparecen.</li>
+          <li>Situaciones sociales embarazosas: no saludar a alguien conocido por no reconocerlo, o saludar a un desconocido creyendo que es alguien conocido.</li>
+          <li>Ansiedad social secundaria: evitar situaciones donde pueda "quedar mal" por no reconocer a alguien.</li>
+          <li>A veces la persona no es consciente de que tiene prosopagnosia: cree que simplemente "tiene mala memoria para las caras".</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La dificultad es específica para las caras. Las personas con prosopagnosia suelen
+          reconocer sin problema objetos, lugares, animales y otros estímulos visuales complejos.
+          Esto descarta un problema visual general.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Estrategias compensatorias -->
+    <section class="section" id="estrategias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Estrategias compensatorias</h2>
+            <p class="card-sub">
+              No hay tratamiento que "cure" la prosopagnosia, pero sí hay estrategias que permiten
+              funcionar con mucha mayor fluidez en el día a día. La mayoría de las personas
+              las desarrollan de forma intuitiva; nombrarlas y organizarlas las hace más efectivas.
+            </p>
+          </div>
+        </div>
+
+        <div class="estrategia-grid">
+          <div class="estrategia-card">
+            <div class="ec-icon">🎙️</div>
+            <div class="ec-title">Anclar por la voz</div>
+            <p class="ec-para">La voz es el identificador más confiable y automático. Esperar a que la persona hable antes de reaccionar da unos segundos clave para identificarla.</p>
+          </div>
+          <div class="estrategia-card">
+            <div class="ec-icon">🚶</div>
+            <div class="ec-title">Anclar por rasgos no faciales</div>
+            <p class="ec-para">Peinado, altura, forma de caminar, ropa habitual, accesorios distintivos. Son pistas que el cerebro puede procesar aunque la cara no ayude.</p>
+          </div>
+          <div class="estrategia-card">
+            <div class="ec-icon">📍</div>
+            <div class="ec-title">Usar el contexto</div>
+            <p class="ec-para">"Si estoy en el trabajo, las personas que me hablan probablemente son compañeros". El contexto reduce el universo de identidades posibles.</p>
+          </div>
+          <div class="estrategia-card">
+            <div class="ec-icon">💬</div>
+            <div class="ec-title">Comunicarlo cuando corresponde</div>
+            <p class="ec-para">Decirle a personas de confianza "tengo dificultad para reconocer caras" elimina malentendidos y reduce la ansiedad social anticipatoria.</p>
+          </div>
+          <div class="estrategia-card">
+            <div class="ec-icon">🎬</div>
+            <div class="ec-title">Subtítulos y nombres en pantalla</div>
+            <p class="ec-para">Para seguir series o películas, activar subtítulos con nombres de personajes o buscar sinopsis del episodio antes de verlo ayuda mucho.</p>
+          </div>
+          <div class="estrategia-card">
+            <div class="ec-icon">📸</div>
+            <div class="ec-title">Fotos con nombres</div>
+            <p class="ec-para">En entornos nuevos (trabajo, escuela, grupo nuevo), tener fotos con nombres escritos permite estudiarlas y prepararse antes de los encuentros.</p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Ninguna estrategia funciona igual para todos. Lo más valioso es identificar cuáles
+          pistas alternativas a la cara le resultan más confiables a cada persona en particular.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">La prosopagnosia del desarrollo no empeora con el tiempo. Consultar si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>La dificultad para reconocer caras aparece de forma <b>súbita</b> en alguien que antes no la tenía: puede indicar ACV, tumor u otra lesión cerebral. Es una urgencia neurológica.</li>
+          <li>Se suma dificultad para reconocer <b>objetos, lugares o voces</b> que antes se reconocían sin problemas.</li>
+          <li>Aparece <b>desorientación espacial</b> o confusión nuevas junto con la dificultad para reconocer caras.</li>
+          <li>La ansiedad social secundaria es tan intensa que <b>impide la vida cotidiana</b>: no salir, no relacionarse, aislamiento severo.</li>
+          <li>La persona confunde prosopagnosia con <b>experiencias perceptivas más complejas</b> (ver caras donde no las hay, sentir que las caras cambian).</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La prosopagnosia del desarrollo estable, sin cambios nuevos, no es una urgencia.
+          Pero sí merece evaluación neuropsicológica para confirmar el diagnóstico
+          y descartar otras condiciones asociadas.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Para familias y entorno -->
+    <section class="section" id="para-familias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo acompañar · Para familias y entorno</h2>
+            <p class="card-sub">
+              Convivir o relacionarse con alguien con prosopagnosia requiere pequeños ajustes
+              que hacen una diferencia enorme en la comodidad de todos.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Identificarse al saludar.</b> "Hola, soy Juan" al acercarse —incluso siendo alguien muy conocido—
+            elimina el momento de incertidumbre y el esfuerzo de reconocimiento. Es un gesto simple
+            con un impacto muy grande.
+          </li>
+          <li>
+            <b>No tomar el no-reconocimiento como un insulto.</b> No recordar una cara
+            no significa que la persona no importe o que el vínculo no sea significativo.
+            Es una dificultad neurológica, no un juicio de valor.
+          </li>
+          <li>
+            <b>Avisar cuando cambien algo de su apariencia.</b> Un corte de pelo nuevo, un cambio de color,
+            lentes nuevas: cualquier modificación puede hacer que la persona con prosopagnosia
+            no los reconozca hasta que vuelvan a establecer el contexto.
+          </li>
+          <li>
+            <b>No "probarlos" ni hacer chistes sobre el tema.</b> Aparecer disfrazado, cambiar de look sin avisar
+            o apostarlo a que "ahora sí me reconocés" puede ser gracioso una vez
+            y muy desgastante como patrón.
+          </li>
+          <li>
+            <b>Validar la estrategia compensatoria, no la cara.</b> Si la persona los identifica
+            por la voz o por la ropa, funciona perfectamente. No es necesario que aprenda
+            a reconocer la cara: la meta es el reconocimiento, no el medio.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Para muchas personas, revelar que tienen prosopagnosia es un momento de alivio enorme
+          para su entorno también: finalmente entienden por qué alguien que claramente los quiere
+          a veces no los saluda en la calle.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro personal (1 minuto)</h2>
+            <p class="card-sub">Para explorar el impacto y las estrategias que mejor funcionan. Útil para llevar a una consulta neuropsicológica.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá qué tan seguido te genera dificultades el reconocimiento de caras (0 = casi nunca · 10 = constantemente).<br/>
+            2) Evaluá cuánto impacta en tu vida social y cotidiana (0 = nada · 10 = mucho).<br/>
+            3) Anotá qué estrategia compensatoria te funciona mejor.<br/>
+            4) Copiá el resumen para llevar a la consulta.
+          </div>
+
+          <div class="range-row">
+            <label for="frecuenciaRange">Frecuencia de dificultades (0–10)</label>
+            <input id="frecuenciaRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="frecuenciaVal">5</div>
+          </div>
+
+          <div class="range-row">
+            <label for="impactoRange">Impacto en vida cotidiana (0–10)</label>
+            <input id="impactoRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="impactoVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="estrategiaInput" style="font-weight:600; display:block; margin-bottom:6px;">Estrategia que mejor me funciona (opcional)</label>
+            <input id="estrategiaInput" class="input" type="text" placeholder="Ej: la voz / la forma de caminar / el contexto / el peinado..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="situacionInput" style="font-weight:600; display:block; margin-bottom:6px;">Situación donde más me cuesta (opcional)</label>
+            <input id="situacionInput" class="input" type="text" placeholder="Ej: ver personas fuera de contexto / películas / reuniones nuevas..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Notas adicionales (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: desde siempre / empeoró de golpe / me genera mucha ansiedad social / quiero evaluación..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Neurociencia del reconocimiento facial y vida con prosopagnosia.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El término prosopagnosia fue acuñado en 1947 por el neurólogo alemán Joachim Bodamer,
+            quien describió tres pacientes que, tras lesiones cerebrales, habían perdido la capacidad
+            de reconocer caras. Durante décadas se la consideró una rareza clínica, un caso extremo
+            y casi anecdótico de la neurología. El cambio de perspectiva llegó en los años 2000,
+            cuando la investigación sistemática comenzó a revelar que la forma del desarrollo —sin lesión
+            identificable— es sorprendentemente frecuente, con estimaciones que oscilan entre el 2 %
+            y el 2,5 % de la población.
+          </p>
+
+          <p>
+            El reconocimiento de caras es una de las capacidades más sofisticadas del cerebro humano
+            y una de las más especializadas. El cerebro dedica regiones específicas al procesamiento
+            facial que no tienen equivalente para otros estímulos visuales. La más conocida es el
+            giro fusiforme facial (FFA), ubicado en la región temporal inferior del hemisferio derecho.
+            Esta área responde de forma selectiva y potente ante caras humanas, incluso cuando se las
+            presenta muy brevemente o en condiciones degradadas. En personas con prosopagnosia,
+            esta activación es significativamente menor o está ausente.
+          </p>
+
+          <p>
+            Lo que hace fascinante a la prosopagnosia desde el punto de vista cognitivo es su especificidad.
+            La dificultad es casi exclusivamente para caras: las personas con prosopagnosia pueden reconocer
+            sin problemas objetos, lugares, animales y otros patrones visuales complejos.
+            Algunos expertos en prosopagnosia son ornitólogos o entomólogos expertos,
+            capaces de identificar cientos de especies de pájaros o insectos por sus rasgos,
+            pero incapaces de reconocer la cara de sus propios hijos.
+            Esta disociación revela cuánto del reconocimiento facial depende de mecanismos
+            específicamente dedicados a ese fin.
+          </p>
+
+          <p>
+            La prosopagnosia del desarrollo tiene un fuerte componente hereditario. Los estudios
+            en familias muestran que la dificultad para reconocer caras tiende a presentarse
+            en múltiples miembros de la misma familia, lo que sugiere una base genética.
+            A menudo, cuando una persona adulta recibe el diagnóstico, puede identificar en retrospectiva
+            a padres, hermanos o hijos que compartían la misma dificultad sin saberlo,
+            y que desarrollaron estrategias compensatorias similares de forma independiente.
+          </p>
+
+          <p>
+            El impacto social de la prosopagnosia va mucho más allá del inconveniente de no recordar caras.
+            Para muchas personas, genera una ansiedad social crónica y silenciosa: el miedo constante
+            de ignorar a alguien conocido, de parecer antipático o distante, de tener que navegar
+            situaciones sociales con el esfuerzo permanente de identificar a cada persona
+            a partir de pistas indirectas. Este esfuerzo —invisible para el entorno— es agotador.
+            Algunas personas evitan situaciones sociales no por introversión sino por la dificultad
+            práctica de reconocer caras en entornos nuevos o concurridos.
+          </p>
+
+          <p>
+            El diagnóstico, cuando llega, suele tener un efecto paradójico: alivio.
+            Por primera vez, hay una explicación para algo que siempre generó confusión,
+            vergüenza o malentendidos. El alivio es doble: para la persona, que entiende
+            que no "tiene mala memoria" ni "es antipática", y para su entorno,
+            que comprende que el no-reconocimiento nunca fue descuido ni desinterés.
+          </p>
+
+          <p>
+            Actualmente no existe un tratamiento que restaure el reconocimiento facial en la prosopagnosia.
+            Sin embargo, el campo de la rehabilitación neuropsicológica está explorando programas
+            de entrenamiento perceptivo que, en algunos casos, logran mejoras parciales.
+            La mayor parte del abordaje sigue siendo compensatorio: identificar las estrategias
+            que mejor funcionan para cada persona, reducir la ansiedad asociada y,
+            cuando corresponde, comunicar la condición al entorno cercano para que los ajustes
+            necesarios se puedan implementar sin incomodidad.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. El diagnóstico formal requiere evaluación neuropsicológica.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés una evaluación o más orientación?</h3>
+            <p class="card-sub">
+              Si reconocés estas dificultades en vos o en un familiar y querés evaluar el impacto
+              o descartar otras condiciones asociadas, la Central de Turnos puede ayudarte.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const frecuenciaRange = document.getElementById("frecuenciaRange");
+      const impactoRange    = document.getElementById("impactoRange");
+      const frecuenciaVal   = document.getElementById("frecuenciaVal");
+      const impactoVal      = document.getElementById("impactoVal");
+      const estrategiaInput = document.getElementById("estrategiaInput");
+      const situacionInput  = document.getElementById("situacionInput");
+      const noteInput       = document.getElementById("noteInput");
+      const btnCopy         = document.getElementById("btnCopy");
+      const btnReset        = document.getElementById("btnReset");
+      const copyOk          = document.getElementById("copyOk");
+
+      function upd(){
+        frecuenciaVal.textContent = frecuenciaRange.value;
+        impactoVal.textContent    = impactoRange.value;
+      }
+      frecuenciaRange.addEventListener("input", upd);
+      impactoRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d=new Date(), pad=n=>String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async ()=>{
+        const estrategia = (estrategiaInput.value||"").trim();
+        const situacion  = (situacionInput.value||"").trim();
+        const note       = (noteInput.value||"").trim();
+        const txt = `Prosopagnosia — Registro | Frecuencia de dificultades: ${frecuenciaRange.value}/10 | Impacto cotidiano: ${impactoRange.value}/10 | Estrategia que mejor funciona: ${estrategia||"—"} | Situación más difícil: ${situacion||"—"} | Notas: ${note||"—"} | Fecha/hora: ${nowStr()}`;
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }catch(e){
+          const ta=document.createElement("textarea");
+          ta.value=txt; document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta);
+          copyOk.style.display="block";
+          setTimeout(()=>copyOk.style.display="none",3500);
+        }
+      });
+
+      btnReset.addEventListener("click",()=>{
+        frecuenciaRange.value=5; impactoRange.value=5;
+        estrategiaInput.value=""; situacionInput.value=""; noteInput.value="";
+        upd(); copyOk.style.display="none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

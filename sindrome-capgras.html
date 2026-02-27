@@ -1,0 +1,584 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Síndrome de Capgras — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para familias: síndrome de Capgras, por qué ocurre, condiciones asociadas, cómo acompañar y señales de alarma. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Síndrome de Capgras</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/capgras-portada.webp -->
+        <img src="assets/img/capgras-portada.webp?v=1" alt="Ilustración abstracta: dos siluetas idénticas, una real y una sombra" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Síndrome de Capgras</h1>
+          <p>Cuando alguien que querés parece ser "otro". Qué es, por qué ocurre y cómo acompañar.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              El síndrome de Capgras es un trastorno de identificación delirante: la persona que lo padece
+              está <b>convencida</b> —no simplemente asustada o confundida— de que alguien cercano
+              (una pareja, un hijo, un padre, incluso una mascota) fue reemplazado por un <b>impostor</b>
+              físicamente idéntico al original.
+            </p>
+            <p class="card-sub">
+              No se trata de una equivocación pasajera ni de una alucinación visual: la persona <em>reconoce</em>
+              el parecido, pero siente con certeza absoluta que "esa persona" no es la de verdad.
+              Puede decir: "Sos igual a mi marido, pero no sos él".
+            </p>
+            <p class="card-sub">
+              Fue descripto por primera vez en 1923 por los psiquiatras franceses Joseph Capgras y Jean Reboul-Lachaux,
+              que lo llamaron "ilusión de los dobles". Hoy se lo entiende como un síntoma que puede aparecer
+              en varios cuadros neurológicos y psiquiátricos.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Dato clave: el insight suele estar reducido. La persona no percibe que algo falla en su percepción;
+          para ella, la certeza es real. Por eso el abordaje debe hacerse con cuidado y siempre con ayuda profesional.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Por qué ocurre -->
+    <section class="section" id="por-que-ocurre">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué ocurre</h2>
+            <p class="card-sub">
+              La explicación más aceptada involucra una <b>desconexión entre dos rutas del reconocimiento facial</b>:
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Ruta visual:</b> identifica correctamente el rostro ("sí, es la cara de mi esposa").</li>
+          <li><b>Ruta afectivo-emocional:</b> normalmente genera una sensación de familiaridad y carga emocional al ver a alguien querido. En Capgras, esa respuesta emocional está ausente o muy reducida.</li>
+        </ul>
+
+        <p class="card-sub" style="margin-top:10px">
+          El cerebro enfrenta una contradicción: "reconozco la cara, pero no siento nada especial". Para resolver esa paradoja,
+          construye una explicación delirante: "entonces no puede ser la persona real; debe ser un impostor".
+        </p>
+
+        <p class="card-sub" style="margin-top:10px">
+          Esta desconexión puede tener origen en lesiones o alteraciones del lóbulo temporal, la amígdala
+          y las vías de integración entre percepción y emoción.
+        </p>
+
+        <div class="note" style="margin-top:12px">
+          No es voluntario ni manipulador. La persona no "elige" creer esto: es la conclusión que su cerebro
+          produce ante una experiencia perceptiva anómala.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Condiciones asociadas -->
+    <section class="section" id="condiciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Condiciones asociadas</h2>
+            <p class="card-sub">El síndrome de Capgras puede aparecer en el contexto de:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Esquizofrenia y trastornos del espectro psicótico</b> — es el contexto más frecuente.</li>
+          <li><b>Trastorno bipolar con episodios maníacos o mixtos</b> — especialmente en fases de alta activación.</li>
+          <li><b>Demencias</b> — en particular Alzheimer y demencia con cuerpos de Lewy, donde es más frecuente en estadios moderados.</li>
+          <li><b>Lesiones cerebrales</b> — traumatismos de cráneo, accidentes cerebrovasculares, tumores frontales o temporales.</li>
+          <li><b>Epilepsia del lóbulo temporal</b>.</li>
+          <li><b>Intoxicación o abstinencia</b> de ciertas sustancias.</li>
+          <li><b>Enfermedades autoinmunes</b> con afectación cerebral (encefalitis autoinmunes).</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El diagnóstico diferencial importa mucho: el tratamiento varía según la causa subyacente. 
+          Siempre requiere evaluación médica y neurológica.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Cómo se manifiesta -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se manifiesta</h2>
+            <p class="card-sub">Lo que suelen observar las familias:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Afirmaciones firmes de que "este no es mi marido / mi madre / mi hijo de verdad".</li>
+          <li>Búsqueda del "original": preguntar dónde está la persona real, o esperar que "vuelva".</li>
+          <li>Desconfianza, miedo o rechazo hacia el "impostor".</li>
+          <li>En algunos casos, agresividad hacia el familiar, convencidos de que están defendiéndose de alguien extraño.</li>
+          <li>Intentos de "probar" que es un impostor (buscar diferencias físicas mínimas, comparar fotos).</li>
+          <li>El delirio puede extenderse a fotos, videos o incluso al propio reflejo en el espejo.</li>
+          <li>Puede fluctuar: hay momentos en que la persona parece reconocer al familiar, y otros en que el delirio vuelve con fuerza.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La intensidad varía. En algunos casos el delirio es relativamente silencioso; en otros, domina la vida cotidiana y genera situaciones de riesgo.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar de urgencia si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Hay agresividad física hacia el familiar "identificado como impostor".</li>
+          <li>La persona intenta "expulsar" o aislar al supuesto impostor del hogar.</li>
+          <li>Aparece agitación severa, angustia intensa o conductas de riesgo.</li>
+          <li>El delirio se extiende rápidamente a más personas o situaciones.</li>
+          <li>Hay ideas de persecución combinadas ("el impostor me quiere hacer daño").</li>
+          <li>La persona deja de comer, tomar medicación o realizar cuidados básicos.</li>
+          <li>Se detectan síntomas neurológicos nuevos: confusión, caídas, alteraciones del habla o la marcha.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si hay riesgo inmediato para la persona o su entorno, buscá asistencia de urgencia local sin demora.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Para familias -->
+    <section class="section" id="para-familias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo acompañar · Guía para familias</h2>
+            <p class="card-sub">
+              Acompañar a alguien con Capgras es emocionalmente agotador. Estas pautas no reemplazan la consulta profesional,
+              pero pueden ayudar a reducir el conflicto y proteger el vínculo.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>No contradecir el delirio frontalmente.</b> Discutir ("yo soy tu esposa, ¡no soy ningún impostor!")
+            suele aumentar la angustia y el rechazo. No confirmar el delirio tampoco implica reforzarlo.
+          </li>
+          <li>
+            <b>Validar la emoción, no el contenido.</b> Algo como: "Entiendo que esto te genera mucha angustia y desconfianza"
+            puede ser más efectivo que intentar convencer con argumentos lógicos.
+          </li>
+          <li>
+            <b>Mantener rutinas y contextos familiares.</b> Objetos reconocidos, voces conocidas, rutinas cotidianas
+            pueden activar la memoria afectiva y reducir la activación del delirio en algunos momentos.
+          </li>
+          <li>
+            <b>Priorizar la seguridad.</b> Si la desconfianza escala a agresividad, la seguridad de todos es lo primero.
+            No asumir que "se le va a pasar solo".
+          </li>
+          <li>
+            <b>Cuidar al cuidador.</b> La experiencia de ser "no reconocido" como quien uno es genera un duelo particular,
+            muy específico. Buscar apoyo propio (terapia, grupo de familias) es fundamental.
+          </li>
+          <li>
+            <b>Coordinar con el equipo tratante.</b> Informar cualquier cambio en la intensidad del delirio, 
+            conductas nuevas o señales de alarma.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Recordá: la persona no está eligiendo rechazarte. Su cerebro está procesando algo de forma diferente.
+          El delirio no es una opinión sobre vos.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro para familias (1 minuto)</h2>
+            <p class="card-sub">Registro de carga emocional 0–10 + observaciones del día. Útil para compartir con el profesional tratante.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá tu nivel de carga emocional como familiar/cuidador hoy (0 = ninguna · 10 = máxima).<br/>
+            2) Evaluá la intensidad del delirio que observaste hoy (0 = sin episodios · 10 = muy intenso).<br/>
+            3) Anotá el contexto o disparador si lo identificás.<br/>
+            4) Copiá el resumen para llevar a la consulta o guardar en tu registro.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Mi carga emocional hoy (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="beforeVal">5</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Intensidad del delirio observada (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="contextoInput" style="font-weight:600; display:block; margin-bottom:6px;">Contexto o disparador (opcional)</label>
+            <input id="contextoInput" class="input" type="text" placeholder="Ej: llegué del trabajo / hubo visita / cambio de rutina / falta de sueño..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="reaccionInput" style="font-weight:600; display:block; margin-bottom:6px;">Cómo reaccionó la persona (opcional)</label>
+            <input id="reaccionInput" class="input" type="text" placeholder="Ej: agitado / tranquilo / preguntó por el 'original' / ignoró / agresivo..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Observaciones / notas para el profesional (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: tomó la medicación / durmió mal la noche anterior / nuevo síntoma / mejora parcial..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Profundización sobre el síndrome y su impacto clínico y familiar.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El síndrome de Capgras recibe su nombre del psiquiatra francés Joseph Capgras, quien junto a Jean Reboul-Lachaux
+            publicó en 1923 la descripción de una paciente convencida de que sus familiares habían sido reemplazados por
+            impostores. Durante décadas fue considerado un trastorno exclusivamente psiquiátrico, pero desde los años '90
+            el avance de la neuroimagen permitió comprender mejor su sustrato cerebral y ampliar su clasificación.
+          </p>
+
+          <p>
+            La hipótesis neurocognitiva más influyente, desarrollada por Haydn Ellis y Andrew Young, propone que el
+            reconocimiento facial normalmente involucra dos vías paralelas. La primera es la ruta perceptiva-cognitiva,
+            que identifica rasgos físicos y determina quién es la persona. La segunda es la ruta afectiva, que genera
+            una respuesta emocional automática de familiaridad al ver a alguien conocido. En el síndrome de Capgras,
+            la primera vía funciona correctamente; es la segunda la que falla. El resultado es una disonancia
+            desconcertante: "esta cara la reconozco, pero no siento nada especial al verla". El cerebro, buscando
+            coherencia, produce la explicación más plausible que puede construir: esa persona no es la real.
+          </p>
+
+          <p>
+            Esta desconexión se relaciona con alteraciones en el lóbulo temporal derecho y en la amígdala,
+            estructura clave en el procesamiento emocional de rostros. Estudios de neuroimagen en pacientes con
+            Capgras muestran con frecuencia anomalías en regiones frontales y temporales derechas, lo que apoya
+            la hipótesis de la desconexión entre percepción y emoción. En casos de demencia con cuerpos de Lewy,
+            el Capgras aparece incluso como marcador temprano de la enfermedad.
+          </p>
+
+          <p>
+            Es importante destacar que el delirio de Capgras no es una "locura total": puede convivir con un
+            funcionamiento razonablemente preservado en otras áreas. La persona puede mantener conversaciones
+            coherentes, recordar eventos pasados y realizar tareas cotidianas, y al mismo tiempo sostener con
+            total convicción que su hijo es un impostor. Esta selectividad del delirio puede resultar especialmente
+            desconcertante para las familias, que a veces dudan de si la persona "realmente lo cree" o está
+            "eligiendo" esa actitud.
+          </p>
+
+          <p>
+            El impacto familiar es devastador en muchos casos. Ser "no reconocido" por un ser querido activa un
+            duelo particular: la persona está físicamente presente, pero la relación tal como se la conocía ha
+            cambiado radicalmente. Los familiares describen sentirse solos incluso estando en la misma habitación,
+            invisibles para alguien que los mira a los ojos. Este duelo no tiene los rituales sociales que acompañan
+            a otros tipos de pérdida, lo que lo vuelve especialmente silencioso y difícil de procesar.
+          </p>
+
+          <p>
+            El tratamiento del síndrome de Capgras apunta en primer lugar a la causa subyacente. En contextos
+            psicóticos, los antipsicóticos pueden reducir o eliminar el delirio. En demencias, el tratamiento
+            es más complejo y generalmente de manejo sintomático. En lesiones cerebrales focales, la resolución
+            de la lesión puede revertir el cuadro. Las intervenciones psicoterapéuticas directas sobre el
+            delirio tienen evidencia limitada, pero el trabajo con las familias —psicoeducación, técnicas
+            de manejo, cuidado del cuidador— tiene un impacto real en la calidad de vida de todos los involucrados.
+          </p>
+
+          <p>
+            Un dato clínico relevante: el delirio de Capgras puede evolucionar hacia variantes más elaboradas.
+            En algunos casos el "impostor" adquiere intenciones amenazantes (el paciente cree que el impostor
+            busca hacerle daño), lo que aumenta significativamente el riesgo de agresividad. En otros, el delirio
+            se extiende a múltiples personas del entorno, llegando a lo que se denomina síndrome de Capgras
+            generalizado. Estas evoluciones son señales de alarma que requieren consulta urgente.
+          </p>
+
+          <p>
+            Para las familias, la recomendación fundamental es no intentar "convencer" a la persona de que está
+            equivocada mediante argumentos lógicos o evidencia empírica. Mostrar fotos, insistir en "¡soy yo!",
+            traer testigos: ninguna de estas estrategias funciona, porque el problema no es informacional
+            sino perceptivo-emocional. Lo que sí puede ayudar es mantener un tono calmado, no confrontativo,
+            validar la angustia sin reforzar el contenido del delirio, y construir junto al equipo tratante
+            un plan de manejo claro para los momentos de mayor activación.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. El diagnóstico y el plan de tratamiento siempre deben ser realizados por un profesional de salud.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Necesitás orientación profesional?</h3>
+            <p class="card-sub">
+              Si reconocés estos síntomas en un familiar o tenés dudas sobre el diagnóstico o el manejo,
+              la Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange  = document.getElementById("beforeRange");
+      const afterRange   = document.getElementById("afterRange");
+      const beforeVal    = document.getElementById("beforeVal");
+      const afterVal     = document.getElementById("afterVal");
+      const contextoInput= document.getElementById("contextoInput");
+      const reaccionInput= document.getElementById("reaccionInput");
+      const noteInput    = document.getElementById("noteInput");
+      const btnCopy      = document.getElementById("btnCopy");
+      const btnReset     = document.getElementById("btnReset");
+      const copyOk       = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const contexto = (contextoInput.value || "").trim();
+        const reaccion = (reaccionInput.value || "").trim();
+        const note     = (noteInput.value || "").trim();
+
+        const txt =
+          `Capgras — Registro familiar | Carga emocional: ${beforeRange.value}/10 | Intensidad delirio observada: ${afterRange.value}/10 | Contexto/disparador: ${contexto || "—"} | Reacción observada: ${reaccion || "—"} | Notas: ${note || "—"} | Fecha/hora: ${nowStr()}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value  = 5;
+        afterRange.value   = 5;
+        contextoInput.value= "";
+        reaccionInput.value= "";
+        noteInput.value    = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "name": "Consultorio Dr. Pedro Nicolás Dagnino",
+  "short_name": "Dr. Dagnino",
+  "description": "Sala de espera virtual y herramientas de psicoeducación del Consultorio Dr. Pedro Nicolás Dagnino.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#0f1e33",
+  "theme_color": "#0f1e33",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["health", "medical"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Central de Turnos",
+      "short_name": "Turnos",
+      "description": "Coordiná tu próxima consulta",
+      "url": "/turnos.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Checklist Emocional",
+      "short_name": "Checklist",
+      "description": "Auto-chequeo emocional pre-vuelo",
+      "url": "/apps.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

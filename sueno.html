@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conciliar el sueño — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.72), rgba(14,34,57,.40) 45%, rgba(14,34,57,.24));
+      pointer-events:none;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"><img src="logo-avion.png" alt=""></div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="controls-desktop">
+          <button class="btn-ghost" id="btnAminus" type="button">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button">A+</button>
+          <button class="btn-ghost" id="openSettingsDesktop" type="button">⚙️ Ajustes</button>
+        </div>
+        <button class="btn-ghost controls-mobile" id="openSettings" type="button">⚙️ Ajustes</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="btn-row" style="margin-bottom:12px">
+          <a class="btn-secondary" href="emociones.html" data-spa="0">← Volver</a>
+        </div>
+
+        <h1 class="card-title" style="margin:0">🌧️ Ejercicio para conciliar el sueño</h1>
+        <p class="card-sub" style="margin-top:8px">
+          Guía breve en voz + lluvia. Duración: 15 minutos (con fade de entrada y salida).
+        </p>
+
+        <div class="note" style="margin-top:12px; font-size: 15px;">
+          <strong>Antes de comenzar:</strong> configurá tu alarma para mañana.
+          Así, una vez iniciada la inducción al sueño, ya no tocás tu celular.
+        </div>
+
+        <div class="btn-row" style="margin-top:12px; align-items:flex-start;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button class="btn-primary" id="sleepStart" type="button">▶️ Iniciar</button>
+            <div class="note" style="margin:0; font-size: 13px;">
+              Configurá alarma primero. Después, no toques el celular.
+            </div>
+          </div>
+
+          <button class="btn-secondary" id="sleepPause" type="button">⏸️ Pausar</button>
+          <button class="btn-secondary" id="sleepStop" type="button">⏹️ Detener</button>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Estado: <strong><span id="sleepStatus">Listo</span></strong>
+        </div>
+
+        <audio id="sleepAudio" preload="none"></audio>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="note" style="margin:0">
+          No reemplaza consulta médica. No destinado a urgencias.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const audio  = document.getElementById("sleepAudio");
+      const start  = document.getElementById("sleepStart");
+      const pause  = document.getElementById("sleepPause");
+      const stop   = document.getElementById("sleepStop");
+      const status = document.getElementById("sleepStatus");
+
+      const SRC = "audio/sueno_lluvia_15min_dagnino.mp3";
+
+      function setStatus(t){ if(status) status.textContent = t; }
+
+      if(audio){
+        audio.src = SRC;
+        audio.loop = false;
+        audio.volume = 0.9;
+
+        audio.addEventListener("ended", () => setStatus("Finalizado"));
+        audio.addEventListener("play",  () => setStatus("Reproduciendo"));
+        audio.addEventListener("pause", () => {
+          if (audio.currentTime > 0 && audio.currentTime < (audio.duration || Infinity)) setStatus("Pausado");
+        });
+      }
+
+      start?.addEventListener("click", async () => {
+        try{
+          if(!audio) return;
+          if(!audio.src) audio.src = SRC;
+          setStatus("Cargando…");
+          await audio.play();
+        }catch(e){
+          setStatus("Tocá Iniciar nuevamente");
+        }
+      });
+
+      pause?.addEventListener("click", () => { if(audio) audio.pause(); });
+
+      stop?.addEventListener("click", () => {
+        if(!audio) return;
+        audio.pause();
+        audio.currentTime = 0;
+        setStatus("Detenido");
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Apps para pacientes — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* micro-ajustes locales */
+    .apps-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    @media (max-width: 920px){ .apps-grid{ grid-template-columns:1fr; } }
+
+    .app-chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px; border-radius:999px;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.18);
+      color:#0f1e33;
+      font-weight:600;
+      font-size:12px;
+      line-height:1;
+    }
+
+    .app-hero-img{
+      width:100%;
+      border-radius:16px;
+      border: 1px solid rgba(15,30,51,.12);
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(15,30,51,.08);
+      overflow:hidden;
+    }
+    .app-hero-img img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .proto{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      background: rgba(234,179,8,.10);
+      border: 1px solid rgba(234,179,8,.18);
+      color:#0f1e33;
+    }
+
+    .app-meta{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      background: rgba(238,242,247,.9);
+      border: 1px solid rgba(15,30,51,.12);
+      color:#475569;
+      line-height:1.55;
+    }
+
+    .small-note{
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.55;
+    }
+
+    /* ── Banner de instalación PWA ── */
+    #pwa-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: min(480px, calc(100vw - 32px));
+      background: #0e2239;
+      color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(14,34,57,.45);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: slideUp .35s cubic-bezier(.22,1,.36,1);
+    }
+    #pwa-banner.hidden { display: none; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    #pwa-banner .banner-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    #pwa-banner .banner-text {
+      flex: 1;
+      min-width: 0;
+    }
+    #pwa-banner .banner-title {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.3;
+      margin: 0 0 3px 0;
+    }
+    #pwa-banner .banner-sub {
+      font-size: 12px;
+      opacity: .75;
+      line-height: 1.4;
+    }
+    #pwa-banner .banner-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    #btn-install-pwa {
+      background: #fff;
+      color: #0e2239;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    #btn-install-pwa:hover { background: #e8f0fe; }
+    #btn-dismiss-banner {
+      background: transparent;
+      color: rgba(255,255,255,.6);
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px;
+    }
+    #btn-dismiss-banner:hover { color: #fff; }
+
+    /* ── Sección instrucciones de instalación ── */
+    .install-section {
+      background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fb 100%);
+      border: 1px solid rgba(37,99,235,.15);
+      border-radius: 20px;
+      padding: 28px 24px;
+    }
+    .install-section h3 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: #0e2239;
+    }
+    .install-section .install-lead {
+      color: #475569;
+      font-size: 14px;
+      margin: 0 0 24px 0;
+      line-height: 1.55;
+    }
+    .install-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .install-tab {
+      border: 1.5px solid rgba(14,34,57,.18);
+      background: #fff;
+      color: #0e2239;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .install-tab.active {
+      background: #0e2239;
+      color: #fff;
+      border-color: #0e2239;
+    }
+    .install-tab:hover:not(.active) { background: #e8f0fe; }
+
+    .install-panel { display: none; }
+    .install-panel.active { display: block; }
+
+    .install-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .install-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(14,34,57,.08);
+    }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0e2239;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body { flex: 1; min-width: 0; }
+    .step-body strong { display: block; font-size: 14px; color: #0e2239; margin-bottom: 3px; }
+    .step-body span { font-size: 13px; color: #475569; line-height: 1.5; }
+    .step-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+    .install-cta-row {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    #btn-install-inline {
+      background: #0e2239;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #btn-install-inline:hover { background: #1a3a5c; }
+    #btn-install-inline.hidden { display: none; }
+    .install-note-ios {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== Header (igual index) ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-label="Apps para pacientes">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="pill" aria-label="Estado">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Apps para pacientes</span>
+        </div>
+
+        <h1 class="hero-title">Aplicaciones específicas</h1>
+
+        <p class="hero-bridge">
+          Herramientas simples y cuidadas para acompañar procesos: comunicación asistida y auto-chequeos breves.
+        </p>
+
+        <p class="hero-meta">
+          Estas apps no reemplazan una consulta médica. Funcionan como apoyo entre encuentros y como recurso psicoeducativo.
+        </p>
+      </div>
+
+      <aside class="hero-side" aria-label="Accesos rápidos">
+        <h3>Accesos</h3>
+        <p>Volver al inicio o a recursos principales.</p>
+        <div class="row">
+          <a href="index.html" data-spa="0">Inicio</a>
+          <a href="juegos.html" data-spa="0">Juegos</a>
+          <a href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" aria-label="Listado de aplicaciones">
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Apps disponibles</h2>
+            <p class="card-sub">Ingresá a la aplicación correspondiente.</p>
+          </div>
+          <a class="btn-secondary" href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="apps-grid" role="list">
+
+          <!-- App 1 -->
+          <article class="section-card card-hover hint-bg" style="margin:0" role="listitem">
+            <div class="card-head">
+              <div style="min-width:0">
+                <div class="app-chip">Comunicación asistida — niñez</div>
+                <h3 class="card-title" style="margin:10px 0 0 0">Aplicación de niño</h3>
+                <p class="card-sub" style="margin-top:8px">
+                  App creada de forma personalizada según necesidades del niño, para complementar recursos de lenguaje de expresión.
+                </p>
+              </div>
+            </div>
+
+            <div class="app-hero-img" aria-label="Captura de la aplicación de niño">
+              <img src="img/Niño.jpg" alt="Captura: Aplicación de niño, tableros de comunicación con botones grandes">
+            </div>
+
+            <div class="proto" role="note" aria-label="Aclaración de prototipo">
+              <strong>Versión prototipo.</strong> Se encuentra en constante actualización y mejora.
+            </div>
+
+            <div class="app-meta">
+              <strong>¿Para quién?</strong> Niñez con apoyo en comunicación aumentativa/alternativa (CAA/AAC) y acompañamiento familiar.<br>
+              <strong>¿Cómo se usa?</strong> Seleccioná una categoría y tocá botones para expresar necesidades (por ejemplo: agua, comida, baño, pausa).<br>
+              <strong>Objetivo:</strong> favorecer comunicación funcional en la vida cotidiana y reducir frustración asociada a la expresión.
+            </div>
+
+            <div class="btn-row">
+              <!-- Si después tenés URL pública, reemplazá href -->
+              <a class="btn-primary" href="#" aria-disabled="true" onclick="return false;">Acceso a través de la familia</a>
+              <a class="btn-secondary" href="turnos.html" data-spa="0">Coordinar</a>
+            </div>
+          </article>
+
+          <!-- App 2 -->
+          <article class="section-card card-hover hint-bg" style="margin:0" role="listitem">
+            <div class="card-head">
+              <div style="min-width:0">
+                <div class="app-chip">Auto-chequeo emocional — breve</div>
+                <h3 class="card-title" style="margin:10px 0 0 0">Checklist Emocional Pre-Vuelo</h3>
+                <p class="card-sub" style="margin-top:8px">
+                  Recurso de auto-chequeo emocional breve, inspirado en la aeronáutica: “corroborar” el aquí y ahora y generar registro.
+                </p>
+              </div>
+            </div>
+
+            <div class="app-hero-img" aria-label="Captura de Checklist Emocional Pre-Vuelo">
+              <img src="img/checklistemocional.jpg" alt="Captura: Checklist Emocional Pre-Vuelo con botón Iniciar checklist">
+            </div>
+
+            <div class="proto" role="note" aria-label="Aclaración de prototipo">
+              <strong>Versión prototipo.</strong> Se encuentra en constante actualización y mejora.
+            </div>
+
+            <div class="app-meta">
+              <strong>Duración:</strong> 1–2 minutos.<br>
+              <strong>¿Para qué sirve?</strong> tomar una decisión con más claridad, detectar señales de estrés/sobrecarga y registrar el estado actual.<br>
+              <strong>Importante:</strong> no reemplaza consulta médica y no está destinada a urgencias.
+            </div>
+
+            <div class="btn-row">
+              <a class="btn-primary" href="https://checklistemocionalprevuelo.netlify.app/" target="_blank" rel="noopener noreferrer">Abrir app</a>
+              <a class="btn-secondary" href="turnos.html" data-spa="0">Consultar</a>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="note" style="margin:0">
+          Si estás en crisis o emergencia, no uses esta página como vía de urgencias: comunicate con tu sistema local de emergencias.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Sección: Instalá esta página como app ===== -->
+    <section class="section" aria-label="Cómo instalar la app">
+      <div class="install-section">
+        <h3>📲 Instalá esta página como aplicación</h3>
+        <p class="install-lead">
+          Podés guardar esta sala de espera virtual en tu pantalla de inicio, como si fuera una app nativa. No ocupa espacio de descarga y funciona en cualquier dispositivo.
+        </p>
+
+        <!-- Tabs por plataforma -->
+        <div class="install-tabs" role="tablist" aria-label="Instrucciones por plataforma">
+          <button class="install-tab" role="tab" aria-selected="false" data-panel="panel-ios" type="button">🍎 iPhone / iPad</button>
+          <button class="install-tab" role="tab" aria-selected="false" data-panel="panel-android" type="button">🤖 Android</button>
+          <button class="install-tab" role="tab" aria-selected="false" data-panel="panel-desktop" type="button">💻 Escritorio</button>
+        </div>
+
+        <!-- Panel iOS -->
+        <div id="panel-ios" class="install-panel" role="tabpanel">
+          <ol class="install-steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Abrí en Safari</strong>
+                <span>Esta función solo funciona en Safari (no en Chrome ni Firefox en iOS).</span>
+              </div>
+              <div class="step-icon">🧭</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Tocá el botón Compartir</strong>
+                <span>Es el ícono de cuadrado con flecha hacia arriba, en la barra inferior del navegador.</span>
+              </div>
+              <div class="step-icon">⬆️</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Seleccioná "Agregar a pantalla de inicio"</strong>
+                <span>Desplazá hacia abajo en el menú hasta encontrar esa opción.</span>
+              </div>
+              <div class="step-icon">➕</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <strong>Confirmá tocando "Agregar"</strong>
+                <span>El ícono aparecerá en tu pantalla de inicio. ¡Listo!</span>
+              </div>
+              <div class="step-icon">✅</div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Panel Android -->
+        <div id="panel-android" class="install-panel" role="tabpanel">
+          <ol class="install-steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Aparece un aviso automático</strong>
+                <span>En Chrome para Android, verás un banner en la parte inferior con "Agregar a pantalla de inicio".</span>
+              </div>
+              <div class="step-icon">🔔</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>O usá el menú del navegador</strong>
+                <span>Tocá los tres puntos (⋮) en la esquina superior derecha y elegí "Agregar a pantalla de inicio" o "Instalar app".</span>
+              </div>
+              <div class="step-icon">⋮</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Confirmá la instalación</strong>
+                <span>Tocá "Instalar" o "Agregar" en el diálogo que aparece.</span>
+              </div>
+              <div class="step-icon">✅</div>
+            </li>
+          </ol>
+          <div class="install-cta-row">
+            <button id="btn-install-android" class="btn-install-dyn hidden" type="button" style="background:#0e2239;color:#fff;border:none;border-radius:999px;padding:12px 24px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+              ⬇️ Instalar ahora
+            </button>
+            <p class="install-note-ios">El botón aparece automáticamente si tu navegador lo permite.</p>
+          </div>
+        </div>
+
+        <!-- Panel Desktop -->
+        <div id="panel-desktop" class="install-panel" role="tabpanel">
+          <ol class="install-steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Fijate en la barra de dirección</strong>
+                <span>En Chrome o Edge, aparece un ícono de instalación (⊕ o pantalla con flecha) al final de la URL.</span>
+              </div>
+              <div class="step-icon">🖥️</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Hacé clic en ese ícono</strong>
+                <span>Se abrirá un diálogo de confirmación de instalación.</span>
+              </div>
+              <div class="step-icon">👆</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Confirmá con "Instalar"</strong>
+                <span>La página se abre como ventana independiente y aparece en tu escritorio o barra de tareas.</span>
+              </div>
+              <div class="step-icon">✅</div>
+            </li>
+          </ol>
+          <div class="install-cta-row">
+            <button id="btn-install-desktop" class="btn-install-dyn hidden" type="button" style="background:#0e2239;color:#fff;border:none;border-radius:999px;padding:12px 24px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+              ⬇️ Instalar ahora
+            </button>
+            <p class="install-note-ios">El botón aparece automáticamente si tu navegador lo permite.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">Cómo se accede</h3>
+            <p class="card-sub">Si tenés dudas, la Central de Turnos te orienta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+        <p class="small-note" style="margin:12px 0 0 0">
+          Algunas apps pueden ser de acceso público y otras de acceso personalizado (según indicación, edad y contexto).
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer (igual index) ===== -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong>Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="/cdn-cgi/l/email-protection#0665696875736a7269746f6976756f77736f6772746f6762676146616b676f6a2865696b"><span class="__cf_email__" data-cfemail="e5868a8b969089918a978c8a95968c94908c8491978c84818482a58288848c89cb868a88">[email&#160;protected]</span></a><br>
+            <a href="/cdn-cgi/l/email-protection#70031513021504110219115e14025e1411171e191e1f30171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="097a6c6a7b6c7d687b6068276d7b276d686e67606766496e64686065276a6664">[email&#160;protected]</span></a>
+          </div>
+        </div>
+
+        <div class="legal" id="legalBlock">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT — Año automático.<br><br>
+          Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publi
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  </footer>
+
+  <!-- ===== Banner flotante de instalación PWA ===== -->
+  <div id="pwa-banner" class="hidden" role="complementary" aria-label="Instalar como aplicación">
+    <div class="banner-icon" aria-hidden="true">📲</div>
+    <div class="banner-text">
+      <p class="banner-title">Instalá esta página como app</p>
+      <p class="banner-sub">Accedé rápido desde tu pantalla de inicio, sin abrir el navegador.</p>
+    </div>
+    <div class="banner-actions">
+      <button id="btn-install-pwa" type="button">Instalar</button>
+      <button id="btn-dismiss-banner" type="button" aria-label="Cerrar">✕</button>
+    </div>
+  </div>
+
+  <!-- ===== Script PWA ===== -->
+  <script>
+    (function () {
+      let deferredPrompt = null;
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        const banner = document.getElementById('pwa-banner');
+        if (banner) banner.classList.remove('hidden');
+        document.querySelectorAll('.btn-install-dyn').forEach(function(btn){ btn.classList.remove('hidden'); });
+      });
+
+      document.getElementById('btn-install-pwa').addEventListener('click', triggerInstall);
+
+      document.querySelectorAll('.btn-install-dyn').forEach(function(btn){
+        btn.addEventListener('click', triggerInstall);
+      });
+
+      document.getElementById('btn-dismiss-banner').addEventListener('click', function () {
+        document.getElementById('pwa-banner').classList.add('hidden');
+      });
+
+      function triggerInstall() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (result) {
+          if (result.outcome === 'accepted') {
+            document.getElementById('pwa-banner').classList.add('hidden');
+            document.querySelectorAll('.btn-install-dyn').forEach(function(btn){ btn.classList.add('hidden'); });
+          }
+          deferredPrompt = null;
+        });
+      }
+
+      // Tabs de instrucciones
+      var tabs = document.querySelectorAll('.install-tab');
+      var panels = document.querySelectorAll('.install-panel');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+          panels.forEach(function (p) { p.classList.remove('active'); });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected','true');
+          var target = document.getElementById(tab.dataset.panel);
+          if (target) target.classList.add('active');
+        });
+      });
+
+      // Detectar plataforma y activar tab correspondiente
+      var ua = navigator.userAgent;
+      var platform = /iPad|iPhone|iPod/.test(ua) ? 'ios' : /Android/.test(ua) ? 'android' : 'desktop';
+      var activeTab = document.querySelector('[data-panel="panel-' + platform + '"]');
+      if (activeTab) activeTab.click();
+
+      // Año en footer
+      var yr = document.getElementById('yearNow');
+      if (yr) yr.textContent = new Date().getFullYear();
+    })();
+  </script>
+
+</body>
+</html>

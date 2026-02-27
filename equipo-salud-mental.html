@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Equipo · Salud mental — Consultorio Dr. Dagnino</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- PWA -->
+<link href="manifest.webmanifest" rel="manifest"/>
+<meta content="#0e2239" name="theme-color"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+<link href="assets/css/app.css?v=1" rel="stylesheet"/>
+<style>
+    .team-grid{display:grid; grid-template-columns:1fr; gap:16px}
+    @media (min-width: 900px){ .team-grid{grid-template-columns:1fr} }
+    .team-avatar{
+      width:110px; height:110px; border-radius:22px;
+      background: rgba(255,255,255,.8);
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 30px rgba(2,6,23,.08);
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden; flex:0 0 auto;
+    }
+    .avatar-img{width:100%; height:100%; object-fit:cover}
+    .avatar-fallback{
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:28px;
+      color:#0e2239;
+      background: linear-gradient(180deg, rgba(37,99,235,.12), rgba(255,255,255,.9));
+    }
+    .team-note{
+      margin-top: 12px;
+    }
+    .mini-grid{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 760px){
+      .mini-grid{ grid-template-columns: 1fr 1fr; }
+    }
+  
+
+    /* Center 'En construcción' tiles */
+    .mini-grid{ justify-items:center; }
+    .mini-grid .section-card{ text-align:center; }
+    .mini-grid .section-card .badge-soft{ margin: 10px auto 0; display:inline-flex; }
+    /* Ensure professional card content stays left-aligned */
+    .team-grid .card-head, .team-grid .card-head *{ text-align:left; }
+
+
+    .team-grid .card-head{ align-items:center !important; }
+    </style>
+</head>
+<body>
+<header>
+<div class="wrap header-inner">
+<div aria-label="Identidad institucional" class="brand">
+<div aria-hidden="true" class="brand-badge">
+<img alt="" src="logo-avion.png"/>
+</div>
+<div class="brand-text">
+<div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+<div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+</div>
+</div>
+<div aria-label="Controles" class="controls">
+<!-- Desktop: se conserva lo que ya tenías -->
+<div aria-label="Controles (escritorio)" class="controls-desktop">
+<button aria-label="Disminuir tamaño de letra" class="btn-ghost" id="btnAminus" type="button">A-</button>
+<button aria-label="Aumentar tamaño de letra" class="btn-ghost" id="btnAplus" type="button">A+</button>
+<button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost" data-i18n="settings_btn" id="openSettingsDesktop" type="button">⚙️ Ajustes</button>
+<button aria-pressed="false" class="btn-ghost" data-i18n="audio_off" id="audioToggle" type="button">Activar sonidos</button>
+<div aria-label="Control de volumen" class="volume">
+<label data-i18n="volume_label" for="volumeRange">Volumen</label>
+<input id="volumeRange" max="100" min="0" type="range" value="35"/>
+</div>
+<button aria-pressed="true" class="btn-chip" data-lang="es" id="langES" type="button">ES</button>
+<button aria-pressed="false" class="btn-chip" data-lang="en" id="langEN" type="button">EN</button>
+<button aria-pressed="false" class="btn-chip" data-lang="pt" id="langPT" type="button">PT</button>
+</div>
+<!-- Mobile: botón premium -->
+<button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost controls-mobile" data-i18n="settings_btn" id="openSettings" type="button">
+          ⚙️ Ajustes
+        </button>
+</div>
+</div>
+</header>
+<div aria-hidden="true" class="settings-sheet" hidden="" id="settingsSheet">
+<div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+<div aria-label="Ajustes" aria-modal="true" class="sheet" role="dialog">
+<div class="sheet-head">
+<div class="sheet-title" data-i18n="settings_title">Ajustes</div>
+<button class="btn-ghost sheet-close" data-i18n="close_btn" id="closeSettingsBtn" type="button">Cerrar ✕</button>
+</div>
+<div class="sheet-body">
+<div class="sheet-row">
+<p class="sheet-row-title" data-i18n="sheet_font_title">🔠 Tamaño de letra</p>
+<div class="sheet-actions sheet-actions-col">
+<input aria-label="Tamaño de texto" data-action="text-scale" id="textScaleRange" max="130" min="85" step="1" type="range" value="100"/>
+<div class="sheet-actions" style="justify-content:flex-end">
+<button aria-label="Disminuir tamaño de letra" class="btn-ghost" data-action="font-down" type="button">A-</button>
+<button aria-label="Aumentar tamaño de letra" class="btn-ghost" data-action="font-up" type="button">A+</button>
+</div>
+</div>
+<div class="sheet-row">
+<p class="sheet-row-title" data-i18n="sheet_contrast_title">🌓 Contraste</p>
+<div class="sheet-actions">
+<label class="a11y-switch">
+<input aria-label="Activar alto contraste" data-action="contrast" id="toggleContrast" type="checkbox"/>
+<span aria-hidden="true" class="a11y-slider"></span>
+</label>
+</div>
+</div>
+<div class="sheet-row">
+<p class="sheet-row-title" data-i18n="sheet_motion_title">🪶 Reducir animaciones</p>
+<div class="sheet-actions">
+<label class="a11y-switch">
+<input aria-label="Reducir animaciones" data-action="reduce-motion" id="toggleMotion" type="checkbox"/>
+<span aria-hidden="true" class="a11y-slider"></span>
+</label>
+</div>
+</div>
+<div class="sheet-row">
+<p class="sheet-row-title" data-i18n="sheet_line_title">↕️ Interlineado</p>
+<div class="sheet-actions">
+<label class="a11y-switch">
+<input aria-label="Aumentar interlineado" data-action="line-spacing" id="toggleLine" type="checkbox"/>
+<span aria-hidden="true" class="a11y-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div class="sheet-row">
+<p class="sheet-row-title" data-i18n="sheet_audio_title">🔊 Sonidos</p>
+<div class="sheet-actions">
+<button aria-pressed="false" class="btn-ghost" data-action="audio-toggle" data-i18n="audio_off" id="audioToggleSheet" type="button">
+              Activar sonidos
+            </button>
+</div>
+<div class="sheet-volume" style="margin-top:10px">
+<label data-i18n="volume_label" for="volumeRangeSheet">Volumen</label>
+<input data-action="volume" id="volumeRangeSheet" max="100" min="0" type="range" value="35"/>
+</div>
+</div>
+<div class="sheet-row lang-row">
+<p class="sheet-row-title" data-i18n="sheet_lang_title">🌐 Idioma</p>
+<div class="sheet-actions">
+<!-- sin IDs (evitamos duplicados), pero sí data-lang para reutilizar tu i18n -->
+<button aria-pressed="true" class="btn-chip" data-lang="es" type="button">ES</button>
+<button aria-pressed="false" class="btn-chip" data-lang="en" type="button">EN</button>
+<button aria-pressed="false" class="btn-chip" data-lang="pt" type="button">PT</button>
+</div>
+</div>
+<div class="note" data-i18n="sheet_note" style="margin:0">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+</div>
+</div>
+</div>
+<section aria-label="Equipo profesional asociado" class="hero">
+<div class="wrap hero-inner">
+<div>
+<div aria-label="Estado del servicio" class="pill">
+<span aria-hidden="true" class="dot"></span>
+<span>Equipo profesional asociado</span>
+</div>
+<h1 class="hero-title">Salud mental</h1>
+<p class="hero-bridge">
+          Red de profesionales con quienes se articulan derivaciones e interconsultas, priorizando un abordaje ético, humano e integral.
+        </p>
+<p class="hero-meta">
+          Al seleccionar “Contacto”, se abrirá el canal oficial del profesional (Instagram o WhatsApp). La coordinación de turnos depende de cada profesional.
+        </p>
+</div>
+<aside aria-label="Accesos rápidos" class="hero-side">
+<h3>Accesos rápidos</h3>
+<p>Volver al listado general o regresar al inicio.</p>
+<div class="row">
+<a data-spa="1" href="equipo.html">Equipo</a>
+<a data-spa="1" href="index.html">Inicio</a>
+<a data-spa="1" href="turnos.html">Central de Turnos</a>
+</div>
+</aside>
+</div>
+</section>
+<main aria-label="Listado de profesionales" class="wrap" id="spaMain">
+<section class="section">
+<div class="section-card hint-bg">
+<div class="card-head">
+<div>
+<h2 class="card-title" style="margin:0">Profesionales asociados</h2>
+<p class="card-sub">
+              Seleccioná “Contacto” para acceder al canal oficial del profesional.
+            </p>
+</div>
+<div class="btn-row" style="margin:0">
+<a class="btn-secondary" data-spa="1" href="equipo.html">← Volver a Equipo</a>
+<a class="btn-secondary" data-spa="1" href="index.html">Inicio</a>
+</div>
+</div>
+<div class="note" style="margin-top:10px">
+<strong>Nota:</strong> Este listado es informativo. La disponibilidad y la confirmación de turnos dependen de cada profesional.
+        </div>
+<article class="section-card hint-bg" style="overflow:hidden">
+  <div class="card-head" style="align-items:flex-start">
+    <div style="display:flex; gap:16px; align-items:flex-start">
+      <div aria-label="Foto o avatar del profesional" class="team-avatar">
+        <img
+          alt="Licenciada Yanina Leguizamon"
+          class="avatar-img"
+          loading="lazy"
+          src="/Asociados_salud_mental/yanina-leguizamon.jpg"
+        />
+      </div>
+
+      <div>
+        <h3 class="card-title" style="margin:0">Licenciada en Psicología Yanina Leguizamon</h3>
+        <p class="card-sub">Licenciada en Psicología</p>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin:0; justify-content:flex-end">
+      <a
+        class="btn-primary"
+        href="https://wa.me/5493435069072?text=Hola%2C%20quisiera%20realizar%20una%20consulta%2C%20acced%C3%AD%20a%20tu%20contacto%20desde%20la%20p%C3%A1gina%20del%20Consultorio%20de%20Psiquiatr%C3%ADa%20del%20Doctor%20Dagnino"
+        rel="noopener noreferrer"
+        target="_blank"
+      >Contacto (WhatsApp)</a>
+    </div>
+  </div>
+</article>
+
+</div>
+</section>
+<section class="section">
+<div class="team-grid">
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:center">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada María Paula Galderisi" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-galderisi.jpg"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Licenciada María Paula Galderisi</h3>
+<p class="card-sub">Licenciada en Psicología</p>
+
+</div></div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://www.instagram.com/saludypsiqueredpsicologica/" rel="noopener noreferrer" target="_blank">Contacto (Instagram)</a>
+</div></div>
+</article></div>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Antonella Revello" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/antonella-revello.jpg"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Licenciada Antonella Revello</h3>
+<p class="card-sub">Licenciada en Psicología</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://www.instagram.com/psicologa.antonellarc" rel="noopener noreferrer" target="_blank">Contacto (Instagram)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Gisele S. Pohle" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/gisele-s-pohle.png"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Licenciada Gisele S. Pohle</h3>
+<p class="card-sub">Licenciada en Psicología</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://www.instagram.com/psicologagiselepohle" rel="noopener noreferrer" target="_blank">Contacto (Instagram)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Belén Zugasti" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-belen-zugasti.png"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Dra. María Belén Zugasti</h3>
+<p class="card-sub">Médica Especialista en Psiquiatría</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://wa.me/5491130983665" rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Paula Peralta" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-peralta.jpg"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Dra. María Paula Peralta</h3>
+<p class="card-sub">Médica Especialista en Psiquiatría</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://wa.me/5491173579322" rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciado Maximiliano Siegler" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maximiliano-siegler.jpeg"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Licenciado Maximiliano Siegler</h3>
+<p class="card-sub">Licenciado en Psicología</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://wa.me/5491149487594" rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Noel López Besada" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/noel-lopez-besada.jpg"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Licenciada Noel López Besada</h3>
+<p class="card-sub">Licenciada en Psicología</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://www.instagram.com/psiconoellopezbesada/" rel="noopener noreferrer" target="_blank">Contacto (Instagram)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Tiziana Fenochietto" class="avatar-img" loading="lazy" src="/asociados_salud_mental/maria-tiziana-fenochietto.png"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Dra. María Tiziana Fenochietto</h3>
+<p class="card-sub">Médica especialista en Psiquiatría</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://wa.me/5491155680034?text=Me%20ha%20recomendado%20el%20Doctor%20Pedro%20Nicolas%20Dagnino%20para%20obtener%20turnos%20con%20usted." rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+</article>
+</section>
+<div aria-hidden="true" class="divider"></div>
+<section class="section">
+<div class="mini-grid">
+<article class="section-card disabled hint-bg">
+<h3 class="card-title">Profesional asociado</h3>
+<p class="card-sub">En construcción</p>
+<span class="badge-soft">En construcción</span>
+</article>
+<article class="section-card disabled hint-bg">
+<h3 class="card-title">Profesional asociado</h3>
+<p class="card-sub">En construcción</p>
+<span class="badge-soft">En construcción</span>
+</article>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap footer-grid">
+<div>
+<iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&amp;output=embed" title="Mapa Riobamba 919, Buenos Aires"></iframe>
+<div class="footer-links">
+<a data-i18n="map_open" href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" rel="noopener noreferrer" target="_blank">Abrir en Maps</a>
+<a data-i18n="legal_link" data-spa="1" href="aviso-legal.html">Aviso legal / Privacidad</a>
+<a href="https://www.instagram.com/doctor.dagnino/" rel="noopener noreferrer" target="_blank">Instagram</a>
+<a href="https://www.linkedin.com/in/pedronicolasdagnino/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+<a href="https://www.tiktok.com/@doctor_dagnino" rel="noopener noreferrer" target="_blank">TikTok</a>
+</div>
+</div>
+<div>
+<p class="footer-title" data-i18n="footer_title">Ubicación y contacto</p>
+<div data-i18n="footer_loc">
+          Barrio Norte – Recoleta<br/>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+<div style="margin-top:12px">
+<div><strong data-i18n="footer_email">Email administrativo</strong></div>
+<div style="margin-top:6px">
+<a href="/cdn-cgi/l/email-protection#c6a5a9a8b5b3aab2a9b4afa9b6b5afb7b3afa7b2b4afa7a2a7a186a1aba7afaae8a5a9ab"><span class="__cf_email__" data-cfemail="8be8e4e5f8fee7ffe4f9e2e4fbf8e2fafee2eafff9e2eaefeaeccbece6eae2e7a5e8e4e6">[email&#160;protected]</span></a><br/>
+<a href="/cdn-cgi/l/email-protection#7605131504130217041f1758120458121711181f181936111b171f1a5815191b"><span class="__cf_email__" data-cfemail="21524442534455405348400f45530f4540464f484f4e61464c40484d0f424e4c">[email&#160;protected]</span></a>
+</div>
+</div>
+<div class="legal" id="legalBlock">
+<span data-i18n="footer_legal_1">Copyright ©</span> <span id="yearNow"></span>
+<span data-i18n="footer_legal_2">Todos los derechos reservados.</span><br/>
+<span data-i18n="footer_legal_3">Desarrollado por PETER-SOFT</span>
+<span data-i18n="footer_legal_4">Año automático.</span><br/><br/>
+<span data-i18n="cookies_note">
+            Cookies/analíticas: podemos usar analíticas pa

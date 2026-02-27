@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENF · Foco 90 | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-inst-gray">
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">🧠 ENF</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">Atención sostenida</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide mt-2">Foco 90</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Leés un texto breve durante <strong>90 segundos</strong> y respondés <strong>3 preguntas</strong>.
+            Entrena foco y comprensión. Ideal si hay “niebla mental”, rumiación o fatiga cognitiva.
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
+          <button id="btnNext" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Otro texto</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Tiempo</p>
+          <p class="text-2xl font-semibold"><span id="secLeft">—</span><span class="text-base font-semibold text-inst-gray"> s</span></p>
+          <p class="text-sm text-inst-gray mt-1">Objetivo: mantener lectura continua.</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
+          <p class="text-2xl font-semibold"><span id="score">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Rondas: <span id="round">0</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Precisión</p>
+          <p class="text-2xl font-semibold"><span id="acc">—</span></p>
+          <p class="text-sm text-inst-gray mt-1">Respuestas correctas: <span id="hits">0</span></p>
+        </div>
+      </div>
+
+      <!-- Stage: lectura -->
+      <div id="stageRead" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6 hidden">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Lectura</p>
+        <h2 class="text-xl font-semibold mt-1">Leé sin apurarte</h2>
+        <p class="text-inst-gray mt-2">Sostené el foco. Si aparece una preocupación, volvé a la oración actual.</p>
+
+        <div class="mt-4 bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p id="textBlock" class="text-inst-navy leading-relaxed font-semibold"></p>
+        </div>
+
+        <div class="mt-4 text-sm text-inst-gray">
+          Tip: marcá mentalmente 3 ideas principales (inicio · desarrollo · cierre).
+        </div>
+      </div>
+
+      <!-- Stage: preguntas -->
+      <div id="stageQuiz" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6 hidden">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Preguntas</p>
+        <h2 class="text-xl font-semibold mt-1">Comprensión (3)</h2>
+        <p class="text-inst-gray mt-2">Elegí una respuesta por pregunta y tocá <strong>Evaluar</strong>.</p>
+
+        <div id="qWrap" class="mt-4 space-y-4"></div>
+
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <button id="btnEval" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Evaluar</button>
+          <button id="btnClear" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Limpiar</button>
+        </div>
+
+        <div id="feedback" class="mt-4 hidden bg-inst-light rounded-2xl border border-gray-200 p-4"></div>
+      </div>
+
+      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+        <p class="text-sm text-inst-gray">
+          <strong>Aclaración ENF:</strong> este juego pertenece al <strong>Entrenamiento Neurocognitivo Funcional</strong>.
+          Si te genera frustración, hacé menos rondas y retomá más tarde.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const READ_SECONDS = 90;
+
+    const TEXTS = [
+      {
+        t: "Durante el día, la atención suele fluctuar. Cuando el cuerpo está cansado o la mente está preocupada, el foco se corta y cuesta retomar. Una estrategia simple es volver a un punto concreto: la oración actual. En lugar de pelear contra la distracción, se la detecta y se regresa suavemente a la tarea. Practicar esta vuelta breve, muchas veces, mejora el rendimiento real: leer, trabajar y decidir con menos esfuerzo.",
+        q: [
+          { p: "¿Qué propone el texto como estrategia simple?", a: ["Forzarse a no distraerse", "Volver a la oración actual", "Dejar de leer si hay ansiedad", "Leer más rápido"], ok: 1 },
+          { p: "¿Cuándo suele cortarse el foco con más facilidad?", a: ["Cuando hay energía alta", "Cuando el cuerpo está cansado o la mente preocupada", "Solo a la noche", "Solo si se usa el celular"], ok: 1 },
+          { p: "¿Qué mejora con esta práctica?", a: ["La memoria fotográfica", "El rendimiento real en tareas cotidianas", "La velocidad de correr", "El sueño en 1 día siempre"], ok: 1 }
+        ]
+      },
+      {
+        t: "El cerebro aprende por repetición con sentido. Si un ejercicio es breve y se puede sostener, se repite con menos resistencia. Por eso conviene entrenar en tiempos cortos y consistentes: pequeñas dosis, muchos días. En problemas de ánimo o ansiedad, la fatiga cognitiva puede hacer que tareas simples parezcan enormes. Dividir, empezar por poco y medir avances ayuda a recuperar confianza y funcionamiento.",
+        q: [
+          { p: "¿Cómo recomienda entrenar el texto?", a: ["Sesiones largas y esporádicas", "Tiempos cortos y consistentes", "Solo una vez por semana", "Sin medir avances"], ok: 1 },
+          { p: "¿Qué puede volver enormes a tareas simples?", a: ["Buena motivación", "Fatiga cognitiva en ánimo/ansiedad", "Dormir bien", "Comer saludable"], ok: 1 },
+          { p: "¿Para qué sirve dividir y medir avances?", a: ["Para evitar cualquier esfuerzo", "Para recuperar confianza y funcionamiento", "Para olvidar más rápido", "Para no empezar nunca"], ok: 1 }
+        ]
+      },
+      {
+        t: "No todo pensamiento merece tu tiempo. Algunas ideas aparecen por hábito: anticipar lo peor, revisar una conversación o repetir una duda. Esos bucles roban atención. Un recurso es etiquetar: “esto es preocupación” y volver a la acción disponible. La acción puede ser mínima: leer una línea, ordenar una cosa, responder un mensaje. Cuando la acción empieza, la mente suele ordenarse detrás.",
+        q: [
+          { p: "¿Qué suele robar atención según el texto?", a: ["Dormir", "Bucles de preocupación/repetición", "Ejercicio físico", "Conversar con amigos"], ok: 1 },
+          { p: "¿Qué propone como recurso?", a: ["Ignorar todo", "Etiquetar y volver a la acción disponible", "Analizar por horas", "Dormir inmediatamente"], ok: 1 },
+          { p: "¿Cómo puede ser la acción?", a: ["Siempre enorme", "Mínima y concreta", "Solo si hay motivación", "Solo con ayuda externa"], ok: 1 }
+        ]
+      }
+    ];
+
+    // State
+    let round = 0;
+    let score = 0;
+    let hits = 0;
+    let total = 0;
+    let timer = null;
+    let current = null;
+
+    // UI
+    const secLeftEl = document.getElementById("secLeft");
+    const scoreEl = document.getElementById("score");
+    const roundEl = document.getElementById("round");
+    const hitsEl = document.getElementById("hits");
+    const accEl = document.getElementById("acc");
+
+    const stageRead = document.getElementById("stageRead");
+    const stageQuiz = document.getElementById("stageQuiz");
+    const textBlock = document.getElementById("textBlock");
+    const qWrap = document.getElementById("qWrap");
+    const feedback = document.getElementById("feedback");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnNext = document.getElementById("btnNext");
+    const btnReset = document.getElementById("btnReset");
+    const btnEval = document.getElementById("btnEval");
+    const btnClear = document.getElementById("btnClear");
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateUI(){
+      scoreEl.textContent = score;
+      roundEl.textContent = round;
+      hitsEl.textContent = hits;
+      const acc = total > 0 ? Math.round((hits/total)*100) : null;
+      accEl.textContent = acc === null ? "—" : (acc + "%");
+    }
+
+    function resetAll(){
+      round = 0; score = 0; hits = 0; total = 0; current = null;
+      if(timer){ clearInterval(timer); timer = null; }
+      secLeftEl.textContent = "—";
+      stageRead.classList.add("hidden");
+      stageQuiz.classList.add("hidden");
+      feedback.classList.add("hidden");
+      qWrap.innerHTML = "";
+      textBlock.textContent = "";
+      btnNext.disabled = true;
+      btnStart.disabled = false;
+      updateUI();
+    }
+
+    function renderQuiz(){
+      qWrap.innerHTML = "";
+      current.q.forEach((q, idx)=>{
+        const box = document.createElement("div");
+        box.className = "bg-inst-light rounded-2xl border border-gray-200 p-4";
+        box.innerHTML = `
+          <p class="text-sm font-semibold text-inst-navy">${idx+1}. ${q.p}</p>
+          <div class="mt-3 grid sm:grid-cols-2 gap-2" data-q="${idx}">
+            ${q.a.map((opt, oi)=>`
+              <label class="bg-white border border-gray-200 rounded-xl p-3 flex items-start gap-3 cursor-pointer hover:bg-inst-sky transition">
+                <input type="radio" name="q${idx}" value="${oi}" class="mt-1 accent-[${'#2563eb'}]" aria-label="${opt}">
+                <span class="text-sm font-semibold text-inst-navy leading-snug">${opt}</span>
+              </label>
+            `).join("")}
+          </div>
+        `;
+        qWrap.appendChild(box);
+      });
+    }
+
+    function startRound(){
+      if(timer){ clearInterval(timer); timer = null; }
+      feedback.classList.add("hidden");
+      btnNext.disabled = true;
+      btnStart.disabled = true;
+
+      round += 1;
+      current = shuffle(TEXTS)[0];
+
+      stageQuiz.classList.add("hidden");
+      stageRead.classList.remove("hidden");
+      textBlock.textContent = current.t;
+
+      let sec = READ_SECONDS;
+      secLeftEl.textContent = sec;
+
+      timer = setInterval(()=>{
+        sec -= 1;
+        secLeftEl.textContent = Math.max(sec,0);
+        if(sec <= 0){
+          clearInterval(timer);
+          timer = null;
+          goQuiz();
+        }
+      }, 1000);
+      updateUI();
+    }
+
+    function goQuiz(){
+      stageRead.classList.add("hidden");
+      stageQuiz.classList.remove("hidden");
+      renderQuiz();
+      btnNext.disabled = true;
+    }
+
+    function clearAnswers(){
+      stageQuiz.querySelectorAll('input[type="radio"]').forEach(r=> r.checked = false);
+    }
+
+    function evaluate(){
+      let roundHits = 0;
+      const answers = [];
+
+      current.q.forEach((q, idx)=>{
+        const sel = stageQuiz.querySelector(`input[name="q${idx}"]:checked`);
+        total += 1;
+        const val = sel ? Number(sel.value) : -1;
+        answers.push(val);
+        if(val === q.ok){
+          hits += 1;
+          roundHits += 1;
+        }
+      });
+
+      // Puntaje: +2 por acierto, 0 si incorrecto / sin marcar
+      score += roundHits * 2;
+
+      updateUI();
+
+      const details = current.q.map((q, idx)=>{
+        const picked = answers[idx];
+        const ok = q.ok;
+        const okTxt = q.a[ok];
+        const pickedTxt = picked >= 0 ? q.a[picked] : "—";
+        const okFlag = (picked === ok);
+        return `<li class="text-sm"><span class="font-semibold">${idx+1}.</span> ${okFlag ? "✅" : "❌"} Tu respuesta: <strong>${pickedTxt}</strong> · Correcta: <strong>${okTxt}</strong></li>`;
+      }).join("");
+
+      feedback.classList.remove("hidden");
+      feedback.innerHTML = `
+        <div class="text-sm text-inst-gray">
+          <p class="font-semibold text-inst-navy">Resultado</p>
+          <p class="mt-1">Aciertos en esta ronda: <strong>${roundHits}</strong> de 3.</p>
+          <ul class="mt-3 space-y-2">${details}</ul>
+          <p class="mt-3"><strong>Tip:</strong> en la próxima ronda, buscá 3 ideas “ancla” y seguí el hilo.</p>
+        </div>
+      `;
+
+      btnNext.disabled = false;
+      btnStart.disabled = true;
+    }
+
+    btnStart.addEventListener("click", startRound);
+    btnNext.addEventListener("click", startRound);
+    btnReset.addEventListener("click", resetAll);
+    btnEval.addEventListener("click", evaluate);
+    btnClear.addEventListener("click", clearAnswers);
+
+    resetAll();
+  </script>
+</body>
+</html>

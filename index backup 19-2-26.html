@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consultorio de Psiquiatría y Medicina Aeronáutica — Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    .footer-links .footer-review{ font-weight:700; color: var(--inst-blue); }
+
+    /* ===== ONLINE DOT (titilando) ===== */
+    .pill .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,.55);
+      animation: onlinePulse 1.35s ease-in-out infinite;
+      display:inline-block;
+    }
+    @keyframes onlinePulse{
+      0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34,197,94,.55); opacity:1; }
+      55%  { transform: scale(1.07);box-shadow: 0 0 0 12px rgba(34,197,94,0); opacity:1; }
+      100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34,197,94,0); opacity:.95; }
+    }
+
+
+    /* ===== HERO MARCA: FOTO IZQ + TEXTO DER (PC) / TEXTO ABAJO (MÓVIL) ===== */
+    .hero-brand{
+      position: relative;
+      overflow: hidden;
+      background: #081a2f;
+    }
+
+    .hero-brand .hero-grid{
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      min-height: 420px;
+      align-items: stretch;
+    }
+
+    /* FOTO (izquierda) */
+    .hero-photo{
+      position: relative;
+      background-image: url("/assets/img/dr-dagnino.jpg?v=23");
+      background-size: cover;
+      background-position: 50% 34%;
+      filter: saturate(1.05) contrast(1.03) brightness(1.06);
+    }
+
+    /* Difuminado hacia la derecha (para transición premium) */
+    .hero-photo::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg,
+          rgba(0,0,0,0) 62%,
+          rgba(8,26,47,.25) 74%,
+          rgba(8,26,47,.55) 86%,
+          rgba(8,26,47,.82) 100%);
+      pointer-events:none;
+    }
+
+    /* Velo suave global */
+    .hero-photo::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 520px at 30% 35%, rgba(0,0,0,.03), rgba(0,0,0,.20));
+      pointer-events:none;
+    }
+
+    /* COLUMNA TEXTO (derecha) */
+    .hero-copy{
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 34px 28px;
+
+      /* Fondo con gradiente + blur leve para separar del fondo */
+      background:
+        linear-gradient(180deg, rgba(10,24,44,.92), rgba(10,24,44,.80));
+      border-left: 1px solid rgba(255,255,255,.06);
+    }
+
+    .hero-copy::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(700px 420px at 20% 30%, rgba(255,255,255,.06), rgba(255,255,255,0));
+      pointer-events:none;
+      opacity:.75;
+    }
+
+    .hero-textbox{
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* ✅ FIX: Forzar colores claros dentro del HERO (evita título negro) */
+    .hero-brand .hero-textbox,
+    .hero-brand .hero-textbox *{
+      color: rgba(255,255,255,.92) !important;
+    }
+    .hero-brand .hero-textbox h1,
+    .hero-brand .hero-textbox .hero-title{
+      color: #fff !important;
+      text-shadow: 0 2px 16px rgba(0,0,0,.45);
+    }
+    .hero-brand .hero-textbox p{
+      color: rgba(255,255,255,.82) !important;
+      text-shadow: 0 2px 14px rgba(0,0,0,.38);
+    }
+
+    /* MÓVIL: apila; texto abajo sobre “corbata” */
+    @media (max-width: 900px){
+      .hero-brand .hero-grid{
+        grid-template-columns: 1fr;
+        min-height: 680px;
+      }
+
+      .hero-photo{
+        min-height: 680px;
+        background-position: 50% 46%;
+        filter: saturate(1.05) contrast(1.03) brightness(1.08);
+      }
+
+      .hero-photo::before{
+        /* en móvil el difuminado va más hacia abajo (zona corbata) */
+        background:
+          linear-gradient(180deg,
+            rgba(0,0,0,0) 44%,
+            rgba(0,0,0,.18) 70%,
+            rgba(0,0,0,.34) 100%);
+      }
+
+      .hero-copy{
+        position: absolute;
+        inset: 0;
+        padding: 0;
+        background: none;
+        border-left: none;
+        display: block;
+      }
+
+      .hero-textbox{
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 22px;
+        max-width: none;
+        background: rgba(10, 22, 40, .36);
+        border: 1px solid rgba(255,255,255,.14);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    }
+
+
+  
+
+/* ===== BOTÓN VERDE (WhatsApp / CTA) TITILANDO CONTINUO =====
+   Uso: agregá la clase .btn-pulse-green al botón que quieras resaltar.
+   Opcional: si tu botón es WhatsApp y tiene href wa.me / whatsapp, también pulsa automáticamente si es .btn-primary.
+*/
+.btn-pulse-green,
+a.btn-primary[href*="wa.me"],
+a.btn-primary[href*="whatsapp"]{
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(34,197,94,.55);
+  animation: btnPulseGreen 1.25s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes btnPulseGreen{
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(34,197,94,.55); filter: brightness(1); }
+  60%  { transform: scale(1.03); box-shadow: 0 0 0 14px rgba(34,197,94,0);  filter: brightness(1.06); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(34,197,94,0);    filter: brightness(1); }
+}
+
+
+</style>
+</head>
+
+<body>
+
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="controls-desktop" aria-label="Controles (escritorio)">
+          <button class="btn-ghost" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">⚙️ Ajustes</button>
+          <button class="btn-ghost" id="audioToggle" type="button" aria-pressed="false" data-i18n="audio_off">Activar sonidos</button>
+
+          <div class="volume" aria-label="Control de volumen">
+            <label for="volumeRange" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRange" type="range" min="0" max="100" value="35" />
+          </div>
+
+          <div style="display:none" aria-hidden="true">
+            <button class="btn-chip" id="langES" type="button" data-lang="es" aria-pressed="true">ES</button>
+            <button class="btn-chip" id="langEN" type="button" data-lang="en" aria-pressed="false">EN</button>
+            <button class="btn-chip" id="langPT" type="button" data-lang="pt" aria-pressed="false">PT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Settings Sheet -->
+  <div class="settings-sheet" id="settingsSheet" hidden aria-hidden="true">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
+      <div class="sheet-head">
+        <div class="sheet-title" data-i18n="settings_title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button" data-i18n="close_btn">Cerrar ✕</button>
+      </div>
+      <div class="sheet-body">
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_font_title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button class="btn-ghost" type="button" data-action="font-down" aria-label="Disminuir tamaño de letra">A-</button>
+              <button class="btn-ghost" type="button" data-action="font-up" aria-label="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+
+          <div class="sheet-row">
+            <p class="sheet-row-title" data-i18n="sheet_contrast_title">🌓 Contraste</p>
+            <div class="sheet-actions">
+              <label class="a11y-switch">
+                <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
+                <span class="a11y-slider" aria-hidden="true"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="sheet-row">
+            <p class="sheet-row-title" data-i18n="sheet_line_title">↕️ Interlineado</p>
+            <div class="sheet-actions">
+              <label class="a11y-switch">
+                <input type="checkbox" id="toggleLine" data-action="line-spacing" aria-label="Aumentar interlineado">
+                <span class="a11y-slider" aria-hidden="true"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title" data-i18n="sheet_audio_title">🔊 Sonidos</p>
+          <div class="sheet-actions">
+            <button class="btn-ghost" id="audioToggleSheet" type="button" aria-pressed="false" data-action="audio-toggle" data-i18n="audio_off">
+              Activar sonidos
+            </button>
+          </div>
+          <div class="sheet-volume" style="margin-top:10px">
+            <label for="volumeRangeSheet" data-i18n="volume_label">Volumen</label>
+            <input id="volumeRangeSheet" type="range" min="0" max="100" value="35" data-action="volume" />
+          </div>
+        </div>
+
+        <div class="note" style="margin:0" data-i18n="sheet_note">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero-brand" aria-label="Portada institucional">
+    <div class="hero-grid">
+      <div class="hero-photo" aria-hidden="true"></div>
+
+      <div class="hero-copy">
+        <div class="hero-textbox">
+          <div class="pill" aria-label="Estado del servicio">
+            <span class="dot" aria-hidden="true"></span>
+            <span data-i18n="hero_pill">Espacio virtual disponible</span>
+          </div>
+
+          <h1 class="hero-title" data-i18n="hero_title">Sala de espera virtual</h1>
+
+          <p class="hero-bridge" data-i18n="hero_bridge">
+            Un espacio previo a la atención médica, con recursos psicológicos cuidadosamente diseñados.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <main id="spaMain" class="wrap" aria-label="Contenido principal">
+    <div id="homeContent" aria-live="polite"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer" data-i18n="map_open">Abrir en Maps</a>
+          <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer" class="footer-review">Dejar reseña (Google)</a>
+          <a href="aviso-legal.html" data-spa="1" data-i18n="legal_link">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title" data-i18n="footer_title">Ubicación y contacto</p>
+        <div data-i18n="footer_loc">
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong data-i18n="footer_email">Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          <strong>Consultorio de Psiquiatría Dagnino:</strong> queremos saber tu opinión.
+          <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer">Publicá una reseña en nuestro perfil</a>.
+        </div>
+
+        <div class="legal" id="legalBlock">
+          <span data-i18n="footer_legal_1">Copyright ©</span> <span id="yearNow"></span>
+          <span data-i18n="footer_legal_2">Todos los derechos reservados.</span><br>
+          <span data-i18n="footer_legal_3">Desarrollado por PETER-SOFT</span>
+          <span data-i18n="footer_legal_4">Año automático.</span><br><br>
+          <span data-i18n="cookies_note">
+            Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/audio.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+  <script>
+    (async function () {
+      const target = document.getElementById('homeContent');
+      if (!target) return;
+      try {
+        const res = await fetch('partials/home-zocalos.html?v=1', { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        target.innerHTML = await res.text();
+        if (typeof window.initHomeZocalos === 'function') window.initHomeZocalos();
+      } catch (e) {
+        target.innerHTML = `
+          <section class="section">
+            <div class="section-card hint-bg">
+              <div class="card-head">
+                <div>

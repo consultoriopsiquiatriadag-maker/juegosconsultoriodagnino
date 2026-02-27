@@ -1,0 +1,575 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Desmitificando los tratamientos psiquiátricos — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía psicoeducativa: mitos frecuentes sobre el tratamiento psiquiátrico, señales de alarma, mini ejercicio de registro y podcast." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* === Homogeneizado al look de estres-postraumatico.html === */
+
+    /* Imagen de portada del tema */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.15) 0%, rgba(14,34,57,.65) 70%, rgba(14,34,57,.75) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 68ch; }
+
+    /* Acceso rápido */
+    .toc{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 10px;
+    }
+
+    /* Audio podcast (mismo estilo que TEPT) */
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .audio-player{ width:100%; border-radius: 12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    /* Mini ejercicio (alineado al patrón TEPT) */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 200px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 700;
+      min-width: 54px;
+      text-align:center;
+    }
+    textarea.note-input{
+      width:100%;
+      min-height: 92px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    /* Lectura larga: legible */
+    .longread{ line-height: 1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER institucional -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/desmitificando-tratamientos-portada.webp -->
+        <img src="assets/img/desmitificando-tratamientos-portada.webp?v=1" alt="Ilustración representativa sobre decisiones informadas en salud mental" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Desmitificando los tratamientos psiquiátricos</h1>
+          <p>Información clara para decisiones informadas, sin dramatismos ni etiquetas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Podés escuchar primero y después leer, o al revés.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <source src="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/mp4" />
+            <source src="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" download>Descargar audio</a>
+          </div>
+
+          <div class="note">
+            Si el archivo no carga, revisá que esté en <strong>/audio</strong> con el nombre exacto:
+            <em>El_laberinto_del_tratamiento_psiquiátrico.m4a</em>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Acceso rápido -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Podés ir directo a los zócalos o al mini ejercicio.</p>
+            <div class="toc" aria-label="Índice">
+              <a class="btn btn-ghost" href="#que-es">Qué es</a>
+              <a class="btn btn-ghost" href="#por-que">Por qué se rechaza</a>
+              <a class="btn btn-ghost" href="#mitos">Mitos</a>
+              <a class="btn btn-ghost" href="#alarmas">Señales</a>
+              <a class="btn btn-ghost" href="#mini">Mini ejercicio</a>
+              <a class="btn btn-ghost" href="#lectura">Lectura larga</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalos: Qué es / Por qué se rechaza -->
+    <section class="section" id="que-es">
+      <div class="grid-2" style="margin-top:10px">
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Qué es</h2>
+              <p class="card-sub">
+                “Desmitificar” no significa convencer a nadie. Significa <strong>dar información clara</strong> para que cada persona
+                pueda decidir con menos miedo, más contexto y expectativas realistas.
+              </p>
+            </div>
+          </div>
+
+          <p class="card-sub" style="margin-top:10px">
+            Muchas veces el rechazo al tratamiento no es “terquedad”: es una mezcla de <strong>estigma</strong>, experiencias previas,
+            temores a “perder el control” o preocupaciones legítimas sobre efectos adversos.
+          </p>
+
+          <div class="note" style="margin-top:12px">
+            Objetivo: pasar de la confusión a una pregunta más útil:
+            <strong>“¿Qué plan me sirve a mí, con mis riesgos y mi situación?”</strong>
+          </div>
+        </div>
+
+        <div class="section-card hint-bg" style="margin:0" id="por-que">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Por qué se rechaza el tratamiento</h2>
+              <p class="card-sub">Motivos frecuentes (no necesariamente “irracionales”).</p>
+            </div>
+          </div>
+
+          <ul class="card-sub" style="margin-top:10px">
+            <li><strong>Estigma:</strong> miedo a ser etiquetado o juzgado.</li>
+            <li><strong>Miedo a medicación:</strong> dependencia, “quedar dopado”, cambios de personalidad.</li>
+            <li><strong>Control / identidad:</strong> “si acepto tratamiento, pierdo autonomía”.</li>
+            <li><strong>Experiencia previa negativa:</strong> falta de escucha, indicaciones sin explicación.</li>
+            <li><strong>Minimización:</strong> “puedo solo”, “es una etapa”, “no es para tanto”.</li>
+            <li><strong>Entorno:</strong> presiones familiares o culturales (“eso es debilidad”).</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mitos -->
+    <section class="section" id="mitos">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mitos frecuentes (y cómo pensarlos)</h2>
+            <p class="card-sub">No es para discutir: es para aclarar.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“El psiquiatra solo da pastillas”</h3>
+            <p class="card-sub">La evaluación es clínica y contextual. A veces se indica psicoterapia, hábitos y seguimiento sin medicación.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“Me va a cambiar la personalidad”</h3>
+            <p class="card-sub">Un tratamiento bien indicado busca bajar síntomas (ansiedad, irritabilidad, insomnio) para funcionar más “como vos”.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“Si empiezo, es para siempre”</h3>
+            <p class="card-sub">Depende del cuadro y evolución. Hay tratamientos de meses y otros de mantenimiento. Se decide con seguimiento y objetivos.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“Todos los psicofármacos generan adicción”</h3>
+            <p class="card-sub">La mayoría de antidepresivos no genera dependencia. Algunos ansiolíticos requieren control y uso responsable.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“Es solo para casos graves”</h3>
+            <p class="card-sub">Ansiedad sostenida, insomnio persistente, crisis de pánico, duelo complicado o estrés crónico también pueden beneficiarse.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">“Me van a juzgar”</h3>
+            <p class="card-sub">El objetivo es comprender y ayudar: síntomas, contexto, funcionamiento y riesgos. La consulta no es un tribunal.</p>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Enfoque moderno: <strong>decisiones compartidas</strong>, objetivos claros, monitoreo de beneficios/efectos y ajustes finos.
+        </div>
+      </div>
+    </section>
+
+    <!-- Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Cuándo conviene consultar con mayor prioridad.</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Insomnio severo sostenido (días a semanas) con deterioro funcional.</li>
+          <li>Crisis de pánico repetidas o aumento marcado de evitación.</li>
+          <li>Irritabilidad intensa, impulsividad o conductas de riesgo.</li>
+          <li>Consumo creciente de alcohol/sedantes para “poder dormir” o “calmarse”.</li>
+          <li>Desesperanza marcada o pensamientos de muerte (aunque sea “sin plan”).</li>
+          <li>Caída sostenida del rendimiento o aislamiento progresivo.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si existe riesgo inmediato para vos o terceros, buscá ayuda urgente/local (guardia/servicio de emergencias).
+        </div>
+      </div>
+    </section>
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mini ejercicio (2 minutos)</h2>
+            <p class="card-sub">Objetivo: ordenar tu principal temor y lo que necesitás para sentirte más seguro/a.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Registro rápido</h3>
+
+            <div class="range-row">
+              <label for="fearRange">Reticencia / miedo (0–10)</label>
+              <input id="fearRange" type="range" min="0" max="10" step="1" value="4" />
+              <span class="pill-val" id="fearVal">4</span>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="card-sub" for="mainWorry" style="font-weight:600; display:block; margin-bottom:6px;">Preocupación principal</label>
+              <select id="mainWorry" class="input">
+                <option value="No lo sé / dudas generales">No lo sé / dudas generales</option>
+                <option value="Miedo a efectos adversos">Miedo a efectos adversos</option>
+                <option value="Miedo a dependencia / adicción">Miedo a dependencia / adicción</option>
+                <option value="Miedo a “cambiar mi personalidad”">Miedo a “cambiar mi personalidad”</option>
+                <option value="Miedo al estigma / ser juzgado">Miedo al estigma / ser juzgado</option>
+                <option value="Experiencia previa negativa">Experiencia previa negativa</option>
+                <option value="Prefiero psicoterapia sin medicación">Prefiero psicoterapia sin medicación</option>
+              </select>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="card-sub" for="needToFeelSafe" style="font-weight:600; display:block; margin-bottom:6px;">
+                ¿Qué necesitarías para sentirte más seguro/a?
+              </label>
+              <textarea
+                id="needToFeelSafe"
+                class="note-input"
+                placeholder="Ej.: que me expliquen opciones y riesgos, un plan de seguimiento, empezar con dosis baja, revisar cada 2–4 semanas…"
+              ></textarea>
+            </div>
+
+            <div class="audio-actions" style="margin-top:12px">
+              <button class="btn" id="btnCopy" type="button">Copiar resumen</button>
+              <button class="btn btn-ghost" id="btnReset" type="button">Reset</button>
+            </div>
+
+            <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en WhatsApp o traerlo a consulta.</div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Cómo usarlo</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Usalo como “puente”: en vez de discutir si sí/no, aclarás <b>qué te preocupa</b> y <b>qué necesitás</b>.</li>
+              <li>Si te da vergüenza decirlo, copiá el resumen y compartilo por escrito.</li>
+              <li>Si tu miedo es a “dependencia”, preguntá por <b>duración</b>, <b>plan de salida</b> y <b>controles</b>.</li>
+            </ul>
+            <div class="note" style="margin-top:12px">
+              Nota: un buen tratamiento suele sentirse como <b>más control</b>, no menos: objetivos claros, monitoreo y ajustes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lectura larga -->
+    <section class="section" id="lectura">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. (Texto extenso, con muy poco resumen.)</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            El rechazo al tratamiento psiquiátrico suele aparecer cuando la persona se siente atrapada entre dos miedos:
+            el miedo a seguir sufriendo como está, y el miedo a “perder el control” si acepta ayuda.
+            Por eso, lo más útil no es discutir, sino <strong>clarificar</strong>.
+          </p>
+
+          <p>
+            Un tratamiento moderno se apoya en un principio simple: <strong>proporcionalidad</strong>.
+            Eso significa que el plan se adapta a la intensidad del problema, al riesgo, a la historia clínica y a la vida real de la persona.
+            En algunos casos, el núcleo del trabajo es psicoterapia y hábitos. En otros, la medicación ayuda a estabilizar sueño/ansiedad/ánimo
+            para que la psicoterapia sea posible. Muchas veces es una combinación por etapas.
+          </p>
+
+          <p>
+            La medicación, cuando se indica bien, no “apaga” a la persona: busca bajar el ruido que impide pensar, dormir o sostener rutinas.
+            Es normal tener dudas sobre efectos adversos, duración o dependencia. La diferencia está en cómo se trabaja:
+            <strong>explicar opciones</strong>, acordar objetivos, monitorear respuesta y ajustar.
+          </p>
+
+          <p>
+            También existen contextos en los que el miedo al tratamiento es, en realidad, miedo a aceptar un límite:
+            “si consulto, estoy admitiendo que esto me supera”. En perfiles de alta exigencia, esto pega fuerte en la identidad.
+            En esos casos, ayuda replantear la idea: consultar no es rendirse, es <strong>estrategia</strong>.
+          </p>
+
+          <p>
+            Si te encontrás evitando, postergando o discutiendo con vos mismo/a una y otra vez, a veces no hace falta tener todo resuelto para dar el primer paso.
+            Basta con poder decir: “Tengo miedo, pero quiero entender”. Esa frase cambia el eje de la conversación.
+          </p>
+
+          <div class="note" style="margin-top:12px">
+            Si querés, usá el “Mini ejercicio” como puente: te ordena la principal duda y lo que necesitarías para sentirte más seguro/a.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si estas dudas te están trabando, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema (no rompe si existen) -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const fearRange = document.getElementById("fearRange");
+      const fearVal   = document.getElementById("fearVal");
+      const mainWorry = document.getElementById("mainWorry");
+      const needToFeelSafe = document.getElementById("needToFeelSafe");
+      const btnCopy   = document.getElementById("btnCopy");
+      const btnReset  = document.getElementById("btnReset");
+      const copyOk    = document.getElementById("copyOk");
+
+      function upd(){
+        if(fearVal && fearRange) fearVal.textContent = fearRange.value;
+      }
+      if(fearRange) fearRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      async function copyText(txt){
+        try{
+          await navigator.clipboard.writeText(txt);
+          return true;
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      if(btnCopy){
+        btnCopy.addEventListener("click", async ()=>{
+          const value = fearRange ? fearRange.value : "—";
+          const worry = mainWorry ? mainWorry.value : "—";
+          const need  = needToFeelSafe ? (needToFeelSafe.value || "").trim() : "";
+
+          const txt =
+            `🧠 Desmitificando tratamientos psiquiátricos — Registro breve
+` +
+            `• Reticencia / miedo (0–10): ${value}
+` +
+            `• Preocupación principal: ${worry}
+` +
+            `• Para sentirme más seguro/a necesitaría: ${need || "—"}
+` +
+            `• Fecha/hora: ${nowStr()}`;
+
+          await copyText(txt);
+          if(copyOk){
+            copyOk.style.display = "block";
+            setTimeout(()=> copyOk.style.display = "none", 3500);
+          }
+        });
+      }
+
+      if(btnReset){
+        btnReset.addEventListener("click", ()=>{
+          if(fearRange) fearRange.value = 4;
+          if(mainWorry) mainWorry.selectedIndex = 0;
+          if(needToFeelSafe) needToFeelSafe.value = "";
+          upd();
+          if(copyOk) copyOk.style.display = "none";
+        });
+      }
+
+      // Sync volumen global del header (si existe) al podcast
+      const podcastAudio = document.getElementById("podcastAudio");
+      const vol = document.getElementById("volumeRange");
+      if(podcastAudio && vol){
+        const applyVol = () => { podcastAudio.volume = Math.max(0, Math.min(1, (Number(vol.value)||35)/100)); };
+        vol.addEventListener("input", applyVol);
+        applyVol();
+      }
+    })();
+  </script>
+
+</body>
+</html>

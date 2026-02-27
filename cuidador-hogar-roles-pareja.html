@@ -1,0 +1,487 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cuidador del hogar y roles de pareja — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para pacientes: rol del cuidador del hogar, convivencia y pareja ante temor nocturno. Señales de alarma y mini ejercicio 0–10 con copiar resumen." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Cuidador del hogar / roles de pareja</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar en assets/img/cuidador-portada.webp -->
+        <img src="assets/img/cuidador-portada.webp?v=1" alt="Ilustración: rol del cuidador del hogar y descanso nocturno" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Cuidador del hogar · roles de pareja</h1>
+          <p>Plan simple para noches más tranquilas: apoyo mutuo, rotación de vigilia y hábitos de sueño.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- 🎧 Podcast (NotebookLM) -->
+    <section class="section" id="audio-podcast">
+      <div class="section-card hint-bg">
+        <div class="card-head" style="align-items:flex-start;">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub" style="margin-top:6px">
+              Podés elegir: <b>escuchar</b> primero o ir directo a la <b>lectura</b>.
+              Duración: <b>14:10</b>.
+            </p>
+          </div>
+          <div class="btn-row" style="gap:10px; margin-top:2px;">
+            <a class="btn-secondary" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/Turnos_de_guardia_contra_la_ansiedad_nocturna.m4a" download>
+              Descargar
+            </a>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <audio controls preload="metadata" style="width:100%">
+            <source src="audio/Turnos_de_guardia_contra_la_ansiedad_nocturna.m4a" type="audio/mp4">
+            Tu navegador no soporta audio HTML5.
+          </audio>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Sugerencia: escuchalo en un momento tranquilo. Si durante la escucha aparece angustia intensa, pausá, hacé 3 respiraciones lentas y retomá cuando estés mejor.
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              Comprender y manejar el temor o la evitación de las noches es fundamental para cuidar la salud mental.
+              Dormir implica bajar la guardia y sentirnos vulnerables; si venimos de conflictos o estrés,
+              la mente puede volverse más “reactiva” durante la noche.
+            </p>
+            <p class="card-sub">
+              La amígdala es una estructura clave en la respuesta al miedo y en la regulación de emociones.
+              Funciona como un sistema de alarma: evalúa señales de peligro y, si percibe amenaza (real o asociada),
+              mantiene el cuerpo en vigilia como forma de protección. Experiencias pasadas o asociaciones traumáticas
+              pueden volverla más intensa, incluso sin peligro real.
+            </p>
+            <p class="card-sub">
+              La estrategia del “cuidador del hogar” propone un plan en pareja o convivientes:
+              rotar la vigilia nocturna, para que quien está más activado pueda descansar,
+              y para que el cuidado no recaiga siempre en una sola persona.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Frase ancla recomendada: <b>“Hoy descansás, yo te cuido. Mañana rotamos.”</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Manifestaciones frecuentes -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Manifestaciones frecuentes</h2>
+            <p class="card-sub">En este problema suelen aparecer:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Temor o evitación de dormir (postergar la cama, “estirar” la noche).</li>
+          <li>Hipervigilancia: estar “con un oído abierto”, sobresaltos ante ruidos.</li>
+          <li>Rumiación nocturna y sueños perturbadores (conflictos, pasado, temas existenciales).</li>
+          <li>Dificultad para conciliar el sueño o sueño liviano/no reparador.</li>
+          <li>Sensación de vulnerabilidad: “si me duermo, algo malo puede pasar”.</li>
+          <li>Desbalance de roles: uno duerme profundo, el otro queda “de guardia” → cansancio, culpa, discusiones.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Objetivo del plan: que el cuerpo reciba una señal externa de seguridad (acuerdo + turnos + frase ancla),
+          y que el descanso sea posible sin pelear con la noche.
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Insomnio severo sostenido (semanas) con deterioro del funcionamiento.</li>
+          <li>Crisis de ansiedad/pánico nocturnas repetidas.</li>
+          <li>Pesadillas intensas o reexperimentación traumática.</li>
+          <li>Aumento de consumo de alcohol, sedantes o automedicación para dormir.</li>
+          <li>Irritabilidad marcada y deterioro del vínculo por el tema sueño.</li>
+          <li>Desesperanza, pensamientos de muerte o riesgo de autolesión.</li>
+          <li>Conductas de control/chequeo que escalan y no se pueden frenar.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si hay riesgo inmediato, buscá asistencia local urgente.
+        </div>
+      </div>
+    </section>
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mini ejercicio (1 minuto)</h2>
+            <p class="card-sub">Registro 0–10 + copiar resumen. Ideal para hacerlo en pareja.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Elegí el foco: miedo nocturno / rumiación / hipervigilancia / inseguridad / conflicto.<br/>
+            2) Marcá intensidad ANTES (0–10).<br/>
+            3) Decí en voz alta: <b>“Hoy descansás, yo te cuido. Mañana rotamos.”</b><br/>
+            4) Hacé 3 respiraciones lentas (exhalación más larga).<br/>
+            5) Marcá intensidad DESPUÉS (0–10) y copiá el resumen.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Intensidad ANTES (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="6" />
+            <div class="pill-val" id="beforeVal">6</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Intensidad DESPUÉS (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="focusInput" style="font-weight:600; display:block; margin-bottom:6px;">Foco de hoy (opcional)</label>
+            <input id="focusInput" class="input" type="text" placeholder="Ej: hipervigilancia / miedo / rumiación / discusión..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="turnInput" style="font-weight:600; display:block; margin-bottom:6px;">Turno hoy (opcional)</label>
+            <input id="turnInput" class="input" type="text" placeholder="Ej: cuida Juan / cuida Ana / turnos 23–01 y 01–03" style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="bedtimeInput" style="font-weight:600; display:block; margin-bottom:6px;">Hora a la cama (opcional)</label>
+            <input id="bedtimeInput" class="input" type="text" placeholder="Ej: 23:30" style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Acuerdo / nota breve (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: hoy la regla es no discutir de noche; mañana ajustamos horarios; higiene del sueño..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con tu terapeuta/médico.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. (Texto extenso, con casi nulo resumen.)</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            Comprender y manejar el temor o evitación de las noches es fundamental para cuidar nuestra salud mental.
+            Sabemos que el descanso es vital para el bienestar emocional y físico. El temor nocturno suele intensificarse
+            porque durante el sueño nos sentimos vulnerables; y cuando pasamos tiempos de conflicto o estrés, los sueños
+            y pensamientos pueden volverse más dañinos, confusos o cargados con temas cotidianos y del pasado.
+          </p>
+
+          <p>
+            La amígdala cerebral es una estructura clave que participa en la respuesta al miedo y en la regulación de emociones.
+            Puede entenderse como un sistema de alarma interno: detecta y evalúa rápidamente señales de peligro del entorno
+            (ruidos, movimientos, situaciones desconocidas) y, al percibir amenaza, activa al resto del cerebro para mantenernos alertas.
+            Cuando dormimos en un lugar que se percibe hostil —o que primitivamente asociamos como hostil— la amígdala puede volverse
+            especialmente sensible y reactiva, sosteniendo la vigilia como forma de protección.
+          </p>
+
+          <p>
+            Es importante tener en cuenta que la amígdala también se ve influida por pensamientos y experiencias pasadas.
+            Si hubo experiencias traumáticas o asociaciones con el miedo, la alarma puede reaccionar de manera más intensa,
+            manteniendo un estado de alerta incluso en situaciones que no representan un peligro real. Esta hiperactivación
+            nocturna puede producir insomnio, sueño liviano, rumiación, pesadillas o evitación de acostarse.
+          </p>
+
+          <p>
+            En vínculos de pareja o convivencia, se observa con frecuencia que quien consulta convive con personas que duermen profundo,
+            se acuestan antes y no tienen historial de dificultad para dormir. El desbalance se vuelve agotador: uno descansa y el otro queda
+            en estado de vigilancia. Con el tiempo esto puede generar irritabilidad, discusiones, culpa o distancia emocional.
+          </p>
+
+          <p>
+            Aquí proponemos una estrategia práctica: rotar el estado de vigilia nocturna. Cada noche, alguien se hace cargo de “cuidar y permanecer
+            en vigilia” mientras el otro descansa. Rotando los días de responsabilidad, se asegura que cada uno recupere energías y que quien está
+            hipervigilante tenga, al menos, noches donde pueda “bajar la guardia” apoyándose en el otro. La comunicación abierta es clave:
+            conviene armar un plan con horarios y turnos realistas, y respetarlos.
+          </p>
+
+          <p>
+            Un detalle potente es el anclaje verbal: quien queda en vigilia debe decir, de forma responsable, una frase clara como:
+            “Hoy descansás, yo te cuido”. Esto reduce la carga mental de quien tiene dificultad para dormir y ayuda a desactivar el sistema de alarma.
+            Además, una agenda compartida puede ayudar a ordenar rutinas y acompañar a que quien duerme peor se acueste a una hora más adecuada,
+            acercándose gradualmente al horario habitual del vínculo.
+          </p>
+
+          <p>
+            Por último, en pareja o equipo, es importante leer y prestar atención a las recomendaciones de higiene del sueño.
+            El plan del cuidador es un puente: sirve para volver a dormir con mayor seguridad, mientras se trabajan hábitos, regulación emocional
+            y, si corresponde, el trasfondo ansioso o traumático. Si aparecen señales de alarma (pánico, sedantes, deterioro funcional o del vínculo),
+            conviene consultar para un abordaje clínico completo.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Objetivo final: recuperar un sueño estable sin depender permanentemente de la “guardia”.
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si el sueño o el vínculo se están deteriorando, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange = document.getElementById("beforeRange");
+      const afterRange  = document.getElementById("afterRange");
+      const beforeVal   = document.getElementById("beforeVal");
+      const afterVal    = document.getElementById("afterVal");
+      const focusInput  = document.getElementById("focusInput");
+      const turnInput   = document.getElementById("turnInput");
+      const bedtimeInput= document.getElementById("bedtimeInput");
+      const noteInput   = document.getElementById("noteInput");
+      const btnCopy     = document.getElementById("btnCopy");
+      const btnReset    = document.getElementById("btnReset");
+      const copyOk      = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const focus = (focusInput.value || "").trim();
+        const turn  = (turnInput.value || "").trim();
+        const bed   = (bedtimeInput.value || "").trim();
+        const note  = (noteInput.value || "").trim();
+
+        const txt =
+          `Rol cuidador — foco: ${focus || "—"} | Antes: ${beforeRange.value}/10 | Después: ${afterRange.value}/10 | Turno hoy: ${turn || "—"} | Hora a la cama: ${bed || "—"} | Acuerdo: ${note || "—"} | Fecha/hora: ${nowStr()}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value = 6;
+        afterRange.value = 5;
+        focusInput.value = "";
+        turnInput.value = "";
+        bedtimeInput.value = "";
+        noteInput.value = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 22 · Cabina: encontrá las diferencias — Sala de espera virtual</title>
+  <meta name="description" content="Atención sostenida: encontrá las 5 diferencias entre dos imágenes SVG de cabina de avión." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: var(--dark); color: #fff;
+      padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .topbar-brand { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .topbar-sub { font-size: 12px; opacity: .8; }
+    .btn-back {
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px;
+      font-family: inherit; cursor: pointer; text-decoration: none; white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.25); }
+
+    main { flex: 1; max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; width: 100%; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; margin-bottom: 16px; }
+
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; text-align:center; }
+    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; text-align:center; margin-bottom:20px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 10px 24px; border-radius: 10px;
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* LEVEL PILLS */
+    .level-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 16px 0 24px; }
+    .level-pill {
+      padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--border);
+      background: var(--white); font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .level-pill:hover { border-color: var(--blue); background: rgba(14,108,196,.05); }
+    .level-pill.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* STATUS */
+    .status-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .found-badge {
+      background: rgba(14,108,196,.10); color: var(--blue);
+      border-radius: 999px; padding: 4px 14px; font-size: 14px; font-weight: 700;
+    }
+    .hint-btn {
+      background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.3);
+      color: #92400e; border-radius: 8px; padding: 6px 12px; font-size: 12px;
+      font-family: inherit; cursor: pointer; transition: background .2s;
+    }
+    .hint-btn:hover { background: rgba(245,158,11,.2); }
+
+    /* CABIN PANELS */
+    .cabins-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media(max-width: 600px) { .cabins-wrapper { grid-template-columns: 1fr; } }
+
+    .cabin-panel {
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      cursor: crosshair;
+      background: #e8edf4;
+    }
+    .cabin-label {
+      background: var(--dark); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      padding: 4px 10px; text-align:center;
+    }
+    .cabin-panel svg {
+      width: 100%; height: auto; display: block;
+    }
+
+    /* Click markers */
+    .diff-marker {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid #10b981;
+      background: rgba(16,185,129,.18);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: popIn .3s ease;
+    }
+    @keyframes popIn {
+      from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    /* MSG */
+    .msg-bar {
+      text-align: center; padding: 10px; font-size: 14px; font-weight: 500;
+      border-radius: 10px; margin-top: 10px;
+      min-height: 40px;
+    }
+    .msg-bar.ok  { background: #d1fae5; color: #065f46; }
+    .msg-bar.err { background: #fee2e2; color: #991b1b; }
+    .msg-bar.empty { background: transparent; }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-big { font-size: 56px; margin-bottom: 10px; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+
+    footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<header class="topbar" role="banner">
+  <div>
+    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
+    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+  </div>
+  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active card">
+    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">🔍</div>
+    <h1>Cabina: encontrá las diferencias</h1>
+    <p class="subtitle">Atención sostenida + memoria visual — Juego 22</p>
+    <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
+      <li>Observá las dos cabinas de avión: tienen 5 diferencias sutiles.</li>
+      <li>Tocá o hacé clic sobre cualquier diferencia en cualquiera de las dos imágenes.</li>
+      <li>Sin cronómetro. Solo observación tranquila.</li>
+    </ul>
+    <h3 style="font-size:15px; font-weight:600; margin-bottom:6px; text-align:center;">Elegí el nivel:</h3>
+    <div class="level-btns">
+      <button class="level-pill active" data-level="0" aria-pressed="true">Nivel 1 · Embarque</button>
+      <button class="level-pill" data-level="1" aria-pressed="false">Nivel 2 · Crucero</button>
+      <button class="level-pill" data-level="2" aria-pressed="false">Nivel 3 · Aterrizaje</button>
+    </div>
+    <div style="display:flex; justify-content:center;">
+      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="screen-game" class="screen">
+    <div class="card" style="padding:16px;">
+      <div class="status-bar">
+        <span class="found-badge" id="found-badge">Encontraste 0 de 5</span>
+        <span style="font-size:13px; color:var(--muted);" id="level-label">Nivel 1 · Embarque</span>
+        <button class="hint-btn" id="btn-hint" aria-label="Mostrar una pista">💡 Pista</button>
+      </div>
+      <div class="cabins-wrapper">
+        <div class="cabin-panel" id="panel-orig">
+          <div class="cabin-label">ORIGINAL</div>
+          <div id="svg-orig"></div>
+        </div>
+        <div class="cabin-panel" id="panel-mod">
+          <div class="cabin-label">¿ENCONTRÁS LAS DIFERENCIAS?</div>
+          <div id="svg-mod"></div>
+        </div>
+      </div>
+      <div class="msg-bar empty" id="msg-bar" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card result-center">
+    <div class="result-big" aria-hidden="true">🏅</div>
+    <div class="result-title">¡Cabina inspeccionada!</div>
+    <div class="result-sub" id="res-sub">Encontraste las 5 diferencias.</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Otro nivel</button>
+      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ─── SVG SCENES ───────────────────────────────────────────────────────── */
+  // Each scene: array of 5 diff objects {id, origAttr, modAttr, description, hitBox}
+  // hitBox: {x, y, w, h} in SVG coords (viewBox 0 0 400 300)
+  // We draw the SVG once for original and once for modified, swapping certain attributes.
+
+  const SCENES = [
+    /* ── LEVEL 0: BOARDING ─────────────────────────── */
+    {
+      label: 'Nivel 1 · Embarque',
+      viewBox: '0 0 400 300',
+      // Base SVG elements (shared between orig and mod, described as strings with placeholders)
+      baseSVG: `
+        <!-- Sky / background -->
+        <rect x="0" y="0" width="400" height="300" fill="#dbeafe"/>
+        <!-- Fuselage body -->
+        <rect x="20" y="60" width="360" height="200" rx="18" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+        <!-- Windows row -->
+        <rect x="50"  y="90" width="36" height="24" rx="8" fill="D1" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="105" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="160" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="215" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="270" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="325" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Overhead bins -->
+        <rect x="30" y="130" width="340" height="35" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="200" y1="130" x2="200" y2="165" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Seats row A -->
+        <rect x="40"  y="175" width="38" height="50" rx="8" fill="D2" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="90"  y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="140" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Aisle -->
+        <!-- Seats row B -->
+        <rect x="220" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="270" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="320" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Overhead panel lights -->
+        <circle cx="80"  cy="148" r="5" fill="D3"/>
+        <circle cx="160" cy="148" r="5" fill="#fbbf24"/>
+        <circle cx="240" cy="148" r="5" fill="#fbbf24"/>
+        <circle cx="320" cy="148" r="5" fill="#fbbf24"/>
+        <!-- Screen on seatback (front seat) -->
+        <rect x="55" y="185" width="22" height="16" rx="3" fill="D4" stroke="#64748b" stroke-width="1"/>
+        <!-- Luggage in bin -->
+        <rect x="50"  y="136" width="55" height="22" rx="4" fill="D5" stroke="#94a3b8" stroke-width="1"/>
+        <rect x="215" y="136" width="55" height="22" rx="4" fill="#fde68a" stroke="#94a3b8" stroke-width="1"/>
+        <!-- Floor strip -->
+        <rect x="20" y="255" width="360" height="5" rx="2" fill="#e2e8f0"/>
+      `,
+      diffs: [
+        { id: 'D1', orig: '#bfdbfe', mod: '#fca5a5', desc: 'Color de la primera ventanilla', hx: 50, hy: 90, hw: 36, hh: 24 },
+        { id: 'D2', orig: '#e0f2fe', mod: '#d1fae5', desc: 'Color del primer asiento', hx: 40, hy: 175, hw: 38, hh: 50 },
+        { id: 'D3', orig: '#fbbf24', mod: '#ef4444', desc: 'Color de la luz overhead izquierda', hx: 68, hy: 141, hw: 24, hh: 14 },
+        { id: 'D4', orig: '#1e293b', mod: '#3b82f6', desc: 'Color de la pantallita del asiento', hx: 55, hy: 185, hw: 22, hh: 16 },
+        { id: 'D5', orig: '#c7d2fe', mod: '#fed7aa', desc: 'Color del equipaje en el compartimento', hx: 50, hy: 136, hw: 55, hh: 22 }
+      ]
+    },
+
+    /* ── LEVEL 1: CRUISE ────────────────────────────── */
+    {
+      label: 'Nivel 2 · Crucero',
+      viewBox: '0 0 400 300',
+      baseSVG: `
+        <!-- Night sky -->
+        <rect x="0" y="0" width="400" height="300" fill="#1e3a5f"/>
+        <!-- Stars -->
+        <circle cx="30"  cy="20" r="2" fill="#fff" opacity=".7"/>
+        <circle cx="90"  cy="15" r="1.5" fill="#fff" opacity=".6"/>
+        <circle cx="180" cy="25" r="2" fill="#fff" opacity=".8"/>
+        <circle cx="300" cy="10" r="1.5" fill="#fff" opacity=".5"/>
+        <circle cx="370" cy="30" r="2" fill="#fff" opacity=".7"/>
+        <!-- Moon -->
+        <circle cx="D1x" cy="40" r="18" fill="#fef9c3"/>
+        <circle cx="363" cy="33" r="13" fill="#1e3a5f"/>
+        <!-- Cabin interior -->
+        <rect x="20" y="80" width="360" height="200" rx="18" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+        <!-- Windows with glow -->
+        <rect x="50"  y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="105" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="160" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="215" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="270" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="325" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
+        <!-- Dim overhead bins -->
+        <rect x="30" y="145" width="340" height="30" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+        <line x1="200" y1="145" x2="200" y2="175" stroke="#334155" stroke-width="1.5"/>
+        <!-- Reading lights -->
+        <ellipse cx="80"  cy="155" rx="12" ry="5" fill="D2" opacity=".7"/>
+        <ellipse cx="160" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
+        <ellipse cx="240" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
+        <ellipse cx="320" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
+        <!-- Seats (dark) -->
+        <rect x="40"  y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="90"  y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="140" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="220" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="270" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="320" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
+        <!-- Tray table screen -->
+        <rect x="50" y="195" width="D3w" height="18" rx="3" fill="#0f172a" stroke="#3b82f6" stroke-width="1"/>
+        <rect x="52" y="197" width="18" height="14" rx="2" fill="#93c5fd"/>
+        <!-- Seatbelt sign -->
+        <rect x="170" y="148" width="60" height="16" rx="4" fill="#D4" stroke="#475569" stroke-width="1"/>
+        <text x="200" y="160" font-size="8" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif">CINTURÓN</text>
+        <!-- Number on screen panel -->
+        <text x="312" y="125" font-size="D5" fill="#93c5fd" font-family="Inter,sans-serif" font-weight="700">FL380</text>
+      `,
+      diffs: [
+        { id: 'D1x', orig: '350', mod: '310', desc: 'Posición de la luna', hx: 315, hy: 20, hw: 70, hh: 50 },
+        { id: 'D2',  orig: '#fef9c3', mod: '#fca5a5', desc: 'Color de la luz de lectura izquierda', hx: 65, hy: 149, hw: 28, hh: 12 },
+        { id: 'D3w', orig: '22', mod: '32', desc: 'Ancho de la pantalla de la bandeja', hx: 50, hy: 195, hw: 40, hh: 18 },
+        { id: 'D4',  orig: '#1e293b', mod: '#7c3aed', desc: 'Color del letrero de cinturón', hx: 170, hy: 148, hw: 60, hh: 16 },
+        { id: 'D5',  orig: '10', mod: '13', desc: 'Tamaño del código de altitud FL380', hx: 300, hy: 113, hw: 55, hh: 18 }
+      ]
+    },
+
+    /* ── LEVEL 2: LANDING ───────────────────────────── */
+    {
+      label: 'Nivel 3 · Aterrizaje',
+      viewBox: '0 0 400 300',
+      baseSVG: `
+        <!-- Golden sky -->
+        <rect x="0" y="0" width="400" height="300" fill="#fef3c7"/>
+        <rect x="0" y="0" width="400" height="120" fill="url(#sunGrad)"/>
+        <defs>
+          <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f97316" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="#fef3c7" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- Ground -->
+        <rect x="0" y="220" width="400" height="80" fill="#86efac"/>
+        <rect x="0" y="230" width="400" height="6" fill="#4ade80"/>
+        <!-- Runway markings -->
+        <rect x="160" y="240" width="80" height="8" rx="2" fill="#fff" opacity=".8"/>
+        <rect x="185" y="255" width="30" height="5" rx="1" fill="#fff" opacity=".6"/>
+        <!-- Airport building sketch -->
+        <rect x="310" y="190" width="80" height="40" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+        <rect x="325" y="175" width="50" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+        <!-- Cabin frame -->
+        <rect x="10" y="50" width="380" height="175" rx="18" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+        <!-- Windows tilted view -->
+        <rect x="40"  y="75" width="36" height="24" rx="8" fill="D1" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="95"  y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="150" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="205" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="260" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="315" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Overhead bins landing pos -->
+        <rect x="20" y="115" width="360" height="30" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="200" y1="115" x2="200" y2="145" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Fasten seatbelt sign lit -->
+        <rect x="150" y="120" width="100" height="18" rx="4" fill="D2" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="200" y="132" font-size="8" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">ABROCHEN CINTURÓN</text>
+        <!-- Seats landing -->
+        <rect x="30"  y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="80"  y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="130" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="220" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="270" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="320" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Altitude indicator -->
+        <rect x="30" y="120" width="70" height="18" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+        <text x="65" y="132" font-size="9" fill="#93c5fd" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">D3m</text>
+        <!-- Passenger silhouette -->
+        <circle cx="49" cy="148" r="D4r" fill="#94a3b8"/>
+        <rect   cx="49" cy="165" width="16" height="22" rx="4" fill="#94a3b8" x="41" y="155"/>
+        <!-- Tray up sign -->
+        <rect x="230" y="120" width="80" height="18" rx="4" fill="D5c" stroke="#94a3b8" stroke-width="1"/>
+        <text x="270" y="132" font-size="8" fill="#0f172a" text-anchor="middle" font-family="Inter,sans-serif">BANDEJA ARRIBA</text>
+      `,
+      diffs: [
+        { id: 'D1',  orig: '#bfdbfe', mod: '#fde68a', desc: 'Color de la ventanilla delantera', hx: 40, hy: 75, hw: 36, hh: 24 },
+        { id: 'D2',  orig: '#f59e0b', mod: '#10b981', desc: 'Color del letrero de cinturón', hx: 150, hy: 120, hw: 100, hh: 18 },
+        { id: 'D3m', orig: '300ft', mod: '800ft', desc: 'Altímetro: valor de altitud', hx: 30, hy: 120, hw: 70, hh: 18 },
+        { id: 'D4r', orig: '7', mod: '10', desc: 'Tamaño de la cabeza del pasajero', hx: 38, hy: 138, hw: 24, hh: 24 },
+        { id: 'D5c', orig: '#e2e8f0', mod: '#fde68a', desc: 'Color del letrero de bandeja', hx: 230, hy: 120, hw: 80, hh: 18 }
+      ]
+    }
+  ];
+
+  let currentLevel = 0;
+  let found = new Set();
+  let hintUsed = 0;
+  const TOTAL_DIFFS = 5;
+
+  const $ = id => document.getElementById(id);
+
+  function showScreen(id) {
+    ['screen-intro','screen-game','screen-result'].forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  // Level pills
+  document.querySelectorAll('.level-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.level-pill').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-pressed','false'); });
+      pill.classList.add('active');
+      pill.setAttribute('aria-pressed','true');
+      currentLevel = parseInt(pill.dataset.level);
+    });
+  });
+
+  function buildSVG(scene, isModified) {
+    const diffs = scene.diffs;
+    let svgStr = scene.baseSVG;
+
+    diffs.forEach(d => {
+      const val = isModified ? d.mod : d.orig;
+      // Replace placeholder tokens
+      const re = new RegExp(d.id.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'g');
+      svgStr = svgStr.replace(re, val);
+    });
+
+    return `<svg viewBox="${scene.viewBox}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${isModified ? 'Cabina modificada' : 'Cabina original'}">${svgStr}</svg>`;
+  }
+
+  function startGame() {
+    found = new Set();
+    hintUsed = 0;
+    const scene = SCENES[currentLevel];
+    $('level-label').textContent = scene.label;
+    $('found-badge').textContent = `Encontraste 0 de ${TOTAL_DIFFS}`;
+    $('msg-bar').className = 'msg-bar empty';
+    $('msg-bar').textContent = '';
+
+    $('svg-orig').innerHTML = buildSVG(scene, false);
+    $('svg-mod').innerHTML  = buildSVG(scene, true);
+
+    // Attach click listeners
+    ['panel-orig','panel-mod'].forEach(panelId => {
+      const panel = $(panelId);
+      panel.addEventListener('click', onPanelClick);
+    });
+
+    showScreen('screen-game');
+  }
+
+  function onPanelClick(e) {
+    const panel = e.currentTarget;
+    const svgEl = panel.querySelector('svg');
+    if (!svgEl) return;
+
+    const rect = svgEl.getBoundingClientRect();
+    const vb = svgEl.viewBox.baseVal;
+    const scaleX = vb.width  / rect.width;
+    const scaleY = vb.height / rect.height;
+    const svgX = (e.clientX - rect.left) * scaleX;
+    const svgY = (e.clientY - rect.top)  * scaleY;
+
+    const scene = SCENES[currentLevel];
+    let hit = null;
+    scene.diffs.forEach(d => {
+      if (!found.has(d.id) && svgX >= d.hx && svgX <= d.hx + d.hw && svgY >= d.hy && svgY <= d.hy + d.hh) {
+        hit = d;
+      }
+    });
+
+    if (hit) {
+      found.add(hit.id);
+      markDiff(hit, panel, svgEl, rect, vb);
+      // Also mark on the other panel
+      const otherId = panel.id === 'panel-orig' ? 'panel-mod' : 'panel-orig';
+      const otherPanel = $(otherId);
+      const otherSvg = otherPanel.querySelector('svg');
+      if (otherSvg) markDiff(hit, otherPanel, otherSvg, otherSvg.getBoundingClientRect(), vb);
+
+      $('found-badge').textContent = `Encontraste ${found.size} de ${TOTAL_DIFFS}`;
+      showMsg(`✓ ¡Diferencia encontrada: ${hit.desc}!`, 'ok');
+
+      if (found.size === TOTAL_DIFFS) {
+        setTimeout(showResult, 900);
+      }
+    } else {
+      // Miss
+      showMsg('No hay diferencia ahí. Seguí mirando.', 'err');
+      setTimeout(() => { $('msg-bar').className = 'msg-bar empty'; $('msg-bar').textContent = ''; }, 1500);
+    }
+  }
+
+  function markDiff(diff, panel, svgEl, rect, vb) {
+    const scaleX = rect.width  / vb.width;
+    const scaleY = rect.height / vb.height;
+    const cx = (diff.hx + diff.hw / 2) * scaleX;
+    const cy = (diff.hy + diff.hh / 2) * scaleY;
+    const r  = Math.max(diff.hw, diff.hh) * Math.min(scaleX, scaleY) / 2 + 8;
+
+    const marker = document.createElement('div');
+    marker.className = 'diff-marker';
+    marker.style.cssText = `left:${cx}px; top:${cy + 24}px; width:${r*2}px; height:${r*2}px;`;
+    panel.appendChild(marker);
+  }
+
+  function showMsg(txt, type) {
+    $('msg-bar').className = `msg-bar ${type}`;
+    $('msg-bar').textContent = txt;
+  }
+
+  // HINT
+  $('btn-hint').addEventListener('click', () => {
+    const scene = SCENES[currentLevel];
+    const remaining = scene.diffs.filter(d => !found.has(d.id));
+    if (remaining.length === 0) return;
+    const hint = remaining[0];
+    hintUsed++;
+    showMsg(`💡 Pista: buscá en la zona de "${hint.desc}".`, 'ok');
+  });
+
+  function showResult() {
+    $('res-sub').textContent = `Encontraste las ${TOTAL_DIFFS} diferencias en la escena "${SCENES[currentLevel].label}". ¡Excelente observación!`;
+    showScreen('screen-result');
+  }
+
+  $('btn-start').addEventListener('click', startGame);
+  $('btn-again').addEventListener('click', () => showScreen('screen-intro'));
+
+})();
+</script>
+</body>
+</html>

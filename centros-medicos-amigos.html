@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <title>Centros médicos amigos — Consultorio Dr. Dagnino</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+  <!-- PWA -->
+  <link href="manifest.webmanifest" rel="manifest"/>
+  <meta content="#0e2239" name="theme-color"/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <link href="assets/css/app.css?v=1" rel="stylesheet"/>
+
+  <style>
+    .centers-grid{display:grid; grid-template-columns:1fr; gap:16px}
+    @media (min-width: 900px){ .centers-grid{grid-template-columns:1fr} }
+
+    .center-avatar{
+      width:140px; height:110px; border-radius:22px;
+      background: rgba(255,255,255,.85);
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 30px rgba(2,6,23,.08);
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden; flex:0 0 auto;
+      padding:10px;
+    }
+    .center-logo{width:100%; height:100%; object-fit:contain}
+
+    .mini-grid{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr;
+      justify-items:center;
+    }
+    @media (min-width: 760px){
+      .mini-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .mini-grid .section-card{ text-align:center; }
+    .mini-grid .section-card .badge-soft{ margin: 10px auto 0; display:inline-flex; }
+
+    /* Alineación prolija del card-head cuando hay logo + texto + botones */
+    .section-card .card-head{ align-items:flex-start; }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER (mismo del ecosistema app.css) -->
+  <header>
+    <div class="wrap header-inner">
+      <div aria-label="Identidad institucional" class="brand">
+        <div aria-hidden="true" class="brand-badge">
+          <img alt="" src="logo-avion.png"/>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="header_title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub" data-i18n="header_sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div aria-label="Controles" class="controls">
+        <!-- Desktop -->
+        <div aria-label="Controles (escritorio)" class="controls-desktop">
+          <button aria-label="Disminuir tamaño de letra" class="btn-ghost" id="btnAminus" type="button">A-</button>
+          <button aria-label="Aumentar tamaño de letra" class="btn-ghost" id="btnAplus" type="button">A+</button>
+          <button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost" id="openSettingsDesktop" type="button">⚙️ Ajustes</button>
+          <button aria-pressed="false" class="btn-ghost" id="audioToggle" type="button">Activar sonidos</button>
+          <div aria-label="Control de volumen" class="volume">
+            <label for="volumeRange">Volumen</label>
+            <input id="volumeRange" max="100" min="0" type="range" value="35"/>
+          </div>
+          <button aria-pressed="true" class="btn-chip" data-lang="es" id="langES" type="button">ES</button>
+          <button aria-pressed="false" class="btn-chip" data-lang="en" id="langEN" type="button">EN</button>
+          <button aria-pressed="false" class="btn-chip" data-lang="pt" id="langPT" type="button">PT</button>
+        </div>
+
+        <!-- Mobile -->
+        <button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost controls-mobile" id="openSettings" type="button">
+          ⚙️ Ajustes
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SETTINGS SHEET (igual patrón) -->
+  <div aria-hidden="true" class="settings-sheet" hidden="" id="settingsSheet">
+    <div class="sheet-backdrop" id="closeSettings" tabindex="-1"></div>
+    <div aria-label="Ajustes" aria-modal="true" class="sheet" role="dialog">
+      <div class="sheet-head">
+        <div class="sheet-title">Ajustes</div>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button">Cerrar ✕</button>
+      </div>
+      <div class="sheet-body">
+        <div class="sheet-row">
+          <p class="sheet-row-title">🔠 Tamaño de letra</p>
+          <div class="sheet-actions sheet-actions-col">
+            <input aria-label="Tamaño de texto" data-action="text-scale" id="textScaleRange" max="130" min="85" step="1" type="range" value="100"/>
+            <div class="sheet-actions" style="justify-content:flex-end">
+              <button aria-label="Disminuir tamaño de letra" class="btn-ghost" data-action="font-down" type="button">A-</button>
+              <button aria-label="Aumentar tamaño de letra" class="btn-ghost" data-action="font-up" type="button">A+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🌓 Contraste</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input aria-label="Activar alto contraste" data-action="contrast" id="toggleContrast" type="checkbox"/>
+              <span aria-hidden="true" class="a11y-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🪶 Reducir animaciones</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input aria-label="Reducir animaciones" data-action="reduce-motion" id="toggleMotion" type="checkbox"/>
+              <span aria-hidden="true" class="a11y-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">↕️ Interlineado</p>
+          <div class="sheet-actions">
+            <label class="a11y-switch">
+              <input aria-label="Aumentar interlineado" data-action="line-spacing" id="toggleLine" type="checkbox"/>
+              <span aria-hidden="true" class="a11y-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sheet-row">
+          <p class="sheet-row-title">🔊 Sonidos</p>
+          <div class="sheet-actions">
+            <button aria-pressed="false" class="btn-ghost" data-action="audio-toggle" id="audioToggleSheet" type="button">
+              Activar sonidos
+            </button>
+          </div>
+          <div class="sheet-volume" style="margin-top:10px">
+            <label for="volumeRangeSheet">Volumen</label>
+            <input data-action="volume" id="volumeRangeSheet" max="100" min="0" type="range" value="35"/>
+          </div>
+        </div>
+
+        <div class="sheet-row lang-row">
+          <p class="sheet-row-title">🌐 Idioma</p>
+          <div class="sheet-actions">
+            <button aria-pressed="true" class="btn-chip" data-lang="es" type="button">ES</button>
+            <button aria-pressed="false" class="btn-chip" data-lang="en" type="button">EN</button>
+            <button aria-pressed="false" class="btn-chip" data-lang="pt" type="button">PT</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin:0">
+          Tip: estos ajustes se guardan automáticamente para próximas visitas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section aria-label="Centros médicos amigos" class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div aria-label="Estado del servicio" class="pill">
+          <span aria-hidden="true" class="dot"></span>
+          <span>Equipo profesional asociado</span>
+        </div>
+        <h1 class="hero-title">Centros médicos amigos</h1>
+        <p class="hero-bridge">
+          Instituciones y centros con los que articulamos derivaciones e interconsultas, priorizando calidad, ética y continuidad del cuidado.
+        </p>
+        <p class="hero-meta">
+          Al seleccionar “Sitio web”, se abrirá la página oficial del centro en una nueva pestaña.
+        </p>
+      </div>
+
+      <aside aria-label="Accesos rápidos" class="hero-side">
+        <h3>Accesos rápidos</h3>
+        <p>Volver al listado general o regresar al inicio.</p>
+        <div class="row">
+          <a data-spa="1" href="equipo.html">Equipo</a>
+          <a data-spa="1" href="index.html">Inicio</a>
+          <a data-spa="1" href="turnos.html">Central de Turnos</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main aria-label="Listado de centros" class="wrap" id="spaMain">
+    <!-- Intro + botones -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Listado de centros</h2>
+            <p class="card-sub">Referencias institucionales para facilitar articulación y derivación.</p>
+          </div>
+          <div class="btn-row" style="margin:0">
+            <a class="btn-secondary" data-spa="1" href="equipo.html">← Volver a Equipo</a>
+            <a class="btn-secondary" data-spa="1" href="index.html">Inicio</a>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:10px">
+          <strong>Nota:</strong> Este listado es informativo. La disponibilidad, cobertura y modalidad de atención dependen de cada institución.
+        </div>
+      </div>
+    </section>
+
+    <!-- Centros -->
+    <section class="section">
+      <div class="centers-grid">
+
+        <!-- CLIMBA -->
+        <article class="section-card hint-bg" style="overflow:hidden">
+          <div class="card-head">
+            <div style="display:flex; gap:16px; align-items:flex-start">
+              <div aria-label="Logo del centro" class="center-avatar">
+                <img
+                  alt="CLIMBA - Centro de Traumatología"
+                  class="center-logo"
+                  loading="lazy"
+                  src="/Centros_medicos_amigos/climba-logo.png"
+                />
+              </div>
+
+              <div>
+                <h3 class="card-title" style="margin:0">CLIMBA — Centro de Traumatología</h3>
+                <p class="card-sub" style="margin-bottom:8px">Centro médico especializado en Traumatología</p>
+
+                <div class="note" style="margin:0">
+                  <strong>Referente:</strong> Dr. Álvaro Muratore
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-row" style="margin:0; justify-content:flex-end">
+              <a class="btn-primary" href="https://www.climba.com.ar/" target="_blank" rel="noopener noreferrer">
+                Sitio web
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div aria-hidden="true" class="divider"></div>
+
+    <!-- Placeholders (3 zócalos) -->
+    <section class="section">
+      <div class="mini-grid">
+        <article class="section-card disabled hint-bg">
+          <h3 class="card-title">Centro médico amigo</h3>
+          <p class="card-sub">En construcción</p>
+          <span class="badge-soft">En construcción</span>
+        </article>
+
+        <article class="section-card disabled hint-bg">
+          <h3 class="card-title">Centro médico amigo</h3>
+          <p class="card-sub">En construcción</p>
+          <span class="badge-soft">En construcción</span>
+        </article>
+
+        <article class="section-card disabled hint-bg">
+          <h3 class="card-title">Centro médico amigo</h3>
+          <p class="card-sub">En construcción</p>
+          <span class="badge-soft">En construcción</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (igual ecosistema) -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+        <div class="footer-links">
+          <a data-i18n="map_open" href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" rel="noopener noreferrer" target="_blank">Abrir en Maps</a>
+          <a data-i18n="legal_link" data-spa="1" href="aviso-legal.html">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" rel="noopener noreferrer" target="_blank">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" rel="noopener noreferrer" target="_blank">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title" data-i18n="footer_title">Ubicación y contacto</p>
+        <div data-i18n="footer_loc">
+          Barrio Norte – Recoleta<br/>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong data-i18n="footer_email">Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br/>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="legal" id="legalBlock">
+          <span data-i18n="footer_legal_1">Copyright ©</span> <span id="yearNow"></span>
+          <span data-i18n="footer_legal_2">Todos los derechos reservados.</span><br/>
+          <span data-i18n="footer_legal_3">Desarrollado por PETER-SOFT</span>
+          <span data-i18n="footer_legal_4">Año automático.</span><br/><br/>
+          <span data-i18n="cookies_note">
+            Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/audio.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+</body>
+</html>

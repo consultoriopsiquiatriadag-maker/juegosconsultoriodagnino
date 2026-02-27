@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instalar como app | Consultorio Dr. Dagnino</title>
+
+  <!-- PWA / Iconos (ayuda a consistencia; Android igual prioriza el manifest) -->
+  <meta name="theme-color" content="#0f1e33" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0f1e33',
+            blue: '#2563eb',
+            light: '#eef2f7',
+            gray: '#475569',
+            card: '#ffffff'
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <!-- QR generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body { background:#eef2f7; font-family:Inter,system-ui,sans-serif }
+    .lang-btn[aria-pressed="true"]{ background:#fff;color:#0f1e33 }
+    .lang-btn[aria-pressed="false"]{ background:rgba(255,255,255,.12);color:#fff }
+    .soft-shadow { box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08); }
+    .card { background:#fff; border:1px solid rgba(15,30,51,.10); }
+  </style>
+<style>
+    /* iOS install help modal (reuse navsheet look) */
+    .eps-navsheet-backdrop{
+      position: fixed; inset: 0; background: rgba(2,6,23,.45);
+      display:none; z-index: 80; padding: 18px;
+      align-items:flex-end; justify-content:center;
+    }
+    .eps-navsheet-backdrop[aria-hidden="false"]{ display:flex; }
+    .eps-navsheet{
+      width:100%; max-width:520px; border-radius:22px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 20px 60px rgba(2,6,23,.30);
+      overflow:hidden;
+    }
+    .eps-navsheet-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 16px; border-bottom: 1px solid rgba(15,23,42,.08);
+    }
+    .eps-navsheet-close{
+      border: 1px solid rgba(15,23,42,.12);
+      background: white; border-radius: 12px;
+      padding: 8px 10px; cursor:pointer;
+    }
+    .eps-navsheet-body{ padding: 12px 16px 16px; display:grid; }
+  </style>
+</head>
+
+<body class="text-navy antialiased">
+
+  <!-- HEADER -->
+  <header class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-6 py-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-semibold mb-2">Instalar como aplicación</h1>
+          <p class="text-white/80 max-w-3xl">
+            Podés agregar la Sala de Espera Virtual a tu dispositivo para acceder más rápido, como si fuera una app.
+          </p>
+        </div>
+
+        <!-- Volver -->
+        <a href="index.html"
+           class="shrink-0 inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 px-4 py-2 transition">
+          <span aria-hidden="true">←</span>
+          <span class="font-medium">Volver al inicio</span>
+        </a>
+      </div>
+
+      <!-- Selector idioma -->
+      <div class="mt-5 flex flex-wrap gap-2">
+        <button class="lang-btn px-4 py-2 rounded-xl border border-white/20" data-lang="es" aria-pressed="true">AR Español</button>
+        <button class="lang-btn px-4 py-2 rounded-xl border border-white/20" data-lang="en" aria-pressed="false">US English</button>
+        <button class="lang-btn px-4 py-2 rounded-xl border border-white/20" data-lang="pt" aria-pressed="false">BR Português</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-10">
+
+      <div id="iosInAppBanner" class="note" style="display:none; margin: 14px 0 18px;">
+        <strong>iPhone / iPad:</strong> estás abriendo la página dentro de WhatsApp/Instagram (navegador embebido).
+        Para poder <strong>instalar la app</strong>, abrila en <strong>Safari</strong>:
+        tocá <strong>⋯</strong> o <strong>Compartir</strong> y elegí <strong>“Abrir en Safari”</strong>.
+        Luego: <strong>Compartir → Añadir a pantalla de inicio</strong>.
+        <div style="margin-top:10px" class="btn-row">
+          <button id="iosStepsBtn" class="btn-primary" type="button">Ver pasos iPhone</button>
+          <button id="copyLinkBtn2" class="btn-secondary" type="button">Copiar enlace</button>
+        </div>
+      </div>
+
+
+    <!-- ACCIÓN PRINCIPAL: QR para instalar desde el celular -->
+    <section class="card rounded-2xl p-6 soft-shadow">
+      <div class="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+        <div class="max-w-2xl">
+          <h2 class="text-2xl font-semibold mb-2">Instalación rápida con QR</h2>
+          <p class="text-gray leading-relaxed">
+            Si estás mirando esta página desde la computadora, escaneá el QR con la cámara del celular
+            para abrir el sitio y luego instalarlo como app.
+          </p>
+
+          <div class="mt-4 flex flex-wrap gap-3">
+            <button id="copyQrBtn"
+              class="inline-flex items-center justify-center rounded-xl bg-blue text-white px-4 py-2 font-medium hover:opacity-95 transition">
+              Copiar QR
+            </button>
+
+            <button id="copyLinkBtn"
+              class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-2 font-medium border border-navy/15 hover:bg-light transition">
+              Copiar link
+            </button>
+
+            <a id="openOnThisDevice"
+              class="inline-flex items-center justify-center rounded-xl bg-white px-4 py-2 font-medium border border-navy/15 hover:bg-light transition"
+              href="#"
+              rel="noopener">
+              Abrir link
+            </a>
+          </div>
+
+          <p id="copyStatus" class="mt-3 text-sm text-gray"></p>
+        </div>
+
+        <div class="flex flex-col items-center gap-3">
+          <div class="w-44 h-44 rounded-2xl bg-light border border-navy/10 flex items-center justify-center">
+            <div id="qrBox" class="p-2"></div>
+          </div>
+          <div class="text-xs text-gray text-center max-w-[18rem]">
+            Tip: en Android, después de abrir el link en Chrome → menú ⋮ → “Instalar app”.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISTA PREVIA ÍCONO -->
+    <section class="card rounded-2xl p-6 soft-shadow">
+      <div class="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold mb-2">Ícono de la app</h2>
+          <p class="text-gray leading-relaxed max-w-3xl">
+            Esta es una vista previa. En Android, el ícono final se toma del <span class="font-medium">manifest</span>.
+            Si en tu celular se ve distinto, hay que actualizar los íconos declarados allí.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-center">
+          <div class="w-28 h-28 md:w-32 md:h-32 bg-light rounded-3xl flex items-center justify-center shadow-inner border border-navy/10">
+            <img src="icon-512.png" alt="Ícono app Consultorio Dagnino" class="w-20 h-20 md:w-24 md:h-24 rounded-full">
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 rounded-xl bg-light border border-navy/10 p-4 text-sm text-gray">
+        <div class="font-medium text-navy mb-1">Dónde aparece después de instalar</div>
+        <ul class="list-disc ml-5 space-y-1">
+          <li>En la mayoría de Android, queda en la <b>pantalla de inicio</b> como una app.</li>
+          <li>Si no la ves en el “menú/cajón de apps”, buscala en <b>Ajustes → Apps</b> como “Consultorio”.</li>
+          <li>Importante: elegí <b>“Instalar app”</b> (no solo “Agregar a pantalla principal”).</li>
+        </ul>
+
+        <details class="mt-3">
+          <summary class="cursor-pointer text-navy font-medium">¿Problemas de ícono? (solución avanzada)</summary>
+          <div class="mt-2">
+            <ul class="list-disc ml-5 space-y-1">
+              <li>Desinstalá la app, borrá caché del navegador y volvé a instalar.</li>
+              <li>Verificá que el manifest apunte a los íconos 192/512 correctos.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== ESPAÑOL ===== -->
+    <section id="lang-es" class="lang-panel space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">Android (Chrome)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Abrí esta web en Google Chrome.</li>
+            <li>Tocá el menú ⋮.</li>
+            <li>Elegí <b>“Instalar app”</b>. <span class="text-gray">(Si solo ves “Agregar a pantalla principal”, puede ser un acceso directo.)</span></li>
+            <li>Confirmá.</li>
+          </ol>
+        </div>
+
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Abrí esta web en Safari.</li>
+            <li>Tocá “Compartir”.</li>
+            <li>Elegí “Agregar a pantalla de inicio”.</li>
+            <li>Confirmá.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ENGLISH ===== -->
+    <section id="lang-en" class="lang-panel space-y-6 hidden">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">Android (Chrome)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Open this site in Google Chrome.</li>
+            <li>Tap the three-dot menu.</li>
+            <li>Select <b>“Install app”</b>. <span class="text-gray">(If you only see “Add to Home screen”, it may be just a shortcut.)</span></li>
+            <li>Confirm.</li>
+          </ol>
+        </div>
+
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Open this site in Safari.</li>
+            <li>Tap “Share”.</li>
+            <li>Select “Add to Home Screen”.</li>
+            <li>Confirm.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PORTUGUÊS ===== -->
+    <section id="lang-pt" class="lang-panel space-y-6 hidden">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">Android (Chrome)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Abra este site no Google Chrome.</li>
+            <li>Toque no menu ⋮.</li>
+            <li>Selecione <b>“Instalar app”</b>. <span class="text-gray">(Se aparecer apenas “Adicionar à tela inicial”, pode ser só um atalho.)</span></li>
+            <li>Confirme.</li>
+          </ol>
+        </div>
+
+        <div class="card rounded-2xl p-6 soft-shadow">
+          <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
+          <ol class="list-decimal ml-5 space-y-1 text-gray">
+            <li>Abra este site no Safari.</li>
+            <li>Toque em “Compartilhar”.</li>
+            <li>Selecione “Adicionar à Tela de Início”.</li>
+            <li>Confirme.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="card rounded-2xl p-6 soft-shadow">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-semibold mb-1">¿Listo?</h2>
+          <p class="text-gray">Cuando termines, podés volver al inicio para elegir herramientas y juegos.</p>
+        </div>
+        <a href="index.html"
+           class="inline-flex items-center justify-center rounded-xl bg-blue text-white px-5 py-3 font-medium hover:opacity-95 transition">
+          Volver a la página principal
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center text-sm text-gray py-8">
+    © <span id="year"></span> Consultorio de Psiquiatría y Medicina Aeronáutica · Dr. Pedro Nicolás Dagnino
+  </footer>
+
+  <script>
+    // Año
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Idiomas
+    const panels = {
+      es: document.getElementById('lang-es'),
+      en: document.getElementById('lang-en'),
+      pt: document.getElementById('lang-pt')
+    };
+    const buttons = document.querySelectorAll('.lang-btn');
+    function setLang(lang){
+      Object.keys(panels).forEach(k => panels[k].classList.toggle('hidden', k !== lang));
+      buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+      localStorage.setItem('instalar_lang', lang);
+    }
+    buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    setLang(localStorage.getItem('instalar_lang') || 'es');
+
+    // URL base para QR (si estás en Netlify/host, usa location.href)
+    const targetUrl = location.href;
+
+    // Link "Abrir"
+    const openBtn = document.getElementById('openOnThisDevice');
+    openBtn.href = targetUrl;
+
+    // Generar QR
+    const qrBox = document.getElementById('qrBox');
+    qrBox.innerHTML = "";
+    const qr = new QRCode(qrBox, {
+      text: targetUrl,
+      width: 160,
+      height: 160,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // Helpers
+    const statusEl = document.getElementById('copyStatus');
+    function setStatus(msg, ok=true){
+      statusEl.textContent = msg;
+      statusEl.className = ok ? "mt-3 text-sm text-gray" : "mt-3 text-sm text-red-600";
+      setTimeout(() => { statusEl.textContent = ""; }, 3500);
+    }
+
+    // Copiar link
+    document.getElementById('copyLinkBtn').addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(targetUrl);
+        setStatus("Link copiado ✅");
+      }catch(e){
+        setStatus("No se pudo copiar el link. Tu navegador bloqueó el portapapeles.", false);
+      }
+    });
+
+    // Copiar QR (imagen) si es posible; si no, copiar link
+    document.getElementById('copyQrBtn').addEventListener('click', async () => {
+      try{
+        // qrcodejs suele generar un <img> con dataURL o un <canvas>
+        const img = qrBox.querySelector('img');
+        const canvas = qrBox.querySelector('canvas');
+
+        let blob = null;
+
+        if (canvas) {
+          blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+        } else if (img && img.src.startsWith("data:image")) {
+          const res = await fetch(img.src);
+          blob = await res.blob();
+        }
+
+        if (!blob) throw new Error("QR no disponible como imagen.");
+
+        // Clipboard API para imágenes
+        if (navigator.clipboard && window.ClipboardItem) {
+          await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+          setStatus("QR copiado ✅ (pegalo en WhatsApp/Notas y escanealo)");
+        } else {
+          // Fallback: copiar link
+          await navigator.clipboard.writeText(targetUrl);
+          setStatus("Tu navegador no permite copiar imágenes. Copié el link ✅");
+        }
+      }catch(e){
+        try{
+          await navigator.clipboard.writeText(targetUrl);
+          setStatus("No pude copiar el QR como imagen. Copié el link ✅");
+        }catch(err){
+          setStatus("No se pudo copiar ni QR ni link (portapapeles bloqueado).", false);
+        }
+      }
+    });
+  </script>
+
+
+  <div id="iosModal" class="eps-navsheet-backdrop" aria-hidden="true">
+    <div class="eps-navsheet" role="dialog" aria-modal="true" aria-label="Instalar en iPhone">
+      <div class="eps-navsheet-head">
+        <strong>Instalar en iPhone / iPad</strong>
+        <button class="eps-navsheet-close" id="iosModalClose" type="button" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="eps-navsheet-body" style="gap:12px">
+        <div class="note" style="margin:0">
+          <ol style="margin:0; padding-left:18px">
+            <li><strong>Abrí en Safari:</strong> en WhatsApp/Instagram tocá <strong>⋯</strong> o <strong>Compartir</strong> → <strong>“Abrir en Safari”</strong>.</li>
+            <li>En Safari tocá el botón <strong>Compartir</strong> (cuadrado con flecha hacia arriba).</li>
+            <li>Elegí <strong>“Añadir a pantalla de inicio”</strong> y confirmá <strong>Añadir</strong>.</li>
+          </ol>
+        </div>
+        <div class="note" style="margin:0">
+          Si no ves “Añadir a pantalla de inicio”, casi siempre es porque no estás en Safari (estás en un navegador embebido).
+        </div>
+        <button class="btn-primary" id="iosModalOk" type="button">Entendido</button>
+      </div>
+    </div>
+  </div>
+<script>
+  (function(){
+    const ua = navigator.userAgent || "";
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    const isInApp = /Instagram|FBAN|FBAV|Line|Twitter|GSA|WhatsApp/i.test(ua);
+    const banner = document.getElementById('iosInAppBanner');
+    const stepsBtn = document.getElementById('iosStepsBtn');
+    const modal = document.getElementById('iosModal');
+    const closeBtn = document.getElementById('iosModalClose');
+    const okBtn = document.getElementById('iosModalOk');
+    const copy2 = document.getElementById('copyLinkBtn2');
+
+    function openModal(){
+      if(!modal) return;
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      if(!modal) return;
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    if(isIOS && isInApp && banner){
+      banner.style.display = '';
+    }
+
+    if(stepsBtn) stepsBtn.addEventListener('click', openModal);
+    if(closeBtn) closeBtn.addEventListener('click', closeModal);
+    if(okBtn) okBtn.addEventListener('click', closeModal);
+    if(modal) modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+
+    // Copy link helper (reuse existing copyLink if present)
+    if(copy2){
+      copy2.addEventListener('click', () => {
+        const btn = document.getElementById('copyLink');
+        if(btn) { btn.click(); return; }
+        // fallback: copy current URL
+        navigator.clipboard?.writeText(location.href).catch(()=>{});
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Juego 11 · Dígitos directos / inversos — Sala de espera virtual</title>
+  <meta name="description" content="Memoria de trabajo: repetí secuencias de dígitos en orden directo o inverso. Puntaje, racha y registro copiable." />
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <meta name="theme-color" content="#0e2239" />
+
+  <style>
+    .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
+    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .brand .logo{ width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
+    .brand-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand-sub{ opacity:.9; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .game-shell{ margin-top:16px; }
+    .game-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .kpiwrap{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .kpi{ padding:10px 12px; border-radius:14px; border:1px solid rgba(15,30,51,.12); background: rgba(238,242,247,.9); min-width: 150px; }
+    .kpi .label{ font-size:.8rem; opacity:.8; margin:0; }
+    .kpi .value{ margin:2px 0 0 0; font-weight:800; font-size:1.05rem; color:#0f1e33; }
+
+    .stage{ margin-top:14px; display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; }
+    @media (max-width: 920px){ .stage{ grid-template-columns: 1fr; } }
+
+    .prompt-box{
+      border-radius:18px;
+      border:1px solid rgba(15,30,51,.14);
+      background:#fff;
+      padding:18px;
+      min-height: 220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .prompt{
+      font-size: clamp(42px, 5.2vw, 64px);
+      font-weight: 900;
+      color:#0f1e33;
+      letter-spacing: .08em;
+      line-height:1.05;
+      margin:0;
+      text-align:center;
+    }
+    .subline{
+      text-align:center;
+      margin:0;
+      font-weight:700;
+      color:#334155;
+      opacity:.9;
+    }
+
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(15,30,51,.10);
+      overflow:hidden;
+      margin-top:6px;
+    }
+    .bar > div{
+      height:100%;
+      width:100%;
+      background: rgba(37,99,235,.55);
+      transform-origin: left center;
+      transform: scaleX(0);
+    }
+
+    .status{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15,30,51,.12);
+      background: rgba(238,242,247,.9);
+      min-height: 60px;
+    }
+    .status b{ color:#0f1e33; }
+    .muted{ color:#475569; }
+
+    .pad{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .pad button{
+      padding: 14px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,30,51,.14);
+      background: rgba(255,255,255,.92);
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color:#0f1e33;
+    }
+    .pad button:hover{ box-shadow: 0 8px 24px rgba(15,30,51,.10); }
+    .pad button[disabled]{ cursor:not-allowed; opacity:.6; }
+
+    .entry{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,30,51,.14);
+      background: rgba(255,255,255,.92);
+      margin-top: 12px;
+    }
+    .entry .val{
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-weight: 900;
+      letter-spacing: .12em;
+      font-size: 1.1rem;
+      color:#0f1e33;
+      min-height: 1.4em;
+    }
+    .entry .mini{
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
+    }
+
+    .settings-grid{ display:grid; grid-template-columns: 1fr; gap:12px; margin-top: 12px; }
+    .setting{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .setting label{ font-weight:700; color:#0f1e33; }
+    select, input[type="number"]{
+      border-radius: 12px;
+      border: 1px solid rgba(15,30,51,.18);
+      padding: 10px 10px;
+      background:#fff;
+      min-width: 180px;
+    }
+
+    .result-box{
+      padding:12px 12px;
+      border-radius:16px;
+      border: 1px solid rgba(15,30,51,.12);
+      background: rgba(238,242,247,.9);
+      margin-top: 12px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 800;
+      font-size: .92rem;
+    }
+    .note{
+      margin-top:12px;
+      opacity:.92;
+      font-size: .95rem;
+      color:#334155;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🔢</div>
+        <div class="brand-text" style="min-width:0">
+          <div class="brand-title">Sala de espera virtual</div>
+          <div class="brand-sub">Juego 11 · Dígitos directos / inversos</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+        <span class="pill" id="pillMode" title="Configuración actual">🎛️</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap game-shell">
+    <section class="section-card">
+      <div class="game-head">
+        <div>
+          <h1 class="card-title" style="margin:0">Dígitos directos / inversos</h1>
+          <p class="card-sub" style="margin-top:6px">
+            Memoria de trabajo: mirá la secuencia y repetila <b>igual</b> (directo) o <b>al revés</b> (inverso).
+          </p>
+        </div>
+        <div class="row">
+          <button class="btn-primary" id="btnStart" type="button">Iniciar</button>
+          <button class="btn btn-ghost" id="btnStop" type="button" disabled>Terminar</button>
+        </div>
+      </div>
+
+      <div class="kpiwrap" aria-label="Indicadores">
+        <div class="kpi">
+          <p class="label">Ítem</p>
+          <p class="value" id="kpiItem">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Longitud</p>
+          <p class="value" id="kpiLen">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Aciertos</p>
+          <p class="value" id="kpiOk">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Span máx.</p>
+          <p class="value" id="kpiMax">—</p>
+        </div>
+        <div class="kpi">
+          <p class="label">Racha</p>
+          <p class="value" id="kpiStreak">—</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div>
+          <div class="prompt-box" aria-live="polite">
+            <div>
+              <p class="subline" id="hintLine">Configurá y presioná <b>Iniciar</b>.</p>
+              <h2 class="prompt" id="prompt">—</h2>
+              <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+            </div>
+
+            <div>
+              <div class="entry">
+                <div class="val" id="entryVal"> </div>
+                <div class="mini">
+                  <button class="btn btn-ghost" id="btnBack" type="button" disabled>⌫</button>
+                  <button class="btn btn-ghost" id="btnClear" type="button" disabled>Limpiar</button>
+                  <button class="btn" id="btnSubmit" type="button" disabled>Enviar</button>
+                </div>
+              </div>
+
+              <div class="pad" id="pad" aria-label="Teclado numérico">
+                <!-- buttons injected -->
+              </div>
+
+              <div class="status" id="status">
+                <span class="muted">Tip:</span> si estás en <b>inverso</b>, repetí la secuencia de derecha a izquierda.
+              </div>
+            </div>
+          </div>
+
+          <div class="note">
+            Esto es un <b>ejercicio breve</b> para entrenar atención y memoria de trabajo. No es diagnóstico.
+          </div>
+        </div>
+
+        <aside class="section-card" style="margin:0">
+          <h2 class="card-title" style="margin:0">Configuración</h2>
+          <p class="card-sub" style="margin-top:6px">Ajustá antes de iniciar.</p>
+
+          <div class="settings-grid">
+            <div class="setting">
+              <label for="modeSel">Modo</label>
+              <select id="modeSel">
+                <option value="forward">Dígitos directos</option>
+                <option value="backward">Dígitos inversos</option>
+              </select>
+            </div>
+
+            <div class="setting">
+              <label for="itemsNum">Cantidad de ítems</label>
+              <input id="itemsNum" type="number" min="5" max="30" step="1" value="10" />
+            </div>
+
+            <div class="setting">
+              <label for="startLen">Longitud inicial</label>
+              <input id="startLen" type="number" min="2" max="8" step="1" value="3" />
+            </div>
+
+            <div class="setting">
+              <label for="speedSel">Velocidad</label>
+              <select id="speedSel">
+                <option value="slow">Lenta (1.0 s/dígito)</option>
+                <option value="normal" selected>Normal (0.75 s/dígito)</option>
+                <option value="fast">Rápida (0.55 s/dígito)</option>
+              </select>
+            </div>
+
+            <div class="setting">
+              <label for="limitSel">Tiempo para responder</label>
+              <select id="limitSel">
+                <option value="0" selected>Sin límite</option>
+                <option value="10">10 s</option>
+                <option value="15">15 s</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="result-box" id="resultBox" style="display:none">
+            <h3 class="card-title" style="margin:0">Resultado</h3>
+            <p class="card-sub" id="resultText" style="margin-top:8px"></p>
+            <div class="row" style="margin-top:10px">
+              <button class="btn" id="btnCopy" type="button">Copiar</button>
+              <button class="btn btn-ghost" id="btnRestart" type="button">Reiniciar</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // Accesibilidad: tamaño de texto (persistente)
+    (function(){
+      const key="textScalePct";
+      let pct = parseInt(localStorage.getItem(key) || "100", 10);
+      pct = Math.min(130, Math.max(85, pct));
+      document.documentElement.style.setProperty("--scale", pct + "%");
+      const minus = document.getElementById("btnAminus");
+      const plus  = document.getElementById("btnAplus");
+      minus.addEventListener("click", ()=>{ pct=Math.max(85, pct-5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+      plus.addEventListener("click", ()=>{ pct=Math.min(130, pct+5); localStorage.setItem(key, pct); document.documentElement.style.setProperty("--scale", pct+"%"); });
+    })();
+
+    const $ = (id)=>document.getElementById(id);
+
+    const padEl = $("pad");
+    const entryVal = $("entryVal");
+    const promptEl = $("prompt");
+    const hintLine = $("hintLine");
+    const statusEl = $("status");
+    const barFill = $("barFill");
+
+    const btnStart = $("btnStart");
+    const btnStop = $("btnStop");
+    const btnBack = $("btnBack");
+    const btnClear = $("btnClear");
+    const btnSubmit = $("btnSubmit");
+
+    const modeSel = $("modeSel");
+    const itemsNum = $("itemsNum");
+    const startLen = $("startLen");
+    const speedSel = $("speedSel");
+    const limitSel = $("limitSel");
+    const pillMode = $("pillMode");
+
+    const kpiItem = $("kpiItem");
+    const kpiLen  = $("kpiLen");
+    const kpiOk   = $("kpiOk");
+    const kpiMax  = $("kpiMax");
+    const kpiStreak = $("kpiStreak");
+
+    const resultBox = $("resultBox");
+    const resultText= $("resultText");
+    const btnCopy = $("btnCopy");
+    const btnRestart = $("btnRestart");
+
+    const speeds = { slow: 1000, normal: 750, fast: 550 };
+
+    let state = "idle"; // idle | showing | input | ended
+    let total = 10;
+    let idx = 0;
+    let len = 3;
+    let minLen = 3;
+    let mode = "forward";
+    let ok = 0;
+    let maxSpan = 0;
+    let streak = 0;
+    let tStartItem = 0;
+    let rts = [];
+    let current = [];
+    let expected = "";
+    let respTimer = null;
+    let respDeadline = 0;
+
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function updatePill(){
+      const m = modeSel.value === "forward" ? "Directo" : "Inverso";
+      const sp = speedSel.value;
+      const lim = parseInt(limitSel.value,10)===0 ? "∞" : (limitSel.value+"s");
+      pillMode.textContent = `🎛️ ${m} · ${itemsNum.value} ítems · ${lim}`;
+      pillMode.title = `Modo: ${m} | Ítems: ${itemsNum.value} | Velocidad: ${sp} | Límite: ${lim}`;
+    }
+    ["change","input"].forEach(ev=>{
+      modeSel.addEventListener(ev, updatePill);
+      itemsNum.addEventListener(ev, updatePill);
+      speedSel.addEventListener(ev, updatePill);
+      limitSel.addEventListener(ev, updatePill);
+      startLen.addEventListener(ev, updatePill);
+    });
+    updatePill();
+
+    // Build keypad
+    const keys = ["1","2","3","4","5","6","7","8","9","0"];
+    function buildPad(){
+      padEl.innerHTML="";
+      keys.forEach(k=>{
+        const b=document.createElement("button");
+        b.type="button";
+        b.textContent=k;
+        b.addEventListener("click", ()=>addDigit(k));
+        padEl.appendChild(b);
+      });
+    }
+    buildPad();
+
+    function setPadEnabled(enabled){
+      [...padEl.querySelectorAll("button")].forEach(b=>b.disabled=!enabled);
+      btnBack.disabled = !enabled;
+      btnClear.disabled = !enabled;
+      btnSubmit.disabled = !enabled;
+    }
+
+    function resetEntry(){
+      entryVal.textContent = "";
+      entryVal.dataset.raw = "";
+    }
+
+    function addDigit(d){
+      if(state!=="input") return;
+      const raw = (entryVal.dataset.raw || "");
+      const next = raw + d;
+      entryVal.dataset.raw = next;
+      entryVal.textContent = next.split("").join(" ");
+    }
+    function backspace(){
+      if(state!=="input") return;
+      const raw = (entryVal.dataset.raw || "");
+      const next = raw.slice(0,-1);
+      entryVal.dataset.raw = next;
+      entryVal.textContent = next.split("").join(" ");
+    }
+    function clearAll(){
+      if(state!=="input") return;
+      resetEntry();
+    }
+
+    btnBack.addEventListener("click", backspace);
+    btnClear.addEventListener("click", clearAll);
+
+    document.addEventListener("keydown", (e)=>{
+      if(state!=="input") return;
+      if(e.key>="0" && e.key<="9"){ addDigit(e.key); }
+      if(e.key==="Backspace"){ backspace(); }
+      if(e.key==="Enter"){ submit(); }
+      if(e.key==="Escape"){ clearAll(); }
+    });
+
+    function digitsString(arr){
+      return arr.join(" ");
+    }
+
+    async function showSequence(arr, msPerDigit){
+      state="showing";
+      setPadEnabled(false);
+      resetEntry();
+      statusEl.innerHTML = '<span class="muted">Memorizá la secuencia…</span>';
+      hintLine.innerHTML = (mode==="forward")
+        ? "Repetí la secuencia <b>igual</b>."
+        : "Repetí la secuencia <b>al revés</b>.";
+
+      // countdown
+      promptEl.textContent = "3";
+      await wait(350);
+      promptEl.textContent = "2";
+      await wait(350);
+      promptEl.textContent = "1";
+      await wait(350);
+
+      for(let i=0;i<arr.length;i++){
+        promptEl.textContent = arr[i];
+        await wait(msPerDigit);
+        promptEl.textContent = "—";
+        await wait(180);
+      }
+      promptEl.textContent = "…";
+      await wait(180);
+
+      // Switch to input
+      state="input";
+      promptEl.textContent = "—";
+      hintLine.innerHTML = "Ingresá tu respuesta y presioná <b>Enviar</b>.";
+      statusEl.innerHTML = '<span class="muted">Ingresando…</span>';
+      setPadEnabled(true);
+      tStartItem = performance.now();
+
+      startResponseTimer();
+    }
+
+    function startResponseTimer(){
+      stopResponseTimer();
+      const lim = parseInt(limitSel.value,10);
+      if(!lim){ barFill.style.transform = "scaleX(0)"; return; }
+
+      respDeadline = performance.now() + lim*1000;
+      barFill.style.transform = "scaleX(1)";
+      const tick = ()=>{
+        if(state!=="input"){ barFill.style.transform="scaleX(0)"; return; }
+        const remain = Math.max(0, respDeadline - performance.now());
+        const pct = remain / (lim*1000);
+        barFill.style.transform = `scaleX(${pct})`;
+        if(remain<=0){
+          // timeout
+          stopResponseTimer();
+          submit(true);
+          return;
+        }
+        respTimer = requestAnimationFrame(tick);
+      };
+      respTimer = requestAnimationFrame(tick);
+    }
+    function stopResponseTimer(){
+      if(respTimer){ cancelAnimationFrame(respTimer); respTimer=null; }
+    }
+
+    function wait(ms){ return new Promise(res=>setTimeout(res, ms)); }
+
+    function nextItem(){
+      if(idx>=total){ endGame(); return; }
+      // update KPIs
+      kpiItem.textContent = `${idx+1} / ${total}`;
+      kpiLen.textContent = `${len}`;
+      kpiOk.textContent = `${ok}`;
+      kpiMax.textContent = `${maxSpan}`;
+      kpiStreak.textContent = `${streak}`;
+
+      // generate digits (avoid long same digit streaks)
+      current = [];
+      let last = null;
+      for(let i=0;i<len;i++){
+        let d = Math.floor(Math.random()*10);
+        if(last!==null && Math.random()<0.35){
+          while(d===last) d = Math.floor(Math.random()*10);
+        }
+        current.push(String(d));
+        last = d;
+      }
+      expected = (mode==="forward")
+        ? current.join("")
+        : current.slice().reverse().join("");
+
+      const ms = speeds[speedSel.value] || 750;
+      showSequence(current, ms);
+    }
+
+    function submit(isTimeout=false){
+      if(state!=="input") return;
+      stopResponseTimer();
+      setPadEnabled(false);
+
+      const raw = (entryVal.dataset.raw || "");
+      const rt = performance.now() - tStartItem;
+
+      const correct = (!isTimeout) && raw === expected;
+
+      if(correct){
+        ok++;
+        streak++;
+        maxSpan = Math.max(maxSpan, len);
+        statusEl.innerHTML = `✅ <b>Correcto</b>. (${mode==="forward"?"Directo":"Inverso"})`;
+        len = Math.min(12, len + 1);
+      } else {
+        streak = 0;
+        const expShow = expected.split("").join(" ");
+        const gotShow = (isTimeout ? "⏱️ Tiempo" : (raw ? raw.split("").join(" ") : "—"));
+        statusEl.innerHTML = `❌ <b>Incorrecto</b>. Esperado: <b>${expShow}</b> · Tu respuesta: <b>${gotShow}</b>`;
+        len = Math.max(minLen, len - 1);
+      }
+
+      rts.push(rt);
+      idx++;
+
+      // brief pause then next
+      setTimeout(()=>{ nextItem(); }, 900);
+    }
+
+    btnSubmit.addEventListener("click", ()=>submit(false));
+
+    function setRunning(r){
+      btnStart.disabled = r;
+      btnStop.disabled = !r;
+      modeSel.disabled = r;
+      itemsNum.disabled = r;
+      startLen.disabled = r;
+      speedSel.disabled = r;
+      limitSel.disabled = r;
+    }
+
+    function startGame(){
+      resultBox.style.display="none";
+      mode = modeSel.value;
+      total = clamp(parseInt(itemsNum.value,10) || 10, 5, 30);
+      len = clamp(parseInt(startLen.value,10) || 3, 2, 8);
+      minLen = len;
+      idx = 0;
+      ok = 0;
+      maxSpan = 0;
+      streak = 0;
+      rts = [];
+      state="idle";
+      promptEl.textContent = "—";
+      resetEntry();
+      hintLine.innerHTML = "Preparado/a. Presioná <b>Iniciar</b>.";
+      statusEl.innerHTML = '<span class="muted">Tip:</span> mantené la vista fija y respiración tranquila.';
+      barFill.style.transform="scaleX(0)";
+      setRunning(true);
+    }
+
+    function endGame(){
+      state="ended";
+      setRunning(false);
+      setPadEnabled(false);
+      stopResponseTimer();
+      promptEl.textContent = "✓";
+      hintLine.innerHTML = "Juego finalizado.";
+      const acc = ok / total;
+      const avgRT = rts.length ? (rts.reduce((a,b)=>a+b,0)/rts.length) : 0;
+      const level = (acc>=0.85 && maxSpan>=7) ? "Excelente"
+        : (acc>=0.70 && maxSpan>=5) ? "Bien"
+        : "A practicar";
+
+      const m = (mode==="forward") ? "Directo" : "Inverso";
+      const txt = `Resultado: ${level}. Modo: ${m}. Aciertos: ${ok}/${total} (${Math.round(acc*100)}%). Span máximo: ${maxSpan || minLen}. Tiempo medio de respuesta: ${Math.round(avgRT)} ms.`;
+      resultText.textContent = txt;
+      resultBox.style.display="block";
+      statusEl.innerHTML = `📌 <b>${level}</b> · Probá otra vez cambiando modo o velocidad.`;
+    }
+
+    function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
+
+    btnStart.addEventListener("click", ()=>{
+      // initialize state quickly
+      mode = modeSel.value;
+      total = clamp(parseInt(itemsNum.value,10) || 10, 5, 30);
+      len = clamp(parseInt(startLen.value,10) || 3, 2, 8);
+      minLen = len;
+      idx = 0;
+      ok = 0;
+      maxSpan = 0;
+      streak = 0;
+      rts = [];
+      state="idle";
+      setRunning(true);
+      nextItem();
+    });
+
+    btnStop.addEventListener("click", endGame);
+
+    btnRestart.addEventListener("click", ()=>{
+      // reset to idle but keep settings
+      state="idle";
+      setPadEnabled(false);
+      setRunning(false);
+      promptEl.textContent = "—";
+      hintLine.innerHTML = "Configurá y presioná <b>Iniciar</b>.";
+      statusEl.innerHTML = '<span class="muted">Tip:</span> si estás en <b>inverso</b>, repetí la secuencia de derecha a izquierda.';
+      barFill.style.transform="scaleX(0)";
+      kpiItem.textContent="—"; kpiLen.textContent="—"; kpiOk.textContent="—"; kpiMax.textContent="—"; kpiStreak.textContent="—";
+      resultBox.style.display="none";
+      updatePill();
+    });
+
+    btnCopy.addEventListener("click", async ()=>{
+      const m = (mode==="forward") ? "Directo" : "Inverso";
+      const acc = ok / total;
+      const avgRT = rts.length ? (rts.reduce((a,b)=>a+b,0)/rts.length) : 0;
+      const text = `Juego 11 · Dígitos (${m}) | Aciertos: ${ok}/${total} (${Math.round(acc*100)}%) | Span max: ${maxSpan || minLen} | RT medio: ${Math.round(avgRT)} ms`;
+      try{
+        await navigator.clipboard.writeText(text);
+        statusEl.innerHTML = "✅ Copiado al portapapeles.";
+      }catch(e){
+        statusEl.innerHTML = "⚠️ No se pudo copiar automáticamente.";
+      }
+    });
+
+    // start disabled pad
+    setPadEnabled(false);
+    // init KPIs
+    kpiItem.textContent="—"; kpiLen.textContent="—"; kpiOk.textContent="—"; kpiMax.textContent="—"; kpiStreak.textContent="—";
+  </script>
+</body>
+</html>

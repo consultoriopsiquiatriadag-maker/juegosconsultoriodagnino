@@ -1,0 +1,785 @@
+﻿<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Síndrome de Saturación Audiovisual — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía clara y práctica sobre sobreestimulación audiovisual: síntomas, señales de alarma, autoevaluación breve y plan mínimo de 7 días para recuperar control." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* === Homogeneizado al look del ecosistema (como estres-cronico-burnout.html) === */
+
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.10) 0%, rgba(14,34,57,.62) 70%, rgba(14,34,57,.78) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 78ch; }
+
+    .toc{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
+
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .audio-player{ width:100%; border-radius: 12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    .video-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .video-player{ width:100%; border-radius: 12px; background:#000; }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+      white-space: nowrap;
+    }
+
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .range-row label{ min-width: 210px; font-weight: 700; }
+    .range-row input[type="range"]{ flex: 1; min-width: 220px; }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    .checklist{ display:grid; gap:10px; margin-top: 10px; }
+    .check-item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+    }
+    .check-item input{ margin-top: 3px; }
+
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    .longread{ line-height: 1.65; }
+
+    /* Mini badges internos */
+    .badge{
+      display:inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(2,132,199,.12);
+      border: 1px solid rgba(2,132,199,.25);
+      font-weight: 800;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER / TOPBAR -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>🧠</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Síndrome de Saturación Audiovisual</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/saturacion-audiovisual-portada.webp (sin texto) -->
+        <img src="assets/img/saturacion-audiovisual-portada.webp?v=1" alt="Ilustración representativa de sobreestimulación audiovisual" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Síndrome de Saturación Audiovisual (SSA)</h1>
+          <p>Cuando el cerebro queda “encendido”: scrolling infinito, videos hiperintensos/IA, y sensación de agotamiento mental.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Explicación guiada: qué es, por qué pasa y cómo recuperar control sin “prohibiciones”.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <!-- ✅ Cuando lo tengas, guardalo en /audio/ -->
+            <source src="audio/Sindrome_de_Saturacion_Audiovisual_SSA.m4a" type="audio/mp4" />
+            <source src="audio/Sindrome_de_Saturacion_Audiovisual_SSA.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/Sindrome_de_Saturacion_Audiovisual_SSA.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video (opcional) -->
+    <section class="section" id="video">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mirá el resumen en video (opcional)</h2>
+            <p class="card-sub">3 señales + qué hacer hoy para bajar “ruido mental”.</p>
+          </div>
+          <span class="chip" aria-label="Video disponible">🎬 Video</span>
+        </div>
+
+        <div class="video-wrap">
+          <video class="video-player" controls preload="metadata" playsinline>
+            <!-- ✅ Si lo hacés, guardalo en /assets/videos/ -->
+            <source src="assets/videos/SSA_3_senales_y_que_hacer_hoy.mp4" type="video/mp4" />
+            Tu navegador no soporta video.
+          </video>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Volver a la lectura</a>
+            <a class="btn btn-ghost" href="assets/videos/SSA_3_senales_y_que_hacer_hoy.mp4" download>Descargar video</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Acceso rápido -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Elegí lo que necesitás hoy.</p>
+            <div class="toc" aria-label="Índice">
+              <a class="btn btn-ghost" href="#que-es">Qué es</a>
+              <a class="btn btn-ghost" href="#por-que">Por qué pasa</a>
+              <a class="btn btn-ghost" href="#sintomas">Síntomas</a>
+              <a class="btn btn-ghost" href="#derivas">Riesgos / derivas</a>
+              <a class="btn btn-ghost" href="#alarmas">Señales de alarma</a>
+              <a class="btn btn-ghost" href="#autoevaluacion">Autoevaluación</a>
+              <a class="btn btn-ghost" href="#plan">Plan 7 días</a>
+              <a class="btn btn-ghost" href="#lectura">Lectura larga</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Qué es / Por qué pasa -->
+    <section class="section" id="que-es">
+      <div class="grid-2" style="margin-top:10px">
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">¿Qué es el SSA?</h2>
+              <p class="card-sub">
+                Un conjunto de síntomas que aparecen cuando pasás muchas horas expuesto/a a estímulos audiovisuales intensos
+                (películas “de alta carga”, clips cortos en cadena, scrolling, videos hiperrealistas/IA).
+                La mente queda en <b>modo alerta</b> o <b>modo búsqueda</b>, y después cuesta “apagar”.
+              </p>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            No es un diagnóstico DSM “oficial”. Es un <b>nombre práctico</b> para describir un patrón clínico que puede derivar en cuadros reales
+            (ansiedad, insomnio, trastorno de adaptación, despersonalización, depresión o activación hipomaníaca en personas vulnerables).
+          </div>
+        </div>
+
+        <div class="section-card hint-bg" style="margin:0" id="por-que">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">¿Por qué pasa?</h2>
+              <p class="card-sub">
+                Porque se combinan: <b>carga sensorial</b> + <b>novedad constante</b> + <b>pocas pausas</b>.
+                El cerebro se acostumbra a “alto octanaje” y le cuesta tolerar el silencio, el ritmo lento y la recuperación.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <span class="badge">⚡ Estímulo alto</span>
+            <span class="badge">🔁 Recompensa por novedad</span>
+            <span class="badge">🧩 Fragmentación atencional</span>
+            <span class="badge">🌙 Sueño alterado</span>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Cuando el sueño se rompe, el sistema nervioso queda más reactivo: aumenta irritabilidad, cefaleas, ansiedad y la sensación de “ruido mental”.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Síntomas -->
+    <section class="section" id="sintomas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Síntomas frecuentes</h2>
+            <p class="card-sub">Cómo se manifiesta en la vida real (mente + cuerpo + hábitos).</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Mentales / emocionales</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>“Cerebro acelerado” después de ver contenido (cuesta bajar).</li>
+              <li>Irritabilidad, impaciencia, tolerancia baja a lo cotidiano.</li>
+              <li>Ansiedad, inquietud, sensación de alarma.</li>
+              <li>Dificultad para concentrarte en tareas lentas o largas.</li>
+              <li>Embote emocional: “me quedé vacío/a” o “me da todo lo mismo”.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Físicos</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Cefaleas, pesadez ocular, fotofobia leve.</li>
+              <li>Contracturas (cuello/mandíbula), bruxismo.</li>
+              <li>Cansancio que no se arregla con “un rato de descanso”.</li>
+              <li>Palpitaciones o opresión (cuando se mezcla con ansiedad).</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Sueño y energía</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Insomnio de conciliación o de mantenimiento.</li>
+              <li>Sueño superficial: te levantás cansado/a.</li>
+              <li>Más cafeína o estimulantes para “funcionar”.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Conducta digital</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Scroll “automático”: seguís aunque ya no lo disfrutás.</li>
+              <li>Necesidad de más intensidad (tolerancia).</li>
+              <li>Se te va el tiempo y después viene culpa/ansiedad.</li>
+              <li>Dejás de lado comidas, higiene del sueño o vínculos.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Derivas / riesgos -->
+    <section class="section" id="derivas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Riesgos / derivas (si se mantiene)</h2>
+            <p class="card-sub">No es para asustar: es para detectar a tiempo y prevenir.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Burnout / agotamiento</h3>
+            <p class="card-sub" style="margin-top:10px">
+              Si la sobreestimulación se suma a alta exigencia y poco descanso, puede acelerar un patrón de
+              <b>agotamiento</b>, <b>cinismo</b> y <b>caída de eficacia</b>.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Trastorno de adaptación</h3>
+            <p class="card-sub" style="margin-top:10px">
+              Cuando hay un cambio de entorno/hábito (p. ej., “me quedé pegado a redes/IA”) con síntomas ansioso-depresivos,
+              irritabilidad, insomnio y deterioro funcional.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Despersonalización / desrealización</h3>
+            <p class="card-sub" style="margin-top:10px">
+              En algunas personas aparece sensación de irrealidad, desconexión o “piloto automático”, sobre todo si hay
+              <b>ansiedad alta</b> + <b>privación de sueño</b>.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Depresión / anhedonia</h3>
+            <p class="card-sub" style="margin-top:10px">
+              El “alto estímulo” puede bajar la tolerancia al placer simple, aumentar apatía y dejar una sensación de vacío.
+              Si hay tristeza sostenida y pérdida de interés, conviene evaluar.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Activación hipomaníaca (vulnerables)</h3>
+            <p class="card-sub" style="margin-top:10px">
+              Ojo si aparece: <b>menos sueño sin cansancio</b>, aumento de energía/ideas, aceleración, irritabilidad,
+              impulsividad o gastos/riesgos. Esto requiere evaluación clínica.
+            </p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Síntomas físicos persistentes</h3>
+            <p class="card-sub" style="margin-top:10px">
+              Cefaleas, tensión muscular, fatiga y molestias digestivas pueden cronificarse si no se recupera el descanso real
+              y el sistema nervioso sigue “en alerta”.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          La clave clínica no es el “contenido” en sí: es el <b>tiempo</b>, la <b>intensidad</b>, el <b>after-effect</b>, el <b>sueño</b>
+          y el <b>deterioro funcional</b>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Cuándo conviene consultar con mayor prioridad.</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Insomnio severo sostenido (días a semanas) con deterioro funcional.</li>
+          <li>Cefaleas frecuentes o síntomas físicos que se vuelven diarios.</li>
+          <li>Crisis de ansiedad/pánico repetidas o evitación creciente.</li>
+          <li>Pérdida clara de control: “no puedo cortar” aunque me haga mal.</li>
+          <li>Despersonalización/desrealización persistente o muy angustiante.</li>
+          <li>Consumo creciente de alcohol/sedantes/estimulantes para sostenerte.</li>
+          <li><b>Red flags bipolaridad:</b> menos sueño sin cansancio + aceleración + impulsividad.</li>
+          <li>Desesperanza marcada o pensamientos de muerte (aunque sea “sin plan”).</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si existe riesgo inmediato para vos o terceros, buscá ayuda urgente/local (guardia/servicio de emergencias).
+        </div>
+      </div>
+    </section>
+
+    <!-- Autoevaluación -->
+    <section class="section" id="autoevaluacion">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Autoevaluación breve (SSA)</h2>
+            <p class="card-sub">No diagnostica. Sirve para ordenar el cuadro y traer un resumen útil a consulta.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Termómetros (últimos 7 días)</h3>
+
+            <div class="range-row">
+              <label for="expo">Exposición audiovisual (0–10)</label>
+              <input id="expo" type="range" min="0" max="10" step="1" value="7" />
+              <span class="pill-val" id="expoVal">7</span>
+            </div>
+
+            <div class="range-row">
+              <label for="after">After-effect (0–10)</label>
+              <input id="after" type="range" min="0" max="10" step="1" value="6" />
+              <span class="pill-val" id="afterVal">6</span>
+            </div>
+
+            <div class="range-row">
+              <label for="sueno">Sueño (0–10)</label>
+              <input id="sueno" type="range" min="0" max="10" step="1" value="4" />
+              <span class="pill-val" id="suenoVal">4</span>
+            </div>
+
+            <div class="range-row">
+              <label for="impacto">Impacto funcional (0–10)</label>
+              <input id="impacto" type="range" min="0" max="10" step="1" value="5" />
+              <span class="pill-val" id="impactoVal">5</span>
+            </div>
+
+            <div class="note" id="lecturaRiesgo" style="margin-top:12px">
+              Lectura orientativa: riesgo más alto si <b>Exposición ≥ 7</b> + <b>After-effect ≥ 6</b> y/o <b>Sueño ≤ 4</b> o <b>Impacto ≥ 7</b>.
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Control y regulación (0–10)</h3>
+
+            <div class="range-row">
+              <label for="control">Control (cortar a tiempo)</label>
+              <input id="control" type="range" min="0" max="10" step="1" value="4" />
+              <span class="pill-val" id="controlVal">4</span>
+            </div>
+
+            <div class="range-row">
+              <label for="ans">Ansiedad/activación</label>
+              <input id="ans" type="range" min="0" max="10" step="1" value="5" />
+              <span class="pill-val" id="ansVal">5</span>
+            </div>
+
+            <div class="range-row">
+              <label for="animo">Ánimo bajo/vacío</label>
+              <input id="animo" type="range" min="0" max="10" step="1" value="3" />
+              <span class="pill-val" id="animoVal">3</span>
+            </div>
+
+            <div class="range-row">
+              <label for="energia">Energía “acelerada”</label>
+              <input id="energia" type="range" min="0" max="10" step="1" value="3" />
+              <span class="pill-val" id="energiaVal">3</span>
+            </div>
+
+            <div class="note" style="margin-top:12px">
+              Si <b>Energía acelerada ≥ 7</b> junto con <b>menos sueño</b>, sube el riesgo de activación/hipomanía (evaluar).
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Banderas (Sí / No)</h3>
+
+            <div class="checklist" role="group" aria-label="Banderas">
+              <label class="check-item"><input type="checkbox" class="flag" id="f1"> <span>Me cuesta cortar el scrolling aunque me haga mal.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f2"> <span>Insomnio o sueño no reparador.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f3"> <span>Cefaleas / tensión ocular / contracturas frecuentes.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f4"> <span>Irritabilidad o reactividad aumentada.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f5"> <span>Embote emocional, vacío o anhedonia.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f6"> <span>Desrealización/despersonalización (“piloto automático”).</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f7"> <span>Menos sueño con energía alta, aceleración o impulsividad (alerta bipolaridad).</span></label>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Nota breve (opcional)</h3>
+            <textarea id="nota" class="note-input" placeholder="Ej.: qué mirás/consumís, cuántas horas, en qué horario, qué te deja después, qué intentaste para cortar, qué empeora, qué te ayuda..."></textarea>
+
+            <div class="audio-actions" style="margin-top:12px">
+              <button class="btn" id="btnCopy" type="button">Copiar resumen</button>
+              <button class="btn btn-ghost" id="btnReset" type="button">Reset</button>
+              <a class="btn btn-ghost" href="#plan">Ir al plan 7 días</a>
+            </div>
+
+            <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en WhatsApp o traerlo a consulta.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Plan -->
+    <section class="section" id="plan">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Plan mínimo de 7 días</h2>
+            <p class="card-sub">No es “no mirar nada”. Es bajar carga y recuperar regulación.</p>
+          </div>
+        </div>
+
+        <ol class="card-sub" style="margin-top:10px">
+          <li><b>Bloques:</b> contenido “alto octanaje” solo en 1–2 bloques cortos al día (no en cama).</li>
+          <li><b>Regla 60 min:</b> 60 minutos sin pantalla antes de dormir (si no podés, mínimo 30).</li>
+          <li><b>Rampa de salida:</b> al terminar, 15–20 min de estímulo bajo (luz cálida, audio suave, lectura liviana).</li>
+          <li><b>20–20–20:</b> cada 20 min mirá 20 segundos a 6 metros (descanso ocular) + estirá cuello.</li>
+          <li><b>1 corte real:</b> una franja diaria “sin feed” (aunque sea 20 min). Caminata breve suma muchísimo.</li>
+          <li><b>Higiene del algoritmo:</b> desactivar autoplay, notificaciones y usar temporizador.</li>
+          <li><b>Chequeo de riesgo:</b> si hay menos sueño con energía alta o impulsividad, frenar estímulo y consultar.</li>
+        </ol>
+
+        <div class="note" style="margin-top:12px">
+          Si el sueño está muy alterado, priorizá regularidad (no perfección). El sueño es el “botón de reset” del sistema nervioso.
+        </div>
+      </div>
+    </section>
+
+    <!-- Lectura larga -->
+    <section class="section" id="lectura">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Lectura larga</h2>
+            <p class="card-sub">Texto amplio (ideal para NotebookLM/podcast luego).</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            Vivimos rodeados de estímulos. Pero en los últimos años apareció algo nuevo: la posibilidad de consumir (o producir)
+            contenido audiovisual casi infinito, con intensidad creciente y con “premios” constantes: un clip más, una escena más,
+            un video más. A veces la persona siente que está descansando, pero en realidad el sistema nervioso sigue trabajando.
+          </p>
+
+          <p>
+            El <b>Síndrome de Saturación Audiovisual (SSA)</b> es un nombre práctico para describir un patrón: después de varias horas
+            de contenido de alta carga —películas intensas, redes, videos hiperrealistas/IA— la mente queda “encendida”.
+            Podés notar irritabilidad, ansiedad, cefaleas, cansancio y, sobre todo, dificultad para apagar a la noche.
+          </p>
+
+          <p>
+            Hay dos mecanismos típicos: (1) <b>carga sensorial</b> (imagen/sonido/ritmo) que agota, y (2) <b>novedad constante</b>
+            que empuja a seguir. Cuando esto se repite, baja la tolerancia al ritmo lento: estudiar, trabajar, conversar o incluso
+            descansar se sienten “insuficientes”.
+          </p>
+
+          <p>
+            ¿Por qué importa? Porque sostenido en el tiempo puede agravar cuadros reales: insomnio, ansiedad, trastorno de adaptación,
+            despersonalización/desrealización, depresión por anhedonia y, en personas vulnerables, activación hipomaníaca.
+            La buena noticia es que suele responder muy bien a medidas simples y sostenidas: bloques, pausas, rampa de salida y
+            recuperar sueño.
+          </p>
+
+          <div class="note" style="margin-top:12px">
+            Si querés, usá la autoevaluación como “puente”: te ordena el cuadro y te da un resumen concreto para consulta.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si estas señales te están trabando, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Autoevaluación JS -->
+  <script>
+    (function(){
+      const ids = ["expo","after","sueno","impacto","control","ans","animo","energia"];
+      const map = {};
+      ids.forEach(id=>{
+        map[id] = document.getElementById(id);
+        map[id+"Val"] = document.getElementById(id+"Val");
+      });
+
+      function upd(){
+        ids.forEach(id=>{
+          if(map[id] && map[id+"Val"]) map[id+"Val"].textContent = map[id].value;
+        });
+      }
+      ids.forEach(id=>{
+        if(map[id]) map[id].addEventListener("input", upd);
+      });
+      upd();
+
+      const note = document.getElementById("nota");
+      const btnCopy = document.getElementById("btnCopy");
+      const btnReset = document.getElementById("btnReset");
+      const copyOk = document.getElementById("copyOk");
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      function flagsStr(){
+        const labels = [
+          ["f1","Pérdida de control (scrolling)"],
+          ["f2","Insomnio / sueño pobre"],
+          ["f3","Cefaleas / tensión ocular / contracturas"],
+          ["f4","Irritabilidad / reactividad"],
+          ["f5","Vacío / anhedonia"],
+          ["f6","Despersonalización/desrealización"],
+          ["f7","Menos sueño + energía alta / impulsividad (alerta bipolaridad)"]
+        ];
+        const on = [];
+        labels.forEach(([id, txt])=>{
+          const el = document.getElementById(id);
+          if(el && el.checked) on.push(txt);
+        });
+        return on.length ? on.join(", ") : "—";
+      }
+
+      async function copyText(txt){
+        try{
+          await navigator.clipboard.writeText(txt);
+          return true;
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      if(btnCopy){
+        btnCopy.addEventListener("click", async ()=>{
+          const txt =
+            `Síndrome de Saturación Audiovisual (SSA) — Autoevaluación\n` +
+            `• Exposición: ${map.expo?.value ?? "—"}/10\n` +
+            `• After-effect: ${map.after?.value ?? "—"}/10\n` +
+            `• Sueño: ${map.sueno?.value ?? "—"}/10\n` +
+            `• Impacto funcional: ${map.impacto?.value ?? "—"}/10\n` +
+            `• Control (cortar): ${map.control?.value ?? "—"}/10\n` +
+            `• Ansiedad/activación: ${map.ans?.value ?? "—"}/10\n` +
+            `• Ánimo bajo/vacío: ${map.animo?.value ?? "—"}/10\n` +
+            `• Energía acelerada: ${map.energia?.value ?? "—"}/10\n` +
+            `• Banderas: ${flagsStr()}\n` +
+            `• Nota: ${(note?.value || "").trim() || "—"}\n` +
+            `• Fecha/hora: ${nowStr()}`;
+
+          await copyText(txt);
+          if(copyOk){
+            copyOk.style.display = "block";
+            setTimeout(()=> copyOk.style.display = "none", 3500);
+          }
+        });
+      }
+
+      if(btnReset){
+        btnReset.addEventListener("click", ()=>{
+          if(map.expo) map.expo.value = 7;
+          if(map.after) map.after.value = 6;
+          if(map.sueno) map.sueno.value = 4;
+          if(map.impacto) map.impacto.value = 5;
+          if(map.control) map.control.value = 4;
+          if(map.ans) map.ans.value = 5;
+          if(map.animo) map.animo.value = 3;
+          if(map.energia) map.energia.value = 3;
+
+          ["f1","f2","f3","f4","f5","f6","f7"].forEach(id=>{
+            const el = document.getElementById(id);
+            if(el) el.checked = false;
+          });
+
+          if(note) note.value = "";
+          upd();
+          if(copyOk) copyOk.style.display = "none";
+        });
+      }
+
+      // Sync volumen global del header (si existe) al podcast
+      const podcastAudio = document.getElementById("podcastAudio");
+      const vol = document.getElementById("volumeRange");
+      if(podcastAudio && vol){
+        const applyVol = () => { podcastAudio.volume = Math.max(0, Math.min(1, (Number(vol.value)||35)/100)); };
+        vol.addEventListener("input", applyVol);
+        applyVol();
+      }
+    })();
+  </script>
+
+</body>
+</html>

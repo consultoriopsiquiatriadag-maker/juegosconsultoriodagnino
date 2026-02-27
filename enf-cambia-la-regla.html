@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENF · Cambiá la Regla | Sala de Espera Virtual</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#eef2f7',
+            'inst-gray': '#475569'
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { --base-font: 16px; }
+    html { font-size: var(--base-font); }
+    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+  </style>
+</head>
+
+<body class="bg-inst-light text-inst-navy antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
+        ← Volver a Juegos
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Inicio
+      </a>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div class="min-w-0">
+          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-inst-gray">
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">🧠 ENF</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">Flexibilidad</span>
+            <span class="px-2 py-1 rounded-lg bg-inst-light border border-gray-200">TDAH / Ansiedad</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide mt-2">Cambiá la Regla</h1>
+          <p class="text-inst-gray mt-2 leading-relaxed">
+            Elegís la opción correcta según la regla actual. Cada cierto tiempo la regla cambia.
+            Entrena <strong>switching</strong> (cambio de criterio) y control inhibitorio.
+          </p>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
+          <button id="btnNext" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Siguiente</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4">
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Ronda</p>
+          <p class="text-2xl font-semibold"><span id="round">0</span>/<span id="roundMax">16</span></p>
+          <p class="text-sm text-inst-gray mt-1">Cambio de regla cada 4 rondas.</p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
+          <p class="text-2xl font-semibold"><span id="score">0</span></p>
+          <p class="text-sm text-inst-gray mt-1">Aciertos: <span id="hits">0</span></p>
+        </div>
+        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
+          <p class="text-xs uppercase tracking-wider text-inst-gray">Precisión</p>
+          <p class="text-2xl font-semibold"><span id="acc">—</span></p>
+          <p class="text-sm text-inst-gray mt-1">Errores: <span id="errs">0</span></p>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
+        <p class="text-xs uppercase tracking-wider text-inst-gray">Regla actual</p>
+        <div class="flex flex-wrap items-center justify-between gap-3 mt-1">
+          <div>
+            <h2 class="text-xl font-semibold"><span id="ruleName">—</span></h2>
+            <p class="text-inst-gray mt-1">Elegí la opción que coincida con la regla.</p>
+          </div>
+          <div class="bg-inst-light border border-gray-200 rounded-2xl px-4 py-3">
+            <p class="text-xs uppercase tracking-wider text-inst-gray">Tiempo sugerido</p>
+            <p class="text-2xl font-semibold"><span id="timerHint">12</span>s</p>
+          </div>
+        </div>
+
+        <div class="mt-5 grid md:grid-cols-2 gap-4 items-stretch">
+          <div class="bg-inst-light rounded-2xl border border-gray-200 p-5">
+            <p class="text-xs uppercase tracking-wider text-inst-gray">Objetivo</p>
+            <div id="target" class="mt-3 rounded-2xl bg-white border border-gray-200 p-5 flex items-center justify-center min-h-[140px]">
+              <div class="text-center">
+                <div id="tSymbol" class="text-5xl font-black">●</div>
+                <div class="mt-2 text-sm font-semibold text-inst-gray">
+                  Color: <span id="tColor" class="text-inst-navy">—</span> · Forma: <span id="tShape" class="text-inst-navy">—</span> · Cantidad: <span id="tCount" class="text-inst-navy">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-inst-light rounded-2xl border border-gray-200 p-5">
+            <p class="text-xs uppercase tracking-wider text-inst-gray">Opciones</p>
+            <div id="options" class="mt-3 grid grid-cols-2 gap-3"></div>
+            <div id="feedback" class="mt-4 hidden bg-white border border-gray-200 rounded-2xl p-4"></div>
+          </div>
+        </div>
+
+        <div class="mt-5 text-sm text-inst-gray">
+          Tip: cuando cambia la regla, respirás y repetís mentalmente: “ahora vale <strong><span id="ruleShort">—</span></strong>”.
+        </div>
+      </div>
+
+      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
+        <p class="text-sm text-inst-gray">
+          <strong>Aclaración ENF:</strong> este juego pertenece al <strong>Entrenamiento Neurocognitivo Funcional</strong>.
+          En TDAH ayuda a entrenar el cambio de foco sin perder control.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ROUNDS_MAX = 16;
+    const RULE_BLOCK = 4; // cambia cada 4 rondas
+    const TIMER_HINT = 12;
+
+    const SHAPES = [
+      { name:"Círculo", sym:"●" },
+      { name:"Cuadrado", sym:"■" },
+      { name:"Triángulo", sym:"▲" },
+      { name:"Rombo", sym:"◆" }
+    ];
+    const COLORS = [
+      { name:"Azul", hex:"#2563eb" },
+      { name:"Verde", hex:"#16a34a" },
+      { name:"Naranja", hex:"#f97316" },
+      { name:"Violeta", hex:"#7c3aed" }
+    ];
+
+    const RULES = [
+      { key:"color", name:"Coincidí por COLOR", short:"COLOR" },
+      { key:"shape", name:"Coincidí por FORMA", short:"FORMA" },
+      { key:"count", name:"Coincidí por CANTIDAD", short:"CANTIDAD" }
+    ];
+
+    // State
+    let round = 0, score = 0, hits = 0, errs = 0, total = 0;
+    let currentRule = RULES[0];
+    let target = null;
+    let correctIndex = -1;
+
+    // UI
+    const roundEl = document.getElementById("round");
+    const roundMaxEl = document.getElementById("roundMax");
+    const scoreEl = document.getElementById("score");
+    const hitsEl = document.getElementById("hits");
+    const errsEl = document.getElementById("errs");
+    const accEl = document.getElementById("acc");
+    const ruleNameEl = document.getElementById("ruleName");
+    const ruleShortEl = document.getElementById("ruleShort");
+    const timerHintEl = document.getElementById("timerHint");
+    const tSymbolEl = document.getElementById("tSymbol");
+    const tColorEl = document.getElementById("tColor");
+    const tShapeEl = document.getElementById("tShape");
+    const tCountEl = document.getElementById("tCount");
+    const optionsEl = document.getElementById("options");
+    const feedbackEl = document.getElementById("feedback");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnNext = document.getElementById("btnNext");
+    const btnReset = document.getElementById("btnReset");
+
+    roundMaxEl.textContent = ROUNDS_MAX;
+    timerHintEl.textContent = TIMER_HINT;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateUI(){
+      roundEl.textContent = round;
+      scoreEl.textContent = score;
+      hitsEl.textContent = hits;
+      errsEl.textContent = errs;
+      const acc = total > 0 ? Math.round((hits/total)*100) : null;
+      accEl.textContent = acc === null ? "—" : (acc + "%");
+      ruleNameEl.textContent = currentRule.name;
+      ruleShortEl.textContent = currentRule.short;
+    }
+
+    function pickOne(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function buildStimulus(){
+      const shape = pickOne(SHAPES);
+      const color = pickOne(COLORS);
+      const count = 1 + Math.floor(Math.random()*4);
+      return { shape, color, count };
+    }
+
+    function renderTarget(s){
+      tSymbolEl.textContent = s.shape.sym.repeat(s.count);
+      tSymbolEl.style.color = s.color.hex;
+      tColorEl.textContent = s.color.name;
+      tShapeEl.textContent = s.shape.name;
+      tCountEl.textContent = String(s.count);
+    }
+
+    function renderOptions(opts){
+      optionsEl.innerHTML = "";
+      opts.forEach((o, idx)=>{
+        const btn = document.createElement("button");
+        btn.className = "bg-white border border-gray-200 rounded-2xl p-4 hover:bg-inst-sky transition text-left";
+        btn.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="text-2xl font-black" style="color:${o.color.hex}">${o.shape.sym.repeat(o.count)}</div>
+              <div class="mt-2 text-xs uppercase tracking-wider text-inst-gray">Color</div>
+              <div class="text-sm font-semibold">${o.color.name}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs uppercase tracking-wider text-inst-gray">Forma</div>
+              <div class="text-sm font-semibold">${o.shape.name}</div>
+              <div class="mt-2 text-xs uppercase tracking-wider text-inst-gray">Cantidad</div>
+              <div class="text-sm font-semibold">${o.count}</div>
+            </div>
+          </div>
+        `;
+        btn.addEventListener("click", ()=> choose(idx, opts));
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function choose(idx){
+      total += 1;
+      const ok = (idx === correctIndex);
+      if(ok){ hits += 1; score += 2; }
+      else { errs += 1; score = Math.max(0, score - 1); }
+
+      feedbackEl.classList.remove("hidden");
+      feedbackEl.innerHTML = `
+        <p class="text-sm text-inst-gray">
+          ${ok ? "✅" : "❌"} ${ok ? "Bien." : "Casi."}
+          Regla: <strong>${currentRule.short}</strong>.
+          ${ok ? "" : "Probá repetir mentalmente la regla antes de elegir."}
+        </p>
+      `;
+
+      btnNext.disabled = false;
+      btnStart.disabled = true;
+      updateUI();
+    }
+
+    function setRuleByRound(){
+      // cambia cada RULE_BLOCK rondas: 1-4, 5-8, 9-12, 13-16
+      const block = Math.floor((round-1)/RULE_BLOCK);
+      currentRule = RULES[block % RULES.length];
+    }
+
+    function computeCorrectIndex(opts){
+      // opción correcta = la que coincide con el target según la regla
+      const key = currentRule.key;
+      for(let i=0;i<opts.length;i++){
+        if(key === "color" && opts[i].color.name === target.color.name) return i;
+        if(key === "shape" && opts[i].shape.name === target.shape.name) return i;
+        if(key === "count" && opts[i].count === target.count) return i;
+      }
+      return 0;
+    }
+
+    function startRound(){
+      feedbackEl.classList.add("hidden");
+      btnNext.disabled = true;
+
+      round += 1;
+      if(round > ROUNDS_MAX){
+        feedbackEl.classList.remove("hidden");
+        feedbackEl.innerHTML = `
+          <p class="text-sm text-inst-gray">
+            <strong>Fin del juego.</strong> Puntaje: <strong>${score}</strong> · Precisión: <strong>${accEl.textContent}</strong>.
+          </p>
+        `;
+        btnStart.disabled = false;
+        btnNext.disabled = true;
+        updateUI();
+        return;
+      }
+
+      setRuleByRound();
+      target = buildStimulus();
+      renderTarget(target);
+
+      // Construir opciones (4): 1 correcta por la regla + distractores
+      // Creamos un pool y luego ajustamos para que exista una coincidencia por la regla.
+      let opts = [buildStimulus(), buildStimulus(), buildStimulus(), buildStimulus()];
+
+      // Forzar una opción que coincida con target según regla
+      const iForce = Math.floor(Math.random()*opts.length);
+      if(currentRule.key === "color") opts[iForce].color = target.color;
+      if(currentRule.key === "shape") opts[iForce].shape = target.shape;
+      if(currentRule.key === "count") opts[iForce].count = target.count;
+
+      // Evitar que haya más de una coincidencia fácil por la misma regla (mejor control)
+      // Re-generamos si detectamos duplicados de coincidencia.
+      const maxTries = 30;
+      let tries = 0;
+      while(tries < maxTries){
+        let matches = 0;
+        for(const o of opts){
+          if(currentRule.key === "color" && o.color.name === target.color.name) matches++;
+          if(currentRule.key === "shape" && o.shape.name === target.shape.name) matches++;
+          if(currentRule.key === "count" && o.count === target.count) matches++;
+        }
+        if(matches === 1) break;
+        // si hay >1, remezclamos los distractores (excepto el forzado)
+        opts = opts.map((o, idx)=> idx===iForce ? o : buildStimulus());
+        // re-aplicar forzado
+        if(currentRule.key === "color") opts[iForce].color = target.color;
+        if(currentRule.key === "shape") opts[iForce].shape = target.shape;
+        if(currentRule.key === "count") opts[iForce].count = target.count;
+        tries++;
+      }
+
+      correctIndex = computeCorrectIndex(opts);
+      renderOptions(opts);
+
+      btnStart.disabled = true;
+      updateUI();
+    }
+
+    function resetAll(){
+      round = 0; score = 0; hits = 0; errs = 0; total = 0;
+      currentRule = RULES[0];
+      target = null; correctIndex = -1;
+      feedbackEl.classList.add("hidden");
+      optionsEl.innerHTML = "";
+      tSymbolEl.textContent = "●";
+      tSymbolEl.style.color = "#0f1e33";
+      tColorEl.textContent = "—";
+      tShapeEl.textContent = "—";
+      tCountEl.textContent = "—";
+      btnNext.disabled = true;
+      btnStart.disabled = false;
+      updateUI();
+    }
+
+    btnStart.addEventListener("click", ()=>{ btnStart.disabled = true; startRound(); });
+    btnNext.addEventListener("click", startRound);
+    btnReset.addEventListener("click", resetAll);
+
+    resetAll();
+  </script>
+</body>
+</html>

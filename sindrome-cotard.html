@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Síndrome de Cotard — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía para familias: síndrome de Cotard, por qué ocurre, condiciones asociadas, cómo acompañar y señales de alarma. Consultorio Dr. Pedro Nicolas Dagnino." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* Portada */
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.72) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    /* Mini ejercicio */
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .range-row label{
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+    .mini-note{ opacity:.92; font-size: .98rem; }
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+    .longread{ line-height: 1.65; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>✈︎</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Síndrome de Cotard</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardar imagen en assets/img/cotard-portada.png -->
+        <img src="assets/img/cotard-portada.webp" alt="Ilustración abstracta: silueta translúcida, entre lo presente y lo ausente" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Síndrome de Cotard</h1>
+          <p>Cuando alguien cree que está muerto o que ha dejado de existir. Qué es, por qué ocurre y cómo acompañar.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+
+    <!-- Zócalo: Qué es -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es</h2>
+            <p class="card-sub">
+              El síndrome de Cotard —también llamado <em>delirio de negación</em> o <em>delirio nihilista</em>—
+              es un trastorno en el que la persona está <b>convencida</b> de que ha muerto, de que no existe,
+              de que ha perdido sus órganos internos, su sangre o incluso su alma.
+            </p>
+            <p class="card-sub">
+              No se trata de una metáfora ni de una expresión del lenguaje cotidiano ("me siento muerta por dentro").
+              Es una certeza delirante: la persona lo cree de forma literal, con una convicción que no se modifica
+              con argumentos ni evidencia externa.
+            </p>
+            <p class="card-sub">
+              Fue descripto en 1880 por el neurólogo francés Jules Cotard, quien lo llamó inicialmente
+              "delirio de negación" al observar pacientes que negaban la existencia de su propio cuerpo o partes de él.
+              Es uno de los cuadros más extremos y singulares de la psiquiatría, pero también uno de los que mejor
+              responde al tratamiento cuando se aborda a tiempo.
+            </p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Dato clave: a diferencia de lo que podría esperarse, el delirio de Cotard no siempre viene acompañado
+          de tristeza profunda. En algunas formas, la persona experimenta una calma desconcertante: "si ya estoy muerto,
+          nada puede hacerme daño".
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Por qué ocurre -->
+    <section class="section" id="por-que-ocurre">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Por qué ocurre</h2>
+            <p class="card-sub">
+              Al igual que el síndrome de Capgras, Cotard parece involucrar una <b>desconexión entre la percepción
+              y la respuesta emocional</b> que normalmente la acompaña. Pero aquí la desconexión es más global:
+              no afecta solo al reconocimiento de caras, sino a la experiencia de estar vivo en general.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>Disminución extrema de la respuesta emocional al entorno:</b> cuando el cerebro no genera
+            ninguna respuesta afectiva ante los estímulos del mundo (caras, objetos, sensaciones corporales),
+            la experiencia de "existir" se vuelve vacía. El delirio sería la explicación que el cerebro construye
+            para esa experiencia: "si no siento nada, quizás es porque ya no existo".
+          </li>
+          <li>
+            <b>Alteraciones en la integración cuerpo-mente:</b> regiones como la ínsula y la corteza prefrontal,
+            involucradas en la conciencia corporal y la regulación emocional, muestran actividad anómala
+            en estudios de neuroimagen de pacientes con Cotard.
+          </li>
+          <li>
+            <b>Depresión severa:</b> en su forma más frecuente, el Cotard aparece como un síntoma de depresión
+            mayor con características psicóticas, donde el pensamiento nihilista alcanza proporciones delirantes.
+          </li>
+          <li>
+            <b>Causas neurológicas:</b> traumatismos craneoencefálicos, accidentes cerebrovasculares, epilepsia,
+            migraña con aura intensa y encefalitis pueden generar el cuadro.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          No es una elección ni una exageración. La persona no puede "decidir" salir del delirio con voluntad propia.
+          Requiere evaluación y tratamiento profesional.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Condiciones asociadas -->
+    <section class="section" id="condiciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Condiciones asociadas</h2>
+            <p class="card-sub">El síndrome de Cotard puede aparecer en el contexto de:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li><b>Depresión mayor con características psicóticas</b> — la causa más frecuente, especialmente en adultos mayores.</li>
+          <li><b>Trastorno bipolar</b> — generalmente en fases depresivas graves o episodios mixtos.</li>
+          <li><b>Esquizofrenia</b> — como síntoma dentro de un cuadro psicótico más amplio.</li>
+          <li><b>Demencias avanzadas</b> — en particular Alzheimer en estadios moderados a severos.</li>
+          <li><b>Traumatismo craneoencefálico</b> — especialmente con compromiso frontotemporal.</li>
+          <li><b>Accidente cerebrovascular</b> — en particular lesiones del hemisferio derecho.</li>
+          <li><b>Epilepsia del lóbulo temporal</b> — puede aparecer en el período post-ictal.</li>
+          <li><b>Encefalitis autoinmune</b> — como la encefalitis por anticuerpos anti-NMDA.</li>
+          <li><b>Intoxicaciones o abstinencia</b> de ciertas sustancias.</li>
+          <li><b>Migraña con aura</b> — en casos excepcionales, durante las fases de aura intensa.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La causa determina el tratamiento. Un Cotard por depresión psicótica responde bien a antidepresivos
+          y antipsicóticos; uno por encefalitis autoinmune requiere inmunoterapia. El diagnóstico diferencial
+          es urgente.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Cómo se manifiesta -->
+    <section class="section" id="manifestaciones">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se manifiesta</h2>
+            <p class="card-sub">Cotard puede presentarse en distintos grados. Lo que suelen observar las familias:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Afirmaciones como: "yo ya no existo", "estoy muerto", "no tengo corazón / sangre / cerebro", "se me pudrieron los órganos".</li>
+          <li>Rechazo a comer o beber: "¿para qué? si estoy muerto no necesito alimentarme".</li>
+          <li>Descuido severo del cuerpo y la higiene, desde la misma lógica.</li>
+          <li>Indiferencia o calma paradójica: ausencia de angustia llamativa, lo que puede confundir a la familia.</li>
+          <li>En otros casos, angustia intensa y terror ante la propia experiencia.</li>
+          <li>Negación de la existencia del mundo externo: "nada de esto es real", "el mundo dejó de existir".</li>
+          <li>Ideas de inmortalidad negativa: "nunca voy a poder morir, voy a sufrir eternamente".</li>
+          <li>Retiro social completo, mutismo, inmovilidad prolongada.</li>
+          <li>Puede convivir con alucinaciones (ver o sentir cosas que no existen) o con despersonalización intensa.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          La forma más grave, llamada <em>síndrome de Cotard florido</em>, combina el delirio de muerte
+          con ideas de inmortalidad y de negación total del mundo. Es una urgencia psiquiátrica.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Se recomienda consultar de urgencia si:</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>La persona rechaza comer o beber de forma sostenida (riesgo vital por inanición o deshidratación).</li>
+          <li>Hay ideas de suicidio o de hacerse daño, incluso formuladas de forma paradójica ("no puedo morir porque ya estoy muerto").</li>
+          <li>La persona se abandona completamente: no se mueve, no habla, no responde estímulos.</li>
+          <li>Hay agitación severa o terror intenso ante la experiencia.</li>
+          <li>Aparecen síntomas neurológicos nuevos: confusión, fiebre, convulsiones, pérdida del habla o del movimiento.</li>
+          <li>El cuadro se instaló de forma rápida (días o pocas semanas), lo que puede indicar una causa orgánica.</li>
+          <li>La persona no toma medicación o abandona el tratamiento en curso.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El síndrome de Cotard con rechazo a la alimentación es una urgencia médica. No esperar a que "se le pase".
+          Buscá asistencia local inmediata.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Zócalo: Para familias -->
+    <section class="section" id="para-familias">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo acompañar · Guía para familias</h2>
+            <p class="card-sub">
+              Acompañar a alguien con Cotard es una de las experiencias más difíciles que puede vivir una familia.
+              Estas pautas no reemplazan la consulta profesional, pero pueden ayudar a reducir el riesgo y sostener el vínculo.
+            </p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>
+            <b>No intentar convencer con lógica.</b> "Estás vivo, mirá, te estoy tocando" no funciona.
+            El problema no es informacional: la persona no puede procesar esa evidencia de la misma manera
+            que lo haría alguien sin el delirio. Insistir puede generar más angustia.
+          </li>
+          <li>
+            <b>Garantizar la alimentación e hidratación.</b> Es la prioridad inmediata. Si la persona rechaza
+            comer completamente, es una urgencia médica que requiere intervención profesional, posiblemente hospitalaria.
+          </li>
+          <li>
+            <b>Mantener presencia calmada y no confrontativa.</b> No discutir el contenido del delirio;
+            sí validar que la persona está sufriendo: "entiendo que esto que sentís es muy difícil".
+          </li>
+          <li>
+            <b>Mantener rutinas básicas.</b> Horarios de comida, higiene asistida si es necesario,
+            presencia familiar constante. La estructura externa puede funcionar como andamiaje cuando
+            la experiencia interna se desorganiza.
+          </li>
+          <li>
+            <b>No dejar a la persona sola en las fases agudas.</b> Especialmente si hay ideas de daño
+            o abandono del cuerpo. La supervisión es parte del cuidado.
+          </li>
+          <li>
+            <b>Cuidar al cuidador.</b> Ver a un familiar negar su propia existencia es una experiencia
+            de duelo en vida, muy particular y muy solitaria. El agotamiento emocional de la familia
+            es real y merece atención propia.
+          </li>
+          <li>
+            <b>Comunicar cualquier cambio al equipo tratante.</b> La evolución del cuadro —mejoría
+            o empeoramiento— necesita ser monitoreada de cerca. El registro diario ayuda a tener datos concretos.
+          </li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          El síndrome de Cotard, especialmente el asociado a depresión psicótica, tiene buena respuesta
+          al tratamiento. La terapia electroconvulsiva (TEC) es una de las intervenciones más eficaces
+          en los casos graves y refractarios.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mini ejercicio -->
+    <section class="section" id="mini-ejercicio">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Registro para familias (1 minuto)</h2>
+            <p class="card-sub">Registro de carga emocional 0–10 + observaciones del día. Útil para compartir con el profesional tratante.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          <div class="mini-note">
+            1) Evaluá tu nivel de carga emocional como familiar/cuidador hoy (0 = ninguna · 10 = máxima).<br/>
+            2) Evaluá la intensidad del delirio que observaste hoy (0 = sin episodios · 10 = muy intenso).<br/>
+            3) Anotá si comió, bebió y tomó medicación.<br/>
+            4) Copiá el resumen para llevar a la consulta o guardar en tu registro.
+          </div>
+
+          <div class="range-row">
+            <label for="beforeRange">Mi carga emocional hoy (0–10)</label>
+            <input id="beforeRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="beforeVal">5</div>
+          </div>
+
+          <div class="range-row">
+            <label for="afterRange">Intensidad del delirio observada (0–10)</label>
+            <input id="afterRange" type="range" min="0" max="10" step="1" value="5" />
+            <div class="pill-val" id="afterVal">5</div>
+          </div>
+
+          <div>
+            <label class="card-sub" for="alimentacionInput" style="font-weight:600; display:block; margin-bottom:6px;">Alimentación e hidratación hoy (opcional)</label>
+            <input id="alimentacionInput" class="input" type="text" placeholder="Ej: comió poco / rechazó el desayuno / tomó agua / no quiso comer nada..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="medicacionInput" style="font-weight:600; display:block; margin-bottom:6px;">Medicación (opcional)</label>
+            <input id="medicacionInput" class="input" type="text" placeholder="Ej: tomó / rechazó / tomó a medias / hubo que insistir..." style="width:100%;" />
+          </div>
+
+          <div>
+            <label class="card-sub" for="noteInput" style="font-weight:600; display:block; margin-bottom:6px;">Observaciones / notas para el profesional (opcional)</label>
+            <textarea id="noteInput" class="note-input" placeholder="Ej: dijo que ya no tiene órganos / estuvo más quieto / habló más / hubo agitación / durmió todo el día..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="btnCopy" type="button">Copiar resumen</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reiniciar</button>
+          </div>
+
+          <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en tu registro o compartirlo con el equipo tratante.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Explicación larga -->
+    <section class="section" id="explicacion-larga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación larga</h2>
+            <p class="card-sub">Para leer con calma. Profundización sobre el síndrome, su neurobiología y su tratamiento.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            Jules Cotard presentó el caso en 1880 de una paciente que negaba tener cerebro, nervios, pecho y estómago,
+            y sostenía que no necesitaba comer porque carecía de cuerpo. Esta paciente murió de inanición. La descripción
+            original ya contenía los elementos centrales del síndrome: negación del cuerpo, rechazo a la alimentación,
+            y a veces la paradoja de creerse inmortal precisamente porque se cree muerto.
+          </p>
+
+          <p>
+            Desde el punto de vista clínico, el síndrome de Cotard se presenta en un espectro. En un extremo, formas leves
+            donde la persona expresa sentirse "como muerta" o que "nada es real", con cierta conciencia de que puede ser una
+            percepción alterada. En el otro extremo, el Cotard florido: delirio de muerte instalado con plena convicción,
+            negación de órganos internos, ideas de inmortalidad negativa ("voy a sufrir por la eternidad sin poder morir")
+            y colapso del funcionamiento. Esta última forma es una urgencia psiquiátrica.
+          </p>
+
+          <p>
+            La neurobiología del Cotard comparte mecanismos con la despersonalización severa: una desactivación
+            de la respuesta emocional al propio cuerpo y al entorno. La corteza prefrontal ventromedial y la ínsula
+            —regiones clave en la construcción de la experiencia de "existir"— muestran hipoactividad en estudios
+            de neuroimagen. El resultado fenomenológico es que el mundo y el propio cuerpo pierden su cualidad
+            de "real" y de "vivo". El delirio sería la narrativa que el cerebro construye para dar coherencia
+            a esa experiencia radical de vacío.
+          </p>
+
+          <p>
+            Una de las particularidades más desconcertantes del Cotard es la paradoja de la inmortalidad. Algunas personas
+            no solo creen estar muertas, sino que también creen que nunca podrán morir. La lógica interna es consistente:
+            "si ya estoy muerto, la muerte no puede volver a ocurrirme". Esto puede generar una calma aparente
+            que confunde a las familias, que esperarían ver desesperación o angustia. En otros pacientes, sin embargo,
+            la angustia es extrema: la certeza de estar muerto y seguir "funcionando" se vive como una pesadilla
+            sin salida.
+          </p>
+
+          <p>
+            El impacto en el riesgo vital es directo. El rechazo a comer y beber, sostenido en el tiempo, puede llevar
+            a desnutrición severa y deshidratación. No es metafórico ni simbólico: los pacientes con Cotard
+            mueren de inanición cuando no reciben intervención. Esta es la razón por la que la alimentación
+            e hidratación son la primera prioridad clínica, por encima incluso del tratamiento del delirio en sí.
+          </p>
+
+          <p>
+            El tratamiento depende de la causa. En depresión psicótica —la presentación más frecuente—
+            la combinación de antidepresivos y antipsicóticos logra remisión en una proporción importante de casos.
+            La terapia electroconvulsiva (TEC) tiene la evidencia más sólida para Cotard grave y refractario:
+            varios estudios de casos y series muestran remisiones completas del delirio en pocas sesiones.
+            En causas neurológicas (encefalitis, ACV, epilepsia), el tratamiento de la causa de base
+            suele resolver el síndrome o reducirlo significativamente.
+          </p>
+
+          <p>
+            Para las familias, el síndrome de Cotard genera un tipo de duelo muy específico y poco reconocido.
+            La persona está presente físicamente, pero niega existir. La relación tal como se la conocía
+            se transforma en algo irreconocible. No hay rituales sociales para ese dolor. Los familiares
+            a menudo alternan entre el agotamiento, la desesperanza y la culpa por no saber "cómo ayudar".
+            Buscar apoyo propio —terapia individual, grupos de familias con experiencia en psicosis graves—
+            no es un lujo: es una parte esencial del proceso de acompañamiento sostenible.
+          </p>
+
+          <p>
+            Finalmente, un dato que puede ser esperanzador: el síndrome de Cotard, en sus formas más frecuentes,
+            es tratable. No es una condena permanente. Con diagnóstico adecuado y tratamiento oportuno,
+            muchos pacientes logran remisión completa del delirio y recuperación del funcionamiento.
+            El momento más crítico es el período sin diagnóstico, cuando la persona —y su familia—
+            está sola frente a una experiencia que no comprende.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Este texto es orientativo. El diagnóstico y el plan de tratamiento siempre deben ser realizados por un profesional de salud.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Necesitás orientación profesional?</h3>
+            <p class="card-sub">
+              Si reconocés estos síntomas en un familiar o tenés dudas sobre el diagnóstico o el manejo,
+              la Central de Turnos puede ayudarte a coordinar una consulta.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Mini-ejercicio JS -->
+  <script>
+    (function(){
+      const beforeRange      = document.getElementById("beforeRange");
+      const afterRange       = document.getElementById("afterRange");
+      const beforeVal        = document.getElementById("beforeVal");
+      const afterVal         = document.getElementById("afterVal");
+      const alimentacionInput= document.getElementById("alimentacionInput");
+      const medicacionInput  = document.getElementById("medicacionInput");
+      const noteInput        = document.getElementById("noteInput");
+      const btnCopy          = document.getElementById("btnCopy");
+      const btnReset         = document.getElementById("btnReset");
+      const copyOk           = document.getElementById("copyOk");
+
+      function upd(){
+        beforeVal.textContent = beforeRange.value;
+        afterVal.textContent  = afterRange.value;
+      }
+      beforeRange.addEventListener("input", upd);
+      afterRange.addEventListener("input", upd);
+      upd();
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      btnCopy.addEventListener("click", async () => {
+        const alimentacion = (alimentacionInput.value || "").trim();
+        const medicacion   = (medicacionInput.value || "").trim();
+        const note         = (noteInput.value || "").trim();
+
+        const txt =
+          `Cotard — Registro familiar | Carga emocional: ${beforeRange.value}/10 | Intensidad delirio observada: ${afterRange.value}/10 | Alimentación/hidratación: ${alimentacion || "—"} | Medicación: ${medicacion || "—"} | Notas: ${note || "—"} | Fecha/hora: ${nowStr()}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyOk.style.display = "block";
+          setTimeout(()=> copyOk.style.display = "none", 3500);
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        beforeRange.value       = 5;
+        afterRange.value        = 5;
+        alimentacionInput.value = "";
+        medicacionInput.value   = "";
+        noteInput.value         = "";
+        upd();
+        copyOk.style.display = "none";
+      });
+    })();
+  </script>
+
+</body>
+</html>
