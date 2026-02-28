@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Escritorio Principal — Sebastián Núñez. Dashboard de acceso rápido y decisiones inteligentes." />
+  <title>Sebastián Núñez — Escritorio Principal</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NOISE OVERLAY -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════
+       FLOATING NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
+    <div class="navbar-inner">
+
+      <div class="navbar-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-name">SN</span>
+      </div>
+
+      <div class="navbar-search-wrap">
+        <label for="search-input" class="sr-only">Buscar enlaces</label>
+        <svg class="search-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="search" id="search-input" class="search-input" placeholder="Buscar enlace…" autocomplete="off" aria-label="Filtrar enlaces del dashboard" />
+        <button class="reset-btn" id="reset-btn" aria-label="Limpiar búsqueda" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="navbar-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-text" aria-live="polite">System Operational</span>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero" id="hero" aria-label="Presentación">
+    <div class="hero-blueprint" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-label" aria-hidden="true">
+        <span class="hero-label-dot"></span>
+        Escritorio Principal
+      </p>
+      <h1 class="hero-title">
+        <span class="hero-line" data-line="0">
+          <span class="hero-word">Sebastián</span>
+        </span>
+        <span class="hero-line" data-line="1">
+          <span class="hero-word hero-word--serif">Dashboard.</span>
+        </span>
+      </h1>
+      <p class="hero-sub">
+        Acceso rápido.<br />
+        <em>Decisiones mejores.</em>
+      </p>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span class="scroll-line"></span>
+      <span class="scroll-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       MICRO-DASHBOARD (3 FUNCTIONAL ARTIFACTS)
+  ══════════════════════════════════════════ -->
+  <section class="micro-dash" id="micro-dash" aria-label="Estado del sistema">
+    <div class="container">
+
+      <!-- 1) Live Telemetry Typewriter -->
+      <div class="artifact artifact--typewriter" data-artifact="0">
+        <div class="artifact-header">
+          <span class="artifact-tag">01</span>
+          <span class="artifact-label">Live Telemetry</span>
+          <span class="live-badge" aria-label="Sistema en vivo">
+            <span class="live-dot" aria-hidden="true"></span>
+            Live
+          </span>
+        </div>
+        <div class="typewriter-display" aria-live="polite" aria-atomic="true">
+          <span class="typewriter-text" id="typewriter-text"></span><span class="typewriter-cursor" aria-hidden="true">|</span>
+        </div>
+        <div class="artifact-meta">
+          <span class="mono-label">UPTIME</span>
+          <span class="mono-value" id="uptime-counter">00:00:00</span>
+        </div>
+      </div>
+
+      <!-- 2) Diagnostic Shuffler -->
+      <div class="artifact artifact--shuffler" data-artifact="1">
+        <div class="artifact-header">
+          <span class="artifact-tag">02</span>
+          <span class="artifact-label">Diagnostic Shuffler</span>
+        </div>
+        <div class="shuffler-stage" aria-label="Diagnóstico del sistema" role="region">
+          <div class="shuffler-card shuffler-card--0" aria-hidden="true">
+            <div class="shuffler-card-inner">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <p class="shuffler-metric">98.4%</p>
+              <p class="shuffler-meta">Link Uptime</p>
+            </div>
+          </div>
+          <div class="shuffler-card shuffler-card--1" aria-hidden="true">
+            <div class="shuffler-card-inner">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <p class="shuffler-metric">12ms</p>
+              <p class="shuffler-meta">Avg Load</p>
+            </div>
+          </div>
+          <div class="shuffler-card shuffler-card--2" aria-hidden="true">
+            <div class="shuffler-card-inner">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <p class="shuffler-metric">7</p>
+              <p class="shuffler-meta">Categorías</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3) Protocol Scheduler -->
+      <div class="artifact artifact--scheduler" data-artifact="2">
+        <div class="artifact-header">
+          <span class="artifact-tag">03</span>
+          <span class="artifact-label">Protocol Scheduler</span>
+        </div>
+        <div class="scheduler-body">
+          <div class="week-row" role="group" aria-label="Selector de día">
+            <button class="day-btn" data-day="0" aria-label="Domingo">D</button>
+            <button class="day-btn" data-day="1" aria-label="Lunes">L</button>
+            <button class="day-btn active" data-day="2" aria-label="Martes">M</button>
+            <button class="day-btn" data-day="3" aria-label="Miércoles">X</button>
+            <button class="day-btn" data-day="4" aria-label="Jueves">J</button>
+            <button class="day-btn" data-day="5" aria-label="Viernes">V</button>
+            <button class="day-btn" data-day="6" aria-label="Sábado">S</button>
+          </div>
+          <div class="scheduler-cursor-row" aria-hidden="true">
+            <svg class="cursor-svg" id="scheduler-cursor" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 0l16 12-7 2-4 8-5-22z"/></svg>
+          </div>
+          <div class="scheduler-actions">
+            <button class="save-btn" id="save-btn" aria-label="Guardar selección del día">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Guardar
+            </button>
+            <span class="saved-confirm" id="saved-confirm" aria-live="polite" role="status"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       ZÓCALOS GRID (MAIN CONTENT)
+  ══════════════════════════════════════════ -->
+  <section class="zocalos-section" id="zocalos" aria-label="Categorías de enlaces">
+    <div class="container">
+
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-pre">Sistema de</span>
+          <span class="section-title-main">Acceso</span>
+        </h2>
+        <p class="section-desc">Todos los destinos organizados por categoría.</p>
+      </div>
+
+      <!-- Loading State -->
+      <div class="zocalos-loading" id="zocalos-loading" aria-live="polite" role="status">
+        <div class="loading-spinner" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="loading-text">Sincronizando base de datos…</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="zocalos-error" id="zocalos-error" hidden aria-live="assertive" role="alert">
+        <div class="error-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <p class="error-title">Sin conexión a la base de datos</p>
+        <p class="error-desc">No se pudo cargar el índice de enlaces.</p>
+        <button class="retry-btn" id="retry-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.45"/></svg>
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Search Empty State -->
+      <div class="search-empty" id="search-empty" hidden aria-live="polite" role="status">
+        <p class="search-empty-text">Sin resultados para "<span id="search-empty-query"></span>"</p>
+        <button class="reset-btn-inline" id="reset-inline-btn">Limpiar búsqueda</button>
+      </div>
+
+      <!-- Zócalos Grid -->
+      <div class="zocalos-grid" id="zocalos-grid" aria-label="Grilla de categorías" hidden>
+        <!-- Cards rendered by JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PHILOSOPHY BAND
+  ══════════════════════════════════════════ -->
+  <section class="philosophy" id="philosophy" aria-label="Filosofía">
+    <div class="philosophy-overlay" aria-hidden="true"></div>
+    <div class="container">
+      <div class="philosophy-inner">
+        <div class="phil-block phil-block--left">
+          <p class="phil-label">Principio</p>
+          <h2 class="phil-heading phil-heading--large" aria-label="Acceso rápido">
+            <span class="phil-word">Acceso</span>
+            <span class="phil-word">rápido.</span>
+          </h2>
+        </div>
+        <div class="phil-divider" aria-hidden="true"></div>
+        <div class="phil-block phil-block--right">
+          <p class="phil-label">Resultado</p>
+          <h2 class="phil-heading phil-heading--serif" aria-label="Decisiones mejores">
+            <span class="phil-word">Decisiones</span>
+            <span class="phil-word">mejores.</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer" id="footer" role="contentinfo">
+    <div class="footer-top-curve" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          <p class="footer-name">Sebastián Núñez</p>
+          <p class="footer-tagline mono-label">Escritorio Principal · v1.0</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <a href="#" class="footer-link" aria-label="Ayuda">Ayuda</a>
+          <a href="#" class="footer-link" aria-label="Editar enlaces">Editar Links</a>
+          <a href="#" class="footer-link" aria-label="Privacidad">Privacidad</a>
+        </nav>
+
+        <div class="footer-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span class="mono-label">System Operational</span>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy mono-label">
+          &copy; <span id="footer-year"></span> — Hecho con precisión.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
