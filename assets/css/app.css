@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,700&family=JetBrains+Mono:wght@700&display=swap');
+
 :root{
       --inst-navy:#0e2239;
       --inst-navy-2:#102a45;
@@ -18,11 +20,21 @@
       --max-w:1120px;
 
       /* Paleta menos fría (acentos + superficies) */
-      --accent-warm:#eab308;                 /* ámbar humano */
-      --accent-warm-soft: rgba(234,179,8,.15);
+      --accent-warm:#C47A2B;                 /* ámbar institucional dorado-bronce */
+      --accent-warm-soft: rgba(196,122,43,.15);
 
       --accent-ok:#22c55e;                   /* verde “ok” */
       --accent-ok-soft: rgba(34,197,94,.14);
+
+      /* ── Design system v1 — Clinical Aviation Psychology ── */
+      --lnd-navy:       #0E2239;
+      --lnd-navy-2:     #0b1a2b;
+      --lnd-navy-deep:  #060f1a;
+      --lnd-amber:      #C47A2B;
+      --lnd-amber-dim:  rgba(196,122,43,0.15);
+      --lnd-slate:      #EDF0F5;
+      --lnd-charcoal:   #1A1A1A;
+      --lnd-green:      #22C55E;
 
       --surface:#ffffff;
       --surface-2:#fbfdff;                   /* blanco apenas cálido */
@@ -191,10 +203,18 @@
 
     /* ====== Hero institucional sólido ====== */
     .hero{
-      background:linear-gradient(180deg, var(--inst-navy) 0%, var(--inst-navy-2) 100%);
+      background-color: var(--inst-navy);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(180deg, var(--inst-navy) 0%, var(--inst-navy-2) 100%);
+      background-size: 100% 44px, 100% 100%;
       color:#fff;
       padding:54px 0 46px;
       border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    body.rm .hero{
+      background-image: linear-gradient(180deg, var(--inst-navy) 0%, var(--inst-navy-2) 100%);
+      background-size: 100% 100%;
     }
     .hero-inner{
       display:grid;
@@ -251,7 +271,7 @@
       left:0; right:0;
       bottom:.05em;
       height:.14em;
-      background:rgba(234,179,8,.28); /* ✅ cálido */
+      background:rgba(196,122,43,.28); /* ámbar institucional */
       border-radius:999px;
       transform-origin:left;
       transform:scaleX(0);
@@ -467,9 +487,9 @@
       margin-top:12px;
       padding:12px 14px;
       border-radius:14px;
-      background:rgba(234,179,8,.12);
-      border:1px solid rgba(234,179,8,.28);
-      color:rgba(113,63,18,.95);
+      background:rgba(196,122,43,.10);
+      border:1px solid rgba(196,122,43,.30);
+      color:rgba(90,45,8,.95);
       font-size: calc(13px * var(--text-scale));
     }
 
@@ -522,7 +542,7 @@
     .footer-links a:hover{
       transform:translateY(-1px);
       background:rgba(255,255,255,.10);
-      border-color: rgba(234,179,8,.45);
+      border-color: rgba(196,122,43,.55);
     }
     .legal{
       margin-top:14px;
@@ -630,7 +650,7 @@
     }
     .lang-row .btn-chip[aria-pressed="true"]{
       background: var(--accent-warm-soft);
-      border-color: rgba(234,179,8,.40);
+      border-color: rgba(196,122,43,.45);
     }
 
     /* bloquear scroll detrás del panel */
@@ -713,3 +733,22 @@
       .hero-sub .u::after{animation:none; transform:scaleX(1)}
       .btn-ghost,.btn-chip,.btn-primary,.btn-secondary,.section-card{transition:none}
     }
+
+    /* ===== Noise texture — Clinical Aviation Psychology ===== */
+    /* Grano de película sutil sobre toda la interfaz; refuerza sensación de
+       profundidad sin llamar la atención. pointer-events:none = completamente
+       no interactivo. z-index:9000 = encima del contenido, debajo de modales. */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:9000;
+      pointer-events:none;
+      opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat:repeat;
+      background-size:280px 280px;
+    }
+    body.rm::after,
+    body.reduce-motion::after{ display:none; }
+    @media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
