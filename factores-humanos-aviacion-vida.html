@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Factores humanos: Aviación y vida diaria — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Analogía clara y práctica: factores humanos en seguridad operacional y en la vida cotidiana. Modelo común (carga–recuperación–impacto), señales tempranas y plan mínimo de 7 días para prevención." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* === Homogeneizado al look de estres-cronico-burnout.html === */
+
+    .topic-hero{
+      overflow:hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display:block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.15) 0%, rgba(14,34,57,.65) 70%, rgba(14,34,57,.75) 100%);
+      border-radius: 18px;
+      pointer-events:none;
+    }
+    .topic-hero .titlebox{
+      position:absolute; left:16px; right:16px; bottom:14px;
+      color:#fff;
+    }
+    .topic-hero h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1; }
+    .topic-hero p{ margin:8px 0 0 0; opacity:.92; max-width: 72ch; }
+
+    .toc{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 10px;
+    }
+
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .audio-player{ width:100%; border-radius: 12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    .video-wrap{ display:flex; flex-direction:column; gap:10px; margin-top: 10px; }
+    .video-player{ width:100%; border-radius: 12px; background:#000; }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+      white-space: nowrap;
+    }
+
+    .exercise-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .range-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .range-row label{
+      min-width: 210px;
+      font-weight: 700;
+    }
+    .range-row input[type="range"]{
+      flex: 1;
+      min-width: 220px;
+    }
+    .pill-val{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800;
+      min-width: 54px;
+      text-align:center;
+    }
+
+    textarea.note-input{
+      width:100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+    }
+    textarea.note-input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    .checklist{
+      display:grid;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .check-item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+    }
+    .check-item input{ margin-top: 3px; }
+
+    .copy-ok{
+      display:none;
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    .longread{
+      line-height: 1.65;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER / TOPBAR -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>🧠</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Factores humanos: Aviación y vida diaria</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/factores-humanos-portada.webp (sin texto) -->
+        <img src="assets/img/factores-humanos-portada.webp?v=1" alt="Ilustración representativa de factores humanos, aviación y vida diaria" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Factores humanos: Aviación y vida diaria</h1>
+          <p>El mismo modelo: <b>carga</b> + <b>poca recuperación</b> + <b>impacto funcional</b>. En aviación aumenta el riesgo operacional; en la vida diaria, aumenta el riesgo de crisis emocionales y desgaste.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Un modelo común para prevenir: detectar señales tempranas y recuperar margen antes de la descompensación.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <!-- ✅ Reemplazá por tu archivo real -->
+            <source src="audio/Factores_humanos_modelo_comun_y_prevencion.m4a" type="audio/mp4" />
+            <source src="audio/Factores_humanos_modelo_comun_y_prevencion.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/Factores_humanos_modelo_comun_y_prevencion.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video -->
+    <section class="section" id="video">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mirá el resumen en video</h2>
+            <p class="card-sub">Un repaso breve: el modelo (carga–recuperación–impacto) + 3 señales + qué hacer hoy.</p>
+          </div>
+          <span class="chip" aria-label="Video disponible">🎬 Video</span>
+        </div>
+
+        <div class="video-wrap">
+          <video class="video-player" controls preload="metadata" playsinline>
+            <!-- ✅ Reemplazá por tu archivo real -->
+            <source src="assets/videos/Factores_humanos_modelo_comun_resumen.mp4" type="video/mp4" />
+            Tu navegador no soporta video.
+          </video>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Volver a la lectura</a>
+            <a class="btn btn-ghost" href="assets/videos/Factores_humanos_modelo_comun_resumen.mp4" download>Descargar video</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Acceso rápido -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Podés ir directo a lo que necesitás hoy.</p>
+            <div class="toc" aria-label="Índice">
+              <a class="btn btn-ghost" href="#que-es">Qué es</a>
+              <a class="btn btn-ghost" href="#modelo">Modelo en común</a>
+              <a class="btn btn-ghost" href="#como-se-ve">Cómo se ve</a>
+              <a class="btn btn-ghost" href="#alarmas">Señales</a>
+              <a class="btn btn-ghost" href="#autoevaluacion">Autoevaluación</a>
+              <a class="btn btn-ghost" href="#plan">Plan 7 días</a>
+              <a class="btn btn-ghost" href="#lectura">Lectura larga</a>
+              <a class="btn btn-ghost" href="#conclusion">Conclusión clínica</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Qué es -->
+    <section class="section" id="que-es">
+      <div class="grid-2" style="margin-top:10px">
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Factores humanos (seguridad operacional)</h2>
+              <p class="card-sub">
+                En aviación, “factores humanos” es todo lo que afecta el rendimiento real en un entorno exigente:
+                atención, percepción, juicio, toma de decisiones, regulación emocional, sueño, fatiga y uso de sustancias.
+                No se evalúa solo diagnóstico: se evalúa <b>función</b> y <b>riesgo</b>.
+              </p>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Clave práctica: muchos eventos críticos no nacen de una enfermedad grave, sino de <b>factores pequeños acumulados</b> (fatiga, distracción, irritabilidad, preocupación intensa).
+          </div>
+        </div>
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Factores humanos (vida diaria y salud mental)</h2>
+              <p class="card-sub">
+                En la vida cotidiana ocurre lo mismo: la mayoría de las crisis emocionales no aparecen “de golpe”.
+                Se acumulan sobrecarga, preocupaciones y falta de recuperación hasta que la mente y el cuerpo pierden regulación.
+              </p>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Clave clínica: el sistema nervioso no distingue entre “cabina” y “casa”. Bajo estrés sostenido, la función cognitiva y emocional se vuelve más vulnerable.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Modelo -->
+    <section class="section" id="modelo">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">El modelo en común</h2>
+            <p class="card-sub">Un patrón simple que explica riesgo operacional y riesgo clínico.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">1) Carga alta</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Demasiadas demandas, presión o responsabilidad.</li>
+              <li>Urgencias, multitarea, poco margen de error.</li>
+              <li>Preocupaciones sostenidas que “se instalan”.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">2) Recuperación baja</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Sueño insuficiente o no reparador.</li>
+              <li>Pausas sin desconexión real (pantallas, rumiación).</li>
+              <li>Sin descarga corporal ni límites de jornada.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">3) Impacto funcional</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Errores simples, distractibilidad, “túnel mental”.</li>
+              <li>Irritabilidad, reactividad, peor juicio.</li>
+              <li>Aislamiento, caída de motivación, conductas de compensación.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Lectura práctica</h3>
+            <p class="card-sub" style="margin-top:10px">
+              En aviación, este patrón aumenta la probabilidad de error humano. En la vida diaria, aumenta la probabilidad
+              de ansiedad, insomnio, burnout, irritabilidad, somatización o tristeza sostenida.
+            </p>
+            <div class="note" style="margin-top:12px">
+              Idea central: no hace falta estar “enfermo” para estar en riesgo. A veces alcanza con estar <b>sobrecargado y sub-recuperado</b>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo se ve -->
+    <section class="section" id="como-se-ve">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo se ve en la vida real</h2>
+            <p class="card-sub">Dos escenarios distintos, el mismo mecanismo.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">En aviación (funcional)</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Distracción por preocupaciones personales.</li>
+              <li>Fatiga: atención disminuida y tiempos de reacción más lentos.</li>
+              <li>Irritabilidad: peor coordinación, decisiones impulsivas.</li>
+              <li>Sueño pobre: lapsus, omisiones, microsueños.</li>
+              <li>Automedicación: sedantes o alcohol para “apagar”.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">En vida diaria (clínico)</h3>
+            <ul class="card-sub" style="margin-top:10px">
+              <li>Rumiación: “no puedo apagar la cabeza”.</li>
+              <li>Irritabilidad: tolerancia baja, discusiones, explosiones.</li>
+              <li>Insomnio: conciliación/mantenimiento, despertar agotado.</li>
+              <li>Desgaste: “me cuesta todo”, “estoy en piloto automático”.</li>
+              <li>Compensaciones: más cafeína, alcohol, ansiolíticos o pantallas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          La prevención funciona mejor cuando se interviene <b>antes</b> del colapso: en la etapa de señales tempranas.
+        </div>
+      </div>
+    </section>
+
+    <!-- Señales de alarma -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales tempranas</h2>
+            <p class="card-sub">No diagnostican, pero indican riesgo de descompensación si se sostienen.</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Sueño insuficiente o no reparador varios días seguidos.</li>
+          <li>Errores por distracción (especialmente en tareas críticas).</li>
+          <li>Irritabilidad o reactividad emocional aumentada.</li>
+          <li>Preocupación persistente / rumiación que no se corta.</li>
+          <li>Aislamiento social por saturación.</li>
+          <li>Consumo creciente de cafeína/alcohol/sedantes para sostenerte o dormir.</li>
+          <li>Sensación de estar “al límite” o “en piloto automático”.</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          Si hay desesperanza marcada o pensamientos de muerte, o riesgo inmediato para vos o terceros, buscá ayuda urgente/local (guardia/servicio de emergencias).
+        </div>
+      </div>
+    </section>
+
+    <!-- Autoevaluación -->
+    <section class="section" id="autoevaluacion">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Autoevaluación breve</h2>
+            <p class="card-sub">No diagnostica. Sirve para ordenar el cuadro y traer un resumen útil a consulta.</p>
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Termómetros (últimos 7 días)</h3>
+
+            <div class="range-row">
+              <label for="carga">Carga (0–10)</label>
+              <input id="carga" type="range" min="0" max="10" step="1" value="7" />
+              <span class="pill-val" id="cargaVal">7</span>
+            </div>
+
+            <div class="range-row">
+              <label for="recup">Recuperación (0–10)</label>
+              <input id="recup" type="range" min="0" max="10" step="1" value="4" />
+              <span class="pill-val" id="recupVal">4</span>
+            </div>
+
+            <div class="range-row">
+              <label for="impacto">Impacto funcional (0–10)</label>
+              <input id="impacto" type="range" min="0" max="10" step="1" value="6" />
+              <span class="pill-val" id="impactoVal">6</span>
+            </div>
+
+            <div class="note" id="lecturaRiesgo" style="margin-top:12px">
+              Lectura orientativa: riesgo más alto si <b>Carga ≥ 7</b> + <b>Recuperación ≤ 4</b> o <b>Impacto ≥ 7</b>.
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Banderas (Sí / No)</h3>
+
+            <div class="checklist" role="group" aria-label="Banderas">
+              <label class="check-item"><input type="checkbox" class="flag" id="f1"> <span>Sueño pobre o descanso insuficiente.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f2"> <span>Tensión muscular casi diaria (cuello/espalda/bruxismo).</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f3"> <span>Irritabilidad o reactividad aumentada.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f4"> <span>Dificultad de concentración / errores simples.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f5"> <span>Más sustancias (cafeína/alcohol/ansiolíticos/pantallas) para sostenerme.</span></label>
+              <label class="check-item"><input type="checkbox" class="flag" id="f6"> <span>Sensación de “no doy más” o pérdida de motivación.</span></label>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Nota breve (opcional)</h3>
+            <textarea id="nota" class="note-input" placeholder="Ej.: qué área te está drenando (trabajo, familia, salud), qué te dispara, qué te cuesta soltar, qué te ayudaría a recuperar..."></textarea>
+
+            <div class="audio-actions" style="margin-top:12px">
+              <button class="btn" id="btnCopy" type="button">Copiar resumen</button>
+              <button class="btn btn-ghost" id="btnReset" type="button">Reset</button>
+              <a class="btn btn-ghost" href="#plan">Ir al plan 7 días</a>
+            </div>
+
+            <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en WhatsApp o traerlo a consulta.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Plan -->
+    <section class="section" id="plan">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Plan mínimo de 7 días</h2>
+            <p class="card-sub">No es “curarte en una semana”. Es cortar la inercia y recuperar agencia.</p>
+          </div>
+        </div>
+
+        <ol class="card-sub" style="margin-top:10px">
+          <li><b>Ancla diaria:</b> una hora relativamente fija de despertar.</li>
+          <li><b>Recuperación real:</b> 20 minutos por día sin pantalla (de verdad).</li>
+          <li><b>Descarga corporal:</b> 2–5 minutos (cuello/hombros) o caminata breve.</li>
+          <li><b>Límite concreto:</b> un “NO” real o recorte de una demanda.</li>
+          <li><b>Orden mental:</b> escribir 3 pendientes + 1 prioridad (baja rumiación).</li>
+          <li><b>Conexión:</b> un contacto breve que te haga bien.</li>
+          <li><b>Registro 30 segundos:</b> carga–recuperación–impacto (0–10).</li>
+        </ol>
+
+        <div class="note" style="margin-top:12px">
+          Regla clínica: primero estabilizá sueño y recuperación; después se procesa lo emocional. Si el insomnio es severo o persistente, conviene evaluación clínica y estrategias específicas (p. ej., CBT-I).
+        </div>
+      </div>
+    </section>
+
+    <!-- Lectura larga -->
+    <section class="section" id="lectura">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Lectura larga</h2>
+            <p class="card-sub">Para leer con calma (texto amplio) o usar como guion base del audio.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            En aviación, un accidente rara vez ocurre por una sola causa gigante. Muchas veces se produce por una cadena de factores:
+            fatiga acumulada, distracción, presión, preocupación intensa, errores pequeños y decisiones tomadas con menos margen.
+          </p>
+
+          <p>
+            En salud mental cotidiana pasa algo muy parecido. La mayoría de las crisis de ansiedad, el burnout o el insomnio no nacen “de golpe”.
+            Se van construyendo cuando vivimos con carga alta y recuperación baja. El sistema nervioso queda encendido demasiado tiempo,
+            el sueño se altera, la tolerancia emocional disminuye y la mente se vuelve más vulnerable a la rumiación y al miedo.
+          </p>
+
+          <p>
+            La prevención no consiste en esperar un diagnóstico mayor. Consiste en detectar deterioro funcional temprano:
+            dormir mal, estar irritable, perder foco, aumentar el consumo de sustancias o sentir que todo cuesta. En esa etapa,
+            cambios pequeños y sostenidos pueden evitar que el cuadro se vuelva crónico.
+          </p>
+
+          <p>
+            El modelo aeronáutico es útil para la vida diaria porque nos enseña a mirar la función. No se trata de “aguantar”.
+            Se trata de recuperar regulación y margen: sueño, pausas reales, límites, descarga corporal, orden mental y apoyo a tiempo.
+          </p>
+
+          <div class="note" style="margin-top:12px">
+            Consultar a tiempo no es debilidad: es una medida inteligente de prevención.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusión clínica -->
+    <section class="section" id="conclusion">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Conclusión clínica</h2>
+            <p class="card-sub">Prevención funcional: el mismo principio para seguridad aérea y bienestar mental.</p>
+          </div>
+        </div>
+
+        <div class="card-sub" style="margin-top:10px">
+          <p>
+            En aviación, la seguridad no se sostiene solo con diagnósticos. Se sostiene con prevención funcional:
+            detectar señales tempranas, corregir el desequilibrio entre demanda y recuperación, y reducir el riesgo de error humano.
+          </p>
+          <p>
+            En la vida diaria, la salud mental se cuida igual: no esperando a “romperse”, sino interviniendo cuando el sistema empieza a mostrar desgaste.
+            El modelo común es claro: <b>carga alta + recuperación baja + impacto funcional</b>.
+            La intervención preventiva también es clara: <b>sueño, recuperación, límites, regulación emocional y apoyo</b>.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Si estas señales se sostienen en el tiempo, consultar es prevención. No esperes a que el desgaste se vuelva crónico.
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si estas señales te están trabando, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Autoevaluación JS -->
+  <script>
+    (function(){
+      const ids = ["carga","recup","impacto"];
+      const map = {};
+      ids.forEach(id=>{
+        map[id] = document.getElementById(id);
+        map[id+"Val"] = document.getElementById(id+"Val");
+      });
+
+      function upd(){
+        ids.forEach(id=>{
+          if(map[id] && map[id+"Val"]) map[id+"Val"].textContent = map[id].value;
+        });
+      }
+      ids.forEach(id=>{
+        if(map[id]) map[id].addEventListener("input", upd);
+      });
+      upd();
+
+      const note = document.getElementById("nota");
+      const btnCopy = document.getElementById("btnCopy");
+      const btnReset = document.getElementById("btnReset");
+      const copyOk = document.getElementById("copyOk");
+
+      function nowStr(){
+        const d = new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      function flagsStr(){
+        const labels = [
+          ["f1","Sueño pobre"],
+          ["f2","Tensión muscular"],
+          ["f3","Irritabilidad"],
+          ["f4","Errores/distracción"],
+          ["f5","Más sustancias/pantallas"],
+          ["f6","No doy más / baja motivación"]
+        ];
+        const on = [];
+        labels.forEach(([id, txt])=>{
+          const el = document.getElementById(id);
+          if(el && el.checked) on.push(txt);
+        });
+        return on.length ? on.join(", ") : "—";
+      }
+
+      async function copyText(txt){
+        try{
+          await navigator.clipboard.writeText(txt);
+          return true;
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      if(btnCopy){
+        btnCopy.addEventListener("click", async ()=>{
+          const txt =
+            `Factores humanos — Autoevaluación\n` +
+            `• Carga: ${map.carga?.value ?? "—"}/10\n` +
+            `• Recuperación: ${map.recup?.value ?? "—"}/10\n` +
+            `• Impacto funcional: ${map.impacto?.value ?? "—"}/10\n` +
+            `• Banderas: ${flagsStr()}\n` +
+            `• Nota: ${(note?.value || "").trim() || "—"}\n` +
+            `• Fecha/hora: ${nowStr()}`;
+
+          await copyText(txt);
+          if(copyOk){
+            copyOk.style.display = "block";
+            setTimeout(()=> copyOk.style.display = "none", 3500);
+          }
+        });
+      }
+
+      if(btnReset){
+        btnReset.addEventListener("click", ()=>{
+          if(map.carga) map.carga.value = 7;
+          if(map.recup) map.recup.value = 4;
+          if(map.impacto) map.impacto.value = 6;
+
+          ["f1","f2","f3","f4","f5","f6"].forEach(id=>{
+            const el = document.getElementById(id);
+            if(el) el.checked = false;
+          });
+
+          if(note) note.value = "";
+          upd();
+          if(copyOk) copyOk.style.display = "none";
+        });
+      }
+
+      // Sync volumen global del header (si existe) al podcast
+      const podcastAudio = document.getElementById("podcastAudio");
+      const vol = document.getElementById("volumeRange");
+      if(podcastAudio && vol){
+        const applyVol = () => { podcastAudio.volume = Math.max(0, Math.min(1, (Number(vol.value)||35)/100)); };
+        vol.addEventListener("input", applyVol);
+        applyVol();
+      }
+    })();
+  </script>
+
+</body>
+</html>

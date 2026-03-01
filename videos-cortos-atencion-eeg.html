@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Videos cortos y atención: qué muestra un estudio con EEG | Temas de Salud Mental</title>
+  <meta name="description" content="Resumen clínico y recomendaciones prácticas sobre cómo el consumo de videos cortos (short-form) se asocia a peor control atencional y autocontrol, según un estudio con EEG." />
+  <meta name="theme-color" content="#0B4FB3" />
+
+  <style>
+    :root{
+      --blue:#0B4FB3;          /* Azul Francia (aprox.) */
+      --blue-2:#0A3E8E;
+      --graphite:#23262B;      /* Gris grafito */
+      --muted:#5B6472;
+      --bg:#F4F7FB;
+      --card:#FFFFFF;
+      --border:rgba(15,23,42,.12);
+      --shadow: 0 12px 28px rgba(2, 6, 23, .10);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1080px;
+      --ok:#16a34a;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--graphite);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(11,79,179,.18), transparent 55%),
+        radial-gradient(900px 500px at 90% 0%, rgba(35,38,43,.10), transparent 60%),
+        linear-gradient(180deg, #FFFFFF, var(--bg));
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:18px 16px 60px}
+    .topbar{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.75);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar .inner{max-width:var(--max); margin:0 auto; padding:10px 16px; display:flex; gap:10px; align-items:center; justify-content:space-between}
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:99px;
+      background: radial-gradient(circle at 30% 30%, #7fb0ff, var(--blue));
+      box-shadow: 0 0 0 6px rgba(11,79,179,.10);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border:1px solid var(--border);
+      border-radius:999px; background:rgba(255,255,255,.9);
+      color:var(--muted); font-size:13px;
+    }
+    .progress{
+      height:3px; background:rgba(11,79,179,.12);
+    }
+    .progress > div{
+      height:100%; width:0%;
+      background: linear-gradient(90deg, var(--blue), #63A3FF);
+      transition: width .08s linear;
+    }
+
+    header.hero{
+      padding:26px 0 8px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      header.hero{grid-template-columns:1fr; }
+    }
+
+    .hero-card{
+      background: linear-gradient(135deg, rgba(11,79,179,.10), rgba(255,255,255,.85));
+      border:1px solid var(--border);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding:22px 20px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(500px 240px at 20% 10%, rgba(11,79,179,.22), transparent 60%),
+        radial-gradient(420px 220px at 90% 20%, rgba(35,38,43,.10), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-card > *{position:relative}
+    .kicker{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(11,79,179,.22);
+      background:rgba(11,79,179,.08);
+      color:var(--blue-2);
+      font-weight:600;
+      font-size:12px;
+    }
+    h1{
+      margin:8px 0 10px;
+      font-size: clamp(24px, 3.2vw, 40px);
+      line-height:1.1;
+      letter-spacing:-.6px;
+    }
+    .lead{
+      margin:0 0 14px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height:1.5;
+      max-width: 70ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+    .card{
+      grid-column: span 6;
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 22px rgba(2, 6, 23, .06);
+      padding:16px 16px;
+    }
+    .card h3{margin:0 0 8px; font-size:16px}
+    .card p{margin:0; color:var(--muted); line-height:1.5; font-size:14px}
+    @media (max-width: 900px){
+      .card{grid-column: span 12;}
+    }
+
+    .statbox{
+      background: rgba(35,38,43,.92);
+      color:#fff;
+      border-radius: var(--radius2);
+      padding:18px;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .statbox::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(380px 220px at 10% 10%, rgba(99,163,255,.25), transparent 60%),
+        radial-gradient(360px 220px at 90% 0%, rgba(11,79,179,.28), transparent 62%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .statbox > *{position:relative}
+    .stat-title{
+      margin:0 0 10px; font-weight:700; letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .mini{
+      font-size:12px; color: rgba(255,255,255,.75); line-height:1.45;
+      margin: 0 0 12px;
+    }
+    .metrics{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    }
+    .metric{
+      padding:12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .metric .k{font-size:12px; color:rgba(255,255,255,.78)}
+    .metric .v{font-size:18px; font-weight:800; margin-top:4px}
+
+    section{
+      margin-top:18px;
+    }
+    .section-title{
+      margin: 22px 0 10px;
+      font-size:18px;
+      letter-spacing:-.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-title .bar{
+      width:10px; height:10px; border-radius:99px;
+      background: var(--blue);
+      box-shadow: 0 0 0 6px rgba(11,79,179,.10);
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 1000px){
+      .content{grid-template-columns:1fr;}
+    }
+    .panel{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius2);
+      box-shadow: 0 10px 22px rgba(2, 6, 23, .06);
+      padding:16px;
+    }
+
+    .bullets{margin:10px 0 0; padding:0 0 0 18px; color:var(--muted); line-height:1.6}
+    .bullets li{margin:6px 0}
+
+    .callout{
+      border-left: 4px solid var(--blue);
+      background: rgba(11,79,179,.06);
+      border-radius: 14px;
+      padding:12px 12px;
+      color: var(--muted);
+      line-height:1.55;
+    }
+
+    .accordion .item{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      background:#fff;
+      margin:10px 0;
+    }
+    .accordion button{
+      width:100%;
+      text-align:left;
+      padding:14px 14px;
+      border:0;
+      background: linear-gradient(180deg, rgba(11,79,179,.06), rgba(255,255,255,.85));
+      color: var(--graphite);
+      font-weight:700;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .accordion .body{
+      padding: 0 14px 14px;
+      color: var(--muted);
+      line-height:1.6;
+      display:none;
+    }
+    .accordion .item.open .body{display:block}
+    .chev{transition: transform .18s ease}
+    .item.open .chev{transform: rotate(180deg)}
+
+    .checklist{
+      display:grid; gap:10px;
+      margin-top:10px;
+    }
+    .check{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: #fff;
+    }
+    .check input{margin-top:3px; transform: scale(1.1)}
+    .check label{display:block; cursor:pointer}
+    .score{
+      margin-top:12px;
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(35,38,43,.05), rgba(255,255,255,.95));
+      color: var(--muted);
+      line-height:1.55;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .plan{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 980px){
+      .plan{grid-template-columns:1fr 1fr;}
+    }
+    @media (max-width: 520px){
+      .plan{grid-template-columns:1fr;}
+    }
+    .day{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 8px 18px rgba(2,6,23,.05);
+    }
+    .day .d{
+      font-weight:900; color: var(--blue-2);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .day .t{margin-top:8px; color:var(--muted); font-size:13px; line-height:1.5}
+
+    .cta{
+      margin-top:18px;
+      background: linear-gradient(135deg, rgba(11,79,179,.14), rgba(255,255,255,.92));
+      border:1px solid rgba(11,79,179,.22);
+      border-radius: var(--radius2);
+      padding:16px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .cta strong{display:block; font-size:16px; margin-bottom:4px}
+    .cta span{color:var(--muted); font-size:14px; line-height:1.4}
+    .btn{
+      appearance:none;
+      border:0;
+      padding:10px 14px;
+      border-radius: 999px;
+      font-weight:800;
+      color:#fff;
+      background: linear-gradient(135deg, var(--blue), #63A3FF);
+      cursor:pointer;
+      box-shadow: 0 10px 18px rgba(11,79,179,.25);
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--blue-2);
+      border:1px solid rgba(11,79,179,.22);
+      box-shadow:none;
+      font-weight:800;
+    }
+
+    footer{
+      margin-top:24px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+      padding-top:16px;
+      border-top:1px solid var(--border);
+    }
+    .fine{
+      margin:0;
+    }
+    .sources{
+      margin-top:10px;
+      padding:12px;
+      border-radius: 16px;
+      border:1px dashed rgba(35,38,43,.25);
+      background: rgba(255,255,255,.75);
+    }
+    .sources code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Temas de Salud Mental</span>
+        <span class="pill">Atención · Autocontrol · Videos cortos</span>
+      </div>
+      <div class="pill" id="readTime">Lectura: ~6 min</div>
+    </div>
+    <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+  </div>
+
+  <main class="wrap">
+    <header class="hero">
+      <div class="hero-card">
+        <div class="kicker">
+          <span class="tag">Resumen clínico para pacientes</span>
+          <span class="tag">EEG</span>
+          <span class="tag">Control ejecutivo</span>
+        </div>
+        <h1>Videos cortos en el celular y atención: lo que muestra un estudio con EEG</h1>
+        <p class="lead">
+          En un estudio con adultos jóvenes, una mayor tendencia a “engancharse” con videos cortos
+          se asoció a una señal cerebral más baja de <b>control ejecutivo</b> (capacidad de frenar interferencias)
+          durante una tarea de atención, y a <b>menor autocontrol</b>.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3>¿Qué es “control ejecutivo”?</h3>
+            <p>Es la habilidad de tu cerebro para <b>frenar impulsos</b>, sostener foco, resistir distracciones y resolver conflictos (por ejemplo, ignorar estímulos irrelevantes).</p>
+          </div>
+          <div class="card">
+            <h3>Idea central</h3>
+            <p>El problema no es “mirar un video”. El riesgo aparece cuando el consumo es <b>frecuente, automático y compulsivo</b>, especialmente ante estrés o aburrimiento.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="statbox" aria-label="Datos clave del estudio">
+        <div class="stat-title">Datos clave</div>
+        <p class="mini">
+          Estudio con EEG durante una prueba de atención (ANT) y cuestionarios de uso de videos cortos y autocontrol.
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <div class="k">Participantes</div>
+            <div class="v">48</div>
+          </div>
+          <div class="metric">
+            <div class="k">Edad promedio</div>
+            <div class="v">~21.5</div>
+          </div>
+          <div class="metric">
+            <div class="k">Hallazgo EEG</div>
+            <div class="v">↓ theta frontal</div>
+          </div>
+          <div class="metric">
+            <div class="k">Autocontrol</div>
+            <div class="v">↓</div>
+          </div>
+        </div>
+        <p class="mini" style="margin-top:12px;">
+          Importante: el estudio muestra <b>asociación</b> (correlación), no prueba por sí solo causa-efecto.
+        </p>
+      </aside>
+    </header>
+
+    <section>
+      <div class="section-title"><span class="bar" aria-hidden="true"></span><span>¿Qué encontró el estudio?</span></div>
+
+      <div class="content">
+        <div class="panel">
+          <div class="callout">
+            <b>Resumen en una línea:</b> a mayor tendencia de uso problemático de videos cortos, menor “activación theta” frontal durante el control de interferencias en una tarea de atención, y menor autocontrol reportado.
+          </div>
+
+          <ul class="bullets">
+            <li>Se evaluó la atención con una prueba llamada <b>Attention Network Test (ANT)</b> (alerta, orientación y control ejecutivo).</li>
+            <li>En lo conductual (tiempos de reacción/precisión), no siempre aparecen diferencias claras; en cambio, el EEG puede detectar cambios “por debajo” de la conducta.</li>
+            <li>El hallazgo principal fue una relación negativa entre el puntaje de tendencia adictiva y un índice EEG (theta frontal) asociado al <b>control ejecutivo</b> durante la tarea.</li>
+            <li>Ese vínculo <b>no apareció en EEG de reposo</b>, sugiriendo que el efecto se evidencia cuando el cerebro necesita “frenar” y resolver interferencias.</li>
+            <li>Además, a mayor tendencia adictiva, menor autocontrol en cuestionarios.</li>
+          </ul>
+
+          <div class="section-title" style="margin-top:18px;">
+            <span class="bar" aria-hidden="true"></span><span>¿Qué significa en la vida diaria?</span>
+          </div>
+
+          <div class="accordion" id="acc1">
+            <div class="item">
+              <button type="button">
+                <span>1) Tu atención no “se rompe”, pero se entrena hacia lo inmediato</span>
+                <span class="chev">▾</span>
+              </button>
+              <div class="body">
+                Los videos cortos suelen ofrecer recompensas rápidas (novedad, humor, sorpresa) y cambios constantes.
+                Con el tiempo, sostener tareas más largas (leer, estudiar, conversar sin mirar el celular) puede sentirse más costoso.
+              </div>
+            </div>
+
+            <div class="item">
+              <button type="button">
+                <span>2) El problema típico: “me cuesta frenar”</span>
+                <span class="chev">▾</span>
+              </button>
+              <div class="body">
+                El control ejecutivo es la “frenada” mental: parar, elegir, volver a la tarea. Si esa frenada se debilita, aparecen
+                conductas automáticas: desbloquear, scrollear, saltar de estímulo en estímulo.
+              </div>
+            </div>
+
+            <div class="item">
+              <button type="button">
+                <span>3) Estrés + aburrimiento = gatillo</span>
+                <span class="chev">▾</span>
+              </button>
+              <div class="body">
+                Muchas personas no consumen más por placer, sino para regular tensión, cansancio, vacío o ansiedad.
+                Ahí el hábito se vuelve “medicación” rápida, pero con costo atencional y de energía.
+              </div>
+            </div>
+
+            <div class="item">
+              <button type="button">
+                <span>4) Atención y ánimo se retroalimentan</span>
+                <span class="chev">▾</span>
+              </button>
+              <div class="body">
+                Si tu atención cae, rendís menos; si rendís menos, sube frustración/ansiedad; y si sube ansiedad, aumenta el impulso
+                a anestesiarse con consumo automático. Romper el círculo suele requerir un plan simple y progresivo.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="section-title" style="margin-top:0;">
+            <span class="bar" aria-hidden="true"></span><span>Señales de alerta</span>
+          </div>
+          <ul class="bullets">
+            <li>“Voy a ver 5 minutos” y se vuelve 30–60+ sin darte cuenta.</li>
+            <li>Te cuesta sostener lectura o tareas sin mirar el celular.</li>
+            <li>Sentís inquietud/ansiedad cuando no podés scrollear.</li>
+            <li>Usás videos cortos como escape ante estrés, enojo o aburrimiento.</li>
+            <li>Te dormís tarde por consumo nocturno (“solo un video más”).</li>
+          </ul>
+
+          <div class="section-title">
+            <span class="bar" aria-hidden="true"></span><span>Objetivo realista</span>
+          </div>
+          <div class="callout">
+            No es “dejar todo”. Es pasar de consumo automático a <b>consumo elegido</b>, con límites claros.
+          </div>
+
+          <div class="section-title">
+            <span class="bar" aria-hidden="true"></span><span>Tip rápido (hoy)</span>
+          </div>
+          <div class="callout">
+            Activá un <b>temporizador de 10–15 min</b> antes de entrar y apagá el <b>autoplay</b> si tu app lo permite.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><span class="bar" aria-hidden="true"></span><span>Checklist breve: “¿se me está yendo la mano?”</span></div>
+
+      <div class="panel">
+        <div class="badge">Marcá lo que te pasa en las últimas 2–4 semanas</div>
+
+        <div class="checklist" id="checklist">
+          <div class="check">
+            <input type="checkbox" id="c1" />
+            <label for="c1"><b>Pierdo la noción del tiempo</b> con videos cortos (más de una vez por semana).</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="c2" />
+            <label for="c2"><b>Entro “en automático”</b> (desbloqueo sin querer, scrolleo sin buscar algo).</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="c3" />
+            <label for="c3">Me cuesta <b>volver a la tarea</b> (estudio/trabajo) después de mirar.</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="c4" />
+            <label for="c4">Uso videos cortos para <b>calmar ansiedad/estrés</b> o evitar emociones.</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="c5" />
+            <label for="c5"><b>Se afecta el sueño</b> (me acuesto más tarde o me despierto y miro).</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="c6" />
+            <label for="c6">Siento <b>inquietud/abstinencia</b> si no puedo mirar (impulso fuerte).</label>
+          </div>
+        </div>
+
+        <div class="score" id="scoreBox">
+          <b>Resultado orientativo:</b> <span id="scoreText">marcá opciones para ver tu perfil.</span>
+          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn secondary" type="button" id="resetBtn">Reiniciar checklist</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><span class="bar" aria-hidden="true"></span><span>Plan práctico de 7 días (sin sufrir)</span></div>
+      <div class="panel">
+        <div class="callout">
+          Objetivo: bajar fricción del “freno” y recuperar atención sostenida. Elegí <b>una</b> medida por día; si te resulta, la mantenés.
+        </div>
+
+        <div class="plan">
+          <div class="day">
+            <div class="d">Día 1 <span class="badge">Tiempo</span></div>
+            <div class="t">Entrá con temporizador: <b>10–15 min</b>. Si suena, salís (aunque cueste).</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 2 <span class="badge">Autoplay</span></div>
+            <div class="t">Desactivá autoplay (si existe) y “videos sugeridos”. Menos arrastre, más elección.</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 3 <span class="badge">Notifs</span></div>
+            <div class="t">Silenciá notificaciones de reels/shorts. Dejás el control en vos, no en la app.</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 4 <span class="badge">Entorno</span></div>
+            <div class="t">Sacá la app del inicio o usá carpeta “2º pantalla”. Pequeña fricción = gran cambio.</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 5 <span class="badge">Noche</span></div>
+            <div class="t">Regla: <b>0 videos</b> en cama. Si querés, reemplazá por audio/lectura breve.</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 6 <span class="badge">Foco</span></div>
+            <div class="t">Bloque de atención: <b>25 min</b> (Pomodoro) sin celular. Luego pausa breve.</div>
+          </div>
+          <div class="day">
+            <div class="d">Día 7 <span class="badge">Reemplazo</span></div>
+            <div class="t">Elegí 1 alternativa rápida: caminar 5 min, agua fría en cara, respiración 2 min, mate/agua.</div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-bottom:6px;">
+          <span class="bar" aria-hidden="true"></span><span>Para quién conviene pedir ayuda</span>
+        </div>
+        <ul class="bullets">
+          <li>Si hay <b>insomnio</b> sostenido, caída marcada de rendimiento o conflictos familiares/laborales por el uso.</li>
+          <li>Si el consumo funciona como anestesia de <b>ansiedad, depresión o irritabilidad</b>.</li>
+          <li>Si hay sospecha de <b>TDAH adulto</b> (distracción crónica, impulsividad, desorganización) y el uso lo empeora.</li>
+        </ul>
+
+        <div class="cta">
+          <div>
+            <strong>¿Querés abordarlo con un plan clínico?</strong>
+            <span>Se puede trabajar con higiene digital, entrenamiento atencional y, si corresponde, evaluación clínica integral.</span>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" href="#" onclick="alert('Pegá aquí el link/acción de tu Central de Turnos (WhatsApp/landing).'); return false;">Central de Turnos</a>
+            <a class="btn secondary" href="#" onclick="window.print(); return false;">Imprimir</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><span class="bar" aria-hidden="true"></span><span>Preguntas frecuentes</span></div>
+
+      <div class="panel accordion" id="acc2">
+        <div class="item">
+          <button type="button">
+            <span>¿El estudio prueba que los videos cortos causan déficit de atención?</span>
+            <span class="chev">▾</span>
+          </button>
+          <div class="body">
+            No. Muestra una <b>asociación</b>: a mayor tendencia de consumo problemático, peor indicador EEG de control ejecutivo durante una tarea.
+            Para afirmar causalidad se necesitarían estudios longitudinales o intervenciones controladas.
+          </div>
+        </div>
+
+        <div class="item">
+          <button type="button">
+            <span>¿Por qué el EEG puede cambiar si en la conducta “no se nota”?</span>
+            <span class="chev">▾</span>
+          </button>
+          <div class="body">
+            A veces el rendimiento (tiempos/errores) no cambia en tareas simples, pero el cerebro “paga un costo” distinto para sostenerlo.
+            El EEG puede captar ese esfuerzo o déficit sutil.
+          </div>
+        </div>
+
+        <div class="item">
+          <button type="button">
+            <span>¿Qué hago si lo uso para calmar ansiedad?</span>
+            <span class="chev">▾</span>
+          </button>
+          <div class="body">
+            En ese caso no alcanza solo con límites. Conviene sumar una herramienta de regulación rápida (respiración, grounding, pausa activa)
+            y, si es frecuente, evaluar el cuadro de base (ansiedad, depresión, estrés, TDAH, etc.).
+          </div>
+        </div>
+
+        <div class="item">
+          <button type="button">
+            <span>¿Cuál es el cambio con más impacto?</span>
+            <span class="chev">▾</span>
+          </button>
+          <div class="body">
+            Para la mayoría: <b>1) temporizador</b> + <b>2) cero videos en cama</b> + <b>3) notificaciones silenciadas</b>.
+            Tres medidas simples suelen producir una mejora rápida del sueño y de la atención.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="fine">
+        <b>Aclaración:</b> Este material es informativo y no reemplaza una consulta médica. Si hay empeoramiento marcado del ánimo,
+        ansiedad intensa, insomnio severo o pensamientos de autolesión, buscá ayuda profesional de forma urgente.
+      </p>
+
+      <div class="sources">
+        <b>Fuente científica base:</b>
+        <div style="margin-top:6px;">
+          Yan T, Su C, Xue W, Hu Y, Zhou H. <i>Mobile phone short video use negatively impacts attention functions: an EEG study</i>.
+          <code>Frontiers in Human Neuroscience (2024)</code> · DOI: <code>10.3389/fnhum.2024.1383913</code>
+        </div>
+      </div>
+
+      <p class="fine" style="margin-top:10px;">
+        © Consultorio — Temas de Salud Mental. Diseño: paleta azul Francia / grafito.
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    // Progress bar
+    const progressBar = document.getElementById('progressBar');
+    function updateProgress(){
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const p = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = p.toFixed(2) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, {passive:true});
+    updateProgress();
+
+    // Accordions
+    function initAccordion(id){
+      const root = document.getElementById(id);
+      if(!root) return;
+      root.querySelectorAll('.item > button').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const item = btn.closest('.item');
+          item.classList.toggle('open');
+        });
+      });
+    }
+    initAccordion('acc1');
+    initAccordion('acc2');
+
+    // Checklist + localStorage
+    const checklist = document.getElementById('checklist');
+    const scoreText = document.getElementById('scoreText');
+    const resetBtn = document.getElementById('resetBtn');
+    const KEY = 'shorts_attention_checklist_v1';
+
+    function loadChecks(){
+      try{
+        const data = JSON.parse(localStorage.getItem(KEY) || '{}');
+        Object.keys(data).forEach(id=>{
+          const el = document.getElementById(id);
+          if(el) el.checked = !!data[id];
+        });
+      }catch(e){}
+    }
+    function saveChecks(){
+      const data = {};
+      checklist.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+        data[cb.id] = cb.checked;
+      });
+      localStorage.setItem(KEY, JSON.stringify(data));
+    }
+    function computeScore(){
+      const checks = [...checklist.querySelectorAll('input[type="checkbox"]')];
+      const n = checks.filter(c=>c.checked).length;
+
+      let msg = '';
+      if(n <= 1){
+        msg = `Marcaste ${n}/6. Perfil: uso probablemente dentro de control. Sugerencia: mantené temporizador o regla nocturna si querés prevención.`;
+      }else if(n <= 3){
+        msg = `Marcaste ${n}/6. Perfil: riesgo moderado. Sugerencia: aplicá el plan 7 días (temporizador + notificaciones OFF + cero cama) y reevaluá.`;
+      }else{
+        msg = `Marcaste ${n}/6. Perfil: riesgo alto de uso problemático. Sugerencia: sumar estrategia clínica (higiene digital + regulación emocional + evaluación de base: ansiedad/depresión/TDAH).`;
+      }
+      scoreText.textContent = msg;
+    }
+
+    checklist.addEventListener('change', ()=>{
+      saveChecks();
+      computeScore();
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      checklist.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.checked=false);
+      localStorage.removeItem(KEY);
+      computeScore();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
+    // Initialize
+    loadChecks();
+    computeScore();
+  </script>
+</body>
+</html>

@@ -4,95 +4,160 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Temas de Salud mental — Consultorio Dr. Pedro Nicolas Dagnino</title>
-  <meta name="description" content="Temas de salud mental con guías claras y ejercicios breves. Consultorio Dr. Pedro Nicolas Dagnino." />
+  <meta name="description" content="Temas de salud mental con recursos interactivos (registro, señales de alarma, herramientas prácticas)." />
+  <meta name="theme-color" content="#0e2239" />
 
-  <!-- Mantener estética del ecosistema -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
-
-  <!-- Fav/PWA si ya lo usás en el ecosistema -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0e2239">
+  <link rel="stylesheet" href="assets/css/checklist-aptitud.css?v=1" />
 
   <style>
-    /* Mini portada dentro de cada zócalo (opcional premium) */
-    .topic-cover{
-      border-radius: 16px;
-      overflow:hidden;
-      position: relative;
-      height: 140px;
-      margin-bottom: 12px;
+    :root{ --navy-app:#0e2239; --navy-app-2:#0b1a2b; }
+    body.bg-plane{
+      background-color:#f2f5f8;
+      background-image:
+        radial-gradient(1200px 600px at 30% 0%, rgba(37,99,235,.09), rgba(242,245,248,0) 60%),
+        linear-gradient(180deg, rgba(242,245,248,.96), rgba(242,245,248,.93)),
+        url("assets/img/bg-avion.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    @media (max-width: 900px){ body.bg-plane{ background-attachment: scroll; } }
+    body.bg-plane .section-card{ background: rgba(255,255,255,.88); backdrop-filter: blur(8px); }
+
+    body.bg-plane header{
+      background: linear-gradient(180deg, var(--navy-app), var(--navy-app-2));
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    body.bg-plane header .brand-title{ color:#fff; }
+    body.bg-plane header .brand-sub{ color: rgba(255,255,255,.74); }
+
+    body.bg-plane header .btn-ghost{
       background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+      color:#fff;
+    }
+    body.bg-plane header .btn-ghost:hover{ background: rgba(255,255,255,.14); }
+    body.bg-plane header a.btn-ghost{ text-decoration:none; font-weight:700; }
+
+    body.bg-plane footer{
+      background: linear-gradient(180deg, var(--navy-app-2), var(--navy-app));
+      border-top: 1px solid rgba(255,255,255,.14);
+    }
+    body.bg-plane footer .brand-title,
+    body.bg-plane footer .brand-sub,
+    body.bg-plane footer .legal{ color: rgba(255,255,255,.82); }
+    body.bg-plane footer .brand-sub,
+    body.bg-plane footer .legal{ color: rgba(255,255,255,.70); }
+    body.bg-plane footer a{ color:#fff; text-decoration:none; }
+    body.bg-plane footer a:hover{ text-decoration:underline; }
+
+    /* Grid y cards tipo zócalo */
+    .grid-2{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px){ .grid-2{ grid-template-columns: 1fr; } }
+
+    .topic-cover{
+      position: relative;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(13,34,57,.10);
     }
     .topic-cover img{
       width:100%;
-      height:100%;
+      height: 150px;
       object-fit: cover;
       display:block;
-      filter: saturate(1.02);
-      transform: scale(1.02);
     }
     .topic-cover .overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(14,34,57,.10) 0%, rgba(14,34,57,.55) 70%, rgba(14,34,57,.70) 100%);
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(14,34,57,.10), rgba(14,34,57,.58));
       pointer-events:none;
     }
     .topic-cover .tag{
       position:absolute;
-      left:12px; bottom:10px;
-      padding: 8px 10px;
+      left:10px;
+      bottom:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
       border-radius: 999px;
       background: rgba(255,255,255,.14);
       border: 1px solid rgba(255,255,255,.22);
       color:#fff;
-      font-weight:700;
-      font-size: .92rem;
-      backdrop-filter: blur(10px);
+      font-weight:800;
+      font-size:.88rem;
+      backdrop-filter: blur(6px);
+    }
+    .btn-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
     }
   </style>
 </head>
 
-<body>
+<body class="bg-plane">
 
-  <!-- HEADER institucional -->
   <header>
     <div class="wrap header-inner">
-      <div class="brand" aria-label="Identidad institucional">
+      <div class="brand">
         <div class="brand-badge" aria-hidden="true">
-          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+          <img src="logo-avion.png" alt="">
         </div>
         <div class="brand-text">
-          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
-          <div class="brand-sub">Sala de espera virtual</div>
+          <div class="brand-title">Consultorio de Psiquiatría y Medicina Aeronáutica – Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Temas de Salud mental · Recursos interactivos (registro, señales de alarma, herramientas prácticas).</div>
         </div>
       </div>
 
-      <div class="controls" aria-label="Controles">
-        <div class="font-size-controls" aria-label="Tamaño de letra">
-          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
-          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+      <div class="controls">
+        <div class="controls-desktop">
+          <button class="btn-ghost" id="btnAminus" type="button">A-</button>
+          <button class="btn-ghost" id="btnAplus" type="button">A+</button>
+          <button class="btn-ghost" id="toggleContrast" type="button" aria-pressed="false">🌓 Contraste</button>
+          <button class="btn-ghost" id="toggleMotion" type="button" aria-pressed="false">🪶 Animación</button>
+          <button class="btn-ghost" id="toggleSound" type="button" aria-pressed="false">🔊 Sonido</button>
+          <a class="btn-ghost" href="aviso-legal.html" title="Aviso legal y privacidad">ⓘ Aviso legal</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="wrap" style="padding-top:18px">
-
-    <!-- Intro -->
+  <main class="wrap" aria-label="Contenido principal">
     <section class="section">
       <div class="section-card hint-bg">
         <div class="card-head">
           <div>
             <h1 class="card-title" style="margin:0">Temas de Salud mental</h1>
-            <p class="card-sub">
-              Guías breves y claras por tema. Material orientativo: no reemplaza atención médica.
-              Si estás en crisis o riesgo, buscá ayuda local inmediata.
+            <p class="card-sub" style="margin-top:8px">
+              Una biblioteca de temas, con recursos prácticos para entender síntomas, detectar señales de alarma
+              y usar herramientas simples de autorregulación. No reemplaza una consulta médica.
             </p>
-          </div>
-          <a class="btn-secondary" href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
-        </div>
 
-        <div class="note" style="margin-top:12px">
-          Vamos a ir sumando temas con ejercicios interactivos (registro, señales de alarma, herramientas prácticas).
+            <div class="note" style="margin-top:12px">
+              Este recurso no reemplaza una consulta médica ni está destinado a situaciones de urgencia.
+              Si hay riesgo inmediato, buscá ayuda local o emergencias.
+            </div>
+
+            <div class="row" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <a class="btn-secondary" href="index.html" data-spa="0">← Volver al Kit</a>
+              <a class="btn-secondary" href="telefonos-utiles.html" data-spa="0">Teléfonos útiles</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -144,7 +209,8 @@
             <div>
               <h2 class="card-title">Adicciones (sustancias y conductas)</h2>
               <p class="card-sub">
-                Cómo reconocer el uso problemático, señales de alarma y un ejercicio breve para manejar el impulso. Incluye podcast.
+                Cómo reconocer el uso problemático, señales de alarma y un ejercicio breve para manejar el impulso.
+                Incluye autoevaluación (uso + control + impacto) y plan mínimo de reducción de riesgo.
               </p>
             </div>
           </div>
@@ -153,92 +219,295 @@
             <a class="btn-primary" href="adicciones.html" data-spa="0" aria-label="Abrir Adicciones">
               Abrir
             </a>
-            <a class="btn-secondary" href="adicciones.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de Adicciones">
-              Ir al ejercicio 1 min
+            <a class="btn-secondary" href="adicciones.html#autoevaluacion" data-spa="0" aria-label="Ir a autoevaluación de Adicciones">
+              Autoevaluación
+            </a>
+            <a class="btn-secondary" href="adicciones.html#audio" data-spa="0" aria-label="Ir al podcast de Adicciones">
+              Podcast
             </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Señales · Señales de alarma · Registro 0–10 + Copiar resumen · Podcast.
+            Incluye: Señales de alarma · Autoevaluación · Plan mínimo · Copiar resumen · Podcast.
           </div>
         </article>
 
 
-        <!-- Duelos patológicos -->
+        <!-- ✅ NUEVO: Trastorno Límite de la Personalidad -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/duelo-portada.webp?v=1" alt="">
+            <img src="assets/img/tlp-portada.webp?v=1" alt="">
             <div class="overlay"></div>
-            <div class="tag">Duelo</div>
+            <div class="tag">TLP</div>
           </div>
 
           <div class="card-head">
             <div>
-              <h2 class="card-title">Duelos patológicos</h2>
+              <h2 class="card-title">Trastorno límite de la personalidad</h2>
               <p class="card-sub">
-                Diferenciar duelo esperable vs complicado. Señales clínicas, cuándo pedir ayuda y mini ejercicio de registro.
+                Entender la desregulación emocional, impulsividad, vínculos intensos e inestabilidad afectiva.
+                Incluye señales de alarma y un plan básico de estabilización.
               </p>
             </div>
           </div>
 
           <div class="btn-row">
-            <a class="btn-primary" href="duelos-patologicos.html" data-spa="0" aria-label="Abrir Duelos patológicos">
+            <a class="btn-primary" href="tlp.html" data-spa="0" aria-label="Abrir Trastorno límite de la personalidad">
               Abrir
-            </a>
-            <a class="btn-secondary" href="duelos-patologicos.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de Duelos">
-              Ir al ejercicio 1 min
             </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Síntomas frecuentes · Señales de alarma · Registro 0–10 + Copiar resumen · Explicación larga.
+            Próximo upgrade: autoevaluación breve + ejercicios DBT (STOP, grounding) + copiar resumen.
           </div>
         </article>
 
-        <!-- ✅ Cuidador del hogar / roles de pareja -->
+
+        <!-- ✅ NUEVO: Trastorno bipolar -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/cuidador-portada.webp?v=1" alt="">
+            <img src="assets/img/bipolar-portada.webp?v=1" alt="">
             <div class="overlay"></div>
-            <div class="tag">Pareja / Hogar</div>
+            <div class="tag">Bipolaridad</div>
           </div>
 
           <div class="card-head">
             <div>
-              <h2 class="card-title">Cuidador del hogar · roles de pareja</h2>
+              <h2 class="card-title">Trastorno bipolar</h2>
               <p class="card-sub">
-                Estrategia práctica para temor nocturno e hipervigilancia: rotación de vigilia, apoyo mutuo y plan simple en equipo.
+                Cambios del estado de ánimo: depresión, hipomanía/manía, irritabilidad, sueño y prevención de recaídas.
               </p>
             </div>
           </div>
 
           <div class="btn-row">
-            <a class="btn-primary" href="cuidador-hogar-roles-pareja.html" data-spa="0" aria-label="Abrir Cuidador del hogar">
+            <a class="btn-primary" href="bipolar.html" data-spa="0" aria-label="Abrir Trastorno bipolar">
               Abrir
-            </a>
-            <a class="btn-secondary" href="cuidador-hogar-roles-pareja.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de Cuidador del hogar">
-              Ir al ejercicio 1 min
             </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Manifestaciones · Señales de alarma · Registro 0–10 + Copiar resumen · Explicación larga.
+            Próximo upgrade: checklist de señales tempranas + plan personal de recaídas.
           </div>
         </article>
 
-        <!-- ✅ NUEVO: Fobia al vuelo (Aerofobia) -->
+
+        <!-- ✅ NUEVO: Trastorno de pánico -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-  <img src="/assets/img/fobia-vuelo-portada.webp?v=2" alt="">
-  <div class="overlay"></div>
-  <div class="tag">Aerofobia</div>
-</div>
+            <img src="assets/img/panico-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Pánico</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Trastorno de pánico</h2>
+              <p class="card-sub">
+                Crisis de pánico, síntomas físicos, evitación, miedo al miedo y herramientas breves para reducir la escalada.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="panico.html" data-spa="0" aria-label="Abrir Trastorno de pánico">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: autoevaluación breve + técnica de respiración + copiar resumen.
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Trastorno de ansiedad generalizada -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/tag-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">TAG</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Ansiedad generalizada</h2>
+              <p class="card-sub">
+                Preocupación excesiva, tensión física, insomnio, rumiación y señales de alarma.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="ansiedad-generalizada.html" data-spa="0" aria-label="Abrir Ansiedad generalizada">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: autoevaluación breve + plan mínimo de 7 días.
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Depresión -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/depresion-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Depresión</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Depresión</h2>
+              <p class="card-sub">
+                Tristeza persistente, anhedonia, cansancio, culpa, alteraciones del sueño y señales de alarma.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="depresion.html" data-spa="0" aria-label="Abrir Depresión">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: PHQ-9 simplificado + activación conductual (plan semanal).
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Insomnio -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/insomnio-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Sueño</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Insomnio</h2>
+              <p class="card-sub">
+                Conciliación y mantenimiento del sueño, hábitos, rumiación nocturna y señales de alarma.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="insomnio.html" data-spa="0" aria-label="Abrir Insomnio">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: checklist de higiene del sueño + plan 7 días + copiar resumen.
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Trastorno obsesivo compulsivo -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/toc-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">TOC</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Trastorno obsesivo compulsivo</h2>
+              <p class="card-sub">
+                Obsesiones, compulsiones, rituales, evitación y orientación para identificar el patrón.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="toc.html" data-spa="0" aria-label="Abrir TOC">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: autoevaluación breve + psicoeducación (exposición y prevención de respuesta).
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Fobia social -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/fobia-social-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Fobia social</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Fobia social</h2>
+              <p class="card-sub">
+                Miedo intenso a ser evaluado, evitación, síntomas físicos y estrategias graduales.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="fobia-social.html" data-spa="0" aria-label="Abrir Fobia social">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: plan de exposición gradual + copiar resumen.
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Agorafobia -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/agorafobia-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Agorafobia</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Agorafobia</h2>
+              <p class="card-sub">
+                Evitación de lugares/situaciones por miedo a tener síntomas intensos. Orientación y pasos graduales.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="agorafobia.html" data-spa="0" aria-label="Abrir Agorafobia">
+              Abrir
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Próximo upgrade: autoevaluación breve + plan de exposición.
+          </div>
+        </article>
+
+
+        <!-- ✅ NUEVO: Fobia al vuelo -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/fobia-vuelo-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Fobia al vuelo</div>
+          </div>
 
           <div class="card-head">
             <div>
               <h2 class="card-title">Fobia al vuelo</h2>
               <p class="card-sub">
-                Entender qué pasa, qué sensaciones son normales y cómo reducir ansiedad anticipatoria. Enfoque Psiquiatría + Medicina Aeronáutica.
+                Miedo a volar, anticipación, control, pensamientos catastróficos y herramientas breves para regularte.
               </p>
             </div>
           </div>
@@ -247,13 +516,10 @@
             <a class="btn-primary" href="fobia-al-vuelo.html" data-spa="0" aria-label="Abrir Fobia al vuelo">
               Abrir
             </a>
-            <a class="btn-secondary" href="fobia-al-vuelo.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de Fobia al vuelo">
-              Ir al ejercicio 1 min
-            </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Síntomas frecuentes · Por qué pasa · Turbulencia/despegue/aterrizaje explicado · Abordaje TCC/exposición · Ejercicio breve + copiar resumen.
+            Próximo upgrade: checklist pre-embarque + respiración guiada.
           </div>
         </article>
 
@@ -270,8 +536,7 @@
             <div>
               <h2 class="card-title">Narcolepsia</h2>
               <p class="card-sub">
-                Somnolencia diurna excesiva, “ataques de sueño” y fenómenos REM (parálisis del sueño, alucinaciones, cataplejía).
-                Incluye autoevaluación (Epworth + checklist) y podcast.
+                Somnolencia excesiva, cataplejía, parálisis del sueño y señales de alarma. Incluye Epworth + checklist y podcast.
               </p>
             </div>
           </div>
@@ -326,6 +591,41 @@
           </div>
         </article>
 
+        <!-- ✅ NUEVO: Factores humanos (Aviación y vida diaria) -->
+        <article class="section-card card-hover hint-bg hint-psycho">
+          <div class="topic-cover" aria-hidden="true">
+            <img src="assets/img/factores-humanos-portada.webp?v=1" alt="">
+            <div class="overlay"></div>
+            <div class="tag">Factores Humanos</div>
+          </div>
+
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Factores humanos: Aviación y vida diaria</h2>
+              <p class="card-sub">
+                Analogía clínica y operacional: carga alta + poca recuperación + impacto funcional.
+                Señales tempranas, autoevaluación y prevención antes del colapso.
+              </p>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn-primary" href="factores-humanos-aviacion-vida.html" data-spa="0" aria-label="Abrir Factores humanos: Aviación y vida diaria">
+              Abrir
+            </a>
+            <a class="btn-secondary" href="factores-humanos-aviacion-vida.html#autoevaluacion" data-spa="0" aria-label="Ir a autoevaluación de Factores humanos">
+              Autoevaluación
+            </a>
+            <a class="btn-secondary" href="factores-humanos-aviacion-vida.html#audio" data-spa="0" aria-label="Ir al podcast de Factores humanos">
+              Podcast
+            </a>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Incluye: Modelo carga–recuperación–impacto · Señales tempranas · Autoevaluación · Plan 7 días · Podcast + Video.
+          </div>
+        </article>
+
         <!-- ✅ NUEVO: Síndrome de Saturación Audiovisual -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
@@ -356,376 +656,189 @@
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Por qué pasa · Síntomas · Riesgos/derivas · Señales de alarma · Autoevaluación · Plan 7 días · Lectura larga.
+            Incluye: Señales de alarma · Autoevaluación · Plan mínimo · Copiar resumen · Podcast.
           </div>
         </article>
 
 
-
-
-
-
-      
-
-        <!-- ✅ NUEVO: Amígdala cerebral -->
+        <!-- ✅ NUEVO: TDAH adulto -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/amigdala-portada.webp?v=1" alt="">
+            <img src="assets/img/tdah-portada.webp?v=1" alt="">
             <div class="overlay"></div>
-            <div class="tag">Amígdala</div>
+            <div class="tag">TDAH</div>
           </div>
 
           <div class="card-head">
             <div>
-              <h2 class="card-title">La amígdala cerebral</h2>
+              <h2 class="card-title">TDAH adulto</h2>
               <p class="card-sub">
-                El “botón de emergencia” del cerebro: por qué se activa, cómo se siente en el cuerpo y un mini ejercicio para bajar la alarma.
-                Incluye podcast.
+                Inatención, distracción, impulsividad y desorganización. Señales, estrategias ejecutivas y herramientas prácticas.
               </p>
             </div>
           </div>
 
           <div class="btn-row">
-            <a class="btn-primary" href="amigdala-cerebral.html" data-spa="0" aria-label="Abrir La amígdala cerebral">
+            <a class="btn-primary" href="tdah-adulto.html" data-spa="0" aria-label="Abrir TDAH adulto">
               Abrir
-            </a>
-            <a class="btn-secondary" href="amigdala-cerebral.html#audio" data-spa="0" aria-label="Ir al podcast de La amígdala cerebral">
-              Ir al podcast
-            </a>
-            <a class="btn-secondary" href="amigdala-cerebral.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de La amígdala cerebral">
-              Ir al ejercicio 1 min
             </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Síntomas · Señales de alarma · Qué ayuda · Mini ejercicio + Copiar resumen · Podcast.
+            Próximo upgrade: autoevaluación breve + plan de hábitos ejecutivos.
           </div>
         </article>
 
-        <!-- ✅ NUEVO: Falta de memoria con poco ánimo -->
+
+        <!-- ✅ NUEVO: Trastornos disociativos -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/memoria-animo-portada.webp?v=1" alt="">
+            <img src="assets/img/disociacion-portada.webp?v=1" alt="">
             <div class="overlay"></div>
-            <div class="tag">Memoria</div>
+            <div class="tag">Disociación</div>
           </div>
 
           <div class="card-head">
             <div>
-              <h2 class="card-title">Falta de memoria con poco ánimo</h2>
+              <h2 class="card-title">Trastornos disociativos</h2>
               <p class="card-sub">
-                “Niebla mental”, olvidos y falta de foco cuando el ánimo está bajo. Explicación clara, señales de alarma y mini ejercicio de atención.
-                Incluye podcast.
+                Despersonalización/desrealización, lagunas y desconexión. Señales y orientación básica de manejo.
               </p>
             </div>
           </div>
 
           <div class="btn-row">
-            <a class="btn-primary" href="falta-memoria-animo.html" data-spa="0" aria-label="Abrir Falta de memoria con poco ánimo">
+            <a class="btn-primary" href="disociacion.html" data-spa="0" aria-label="Abrir Trastornos disociativos">
               Abrir
-            </a>
-            <a class="btn-secondary" href="falta-memoria-animo.html#audio" data-spa="0" aria-label="Ir al podcast de Falta de memoria con poco ánimo">
-              Ir al podcast
-            </a>
-            <a class="btn-secondary" href="falta-memoria-animo.html#mini-ejercicio" data-spa="0" aria-label="Ir al mini ejercicio de Falta de memoria con poco ánimo">
-              Ir al ejercicio 1 min
             </a>
           </div>
 
           <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Por qué ocurre · Síntomas · Señales de alarma · Qué ayuda · Mini ejercicio + Copiar resumen · Podcast.
+            Próximo upgrade: grounding guiado + copiar resumen.
           </div>
         </article>
-</div>
-    </section>
 
-    <div class="divider" aria-hidden="true"></div>
 
-    <!-- ✅ SECCIÓN: Herramientas prácticas -->
-    <section class="section">
-      <div class="section-card hint-bg" style="margin-bottom:18px">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">🛠️ Herramientas prácticas</h2>
-            <p class="card-sub">
-              Guías accionables para el día a día: organizar la medicación, comunicar lo que uno está atravesando y otras habilidades concretas.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-
-        <!-- Pastillero -->
+        <!-- ✅ NUEVO: Trastornos de la conducta alimentaria -->
         <article class="section-card card-hover hint-bg hint-psycho">
           <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/pastillero-portada.webp?v=1" alt="">
+            <img src="assets/img/tca-portada.webp?v=1" alt="">
             <div class="overlay"></div>
-            <div class="tag">Medicación</div>
+            <div class="tag">TCA</div>
           </div>
+
           <div class="card-head">
             <div>
-              <h2 class="card-title">Cómo armar el pastillero</h2>
+              <h2 class="card-title">Trastornos de la conducta alimentaria</h2>
               <p class="card-sub">
-                Tipos de pastillero, paso a paso para armarlo, qué hacer si olvidás una dosis,
-                señales de adherencia irregular y rol de la familia sin invadir.
+                Restricción, atracones, purgas, control y señal de alarma. Orientación y cuándo consultar.
               </p>
             </div>
           </div>
+
           <div class="btn-row">
-            <a class="btn-primary" href="pastillero-medicacion.html" data-spa="0" aria-label="Abrir Cómo armar el pastillero">
+            <a class="btn-primary" href="tca.html" data-spa="0" aria-label="Abrir Trastornos de la conducta alimentaria">
               Abrir
             </a>
-            <a class="btn-secondary" href="pastillero-medicacion.html#paso-a-paso" data-spa="0" aria-label="Ir al paso a paso del pastillero">
-              Paso a paso
-            </a>
-            <a class="btn-secondary" href="pastillero-medicacion.html#mini-ejercicio" data-spa="0" aria-label="Ir al registro semanal">
-              Registro semanal
-            </a>
           </div>
+
           <div class="note" style="margin-top:12px">
-            Incluye: Tipos de pastillero · Paso a paso · Dosis olvidada · Señales de falla · Rol familia · Marcador visual semanal.
+            Próximo upgrade: autoevaluación breve + plan mínimo de seguridad.
           </div>
         </article>
 
-        <!-- Explicarle a un familiar -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/explicar-familiar-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Comunicación</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Cómo explicarle a un familiar qué me pasa</h2>
-              <p class="card-sub">
-                Cómo preparar la conversación, frases concretas para empezar, qué pedir,
-                cómo manejar reacciones difíciles y un borrador para llevarse.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="explicarle-a-un-familiar.html" data-spa="0" aria-label="Abrir Cómo explicarle a un familiar">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="explicarle-a-un-familiar.html#como-empezar" data-spa="0" aria-label="Ir a frases para empezar">
-              Frases para empezar
-            </a>
-            <a class="btn-secondary" href="explicarle-a-un-familiar.html#mini-ejercicio" data-spa="0" aria-label="Ir al borrador">
-              Borrador
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Por qué es difícil · Cómo prepararse · Frases concretas · Qué pedir · Reacciones difíciles · Borrador copiable.
-          </div>
-        </article>
 
       </div>
     </section>
 
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- ✅ SECCIÓN: Curiosidades clínicas -->
-    <section class="section">
-      <div class="section-card hint-bg" style="margin-bottom:18px">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">🔬 Curiosidades clínicas</h2>
-            <p class="card-sub">
-              Síndromes poco frecuentes pero que existen. Material orientado principalmente a familias y acompañantes.
-              Fascinantes para entender cómo funciona —y a veces falla— la mente.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-
-        <!-- Capgras -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/capgras-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Capgras</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Síndrome de Capgras</h2>
-              <p class="card-sub">
-                La persona está convencida de que alguien cercano fue reemplazado por un impostor idéntico.
-                Qué es, por qué ocurre y cómo acompañar.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="sindrome-capgras.html" data-spa="0" aria-label="Abrir Síndrome de Capgras">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="sindrome-capgras.html#para-familias" data-spa="0" aria-label="Ir a guía para familias de Capgras">
-              Guía para familias
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Por qué ocurre · Condiciones asociadas · Cómo acompañar · Señales de alarma · Registro familiar · Lectura larga.
-          </div>
-        </article>
-
-        <!-- Cotard -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/cotard-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Cotard</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Síndrome de Cotard</h2>
-              <p class="card-sub">
-                Delirio de negación: la persona cree que está muerta o que ha dejado de existir.
-                Una de las experiencias subjetivas más extremas de la psiquiatría.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="sindrome-cotard.html" data-spa="0" aria-label="Abrir Síndrome de Cotard">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="sindrome-cotard.html#para-familias" data-spa="0" aria-label="Ir a guía para familias de Cotard">
-              Guía para familias
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Por qué ocurre · Condiciones asociadas · Cómo acompañar · Señales de alarma · Registro familiar · Lectura larga.
-          </div>
-        </article>
-
-        <!-- Fregoli -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/fregoli-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Fregoli</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Síndrome de Fregoli</h2>
-              <p class="card-sub">
-                Lo opuesto a Capgras: personas distintas son en realidad la misma, disfrazada y persiguiendo a quien lo padece.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="sindrome-fregoli.html" data-spa="0" aria-label="Abrir Síndrome de Fregoli">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="sindrome-fregoli.html#para-familias" data-spa="0" aria-label="Ir a guía para familias de Fregoli">
-              Guía para familias
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Diferencias con Capgras · Condiciones asociadas · Cómo acompañar · Señales de alarma · Registro familiar · Lectura larga.
-          </div>
-        </article>
-
-        <!-- Diógenes -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/diogenes-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Diógenes</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Síndrome de Diógenes</h2>
-              <p class="card-sub">
-                Acumulación extrema, abandono del autocuidado y rechazo activo a recibir ayuda.
-                Guía orientada a familias y entorno cercano.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="sindrome-diogenes.html" data-spa="0" aria-label="Abrir Síndrome de Diógenes">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="sindrome-diogenes.html#para-familias" data-spa="0" aria-label="Ir a guía para familias de Diógenes">
-              Guía para familias
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Mitos y realidad · Por qué ocurre · Condiciones asociadas · Señales de alarma · Cómo acompañar · Registro familiar · Lectura larga.
-          </div>
-        </article>
-
-        <!-- Prosopagnosia -->
-        <article class="section-card card-hover hint-bg hint-psycho">
-          <div class="topic-cover" aria-hidden="true">
-            <img src="assets/img/prosopagnosia-portada.webp?v=1" alt="">
-            <div class="overlay"></div>
-            <div class="tag">Prosopagnosia</div>
-          </div>
-          <div class="card-head">
-            <div>
-              <h2 class="card-title">Prosopagnosia</h2>
-              <p class="card-sub">
-                La incapacidad de reconocer caras, incluso las más familiares. Más común de lo que se cree:
-                afecta al 2% de la población. Estrategias compensatorias y cómo acompañar.
-              </p>
-            </div>
-          </div>
-          <div class="btn-row">
-            <a class="btn-primary" href="prosopagnosia.html" data-spa="0" aria-label="Abrir Prosopagnosia">
-              Abrir
-            </a>
-            <a class="btn-secondary" href="prosopagnosia.html#estrategias" data-spa="0" aria-label="Ir a estrategias compensatorias">
-              Estrategias
-            </a>
-          </div>
-          <div class="note" style="margin-top:12px">
-            Incluye: Qué es · Espectro · Por qué ocurre · Manifestaciones · Estrategias compensatorias · Para familias · Registro · Lectura larga.
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <!-- CTA final -->
     <section class="section">
       <div class="section-card hint-bg">
         <div class="card-head">
           <div>
-            <h3 class="card-title">¿Querés que agreguemos otro tema?</h3>
-            <p class="card-sub">
-              Podemos sumar ansiedad, pánico, rumiación, sueño, ira/impulsividad, más curiosidades clínicas y herramientas prácticas con ejercicios interactivos.
+            <h2 class="card-title" style="margin:0">¿Querés sugerir un tema?</h2>
+            <p class="card-sub" style="margin-top:8px">
+              Este listado se irá ampliando. Si hay un tema que te gustaría ver, podés pedirlo durante la consulta.
             </p>
+            <div class="row" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+              <a class="btn-secondary" href="index.html" data-spa="0">Volver al Kit</a>
+            </div>
           </div>
-          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER NAVY -->
-  <footer class="footer" style="margin-top:28px">
-    <div class="wrap footer-inner">
-      <div class="footer-links">
-        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
-        <span>·</span>
-        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">
-          Publicar reseña en Google Maps
-        </a>
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="brand-title" style="font-weight:700">
+          Consultorio de Psiquiatría y Medicina Aeronáutica – Dr. Pedro Nicolas Dagnino
+        </div>
+        <div class="brand-sub">Temas de Salud mental · Recursos interactivos (registro, señales de alarma, herramientas prácticas).</div>
+
+        <div class="footer-links" style="margin-top:12px">
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+
+        <div class="legal" style="margin-top:10px">
+          Este recurso no reemplaza una consulta médica ni está destinado a situaciones de urgencia.
+        </div>
       </div>
-      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+
+      <div>
+        <div class="legal">
+          <span>©</span> <span id="yearNow"></span>
+          <span>· Todos los derechos reservados.</span><br>
+          <span>Desarrollado por PETER-SOFT</span>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- JS del ecosistema -->
-  <script src="js/i18n.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/spa.js"></script>
-  <script src="assets/js/app.js?v=1"></script>
+  <script>
+    document.getElementById("yearNow").textContent = new Date().getFullYear();
+
+    // ===== Accesibilidad (misma lógica del ecosistema) =====
+    const prefsKey = "apt_index_prefs_v1";
+    const getPrefs = () => { try { return JSON.parse(localStorage.getItem(prefsKey) || "{}"); } catch { return {}; } };
+    const setPrefs = (p) => localStorage.setItem(prefsKey, JSON.stringify(p));
+
+    const btnAminus = document.getElementById("btnAminus");
+    const btnAplus  = document.getElementById("btnAplus");
+    const toggleContrast = document.getElementById("toggleContrast");
+    const toggleMotion   = document.getElementById("toggleMotion");
+    const toggleSound    = document.getElementById("toggleSound");
+
+    const applyPrefs = () => {
+      const p = getPrefs();
+      if (p.textScale) document.documentElement.style.fontSize = p.textScale + "%";
+      document.body.classList.toggle("hc", !!p.hc);
+      document.body.classList.toggle("rm", !!p.rm);
+      toggleContrast?.setAttribute("aria-pressed", String(!!p.hc));
+      toggleMotion?.setAttribute("aria-pressed", String(!!p.rm));
+      toggleSound?.setAttribute("aria-pressed", String(!!p.muted));
+      toggleSound.textContent = p.muted ? "🔇 Sonido" : "🔊 Sonido";
+    };
+
+    const bumpFont = (delta) => {
+      const p = getPrefs();
+      const cur = Number(p.textScale || 100);
+      p.textScale = Math.max(85, Math.min(140, cur + delta));
+      setPrefs(p); applyPrefs();
+    };
+
+    btnAminus?.addEventListener("click", () => bumpFont(-5));
+    btnAplus?.addEventListener("click", () => bumpFont(+5));
+    toggleContrast?.addEventListener("click", () => { const p = getPrefs(); p.hc = !p.hc; setPrefs(p); applyPrefs(); });
+    toggleMotion?.addEventListener("click", () => { const p = getPrefs(); p.rm = !p.rm; setPrefs(p); applyPrefs(); });
+    toggleSound?.addEventListener("click", () => { const p = getPrefs(); p.muted = !p.muted; setPrefs(p); applyPrefs(); });
+
+    applyPrefs();
+  </script>
 
 </body>
 </html>
