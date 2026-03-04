@@ -3,18 +3,92 @@
 # Raíz → index.html (rewrite silencioso, sin cambiar la URL)
 /    /index.html    200
 
-# SPA fallback: cualquier ruta sin extensión → index.html
-# Esto maneja el caso de URLs que el SPA haya pusheado al historial
-# y que no correspondan a archivos HTML existentes.
-# Las rutas con extensión (.html, .js, .css, .png, etc.) pasan directo.
-/juegos      /juegos.html      200
-/emociones   /emociones.html   200
-/turnos      /turnos.html      200
-/instalar    /instalar.html    200
-/equipo      /equipo.html      200
-/reels       /reels.html       200
-/apps        /apps.html        200
-/psicoeducacion  /psicoeducacion.html  200
+# ── Páginas principales ───────────────────────────────────────────────────────
+/juegos                  /juegos.html                  200
+/emociones               /emociones.html               200
+/turnos                  /turnos.html                  200
+/instalar                /instalar.html                200
+/equipo                  /equipo.html                  200
+/reels                   /reels.html                   200
+/apps                    /apps.html                    200
+/psicoeducacion          /psicoeducacion.html          200
+/aviso-legal             /aviso-legal.html             200
 
-# Catch-all para rutas desconocidas → index.html (SPA routing)
+# ── Higiene / Sueño ───────────────────────────────────────────────────────────
+/higienedelsueno         /higienedelsueno.html         200
+/sueno                   /sueno.html                   200
+
+# ── Temas de salud mental ─────────────────────────────────────────────────────
+/temas-salud-mental              /temas-salud-mental.html              200
+/adicciones                      /adicciones.html                      200
+/amigdala-cerebral               /amigdala-cerebral.html               200
+/bateria-tests-psicologicos      /bateria-tests-psicologicos.html      200
+/centros-medicos-amigos          /centros-medicos-amigos.html          200
+/chat-guiado                     /chat-guiado.html                     200
+/consultorio-virtual             /consultorio-virtual.html             200
+/consultorio-virtual-en          /consultorio-virtual-en.html          200
+/consultorio-virtual-pt          /consultorio-virtual-pt.html          200
+/cuidador-hogar-roles-pareja     /cuidador-hogar-roles-pareja.html     200
+/desmitificando-tratamientos-psiquiatricos  /desmitificando-tratamientos-psiquiatricos.html  200
+/dolor-cronico                   /dolor-cronico.html                   200
+/duelos-patologicos              /duelos-patologicos.html              200
+/equipo-otras-especialidades     /equipo-otras-especialidades.html     200
+/equipo-salud-mental             /equipo-salud-mental.html             200
+/estres-cronico-burnout          /estres-cronico-burnout.html          200
+/estres-postraumatico            /estres-postraumatico.html            200
+/evaluacion-situacional          /evaluacion-situacional.html          200
+/explicarle-a-un-familiar        /explicarle-a-un-familiar.html        200
+/factores-humanos-aviacion-vida  /factores-humanos-aviacion-vida.html  200
+/falta-memoria-animo             /falta-memoria-animo.html             200
+/fobia-al-vuelo                  /fobia-al-vuelo.html                  200
+/impulsividad                    /impulsividad.html                    200
+/narcolepsia                     /narcolepsia.html                     200
+/pastillero-medicacion           /pastillero-medicacion.html           200
+/prosopagnosia                   /prosopagnosia.html                   200
+/psicofarmacos                   /psicofarmacos.html                   200
+/psicoeducacion-ejercicios       /psicoeducacion-ejercicios.html       200
+/registro-emocional              /registro-emocional.html              200
+/saturacion-audiovisual          /saturacion-audiovisual.html          200
+/silla-ansiedad                  /silla-ansiedad.html                  200
+/sindrome-capgras                /sindrome-capgras.html                200
+/sindrome-cotard                 /sindrome-cotard.html                 200
+/sindrome-diogenes               /sindrome-diogenes.html               200
+/sindrome-fregoli                /sindrome-fregoli.html                200
+/sintomas-ansiedad               /sintomas-ansiedad.html               200
+/sintomas-cabeza                 /sintomas-cabeza.html                 200
+/sintomas-irritabilidad          /sintomas-irritabilidad.html          200
+/sintomas-tension                /sintomas-tension.html                200
+/videos-cortos-atencion-eeg      /videos-cortos-atencion-eeg.html      200
+
+# ── Juegos (ENF) ──────────────────────────────────────────────────────────────
+/enf-cambia-la-regla     /enf-cambia-la-regla.html     200
+/enf-foco90              /enf-foco90.html              200
+/enf-plan-3-pasos        /enf-plan-3-pasos.html        200
+/enf-stop-rumiacion      /enf-stop-rumiacion.html      200
+
+# ── Juegos (numerados) ────────────────────────────────────────────────────────
+/juego1                           /juego1.html                           200
+/juego2                           /juego2.html                           200
+/juego3                           /juego3.html                           200
+/juego4                           /juego4.html                           200
+/juego5                           /juego5.html                           200
+/juego6                           /juego6.html                           200
+/juego7                           /juego7.html                           200
+/juego8                           /juego8.html                           200
+/juego9-categorias-semanticas     /juego9-categorias-semanticas.html     200
+/juego10-refranes                 /juego10-refranes.html                 200
+/juego11-digitos                  /juego11-digitos.html                  200
+/juego13-aeropuertos              /juego13-aeropuertos.html              200
+/juego14-alfabeto-aeronautico     /juego14-alfabeto-aeronautico.html     200
+/juego15-palabras-pseudopalabras  /juego15-palabras-pseudopalabras.html  200
+/juego16-ruta-de-vuelo            /juego16-ruta-de-vuelo.html            200
+/juego17-secuencias-logicas       /juego17-secuencias-logicas.html       200
+/juego18-geofs                    /juego18-geofs.html                    200
+/juego19-respiracion-secuencia    /juego19-respiracion-secuencia.html    200
+/juego20-historia-de-vuelo        /juego20-historia-de-vuelo.html        200
+/juego21-pasajeros                /juego21-pasajeros.html                200
+/juego22-cabina-diferencias       /juego22-cabina-diferencias.html       200
+/juego23-palabras-inversas        /juego23-palabras-inversas.html        200
+
+# ── Catch-all: rutas desconocidas → index.html (SPA routing) ─────────────────
 /*    /index.html    200
