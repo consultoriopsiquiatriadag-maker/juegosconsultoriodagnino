@@ -119,6 +119,80 @@
       background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.28);
     }
     .longread{ line-height:1.65; }
+
+    /* === Breadcrumb === */
+    .breadcrumb{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+    .breadcrumb a{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.18);
+      font-size: .87rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .breadcrumb a:hover{ background: rgba(37,99,235,.16); }
+
+    /* === Navegación inter-temática === */
+    .tema-nav-label{
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      opacity: .55;
+      margin-bottom: 10px;
+    }
+    .tema-nav-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+    .tema-card{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(148,163,184,.2);
+      text-decoration: none;
+      color: inherit;
+      transition: background .15s, border-color .15s;
+    }
+    .tema-card:hover{
+      background: rgba(37,99,235,.10);
+      border-color: rgba(37,99,235,.28);
+    }
+    .tema-card.activo{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.38);
+      pointer-events: none;
+      cursor: default;
+    }
+    .tema-card-icon{ font-size: 1.35rem; line-height: 1; }
+    .tema-card-title{ font-weight: 700; font-size: .95rem; line-height: 1.2; }
+    .tema-card-sub{ font-size: .83rem; opacity: .68; line-height: 1.45; }
+    .tema-card-badge{
+      align-self: flex-start;
+      margin-top: 2px;
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.14);
+      color: rgba(37,99,235,.9);
+    }
   </style>
 </head>
 
@@ -144,6 +218,13 @@
   </header>
 
   <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Breadcrumb -->
+    <section class="section" style="padding-bottom:4px;">
+      <div class="breadcrumb">
+        <a href="desmitificando-tratamientos-psiquiatricos.html" data-spa="0">← Desmitificando los tratamientos psiquiátricos</a>
+      </div>
+    </section>
 
     <!-- Portada -->
     <section class="section">
@@ -621,6 +702,35 @@
       </div>
     </section>
 
+
+    <!-- Navegación inter-temática -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="tema-nav-label">📚 También en esta línea temática</div>
+        <div class="tema-nav-grid">
+
+          <a class="tema-card" href="tratamientos-psiquiatricos-guia.html" data-spa="0">
+            <span class="tema-card-icon">🧠</span>
+            <span class="tema-card-title">Los mitos frecuentes</span>
+            <span class="tema-card-sub">Mitos, señales de alarma y mini ejercicio de registro.</span>
+          </a>
+
+          <span class="tema-card activo">
+            <span class="tema-card-icon">💬</span>
+            <span class="tema-card-title">Explicarle a un familiar</span>
+            <span class="tema-card-sub">Cómo preparar y sostener esa conversación difícil.</span>
+            <span class="tema-card-badge">Estás aquí</span>
+          </span>
+
+          <a class="tema-card" href="estudios-medicos-actualizados.html" data-spa="0">
+            <span class="tema-card-icon">📋</span>
+            <span class="tema-card-title">Estudios médicos actualizados</span>
+            <span class="tema-card-sub">Cómo mantener actualizada la historia clínica entre consultas.</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
 
     <!-- CTA -->
     <section class="section">
