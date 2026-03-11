@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Estudios médicos actualizados — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Por qué recomendamos enviar sus estudios médicos antes de la consulta: historia clínica dinámica, análisis previo y atención más ordenada." />
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* === Homogeneizado al look de desmitificando-tratamientos-psiquiatricos.html === */
+
+    /* Imagen de portada del tema */
+    .topic-hero{
+      overflow: hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img{
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay{
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.15) 0%, rgba(14,34,57,.65) 70%, rgba(14,34,57,.75) 100%);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .topic-hero .titlebox{
+      position: absolute; left: 16px; right: 16px; bottom: 14px;
+      color: #fff;
+    }
+    .topic-hero h1{ margin: 0; font-size: clamp(22px, 3.2vw, 34px); line-height: 1.1; }
+    .topic-hero p{ margin: 8px 0 0 0; opacity: .92; max-width: 68ch; }
+
+    /* Placeholder portada (cuando la imagen aún no está subida) */
+    .hero-placeholder{
+      width: 100%;
+      min-height: 220px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #0e3a5e 0%, #1a6899 60%, #2288c2 100%);
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-placeholder::before{
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 75% 30%, rgba(255,255,255,.08) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,.05) 0%, transparent 40%);
+    }
+    .hero-placeholder .titlebox{
+      position: relative;
+      padding: 24px 20px;
+      color: #fff;
+    }
+    .hero-placeholder h1{ margin: 0; font-size: clamp(22px, 3.2vw, 34px); line-height: 1.1; }
+    .hero-placeholder p{ margin: 8px 0 0 0; opacity: .92; max-width: 68ch; }
+
+    /* Acceso rápido */
+    .toc{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* Audio podcast */
+    .audio-wrap{ display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .audio-player{ width: 100%; border-radius: 12px; }
+    .audio-actions{ display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    /* Pasos numerados */
+    .steps-grid{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .step-card{
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-num{
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--c-accent, #2563eb);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .step-body h4{
+      margin: 0 0 4px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .step-body p{ margin: 0; }
+
+    /* Lista de estudios */
+    .studies-list{
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .studies-list li{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(37,99,235,.06);
+      border: 1px solid rgba(37,99,235,.12);
+      font-weight: 500;
+    }
+    .studies-list li::before{
+      content: "📎";
+      font-size: 1rem;
+    }
+
+    /* Lectura larga */
+    .longread{ line-height: 1.65; }
+
+    @media (max-width: 640px){
+      .steps-grid{
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER institucional -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada -->
+    <section class="section">
+      <div class="topic-hero">
+        <!--
+          ✅ OPCIÓN A (imagen disponible): descomentá este bloque y comentá el placeholder de abajo.
+          Guardá la imagen en: assets/img/estudios-medicos-portada.webp
+
+          <img
+            src="assets/img/estudios-medicos-portada.webp?v=1"
+            alt="Ilustración de historia clínica organizada con estudios médicos actualizados"
+          />
+          <div class="overlay"></div>
+          <div class="titlebox">
+            <h1>Envío de estudios médicos</h1>
+            <p>Mantengamos su historia clínica actualizada para aprovechar mejor cada consulta.</p>
+          </div>
+        -->
+
+        <!-- ✅ OPCIÓN B (placeholder hasta tener imagen): borrá este bloque cuando uses la opción A -->
+        <div class="hero-placeholder">
+          <div class="titlebox">
+            <h1>Envío de estudios médicos</h1>
+            <p>Mantengamos su historia clínica actualizada para aprovechar mejor cada consulta.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio: podcast -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Podés escuchar primero y después leer, o al revés.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <!--
+            ✅ Guardá el archivo de audio en: audio/estudios-medicos-actualizados.m4a
+            Ajustá el nombre del archivo si es diferente.
+          -->
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <source src="audio/estudios-medicos-actualizados.m4a" type="audio/mp4" />
+            <source src="audio/estudios-medicos-actualizados.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#por-que">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/estudios-medicos-actualizados.m4a" download>Descargar audio</a>
+          </div>
+
+          <div class="note">
+            Si el archivo no carga, verificá que esté en <strong>/audio</strong> con el nombre exacto:
+            <em>estudios-medicos-actualizados.m4a</em>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Acceso rápido -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Saltá directo a la sección que te interesa.</p>
+            <div class="toc" aria-label="Índice">
+              <a class="btn btn-ghost" href="#que-enviar">Qué enviar</a>
+              <a class="btn btn-ghost" href="#por-que">Por qué importa</a>
+              <a class="btn btn-ghost" href="#como-funciona">Cómo funciona</a>
+              <a class="btn btn-ghost" href="#lectura">Lectura completa</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Qué estudios conviene enviar -->
+    <section class="section" id="que-enviar">
+      <div class="grid-2" style="margin-top:10px">
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">¿Qué estudios conviene enviar?</h2>
+              <p class="card-sub">Todo material médico reciente que se realice fuera de la consulta puede ser útil.</p>
+            </div>
+          </div>
+          <ul class="studies-list">
+            <li>Laboratorios y análisis de sangre</li>
+            <li>Informes de tomografías, resonancias o ecografías</li>
+            <li>Electrocardiogramas y estudios cardiológicos</li>
+            <li>Informes de otros especialistas</li>
+            <li>Altas médicas o resúmenes de internación</li>
+          </ul>
+        </div>
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Historia clínica dinámica</h2>
+              <p class="card-sub">El seguimiento mejora cuando la información no se acumula solo el día del turno.</p>
+            </div>
+          </div>
+          <p class="card-sub" style="margin-top:10px">
+            La historia clínica deja de ser un archivo estático y pasa a construirse con información
+            real, reciente y útil. Cuando el paciente comparte sus estudios a medida que los obtiene,
+            cada consulta parte de una <strong>base más sólida y actualizada</strong>.
+          </p>
+          <div class="note" style="margin-top:12px">
+            Objetivo: que cuando llegue el turno, el material ya haya sido incorporado, leído
+            y tenido en cuenta.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Por qué es importante -->
+    <section class="section" id="por-que">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">¿Por qué es importante enviarlos?</h2>
+            <p class="card-sub">Cada estudio que llega antes de la consulta es una oportunidad de mejorar la atención.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">📄 Historia clínica más completa</h3>
+            <p class="card-sub">Los estudios realizados fuera de la consulta también forman parte del proceso
+            de atención. Incorporarlos ayuda a tener una visión más precisa de la evolución.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">🧠 Análisis previo del caso</h3>
+            <p class="card-sub">Si los estudios llegan antes del turno, pueden revisarse con anticipación.
+            Esto favorece un encuentro más enfocado y aprovechado.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">⏱️ Consulta más eficiente</h3>
+            <p class="card-sub">Al llegar con la información ya revisada, se reduce el tiempo destinado
+            a revisar papeles y se prioriza la evaluación clínica.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">🔄 Seguimiento dinámico</h3>
+            <p class="card-sub">La atención mejora cuando la información se actualiza de manera continua
+            y no recién el día del turno.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">🎯 Mejor toma de decisiones</h3>
+            <p class="card-sub">Contar con estudios recientes permite ajustar criterios diagnósticos,
+            seguimiento y orientación terapéutica con mayor fundamento.</p>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">🤝 Participación activa del paciente</h3>
+            <p class="card-sub">El envío de estudios fortalece el rol activo del paciente en su propio
+            cuidado y facilita una comunicación médica más clara.</p>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Una consulta mejor preparada genera una atención de <strong>mayor calidad</strong>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo funciona -->
+    <section class="section" id="como-funciona">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">¿Cómo funciona?</h2>
+            <p class="card-sub">Un proceso sencillo en cuatro pasos.</p>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+
+          <div class="section-card hint-bg step-card" style="margin:0">
+            <div class="step-num">1</div>
+            <div class="step-body card-sub">
+              <h4>Se realiza un estudio</h4>
+              <p>El paciente obtiene un laboratorio, un informe o cualquier resultado médico nuevo.</p>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg step-card" style="margin:0">
+            <div class="step-num">2</div>
+            <div class="step-body card-sub">
+              <h4>Lo envía al consultorio</h4>
+              <p>Puede compartirlo por el canal administrativo indicado, idealmente apenas lo recibe.</p>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg step-card" style="margin:0">
+            <div class="step-num">3</div>
+            <div class="step-body card-sub">
+              <h4>Se incorpora a la historia clínica</h4>
+              <p>El estudio pasa a formar parte del seguimiento, actualizando la información del caso.</p>
+            </div>
+          </div>
+
+          <div class="section-card hint-bg step-card" style="margin:0">
+            <div class="step-num">4</div>
+            <div class="step-body card-sub">
+              <h4>Se analiza antes del turno</h4>
+              <p>Cuando llega la consulta, ya existe una revisión previa que favorece una atención más ordenada.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Lectura larga -->
+    <section class="section" id="lectura">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Explicación completa</h2>
+            <p class="card-sub">Para leer con calma y entender el fundamento de esta práctica.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            Cuando el paciente nos comparte los estudios médicos que se va realizando, podemos actualizar
+            la historia clínica de manera dinámica, revisar la información con anticipación y llegar a la
+            consulta con un análisis previo ya realizado. Esto permite aprovechar mejor el tiempo del
+            encuentro y ofrecer una <strong>atención más ordenada, personalizada y eficiente</strong>.
+          </p>
+
+          <p>
+            Mantener la documentación médica al día permite que cada consulta parta de una base más sólida.
+            La historia clínica deja de ser un archivo estático y pasa a construirse con información real,
+            reciente y útil para la toma de decisiones. El objetivo es sencillo: que cuando llegue el momento
+            de la consulta, el material ya haya sido incorporado, leído y tenido en cuenta.
+          </p>
+
+          <p>
+            Enviar los estudios médicos de forma anticipada no solo ayuda a mantener actualizada la historia
+            clínica: también permite que el paciente llegue a su turno sabiendo que su documentación ya fue
+            revisada y considerada previamente. Esto mejora la calidad del encuentro en ambas direcciones:
+            el profesional llega más preparado y el paciente puede hacer preguntas más específicas.
+          </p>
+
+          <p>
+            El envío de estudios también fortalece la participación activa del paciente en su propio cuidado.
+            Cuando la persona se involucra en mantener actualizada su propia historia clínica, la relación
+            médico-paciente gana en claridad y en confianza mutua.
+          </p>
+
+          <div class="note" style="margin-top:12px">
+            <strong>Importante:</strong> este envío anticipado de estudios tiene como finalidad optimizar
+            el seguimiento clínico y mejorar la preparación de la consulta. <strong>No reemplaza la evaluación
+            médica presencial</strong> ni modifica, por sí solo, indicaciones terapéuticas sin valoración profesional.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">Ayúdenos a mantener su historia clínica actualizada</h3>
+            <p class="card-sub">Si se realizó estudios, análisis o recibió informes nuevos, se los podemos recibir
+            por el canal administrativo del consultorio.</p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Enviar estudios</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <script>
+    (function(){
+      // Sincronizar volumen global del header al podcast (si el control existe)
+      const podcastAudio = document.getElementById("podcastAudio");
+      const vol = document.getElementById("volumeRange");
+      if(podcastAudio && vol){
+        const applyVol = () => {
+          podcastAudio.volume = Math.max(0, Math.min(1, (Number(vol.value) || 35) / 100));
+        };
+        vol.addEventListener("input", applyVol);
+        applyVol();
+      }
+    })();
+  </script>
+
+</body>
+</html>
