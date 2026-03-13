@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(magick \"depresion-portada.png\" -resize \"900x>\" -quality 85 \"depresion-portada.webp\")",
+      "Bash(magick \"insomnio-portada.png\" -resize \"900x>\" -quality 85 \"insomnio-portada.webp\")",
+      "WebSearch",
+      "Bash(GIT_INDEX_FILE=\".git/index\" git status)",
+      "Bash(cmd /c \"del \"\"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\.git\\\\index.lock\"\"\")",
+      "Bash(tasklist)",
+      "Bash(tasklist /FO CSV)",
+      "Bash(cmd /c \"dir \"\"G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\.git\\\\index.lock\"\" 2>&1\")",
+      "Bash(powershell -Command \"Get-ChildItem -Force ''G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\.git'' | Select-Object Name\")",
+      "Bash(powershell -Command \"Remove-Item ''G:\\\\Mi unidad\\\\Dr.Dagnino\\\\APLICACIONES Y SITIOS DEL CONSULTORIO\\\\juegos_mensico\\\\.git\\\\index.lock'' -Force; Write-Host ''borrado''\")",
+      "Bash(where gh:*)",
+      "Bash(gh --version)",
+      "Read(//c/Users/LABORATORIO/AppData/Local/GitHubDesktop//**)",
+      "Read(//c/Program Files/**)"
+    ]
+  }
+}

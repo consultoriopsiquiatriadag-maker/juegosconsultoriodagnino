@@ -411,20 +411,53 @@
     'use strict';
 
     // ─── CATÁLOGO LOCAL DE SONIDOS ──────────────────────────────────────────
-    // Para agregar un sonido: añadí un objeto a este array.
     //
-    // Campos obligatorios: id, emoji, title, description, category, duration, author
-    // Campos de audio:     previewUrl (clip corto), url (pista completa)
-    //                      → pueden ser la misma ruta
-    //                      → si el archivo no existe, el error se maneja con aviso claro
-    // Campos opcionales:   authorUrl, disabled, comingSoon
-    //                      loop:true → la pista se repite automáticamente (para pistas < 15 min)
+    // Todos los archivos de audio viven en la carpeta audio/ del proyecto.
+    // Se alojan en GitHub y Netlify los sirve directamente (sin CDN externo).
     //
-    // Pistas marcadas con comingSoon:true se muestran en la grilla pero sin botones
-    // funcionales (indicador "Próximamente"). Útil para reservar espacio visual.
+    // CONVENCIÓN DE ARCHIVOS LOCALES
+    // ─────────────────────────────────────────────────────────────────────────
+    // Los archivos actuales conservan el nombre original de descarga.
+    // Si en el futuro querés usar nombres más limpios, esta sería la equivalencia:
+    //
+    //   audio/murmullo_arroyo.mp3         ← restfuldreamingtunes-...-276298.mp3
+    //   audio/viento_entre_arboles.mp3    ← freesound_community-wind-...-48543.mp3
+    //   audio/pajaros_calma.mp3           ← zehendrew-birds-chirping-calm-173695.mp3
+    //   audio/parque_con_pajaros.mp3      ← carlos-cdg05-sonido-de-parque-...-291538.mp3
+    //   audio/chimenea_encendida.mp3      ← restfuldreamingtunes-...-273945.mp3
+    //   audio/bosque_sereno.mp3           ← freesound_community-woods-24931.mp3
+    //   audio/lluvia_suave.mp3            ← donrain-lluvia-suave-smooth-rain-198182.mp3
+    //   audio/lluvia_nocturna.mp3         ← donrain-lluvia-en-la-noche-...-290391.mp3
+    //   audio/tormenta_aves.mp3           ← freesound_community-storm-rain-birds-25012.mp3
+    //   audio/lluvia_15min.mp3            ← dragon-studio-15-minutes-of-rain-...-312863.mp3
+    //
+    // COMPRESIÓN RECOMENDADA PARA FUTUROS AUDIOS
+    // ─────────────────────────────────────────────────────────────────────────
+    // Para mantener el repositorio liviano (< 10 MB por archivo), comprimí los
+    // MP3 a 128 kbps mono antes de commitearlo:
+    //   ffmpeg -i entrada.mp3 -b:a 128k -ac 1 audio/nombre_limpio.mp3
+    // Los audios de naturaleza toleran bien mono — no se pierde calidad perceptible.
+    //
+    // CAMPOS POR OBJETO
+    // ─────────────────────────────────────────────────────────────────────────
+    //   id          → identificador único (string)
+    //   emoji       → ícono decorativo de la tarjeta
+    //   title       → nombre visible para el paciente
+    //   description → texto breve que describe el sonido
+    //   category    → chip de categoría (Lluvia, Agua, Bosque, Naturaleza, Ambiente cálido, Ambiente, Melodía, Guiada)
+    //   previewUrl  → ruta para el clip de 20 s de pre-escucha (puede ser el mismo que url)
+    //   url         → ruta del archivo completo para el ejercicio
+    //   duration    → texto estático de respaldo; la JS lo refina con loadedmetadata al cargar la página
+    //   loop        → true si la pista dura < 15 min (se repite automáticamente durante el ejercicio)
+    //   author      → crédito del autor/fuente
+    //   authorUrl   → URL del autor si se conoce con certeza; '' si no se tiene
+    //   disabled    → true para deshabilitar sin mostrar (uso interno)
+    //   comingSoon  → true para mostrar la tarjeta con badge "Próximamente" (sin botones)
+    //
     const LOCAL_SLEEP_SOUNDS = [
 
-      // ── Ambiente / Spa ────────────────────────────────────────────────────
+      // ── Ambiente ──────────────────────────────────────────────────────────
+      // Nota: spa-ambient-10min-253179.mp3 ya existe en audio/ y funciona correctamente.
       {
         id:          'spa_ambient',
         emoji:       '🌿',
@@ -433,96 +466,14 @@
         category:    'Ambiente',
         previewUrl:  'audio/spa-ambient-10min-253179.mp3',
         url:         'audio/spa-ambient-10min-253179.mp3',
-        duration:    '10 min',
+        duration:    '10 min · loop',
+        loop:        true,
         author:      'Pixabay Audio Library',
         authorUrl:   'https://pixabay.com/music/meditationspiritual/spa-ambient-10min-253179/'
       },
 
-      // ── Lluvia ────────────────────────────────────────────────────────────
-      {
-        id:          'lluvia_suave',
-        emoji:       '🌧️',
-        title:       'Lluvia suave',
-        description: 'Lluvia continua y uniforme para inducir un sueño profundo.',
-        category:    'Lluvia',
-        previewUrl:  'audio/lluvia_suave_15min.mp3',
-        url:         'audio/lluvia_suave_15min.mp3',
-        duration:    '15 min',
-        author:      'Pixabay Audio Library',
-        authorUrl:   'https://pixabay.com/sound-effects/rain-sound-effect-312863/'
-      },
-      {
-        id:          'lluvia_ventana',
-        emoji:       '🪟',
-        title:       'Lluvia en ventana',
-        description: 'Sonido de lluvia golpeando suavemente el vidrio.',
-        category:    'Lluvia',
-        previewUrl:  'audio/lluvia_ventana_15min.mp3',
-        url:         'audio/lluvia_ventana_15min.mp3',
-        duration:    '15 min',
-        author:      'Consultorio Dagnino',
-        authorUrl:   ''
-      },
-
-      // ── Naturaleza ────────────────────────────────────────────────────────
-      {
-        id:          'bosque_nocturno',
-        emoji:       '🌲',
-        title:       'Bosque nocturno',
-        description: 'Ambiente natural nocturno con grillos suaves y brisa.',
-        category:    'Naturaleza',
-        previewUrl:  'audio/bosque_nocturno_15min.mp3',
-        url:         'audio/bosque_nocturno_15min.mp3',
-        duration:    '15 min',
-        author:      'Pixabay Audio Library',
-        authorUrl:   'https://pixabay.com/sound-effects/night-crickets-22527/'
-      },
-
-      // ── Agua ─────────────────────────────────────────────────────────────
-      {
-        id:          'olas_mar',
-        emoji:       '🌊',
-        title:       'Olas del mar',
-        description: 'Olas lentas y regulares sobre la orilla.',
-        category:    'Agua',
-        previewUrl:  'audio/olas_mar_15min.mp3',
-        url:         'audio/olas_mar_15min.mp3',
-        duration:    '~3 min · loop',
-        author:      'Pixabay Audio Library',
-        authorUrl:   'https://pixabay.com/sound-effects/ocean-waves-112906/',
-        loop:        true
-      },
-
-      // ── Ruido neutro ──────────────────────────────────────────────────────
-      {
-        id:          'ruido_rosa',
-        emoji:       '〰️',
-        title:       'Ruido rosa',
-        description: 'Ruido de espectro rosado, estable y envolvente, para facilitar el sueño.',
-        category:    'Ruido neutro',
-        previewUrl:  'audio/ruido_rosa_15min.mp3',
-        url:         'audio/ruido_rosa_15min.mp3',
-        duration:    '15 min',
-        author:      'Consultorio Dagnino',
-        authorUrl:   ''
-      },
-
-      // ── Ambiente cálido ───────────────────────────────────────────────────
-      {
-        id:          'chimenea',
-        emoji:       '🔥',
-        title:       'Chimenea',
-        description: 'Crepitar cálido del fuego y la madera para un ambiente acogedor.',
-        category:    'Ambiente cálido',
-        previewUrl:  'audio/chimenea_15min.mp3',
-        url:         'audio/chimenea_15min.mp3',
-        duration:    '~3 min · loop',
-        author:      'Pixabay Audio Library',
-        authorUrl:   'https://pixabay.com/sound-effects/fireplace-crackling-6270/',
-        loop:        true
-      },
-
       // ── Melodía ───────────────────────────────────────────────────────────
+      // Nota: relaxing-soft-piano-music-431679.mp3 ya existe en audio/ y funciona correctamente.
       {
         id:          'piano',
         emoji:       '🎹',
@@ -532,12 +483,162 @@
         previewUrl:  'audio/relaxing-soft-piano-music-431679.mp3',
         url:         'audio/relaxing-soft-piano-music-431679.mp3',
         duration:    '~5 min · loop',
+        loop:        true,
         author:      'Pixabay Audio Library',
-        authorUrl:   'https://pixabay.com/music/meditationspiritual/relaxing-soft-piano-music-431679/',
-        loop:        true
+        authorUrl:   'https://pixabay.com/music/meditationspiritual/relaxing-soft-piano-music-431679/'
       },
 
-      // ── Reservada: voz guiada (próximamente) ──────────────────────────────
+      // ── Lluvia ────────────────────────────────────────────────────────────
+
+      {
+        id:          'lluvia_suave',
+        emoji:       '🌧️',
+        title:       'Lluvia suave',
+        description: 'Lluvia continua y uniforme, perfecta para inducir un sueño profundo y tranquilo.',
+        category:    'Lluvia',
+        previewUrl:  'audio/donrain-lluvia-suave-smooth-rain-198182.mp3',
+        url:         'audio/donrain-lluvia-suave-smooth-rain-198182.mp3',
+        duration:    '~5 min · loop',
+        loop:        true,
+        author:      'donrain · Pixabay Audio Library',
+        authorUrl:   ''
+      },
+
+      {
+        id:          'lluvia_nocturna',
+        emoji:       '🌃',
+        title:       'Lluvia nocturna',
+        description: 'Lluvia en la noche: suave y envolvente, ideal para acompañar el descanso profundo.',
+        category:    'Lluvia',
+        previewUrl:  'audio/donrain-lluvia-en-la-noche-rain-in-the-night-290391.mp3',
+        url:         'audio/donrain-lluvia-en-la-noche-rain-in-the-night-290391.mp3',
+        duration:    '~5 min · loop',
+        loop:        true,
+        author:      'donrain · Pixabay Audio Library',
+        authorUrl:   ''
+      },
+
+      {
+        id:          'tormenta_aves',
+        emoji:       '⛈️',
+        title:       'Tormenta lejana con aves',
+        description: 'Lluvia intensa a lo lejos y aves que cantan en el bosque. Contraste cálido y sereno.',
+        category:    'Lluvia',
+        previewUrl:  'audio/freesound_community-storm-rain-birds-25012.mp3',
+        url:         'audio/freesound_community-storm-rain-birds-25012.mp3',
+        duration:    '~3 min · loop',
+        loop:        true,
+        author:      'Freesound Community · Pixabay',
+        authorUrl:   ''
+      },
+
+      {
+        id:          'lluvia_profunda',
+        emoji:       '🌊',
+        title:       'Lluvia profunda — 15 min',
+        description: 'Quince minutos completos de lluvia relajante, diseñados para conciliar el sueño y la concentración.',
+        category:    'Lluvia',
+        previewUrl:  'audio/dragon-studio-15-minutes-of-rain-sound-for-relaxation-and-sleep-study-312863.mp3',
+        url:         'audio/dragon-studio-15-minutes-of-rain-sound-for-relaxation-and-sleep-study-312863.mp3',
+        duration:    '15 min',
+        loop:        false,
+        author:      'Dragon Studio · Pixabay Audio Library',
+        authorUrl:   ''
+      },
+
+      // ── Agua ──────────────────────────────────────────────────────────────
+
+      {
+        id:          'arroyo',
+        emoji:       '🏞️',
+        title:       'Murmullo de arroyo',
+        description: 'El suave murmullo de un arroyo fluyendo entre piedras y vegetación silvestre.',
+        category:    'Agua',
+        previewUrl:  'audio/restfuldreamingtunes-sounds-of-nature-the-gentle-murmur-of-the-brook-276298.mp3',
+        url:         'audio/restfuldreamingtunes-sounds-of-nature-the-gentle-murmur-of-the-brook-276298.mp3',
+        duration:    '~5 min · loop',
+        loop:        true,
+        author:      'Restful Dreaming Tunes · Pixabay',
+        authorUrl:   ''
+      },
+
+      // ── Bosque ────────────────────────────────────────────────────────────
+
+      {
+        id:          'bosque_sereno',
+        emoji:       '🌲',
+        title:       'Bosque sereno',
+        description: 'Ambiente natural de bosque: brisa suave entre los árboles y silencio profundo.',
+        category:    'Bosque',
+        previewUrl:  'audio/freesound_community-woods-24931.mp3',
+        url:         'audio/freesound_community-woods-24931.mp3',
+        duration:    '~3 min · loop',
+        loop:        true,
+        author:      'Freesound Community · Pixabay',
+        authorUrl:   ''
+      },
+
+      // ── Naturaleza ────────────────────────────────────────────────────────
+
+      {
+        id:          'pajaros_calma',
+        emoji:       '🐦',
+        title:       'Pájaros al amanecer',
+        description: 'Canto suave y tranquilo de pájaros, ideal para acompañar el descanso o el despertar sereno.',
+        category:    'Naturaleza',
+        previewUrl:  'audio/zehendrew-birds-chirping-calm-173695.mp3',
+        url:         'audio/zehendrew-birds-chirping-calm-173695.mp3',
+        duration:    '~3 min · loop',
+        loop:        true,
+        author:      'zehendrew · Pixabay Audio Library',
+        authorUrl:   ''
+      },
+
+      {
+        id:          'parque_pajaros',
+        emoji:       '🌳',
+        title:       'Parque con pájaros',
+        description: 'Sonido de parque al aire libre: aves cantando, brisa y ambiente natural de mañana.',
+        category:    'Naturaleza',
+        previewUrl:  'audio/carlos-cdg05-sonido-de-parque-con-pajaros-291538.mp3',
+        url:         'audio/carlos-cdg05-sonido-de-parque-con-pajaros-291538.mp3',
+        duration:    '~5 min · loop',
+        loop:        true,
+        author:      'carlos-cdg05 · Pixabay Audio Library',
+        authorUrl:   ''
+      },
+
+      {
+        id:          'viento_arboles',
+        emoji:       '🍃',
+        title:       'Viento entre árboles',
+        description: 'Brisa fresca moviéndose entre las hojas, como un susurro suave de la naturaleza.',
+        category:    'Naturaleza',
+        previewUrl:  'audio/freesound_community-wind-in-trees-bright-gusts-summer-like-water-77mel-180921-48543.mp3',
+        url:         'audio/freesound_community-wind-in-trees-bright-gusts-summer-like-water-77mel-180921-48543.mp3',
+        duration:    '~3 min · loop',
+        loop:        true,
+        author:      'Freesound Community · Pixabay',
+        authorUrl:   ''
+      },
+
+      // ── Ambiente cálido ───────────────────────────────────────────────────
+
+      {
+        id:          'chimenea',
+        emoji:       '🔥',
+        title:       'Chimenea encendida',
+        description: 'Crepitar cálido del fuego en la chimenea para un ambiente íntimo y acogedor.',
+        category:    'Ambiente cálido',
+        previewUrl:  'audio/restfuldreamingtunes-sounds-of-nature-the-sound-of-a-flame-burning-in-a-fireplace-273945.mp3',
+        url:         'audio/restfuldreamingtunes-sounds-of-nature-the-sound-of-a-flame-burning-in-a-fireplace-273945.mp3',
+        duration:    '~5 min · loop',
+        loop:        true,
+        author:      'Restful Dreaming Tunes · Pixabay',
+        authorUrl:   ''
+      },
+
+      // ── Guiada (próximamente) ─────────────────────────────────────────────
       // Una vez disponible: quitá disabled y comingSoon, y completá previewUrl/url.
       {
         id:          'voz_guiada',
@@ -580,6 +681,50 @@
     const $  = id => document.getElementById(id);
     const qq = sel => document.querySelector(sel);
     const qa = sel => document.querySelectorAll(sel);
+
+    // ─── DETECCIÓN AUTOMÁTICA DE DURACIÓN ──────────────────────────────────
+    // Al cargar la página, para cada pista activa se crea un Audio temporal
+    // que carga solo los metadatos (no el audio completo) y actualiza el badge
+    // de duración con el valor real obtenido del archivo.
+    // Esto es no-bloqueante: si el archivo no está disponible, simplemente
+    // conserva el texto estático del campo `duration` como respaldo.
+    function detectDuration(sound) {
+      if (!sound || !sound.url || sound.comingSoon || sound.disabled) return;
+
+      const tmp = new Audio();
+      tmp.preload = 'metadata';
+
+      tmp.addEventListener('loadedmetadata', () => {
+        const totalSecs = Math.round(tmp.duration);
+        if (!isFinite(totalSecs) || totalSecs <= 0) { tmp.src = ''; return; }
+
+        const m = Math.floor(totalSecs / 60);
+        const s = totalSecs % 60;
+
+        let label;
+        if (m >= 60) {
+          label = `${Math.floor(m / 60)} h ${m % 60} min`;
+        } else if (s === 0) {
+          label = `${m} min`;
+        } else {
+          label = `${m} min ${s} s`;
+        }
+        if (sound.loop) label += ' · loop';
+
+        // Actualizar el badge visible en la tarjeta
+        const badge = document.querySelector(`#card-${sound.id} .sound-card-duration`);
+        if (badge) badge.textContent = '⏱ ' + label;
+
+        // Actualizar el objeto en memoria (para que los créditos muestren valor real)
+        sound.duration = label;
+
+        tmp.src = '';
+      }, { once: true });
+
+      tmp.addEventListener('error', () => { tmp.src = ''; }, { once: true });
+
+      tmp.src = sound.url;
+    }
 
     // ─── RENDER DE TARJETAS ────────────────────────────────────────────────
     function renderCards() {
@@ -625,6 +770,9 @@
           <p class="sound-card-author">Fuente: ${authorHtml}</p>
         `;
         grid.appendChild(article);
+
+        // Detectar duración real desde los metadatos del archivo (no bloquea la UI)
+        detectDuration(sound);
       });
 
       // Delegación de eventos sobre el grid completo
