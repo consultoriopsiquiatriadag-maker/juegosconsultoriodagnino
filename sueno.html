@@ -4,138 +4,945 @@
   <meta charset="UTF-8" />
   <title>Conciliar el sueño — Consultorio Dr. Pedro Nicolas Dagnino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
 
   <style>
+    /* ── Fondo + overlay ── */
     body.has-bg {
       background: url("bg-avion.jpg") center/cover fixed no-repeat;
     }
-    body.has-bg::before{
-      content:"";
+    body.has-bg::before {
+      content: "";
       position: fixed;
       inset: 0;
       background: linear-gradient(180deg, rgba(14,34,57,.72), rgba(14,34,57,.40) 45%, rgba(14,34,57,.24));
-      pointer-events:none;
+      pointer-events: none;
       z-index: -1;
     }
+
+    /* ── Encabezado de sección liviano (igual que emociones.html) ── */
+    .section-lead          { margin-bottom: 20px; }
+    .section-lead h2       { margin: 0 0 6px; font-size: calc(22px * var(--text-scale)); font-weight: 700; letter-spacing: -.02em; color: var(--text); }
+    .section-lead p        { margin: 0; font-size: calc(15px * var(--text-scale)); color: var(--muted); max-width: 68ch; }
+
+    /* ── Grid de sonidos: 3 cols → 2 → 1 ── */
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .sound-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .sound-grid { grid-template-columns: 1fr; } }
+
+    /* ── Tarjeta de sonido (extiende .section-card) ── */
+    .sound-card {
+      display: flex;
+      flex-direction: column;
+      padding: 22px;
+      transition: box-shadow .2s ease, transform .18s ease, border-color .2s ease;
+    }
+    /* Seleccionado: borde ámbar */
+    .sound-card.selected {
+      border-color: var(--accent-warm);
+      box-shadow: 0 0 0 2px rgba(196,122,43,.22), 0 16px 36px rgba(2,6,23,.10);
+    }
+    /* En preview: borde verde */
+    .sound-card.previewing {
+      border-color: rgba(34,197,94,.50);
+      box-shadow: 0 0 0 2px rgba(34,197,94,.16), 0 10px 24px rgba(2,6,23,.08);
+    }
+
+    .sound-card-icon    { font-size: 28px; line-height: 1; margin-bottom: 12px; }
+    .sound-card-title   { font-size: calc(16px * var(--text-scale)); font-weight: 700; letter-spacing: -.01em; color: var(--text); margin: 0 0 6px; }
+    .sound-card-desc    { font-size: calc(13px * var(--text-scale)); color: var(--muted); line-height: 1.5; margin: 0 0 10px; flex: 1; }
+
+    .sound-card-duration {
+      display: inline-flex;
+      align-items: center;
+      font-size: calc(11px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      background: rgba(14,34,57,.06);
+      border: 1px solid rgba(14,34,57,.10);
+      border-radius: 6px;
+      padding: 3px 8px;
+      margin-bottom: 14px;
+      width: max-content;
+    }
+
+    .sound-card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .sound-card-author {
+      font-size: calc(11px * var(--text-scale));
+      color: var(--muted);
+      margin: 0;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .sound-card-author a { color: var(--inst-blue); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ── Botones pequeños para las tarjetas ── */
+    .btn-sm {
+      padding: 7px 12px;
+      font-size: calc(12px * var(--text-scale));
+      border-radius: 9px;
+      line-height: 1.3;
+    }
+
+    /* ── Botón grande de inicio ── */
+    .btn-large {
+      padding: 13px 22px;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 700;
+    }
+
+    /* ── Estado deshabilitado ── */
+    button:disabled {
+      opacity: .40;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Panel de ejercicio (flexbox columna) ── */
+    .exercise-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 24px;
+    }
+
+    /* ── Línea de estado ── */
+    .status-line {
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 600;
+      color: var(--inst-navy);
+      padding: 11px 14px;
+      background: rgba(14,34,57,.05);
+      border: 1px solid rgba(14,34,57,.10);
+      border-radius: 10px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── Temporizador (visible solo durante el ejercicio) ── */
+    .timer-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 20px;
+      background: rgba(14,34,57,.04);
+      border: 1px solid rgba(14,34,57,.08);
+      border-radius: 16px;
+    }
+    .timer-display {
+      font-size: calc(56px * var(--text-scale));
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--inst-navy);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .timer-label {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      margin: 0;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(14,34,57,.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent-warm);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 1s linear;
+    }
+
+    /* ── Control de volumen ── */
+    .vol-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .vol-row label      { font-size: calc(14px * var(--text-scale)); color: var(--muted); white-space: nowrap; }
+    .vol-row input[type="range"] { flex: 1; min-width: 80px; accent-color: var(--inst-navy); }
+    #volDisplay         { font-size: calc(13px * var(--text-scale)); font-weight: 600; color: var(--inst-navy); min-width: 36px; text-align: right; }
+
+    /* ── Área de créditos del audio activo ── */
+    .credits-area {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      padding: 8px 14px;
+      background: rgba(14,34,57,.04);
+      border: 1px solid rgba(14,34,57,.08);
+      border-radius: 10px;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+    }
+    .credits-area a { color: var(--inst-blue); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ── Chip de categoría sobre cada tarjeta ── */
+    .sound-card-category {
+      display: inline-flex;
+      align-items: center;
+      font-size: calc(10px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--inst-blue);
+      background: rgba(27,61,99,.08);
+      border: 1px solid rgba(27,61,99,.14);
+      border-radius: 6px;
+      padding: 3px 8px;
+      margin-bottom: 10px;
+      width: max-content;
+    }
+
+    /* ── Tarjeta "próximamente": muted, sin hover activo ── */
+    .sound-card.coming-soon          { opacity: .60; }
+    .sound-card.coming-soon:hover    { transform: none; box-shadow: var(--shadow); }
   </style>
 </head>
 
 <body class="has-bg">
 
+  <!-- ===== Header institucional ===== -->
   <header>
     <div class="wrap header-inner">
-      <div class="brand">
-        <div class="brand-badge" aria-hidden="true"><img src="logo-avion.png" alt=""></div>
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
         <div class="brand-text">
           <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
           <div class="brand-sub">Sala de espera virtual</div>
         </div>
       </div>
-      <div class="controls">
-        <div class="controls-desktop">
-          <button class="btn-ghost" id="btnAminus" type="button">A-</button>
-          <button class="btn-ghost" id="btnAplus" type="button">A+</button>
-          <button class="btn-ghost" id="openSettingsDesktop" type="button">⚙️ Ajustes</button>
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button" aria-label="Aumentar tamaño de letra">A+</button>
         </div>
-        <button class="btn-ghost controls-mobile" id="openSettings" type="button">⚙️ Ajustes</button>
       </div>
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="section">
-      <div class="section-card hint-bg">
-        <div class="btn-row" style="margin-bottom:12px">
-          <a class="btn-secondary" href="emociones.html" data-spa="0">← Volver</a>
-        </div>
 
-        <h1 class="card-title" style="margin:0">🌧️ Ejercicio para conciliar el sueño</h1>
-        <p class="card-sub" style="margin-top:8px">
-          Guía breve en voz + lluvia. Duración: 15 minutos (con fade de entrada y salida).
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-label="Ejercicio para conciliar el sueño">
+    <div class="wrap hero-inner">
+
+      <div>
+        <div class="pill" aria-label="Recurso activo">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Ejercicio guiado · 15 minutos</span>
+        </div>
+        <h1 class="hero-title">Conciliar el sueño</h1>
+        <p class="hero-bridge">
+          Elegí un sonido de fondo, ajustá el volumen e iniciá el ejercicio.
+          El audio hace fade-in al arrancar y se apaga solo al final.
         </p>
+        <p class="hero-meta">
+          No reemplaza consulta médica. Si estás en crisis, utilizá los canales de emergencia locales.
+        </p>
+      </div>
 
-        <div class="note" style="margin-top:12px; font-size: 15px;">
-          <strong>Antes de comenzar:</strong> configurá tu alarma para mañana.
-          Así, una vez iniciada la inducción al sueño, ya no tocás tu celular.
+      <aside class="hero-side" aria-label="Antes de empezar">
+        <h3>Antes de empezar</h3>
+        <p>Configurá tu alarma para mañana <strong>antes</strong> de iniciar. Así ya no necesitás tocar el celular.</p>
+        <div class="row">
+          <a href="emociones.html" data-spa="0">← Recursos</a>
+          <a href="index.html"     data-spa="0">Inicio</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" aria-label="Selector de sonido y controles del ejercicio">
+
+    <!-- ── Sección 1: elegir sonido ── -->
+    <section class="section" aria-labelledby="sounds-heading">
+      <div class="section-lead">
+        <h2 id="sounds-heading">1. Elegí un sonido</h2>
+        <p>Podés pre-escuchar 20 segundos antes de confirmar tu elección.</p>
+      </div>
+
+      <!-- Las tarjetas se renderizan desde JS (ver LOCAL_SLEEP_SOUNDS abajo) -->
+      <div class="sound-grid" id="soundGrid" aria-live="polite"></div>
+    </section>
+
+
+    <!-- ── Sección 2: controles del ejercicio ── -->
+    <section class="section" aria-labelledby="exercise-heading">
+      <div class="section-lead">
+        <h2 id="exercise-heading">2. Iniciá el ejercicio</h2>
+        <p>El audio hace fade-in al comienzo y fade-out automático en los últimos 20 segundos.</p>
+      </div>
+
+      <div class="section-card exercise-panel">
+
+        <!-- Estado del sistema (aria-live para lectores de pantalla) -->
+        <div class="status-line" id="statusLine" role="status" aria-live="polite">
+          Seleccioná un sonido para comenzar
         </div>
 
-        <div class="btn-row" style="margin-top:12px; align-items:flex-start;">
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            <button class="btn-primary" id="sleepStart" type="button">▶️ Iniciar</button>
-            <div class="note" style="margin:0; font-size: 13px;">
-              Configurá alarma primero. Después, no toques el celular.
-            </div>
+        <!-- Temporizador: oculto hasta que se inicia el ejercicio -->
+        <div class="timer-wrap" id="timerWrap" hidden aria-label="Temporizador del ejercicio">
+          <div class="timer-display" id="timerDisplay" aria-label="Tiempo restante">15:00</div>
+          <p class="timer-label" id="timerLabel">minutos restantes</p>
+          <div class="progress-bar"
+               role="progressbar"
+               aria-valuemin="0" aria-valuemax="900" aria-valuenow="0"
+               aria-label="Progreso del ejercicio"
+               id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
           </div>
-
-          <button class="btn-secondary" id="sleepPause" type="button">⏸️ Pausar</button>
-          <button class="btn-secondary" id="sleepStop" type="button">⏹️ Detener</button>
         </div>
 
-        <div class="note" style="margin-top:12px">
-          Estado: <strong><span id="sleepStatus">Listo</span></strong>
+        <!-- Control de volumen -->
+        <div class="vol-row">
+          <label for="volSlider">🔈 Volumen</label>
+          <input type="range" id="volSlider" min="0" max="100" value="80" aria-label="Control de volumen">
+          <span id="volDisplay">80%</span>
         </div>
 
-        <audio id="sleepAudio" preload="none"></audio>
-
-        <div class="divider" aria-hidden="true"></div>
-
-        <div class="note" style="margin:0">
-          No reemplaza consulta médica. No destinado a urgencias.
+        <!-- Aviso previo al inicio -->
+        <div class="note" role="note">
+          <strong>Recordatorio:</strong> configurá tu alarma para mañana antes de iniciar.
+          Una vez que empiece la inducción, ya no toques el celular.
         </div>
+
+        <!-- Botones principales -->
+        <div class="btn-row" style="flex-wrap:wrap">
+          <button class="btn-primary btn-large" id="btnStart" type="button"
+                  disabled aria-describedby="statusLine">
+            ▶️ Iniciar ejercicio de 15 min
+          </button>
+          <button class="btn-secondary" id="btnStop" type="button"
+                  disabled aria-label="Detener el ejercicio">
+            ⏹ Detener
+          </button>
+        </div>
+
+        <!-- Créditos del sonido actualmente seleccionado -->
+        <div class="credits-area" id="creditsArea" aria-label="Créditos del audio seleccionado">
+          Seleccioná un sonido para ver sus créditos
+        </div>
+
       </div>
     </section>
+
+
+    <!-- ── Aviso legal ── -->
+    <div class="note" role="note" style="margin-bottom:32px">
+      Este recurso es orientativo y no reemplaza una consulta médica.
+      No destinado a situaciones de urgencia o emergencia psiquiátrica.
+    </div>
+
   </main>
 
+
+  <!-- ===== Footer institucional ===== -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/"        target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino"           target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div style="margin-top:12px">
+          <div><strong>Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+        <div class="legal" id="legalBlock">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT — Año automático.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ===== JS — Herramienta de sueño ===== -->
   <script>
-    (function(){
-      const audio  = document.getElementById("sleepAudio");
-      const start  = document.getElementById("sleepStart");
-      const pause  = document.getElementById("sleepPause");
-      const stop   = document.getElementById("sleepStop");
-      const status = document.getElementById("sleepStatus");
+  (function () {
+    'use strict';
 
-      const SRC = "audio/sueno_lluvia_15min_dagnino.mp3";
+    // ─── CATÁLOGO LOCAL DE SONIDOS ──────────────────────────────────────────
+    // Para agregar un sonido: añadí un objeto a este array.
+    //
+    // Campos obligatorios: id, emoji, title, description, category, duration, author
+    // Campos de audio:     previewUrl (clip corto), url (pista completa)
+    //                      → pueden ser la misma ruta
+    //                      → si el archivo no existe, el error se maneja con aviso claro
+    // Campos opcionales:   authorUrl, disabled, comingSoon
+    //                      loop:true → la pista se repite automáticamente (para pistas < 15 min)
+    //
+    // Pistas marcadas con comingSoon:true se muestran en la grilla pero sin botones
+    // funcionales (indicador "Próximamente"). Útil para reservar espacio visual.
+    const LOCAL_SLEEP_SOUNDS = [
 
-      function setStatus(t){ if(status) status.textContent = t; }
+      // ── Ambiente / Spa ────────────────────────────────────────────────────
+      {
+        id:          'spa_ambient',
+        emoji:       '🌿',
+        title:       'Ambiente tranquilo',
+        description: 'Música suave de spa para relajación profunda y descanso.',
+        category:    'Ambiente',
+        previewUrl:  'audio/spa-ambient-10min-253179.mp3',
+        url:         'audio/spa-ambient-10min-253179.mp3',
+        duration:    '10 min',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/music/meditationspiritual/spa-ambient-10min-253179/'
+      },
 
-      if(audio){
-        audio.src = SRC;
-        audio.loop = false;
-        audio.volume = 0.9;
+      // ── Lluvia ────────────────────────────────────────────────────────────
+      {
+        id:          'lluvia_suave',
+        emoji:       '🌧️',
+        title:       'Lluvia suave',
+        description: 'Lluvia continua y uniforme para inducir un sueño profundo.',
+        category:    'Lluvia',
+        previewUrl:  'audio/lluvia_suave_15min.mp3',
+        url:         'audio/lluvia_suave_15min.mp3',
+        duration:    '15 min',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/sound-effects/rain-sound-effect-312863/'
+      },
+      {
+        id:          'lluvia_ventana',
+        emoji:       '🪟',
+        title:       'Lluvia en ventana',
+        description: 'Sonido de lluvia golpeando suavemente el vidrio.',
+        category:    'Lluvia',
+        previewUrl:  'audio/lluvia_ventana_15min.mp3',
+        url:         'audio/lluvia_ventana_15min.mp3',
+        duration:    '15 min',
+        author:      'Consultorio Dagnino',
+        authorUrl:   ''
+      },
 
-        audio.addEventListener("ended", () => setStatus("Finalizado"));
-        audio.addEventListener("play",  () => setStatus("Reproduciendo"));
-        audio.addEventListener("pause", () => {
-          if (audio.currentTime > 0 && audio.currentTime < (audio.duration || Infinity)) setStatus("Pausado");
-        });
+      // ── Naturaleza ────────────────────────────────────────────────────────
+      {
+        id:          'bosque_nocturno',
+        emoji:       '🌲',
+        title:       'Bosque nocturno',
+        description: 'Ambiente natural nocturno con grillos suaves y brisa.',
+        category:    'Naturaleza',
+        previewUrl:  'audio/bosque_nocturno_15min.mp3',
+        url:         'audio/bosque_nocturno_15min.mp3',
+        duration:    '15 min',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/sound-effects/night-crickets-22527/'
+      },
+
+      // ── Agua ─────────────────────────────────────────────────────────────
+      {
+        id:          'olas_mar',
+        emoji:       '🌊',
+        title:       'Olas del mar',
+        description: 'Olas lentas y regulares sobre la orilla.',
+        category:    'Agua',
+        previewUrl:  'audio/olas_mar_15min.mp3',
+        url:         'audio/olas_mar_15min.mp3',
+        duration:    '~3 min · loop',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/sound-effects/ocean-waves-112906/',
+        loop:        true
+      },
+
+      // ── Ruido neutro ──────────────────────────────────────────────────────
+      {
+        id:          'ruido_rosa',
+        emoji:       '〰️',
+        title:       'Ruido rosa',
+        description: 'Ruido de espectro rosado, estable y envolvente, para facilitar el sueño.',
+        category:    'Ruido neutro',
+        previewUrl:  'audio/ruido_rosa_15min.mp3',
+        url:         'audio/ruido_rosa_15min.mp3',
+        duration:    '15 min',
+        author:      'Consultorio Dagnino',
+        authorUrl:   ''
+      },
+
+      // ── Ambiente cálido ───────────────────────────────────────────────────
+      {
+        id:          'chimenea',
+        emoji:       '🔥',
+        title:       'Chimenea',
+        description: 'Crepitar cálido del fuego y la madera para un ambiente acogedor.',
+        category:    'Ambiente cálido',
+        previewUrl:  'audio/chimenea_15min.mp3',
+        url:         'audio/chimenea_15min.mp3',
+        duration:    '~3 min · loop',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/sound-effects/fireplace-crackling-6270/',
+        loop:        true
+      },
+
+      // ── Melodía ───────────────────────────────────────────────────────────
+      {
+        id:          'piano',
+        emoji:       '🎹',
+        title:       'Piano suave',
+        description: 'Melodía de piano relajante para acompañar el descanso.',
+        category:    'Melodía',
+        previewUrl:  'audio/relaxing-soft-piano-music-431679.mp3',
+        url:         'audio/relaxing-soft-piano-music-431679.mp3',
+        duration:    '~5 min · loop',
+        author:      'Pixabay Audio Library',
+        authorUrl:   'https://pixabay.com/music/meditationspiritual/relaxing-soft-piano-music-431679/',
+        loop:        true
+      },
+
+      // ── Reservada: voz guiada (próximamente) ──────────────────────────────
+      // Una vez disponible: quitá disabled y comingSoon, y completá previewUrl/url.
+      {
+        id:          'voz_guiada',
+        emoji:       '🎙️',
+        title:       'Respiración guiada',
+        description: 'Pista con voz del Dr. Dagnino para una inducción al sueño personalizada.',
+        category:    'Guiada',
+        previewUrl:  '',
+        url:         '',
+        duration:    '15 min',
+        author:      'Dr. Dagnino',
+        authorUrl:   '',
+        disabled:    true,
+        comingSoon:  true
       }
 
-      start?.addEventListener("click", async () => {
-        try{
-          if(!audio) return;
-          if(!audio.src) audio.src = SRC;
-          setStatus("Cargando…");
-          await audio.play();
-        }catch(e){
-          setStatus("Tocá Iniciar nuevamente");
+    ];
+
+    // ─── CONSTANTES ────────────────────────────────────────────────────────
+    const EXERCISE_SECS  = 15 * 60;          // 900 s = 15 min
+    const FADE_IN_SECS   = 6;                 // primeros 6 s: fade-in
+    const FADE_OUT_SECS  = 20;                // últimos 20 s: fade-out
+    const FADE_OUT_AT    = EXERCISE_SECS - FADE_OUT_SECS; // 880 s
+    const PREVIEW_SECS   = 20;                // duración del clip de preview
+
+    // ─── ESTADO ────────────────────────────────────────────────────────────
+    let selectedId    = null;   // id del sonido elegido
+    let previewAudio  = null;   // Audio() de preview
+    let mainAudio     = null;   // Audio() del ejercicio
+    let isExercising  = false;
+    let exerciseTimer = null;   // setInterval del tick
+    let elapsed       = 0;      // segundos transcurridos en el ejercicio
+    let fadeIv        = null;   // setInterval del fade
+    let isPreviewing  = false;
+    let previewingId  = null;
+    let previewTimer  = null;   // setTimeout auto-stop preview
+    let targetVol     = 0.80;   // sincronizado con el slider
+
+    // ─── UTILIDADES ────────────────────────────────────────────────────────
+    const $  = id => document.getElementById(id);
+    const qq = sel => document.querySelector(sel);
+    const qa = sel => document.querySelectorAll(sel);
+
+    // ─── RENDER DE TARJETAS ────────────────────────────────────────────────
+    function renderCards() {
+      const grid = $('soundGrid');
+      if (!grid) return;
+
+      LOCAL_SLEEP_SOUNDS.forEach(sound => {
+        const article = document.createElement('article');
+        // Las tarjetas "próximamente" no reciben card-hover para evitar feedback visual de clic
+        article.className = sound.comingSoon
+          ? 'sound-card section-card coming-soon'
+          : 'sound-card section-card card-hover';
+        article.id = 'card-' + sound.id;
+        article.setAttribute('aria-label', sound.comingSoon ? `${sound.title} (próximamente)` : sound.title);
+
+        const authorHtml = sound.authorUrl
+          ? `<a href="${sound.authorUrl}" target="_blank" rel="noopener noreferrer">${sound.author}</a>`
+          : sound.author;
+
+        // Bloque de acciones: botones para pistas activas, badge para las próximas
+        const actionsHtml = sound.comingSoon
+          ? `<div style="margin-bottom:12px"><span class="badge-soft">Próximamente</span></div>`
+          : `<div class="sound-card-actions">
+              <button class="btn-secondary btn-sm" type="button"
+                      data-action="preview" data-id="${sound.id}"
+                      aria-label="Pre-escuchar ${sound.title}">
+                👂 Pre-escuchar
+              </button>
+              <button class="btn-primary btn-sm" type="button"
+                      data-action="select" data-id="${sound.id}"
+                      aria-label="Seleccionar ${sound.title}">
+                ✓ Seleccionar
+              </button>
+            </div>`;
+
+        article.innerHTML = `
+          <div class="sound-card-icon" aria-hidden="true">${sound.emoji}</div>
+          <span class="sound-card-category" aria-label="Categoría: ${sound.category}">${sound.category}</span>
+          <h3 class="sound-card-title">${sound.title}</h3>
+          <p class="sound-card-desc">${sound.description}</p>
+          <span class="sound-card-duration">⏱ ${sound.duration}</span>
+          ${actionsHtml}
+          <p class="sound-card-author">Fuente: ${authorHtml}</p>
+        `;
+        grid.appendChild(article);
+      });
+
+      // Delegación de eventos sobre el grid completo
+      grid.addEventListener('click', e => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn || btn.disabled) return;
+        if (btn.dataset.action === 'preview') handlePreview(btn.dataset.id);
+        if (btn.dataset.action === 'select')  handleSelect(btn.dataset.id);
+      });
+    }
+
+    // ─── PRE-ESCUCHAR ──────────────────────────────────────────────────────
+    function handlePreview(id) {
+      // Toggle: segundo click en el mismo sonido detiene el preview
+      if (isPreviewing && previewingId === id) { stopPreview(); return; }
+      stopPreview();
+
+      const sound = LOCAL_SLEEP_SOUNDS.find(s => s.id === id);
+      if (!sound || sound.disabled || sound.comingSoon) return;
+
+      previewAudio = new Audio();
+      previewAudio.volume = targetVol;
+      previewAudio.preload = 'none';
+
+      previewAudio.addEventListener('error', () => {
+        stopPreview();
+        setStatus(`No se pudo cargar "${sound.title}". El archivo puede no estar disponible.`);
+      }, { once: true });
+
+      previewAudio.addEventListener('canplay', () => {
+        previewAudio.play().catch(() => {
+          setStatus('Pre-escucha no disponible. Tocá el botón nuevamente.');
+          stopPreview();
+        });
+      }, { once: true });
+
+      previewAudio.addEventListener('ended', () => stopPreview(), { once: true });
+
+      previewAudio.src = sound.previewUrl;
+      previewAudio.load();
+
+      isPreviewing = true;
+      previewingId = id;
+
+      $('card-' + id)?.classList.add('previewing');
+
+      const btn = qq(`[data-action="preview"][data-id="${id}"]`);
+      if (btn) {
+        btn.textContent = '⏹ Detener';
+        btn.setAttribute('aria-label', `Detener preview de ${sound.title}`);
+      }
+
+      setStatus(`Pre-escuchando: ${sound.title} (${PREVIEW_SECS} seg)`);
+
+      // Auto-stop al alcanzar el límite de preview
+      previewTimer = setTimeout(() => stopPreview(), PREVIEW_SECS * 1000);
+    }
+
+    function stopPreview() {
+      if (previewTimer) { clearTimeout(previewTimer); previewTimer = null; }
+      if (previewAudio) {
+        previewAudio.pause();
+        previewAudio.src = '';
+        previewAudio = null;
+      }
+
+      if (previewingId) {
+        $('card-' + previewingId)?.classList.remove('previewing');
+        const btn = qq(`[data-action="preview"][data-id="${previewingId}"]`);
+        if (btn) {
+          btn.textContent = '👂 Pre-escuchar';
+          const s = LOCAL_SLEEP_SOUNDS.find(s => s.id === previewingId);
+          if (s) btn.setAttribute('aria-label', `Pre-escuchar ${s.title}`);
         }
-      });
+      }
 
-      pause?.addEventListener("click", () => { if(audio) audio.pause(); });
+      isPreviewing = false;
+      previewingId = null;
 
-      stop?.addEventListener("click", () => {
-        if(!audio) return;
-        audio.pause();
-        audio.currentTime = 0;
-        setStatus("Detenido");
-      });
-    })();
+      if (!isExercising) refreshStatus();
+    }
+
+    // ─── SELECCIONAR SONIDO ────────────────────────────────────────────────
+    function handleSelect(id) {
+      const sound = LOCAL_SLEEP_SOUNDS.find(s => s.id === id);
+      if (!sound || sound.disabled || sound.comingSoon) return;
+
+      stopPreview();
+      if (isExercising) stopExercise(false);
+
+      selectedId = id;
+
+      // Highlight de la tarjeta seleccionada
+      qa('.sound-card').forEach(c => c.classList.remove('selected'));
+      $('card-' + id)?.classList.add('selected');
+
+      // Habilitar botón Iniciar
+      const btnStart = $('btnStart');
+      if (btnStart) btnStart.disabled = false;
+
+      setStatus(`Sonido seleccionado: ${sound?.title || id}`);
+      updateCredits(sound);
+    }
+
+    // ─── INICIAR EJERCICIO ─────────────────────────────────────────────────
+    function startExercise() {
+      if (!selectedId) return;
+      stopPreview();
+      if (isExercising) stopExercise(false);
+
+      const sound = LOCAL_SLEEP_SOUNDS.find(s => s.id === selectedId);
+      if (!sound) return;
+
+      mainAudio = new Audio();
+      mainAudio.volume = 0;       // arranca en silencio; fade-in manual
+      mainAudio.preload = 'auto';
+
+      mainAudio.addEventListener('error', () => {
+        setStatus(`Error al cargar "${sound.title}". Probá con otro sonido.`);
+        stopExercise(false);
+      }, { once: true });
+
+      mainAudio.addEventListener('canplay', () => {
+        mainAudio.loop = !!sound.loop;   // loop automático para pistas cortas
+        mainAudio.play()
+          .then(() => onExerciseStart(sound))
+          .catch(() => {
+            setStatus('No se pudo iniciar. Tocá el botón nuevamente.');
+            stopExercise(false);
+          });
+      }, { once: true });
+
+      // Si el audio termina antes del timer (solo para pistas sin loop)
+      mainAudio.addEventListener('ended', () => { if (!sound.loop) stopExercise(true); }, { once: true });
+
+      setStatus('Cargando audio…');
+      mainAudio.src = sound.url;
+      mainAudio.load();
+    }
+
+    function onExerciseStart(sound) {
+      isExercising = true;
+      elapsed = 0;
+
+      // Mostrar timer y actualizar botones
+      $('timerWrap').hidden = false;
+      updateTimerUI();
+
+      $('btnStart').disabled  = true;
+      $('btnStart').textContent = '▶️ En curso…';
+      $('btnStop').disabled   = false;
+
+      // Bloquear re-selección durante el ejercicio
+      qa('.sound-card [data-action]').forEach(b => b.disabled = true);
+
+      setStatus(`Reproduciendo: ${sound.title}`);
+      fadeIn(FADE_IN_SECS, targetVol);
+
+      // Tick principal (1 s)
+      exerciseTimer = setInterval(() => {
+        elapsed++;
+        updateTimerUI();
+
+        // Lanzar fade-out cuando corresponde
+        if (elapsed === FADE_OUT_AT) fadeOut(FADE_OUT_SECS);
+
+        if (elapsed >= EXERCISE_SECS) stopExercise(true);
+      }, 1000);
+    }
+
+    function stopExercise(finished = false) {
+      if (exerciseTimer) { clearInterval(exerciseTimer); exerciseTimer = null; }
+      if (fadeIv)        { clearInterval(fadeIv);        fadeIv = null;        }
+
+      if (mainAudio) {
+        mainAudio.pause();
+        mainAudio.src = '';
+        mainAudio = null;
+      }
+
+      isExercising = false;
+      elapsed = 0;
+
+      // Ocultar timer y restaurar UI
+      $('timerWrap').hidden = true;
+      updateTimerUI();
+
+      $('btnStart').disabled  = !selectedId;
+      $('btnStart').textContent = '▶️ Iniciar ejercicio de 15 min';
+      $('btnStop').disabled   = true;
+
+      // Re-habilitar selección de sonido
+      qa('.sound-card [data-action]').forEach(b => b.disabled = false);
+
+      if (finished) {
+        setStatus('✓ Ejercicio finalizado. Descansá bien.');
+      } else {
+        refreshStatus();
+      }
+    }
+
+    // ─── FADE IN / FADE OUT ────────────────────────────────────────────────
+    // 20 pasos por segundo (intervalo de 50 ms) para una transición suave.
+
+    function fadeIn(durationSecs, finalVol) {
+      if (!mainAudio) return;
+      if (fadeIv) clearInterval(fadeIv);
+      const steps = durationSecs * 20;
+      const inc   = finalVol / steps;
+      let step = 0;
+      fadeIv = setInterval(() => {
+        if (!mainAudio) { clearInterval(fadeIv); fadeIv = null; return; }
+        step++;
+        mainAudio.volume = Math.min(finalVol, step * inc);
+        if (step >= steps) { clearInterval(fadeIv); fadeIv = null; }
+      }, 50);
+    }
+
+    function fadeOut(durationSecs) {
+      if (!mainAudio) return;
+      if (fadeIv) clearInterval(fadeIv);
+      const startVol = mainAudio.volume;
+      const steps    = durationSecs * 20;
+      const dec      = startVol / steps;
+      let step = 0;
+      fadeIv = setInterval(() => {
+        if (!mainAudio) { clearInterval(fadeIv); fadeIv = null; return; }
+        step++;
+        mainAudio.volume = Math.max(0, startVol - step * dec);
+        if (step >= steps) { clearInterval(fadeIv); fadeIv = null; }
+      }, 50);
+    }
+
+    // ─── TIMER UI ──────────────────────────────────────────────────────────
+    function updateTimerUI() {
+      const remaining = Math.max(0, EXERCISE_SECS - elapsed);
+      const m = Math.floor(remaining / 60);
+      const s = remaining % 60;
+
+      const display = $('timerDisplay');
+      const fill    = $('progressFill');
+      const bar     = $('progressBar');
+      const label   = $('timerLabel');
+
+      if (display) display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if (fill)    fill.style.width    = ((elapsed / EXERCISE_SECS) * 100).toFixed(2) + '%';
+      if (bar)     bar.setAttribute('aria-valuenow', String(elapsed));
+      if (label)   label.textContent   = m === 0 ? 'terminando…' : m === 1 ? 'minuto restante' : 'minutos restantes';
+    }
+
+    // ─── STATUS Y CRÉDITOS ─────────────────────────────────────────────────
+    function setStatus(text) {
+      const el = $('statusLine');
+      if (el) el.textContent = text;
+    }
+
+    function refreshStatus() {
+      if (selectedId) {
+        const s = LOCAL_SLEEP_SOUNDS.find(s => s.id === selectedId);
+        setStatus(`Sonido seleccionado: ${s?.title || selectedId}`);
+      } else {
+        setStatus('Seleccioná un sonido para comenzar');
+      }
+    }
+
+    function updateCredits(sound) {
+      const el = $('creditsArea');
+      if (!el) return;
+      if (!sound) { el.textContent = 'Seleccioná un sonido para ver sus créditos'; return; }
+      el.innerHTML = `Fuente: ${
+        sound.authorUrl
+          ? `<a href="${sound.authorUrl}" target="_blank" rel="noopener noreferrer">${sound.author}</a>`
+          : sound.author
+      } &nbsp;·&nbsp; Duración: ${sound.duration}`;
+    }
+
+    // ─── CONTROL DE VOLUMEN ────────────────────────────────────────────────
+    function handleVolume(pct) {
+      targetVol = Math.max(0, Math.min(1, pct / 100));
+      // Actualizar volumen en tiempo real si ya hay audio activo
+      if (mainAudio  && isExercising)  mainAudio.volume  = targetVol;
+      if (previewAudio && isPreviewing) previewAudio.volume = targetVol;
+      const display = $('volDisplay');
+      if (display) display.textContent = pct + '%';
+    }
+
+    // ─── ESCALA DE TEXTO (A− / A+) — igual que en emociones.html ──────────
+    function initTextScale() {
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+      };
+      let scale = store.get('ui_text_scale', 100);
+
+      function apply() { document.documentElement.style.setProperty('--text-scale', scale + '%'); }
+      apply();
+
+      $('btnAminus')?.addEventListener('click', () => { scale = Math.max(85,  scale - 5); store.set('ui_text_scale', scale); apply(); });
+      $('btnAplus')?.addEventListener ('click', () => { scale = Math.min(130, scale + 5); store.set('ui_text_scale', scale); apply(); });
+
+      // Año en footer
+      const yearEl = $('yearNow');
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+    }
+
+    // ─── INIT ──────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCards();
+      initTextScale();
+
+      $('btnStart')?.addEventListener('click', startExercise);
+      $('btnStop') ?.addEventListener('click', () => stopExercise(false));
+
+      const slider = $('volSlider');
+      slider?.addEventListener('input', () => handleVolume(Number(slider.value)));
+    });
+
+  })();
   </script>
 </body>
 </html>
