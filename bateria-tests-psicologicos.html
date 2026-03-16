@@ -750,6 +750,104 @@
     }
 
     /* ──────────────────────────────────────────────
+       TARJETA ENVÍO AL PROFESIONAL
+    ────────────────────────────────────────────── */
+    .bt-send-card {
+      background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+      border: 1.5px solid rgba(37,99,235,.18);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      box-shadow: var(--shadow);
+    }
+    .bt-send-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 0 0 4px;
+      color: var(--c-text);
+    }
+    .bt-send-sub {
+      font-size: .88rem;
+      color: var(--c-muted);
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+    .bt-send-checklist {
+      list-style: none;
+      padding: 0; margin: 0 0 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .bt-send-checklist li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .88rem; color: var(--c-text);
+    }
+    .bt-send-check {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; flex-shrink: 0;
+      background: rgba(37,99,235,.08);
+      border: 1.5px solid rgba(37,99,235,.2);
+      color: var(--c-accent);
+      font-weight: 800;
+    }
+    .bt-send-check.done {
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.35);
+      color: #15803d;
+    }
+    .bt-send-row {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    }
+    .bt-btn-send-primary {
+      appearance: none;
+      background: var(--c-navy);
+      border: none; border-radius: 10px;
+      padding: 12px 22px;
+      font-family: inherit; font-size: .97rem; font-weight: 700;
+      color: #fff; cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(14,34,57,.22);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .bt-btn-send-primary:hover {
+      background: #0a1c30;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(14,34,57,.3);
+    }
+    .bt-btn-send-primary:disabled {
+      opacity: .45; cursor: not-allowed; transform: none;
+    }
+    .bt-btn-download {
+      appearance: none;
+      background: rgba(37,99,235,.08);
+      border: 1.5px solid rgba(37,99,235,.22);
+      border-radius: 10px; padding: 11px 18px;
+      font-family: inherit; font-size: .9rem; font-weight: 600;
+      color: var(--c-accent); cursor: pointer;
+      transition: background .18s, border-color .18s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .bt-btn-download:hover {
+      background: rgba(37,99,235,.14);
+      border-color: var(--c-accent);
+    }
+    .bt-btn-share {
+      appearance: none;
+      background: rgba(34,197,94,.09);
+      border: 1.5px solid rgba(34,197,94,.28);
+      border-radius: 10px; padding: 11px 18px;
+      font-family: inherit; font-size: .9rem; font-weight: 600;
+      color: #15803d; cursor: pointer;
+      transition: background .18s;
+      display: none; /* visible solo si Web Share disponible */
+      align-items: center; gap: 7px;
+    }
+    .bt-btn-share:hover { background: rgba(34,197,94,.16); }
+    .bt-send-note {
+      font-size: .78rem; color: var(--c-muted);
+      margin-top: 12px; line-height: 1.5;
+    }
+
+    /* ──────────────────────────────────────────────
        RESPONSIVE
     ────────────────────────────────────────────── */
     @media (max-width: 520px) {
@@ -1094,6 +1192,58 @@
 
           </div>
         </div>
+      </div>
+    </section>
+
+    <div class="bt-divider"></div>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN ENVÍO AL PROFESIONAL
+    ══════════════════════════════════════════════ -->
+    <section aria-label="Enviar resultados">
+      <div class="bt-section-label">Paso 3 — Cuando terminaste</div>
+      <div class="bt-send-card">
+        <h2 class="bt-send-title">📤 Enviar resultados al profesional</h2>
+        <p class="bt-send-sub">
+          Descargá tus dibujos y enviáselos al Dr. Dagnino por correo. El sistema prepara todo automáticamente.
+        </p>
+
+        <!-- Checklist de estado -->
+        <ul class="bt-send-checklist" id="sendChecklist">
+          <li>
+            <span class="bt-send-check" id="chkPaciente">?</span>
+            <span id="chkPacienteLabel">Datos del paciente completados</span>
+          </li>
+          <li>
+            <span class="bt-send-check" id="chkHTP">?</span>
+            <span>HTP guardado (Casa, Árbol, Persona)</span>
+          </li>
+          <li>
+            <span class="bt-send-check" id="chkBender">?</span>
+            <span>Bender guardado</span>
+          </li>
+          <li>
+            <span class="bt-send-check" id="chkRain">?</span>
+            <span>Persona bajo la lluvia guardada</span>
+          </li>
+        </ul>
+
+        <div class="bt-send-row">
+          <button class="bt-btn-send-primary" id="btnEnviarCorreo" type="button">
+            ✉️ Preparar correo y descargar dibujos
+          </button>
+          <button class="bt-btn-download" id="btnSoloDescargar" type="button">
+            📥 Solo descargar dibujos
+          </button>
+          <button class="bt-btn-share" id="btnCompartir" type="button">
+            📱 Compartir (móvil)
+          </button>
+        </div>
+
+        <p class="bt-send-note" id="sendNote">
+          Al presionar "Preparar correo", se descargan los dibujos en tu dispositivo y se abre un correo pre-completado.
+          Adjuntá los archivos descargados antes de enviar.
+        </p>
       </div>
     </section>
 
@@ -1859,6 +2009,247 @@
     window.saveHTP      = saveHTP;
     window.saveBender   = saveBender;
     window.saveRainTest = saveRainTest;
+
+    /* ─────────────────────────────────────────
+       CONFIGURACIÓN — EMAIL DEL PROFESIONAL
+    ───────────────────────────────────────── */
+    var DOCTOR_EMAIL = 'consultoriopsiquiatriadag@gmail.com';
+
+    /* ─────────────────────────────────────────
+       ENVÍO AL PROFESIONAL
+    ───────────────────────────────────────── */
+
+    // Verifica si un canvas tiene dibujo (pixels != blanco puro)
+    function canvasHasContent(canvas) {
+      try {
+        var ctx  = canvas.getContext('2d');
+        var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        for (var i = 0; i < data.length; i += 4) {
+          // Si hay algún pixel no-blanco
+          if (data[i] < 250 || data[i+1] < 250 || data[i+2] < 250) return true;
+        }
+        return false;
+      } catch(e) { return false; }
+    }
+
+    // Descarga un canvas como PNG con nombre descriptivo
+    function downloadCanvas(canvas, filename) {
+      return new Promise(function(resolve) {
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(resolve, 400); // pausa entre descargas para no saturar
+      });
+    }
+
+    // Construye el nombre de archivo con datos del paciente
+    function buildFilename(testName) {
+      var patient = getPatientData();
+      var nombre  = (patient.nombre || 'Paciente').replace(/\s+/g,'_').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ_]/g,'');
+      var dni     = patient.dni || 'SinDNI';
+      var fecha   = (patient.fecha || todayISO).replace(/-/g,'');
+      return testName + '_' + nombre + '_DNI' + dni + '_' + fecha + '.png';
+    }
+
+    // Actualiza el checklist de envío
+    function updateSendChecklist() {
+      var patient  = getPatientData();
+      var hasNombre = patient.nombre.trim().length > 0;
+      var hasDni    = patient.dni.trim().length >= 7;
+      var hasHTP    = canvasHasContent(canvasCasa) || canvasHasContent(canvasArbol) || canvasHasContent(canvasPersona);
+      var hasBender = canvasHasContent(canvasBender);
+      var hasRain   = canvasHasContent(canvasRain);
+
+      function setCheck(id, done, label) {
+        var el = $$(id);
+        if (!el) return;
+        el.textContent = done ? '✓' : '–';
+        done ? el.classList.add('done') : el.classList.remove('done');
+        if (label) {
+          var lblEl = $$(label);
+          if (lblEl) lblEl.style.color = done ? '#15803d' : '';
+        }
+      }
+      setCheck('chkPaciente', hasNombre && hasDni, 'chkPacienteLabel');
+      setCheck('chkHTP',      hasHTP);
+      setCheck('chkBender',   hasBender);
+      setCheck('chkRain',     hasRain);
+
+      return { hasNombre, hasDni, hasHTP, hasBender, hasRain };
+    }
+
+    // getElementById con alias para no pisar la función $
+    function $$(id){ return document.getElementById(id); }
+
+    // Descarga todos los dibujos disponibles, devuelve lista de tests incluidos
+    async function downloadAllDrawings() {
+      var patient   = getPatientData();
+      var included  = [];
+
+      if (canvasHasContent(canvasCasa)) {
+        await downloadCanvas(canvasCasa,    buildFilename('HTP_Casa'));
+        included.push('HTP – Casa');
+      }
+      if (canvasHasContent(canvasArbol)) {
+        await downloadCanvas(canvasArbol,   buildFilename('HTP_Arbol'));
+        included.push('HTP – Árbol');
+      }
+      if (canvasHasContent(canvasPersona)) {
+        await downloadCanvas(canvasPersona, buildFilename('HTP_Persona'));
+        included.push('HTP – Persona');
+      }
+      if (canvasHasContent(canvasBender)) {
+        await downloadCanvas(canvasBender,  buildFilename('Bender'));
+        included.push('Bender');
+      }
+      if (canvasHasContent(canvasRain)) {
+        await downloadCanvas(canvasRain,    buildFilename('PersonaBajoLaLluvia'));
+        included.push('Persona bajo la lluvia');
+      }
+      return included;
+    }
+
+    // Genera y abre el mailto
+    function openMailto(included) {
+      var patient = getPatientData();
+      var nombre  = patient.nombre  || '(sin nombre)';
+      var dni     = patient.dni     || '(sin DNI)';
+      var fecha   = patient.fecha   || todayISO;
+      var tests   = included.length > 0 ? included.join(', ') : 'ninguno';
+
+      var subject = encodeURIComponent(
+        'Resultados de evaluación gráfica — ' + nombre + ' — DNI ' + dni
+      );
+      var body = encodeURIComponent(
+        'Estimado Dr. Dagnino,\n\n' +
+        'Le envío los resultados de la evaluación gráfica del/la paciente:\n\n' +
+        '  Nombre: ' + nombre + '\n' +
+        '  DNI: ' + dni + '\n' +
+        '  Fecha de evaluación: ' + fecha + '\n' +
+        '  Tests completados: ' + tests + '\n\n' +
+        'Los dibujos se adjuntan como archivos PNG a este correo.\n\n' +
+        'Enviado desde la Sala de Espera Virtual del consultorio.'
+      );
+
+      window.location.href = 'mailto:' + DOCTOR_EMAIL +
+        '?subject=' + subject + '&body=' + body;
+    }
+
+    // Botón principal: descargar + abrir correo
+    $$('btnEnviarCorreo') && $$('btnEnviarCorreo').addEventListener('click', async function() {
+      var btn = $$('btnEnviarCorreo');
+      btn.disabled = true;
+      btn.textContent = '⏳ Descargando dibujos...';
+
+      var note = $$('sendNote');
+      if (note) note.textContent = 'Esperá mientras se descargan los archivos…';
+
+      try {
+        var included = await downloadAllDrawings();
+
+        if (included.length === 0) {
+          if (note) note.textContent = '⚠️ No hay dibujos para descargar. Completá al menos un test primero.';
+          btn.disabled = false;
+          btn.innerHTML = '✉️ Preparar correo y descargar dibujos';
+          return;
+        }
+
+        btn.textContent = '✉️ Abriendo correo…';
+        if (note) note.innerHTML =
+          '✅ <strong>' + included.length + ' archivo(s) descargado(s).</strong> ' +
+          'Se abre el correo — adjuntá los archivos PNG que acaban de descargarse.';
+
+        setTimeout(function() {
+          openMailto(included);
+          btn.disabled = false;
+          btn.innerHTML = '✉️ Preparar correo y descargar dibujos';
+        }, 600);
+
+      } catch(e) {
+        btn.disabled = false;
+        btn.innerHTML = '✉️ Preparar correo y descargar dibujos';
+        if (note) note.textContent = 'Ocurrió un error. Intentá nuevamente.';
+      }
+    });
+
+    // Botón solo descargar
+    $$('btnSoloDescargar') && $$('btnSoloDescargar').addEventListener('click', async function() {
+      var btn  = $$('btnSoloDescargar');
+      var note = $$('sendNote');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Descargando…';
+
+      var included = await downloadAllDrawings();
+      btn.disabled = false;
+      btn.innerHTML = '📥 Solo descargar dibujos';
+
+      if (note) {
+        if (included.length > 0) {
+          note.innerHTML = '✅ <strong>' + included.length + ' archivo(s) descargado(s):</strong> ' + included.join(', ') + '.';
+        } else {
+          note.textContent = '⚠️ No hay dibujos para descargar. Completá al menos un test primero.';
+        }
+      }
+    });
+
+    // Web Share API (móvil) — compartir archivos directamente
+    (function() {
+      var btnShare = $$('btnCompartir');
+      if (!btnShare) return;
+      if (typeof navigator.share === 'function' && typeof navigator.canShare === 'function') {
+        btnShare.style.display = 'flex';
+        btnShare.addEventListener('click', async function() {
+          var patient  = getPatientData();
+          var files    = [];
+          var canvases = [
+            { c: canvasCasa,    name: buildFilename('HTP_Casa') },
+            { c: canvasArbol,   name: buildFilename('HTP_Arbol') },
+            { c: canvasPersona, name: buildFilename('HTP_Persona') },
+            { c: canvasBender,  name: buildFilename('Bender') },
+            { c: canvasRain,    name: buildFilename('PersonaBajoLaLluvia') }
+          ];
+          for (var i = 0; i < canvases.length; i++) {
+            if (!canvasHasContent(canvases[i].c)) continue;
+            await new Promise(function(res) {
+              canvases[i].c.toBlob(function(blob) {
+                if (blob) files.push(new File([blob], canvases[i].name, { type: 'image/png' }));
+                res();
+              }, 'image/png');
+            });
+          }
+          if (files.length === 0) {
+            alert('No hay dibujos para compartir. Completá al menos un test primero.');
+            return;
+          }
+          var shareData = {
+            title: 'Evaluación gráfica — ' + (patient.nombre || 'Paciente'),
+            text:  'Resultados de tests gráficos. DNI: ' + (patient.dni || '') + '. Fecha: ' + (patient.fecha || todayISO),
+            files: files
+          };
+          if (navigator.canShare(shareData)) {
+            try { await navigator.share(shareData); }
+            catch(e) { /* usuario canceló o error */ }
+          } else {
+            // Fallback: solo texto + email
+            navigator.share({ title: shareData.title, text: shareData.text });
+          }
+        });
+      }
+    })();
+
+    // Actualizar checklist al guardar y al cambiar datos del paciente
+    function refreshChecklist() { updateSendChecklist(); }
+    $$('btnSaveHTP')    && $$('btnSaveHTP').addEventListener('click',    refreshChecklist);
+    $$('btnSaveBender') && $$('btnSaveBender').addEventListener('click', refreshChecklist);
+    $$('btnSaveRain')   && $$('btnSaveRain').addEventListener('click',   refreshChecklist);
+    ['ptNombre','ptDni'].forEach(function(id) {
+      var el = $$(id);
+      el && el.addEventListener('input', refreshChecklist);
+    });
+    updateSendChecklist(); // estado inicial
 
     /* ─────────────────────────────────────────
        STORAGE STATUS — indica qué datos hay guardados
