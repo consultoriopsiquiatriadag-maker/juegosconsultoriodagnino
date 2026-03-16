@@ -596,6 +596,160 @@
     }
 
     /* ──────────────────────────────────────────────
+       STORAGE STATUS PILL
+    ────────────────────────────────────────────── */
+    .bt-storage-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      background: rgba(34,197,94,.09);
+      border: 1px solid rgba(34,197,94,.25);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: .8rem;
+      color: #166534;
+      font-weight: 600;
+    }
+    .bt-storage-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+
+    /* ──────────────────────────────────────────────
+       ACORDEÓN MMPI-2
+    ────────────────────────────────────────────── */
+    .bt-acc {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .bt-acc-btn {
+      width: 100%; text-align: left; cursor: pointer;
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 14px;
+      padding: 18px 20px;
+      background: transparent; border: 0;
+      font-family: inherit;
+    }
+    .bt-acc-btn:hover { background: rgba(37,99,235,.04); }
+    .bt-acc-kicker {
+      font-size: .75rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--c-accent);
+      font-weight: 700;
+    }
+    .bt-acc-title { font-size: 1.05rem; font-weight: 800; margin-top: 4px; color: var(--c-text); }
+    .bt-acc-sub   { color: var(--c-muted); margin-top: 5px; font-size: .88rem; line-height: 1.4; }
+    .bt-acc-icon  { font-size: 1.3rem; line-height: 1; margin-top: 2px; opacity: .6; flex-shrink: 0; }
+    .bt-acc-panel { overflow: hidden; max-height: 0; transition: max-height .3s ease; }
+    .bt-acc-inner { padding: 0 20px 20px; border-top: 1px solid var(--c-border); }
+
+    /* Minigrid informativo dentro del acordeón */
+    .bt-info-grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(3,1fr);
+      margin-top: 16px;
+    }
+    @media (max-width:760px){ .bt-info-grid{ grid-template-columns: 1fr; } }
+    .bt-info-card {
+      border: 1px solid var(--c-border);
+      border-radius: 12px; padding: 14px;
+      background: var(--c-light);
+    }
+    .bt-info-card-title { font-weight: 700; margin-bottom: 6px; font-size: .9rem; }
+
+    /* Infografía */
+    .bt-infografia {
+      margin-top: 14px;
+      border: 1px solid var(--c-border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .bt-infografia-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 10px 14px;
+      border-bottom: 1px solid var(--c-border);
+      background: rgba(37,99,235,.04);
+    }
+    .bt-infografia-title { font-weight: 800; font-size: .93rem; margin: 0; }
+    .bt-infografia-sub   { font-size: .8rem; color: var(--c-muted); margin: 3px 0 0; }
+    .bt-infografia-img {
+      display: block; width: 100%; height: auto;
+      max-height: 520px; object-fit: contain;
+      background: #fff; cursor: zoom-in;
+    }
+    .bt-infografia-actions {
+      display: flex; gap: 10px; flex-wrap: wrap; padding: 10px 14px;
+    }
+
+    /* ──────────────────────────────────────────────
+       MODAL VISOR (MMPI-2 infografía)
+    ────────────────────────────────────────────── */
+    .bt-modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(2,6,23,.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 14px;
+    }
+    .bt-modal-backdrop[aria-hidden="false"] { display: flex; }
+    .bt-modal {
+      width: min(1200px, 98vw);
+      height: min(860px, 92vh);
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      display: flex; flex-direction: column;
+    }
+    .bt-modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 10px 14px;
+      background: rgba(37,99,235,.05);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .bt-modal-title { margin: 0; font-weight: 800; font-size: .97rem; }
+    .bt-modal-sub   { margin: 3px 0 0; font-size: .85rem; color: var(--c-muted); }
+    .bt-modal-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .bt-modal-body {
+      position: relative; flex: 1;
+      background: #0b1220; overflow: hidden;
+      touch-action: none;
+    }
+    .bt-zoom-stage {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none; -webkit-user-select: none;
+    }
+    .bt-zoom-img {
+      max-width: 100%; max-height: 100%;
+      transform-origin: 0 0; cursor: grab; will-change: transform;
+    }
+    .bt-zoom-img:active { cursor: grabbing; }
+    .bt-modal-foot {
+      padding: 8px 14px; border-top: 1px solid var(--c-border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; background: rgba(255,255,255,.96);
+    }
+    .bt-modal-hint { font-size: .83rem; color: var(--c-muted); }
+    .bt-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--c-border);
+      background: rgba(255,255,255,.75);
+      font-weight: 700; font-size: .83rem;
+    }
+
+    /* ──────────────────────────────────────────────
        RESPONSIVE
     ────────────────────────────────────────────── */
     @media (max-width: 520px) {
@@ -675,6 +829,11 @@
             <label class="bt-label" for="ptFecha">Fecha</label>
             <input class="bt-input" type="date" id="ptFecha" name="ptFecha">
           </div>
+        </div>
+        <!-- Estado localStorage -->
+        <div class="bt-storage-status" id="storageStatus">
+          <span class="bt-storage-dot"></span>
+          <span id="storageStatusText">Los datos se guardan automáticamente en este dispositivo</span>
         </div>
       </div>
     </section>
@@ -859,6 +1018,87 @@
       </div>
     </section>
 
+    <div class="bt-divider"></div>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN MMPI-2 — Referencia informativa
+    ══════════════════════════════════════════════ -->
+    <section aria-label="MMPI-2">
+      <div class="bt-section-label">Referencia clínica</div>
+      <h2 style="font-size:1.2rem;font-weight:800;margin:0 0 6px;color:var(--c-text)">MMPI-2</h2>
+      <p style="font-size:.9rem;color:var(--c-muted);margin:0 0 16px">Inventario de personalidad psicométrico. Hacé clic para expandir la información.</p>
+
+      <div class="bt-acc" id="accMmpi2">
+        <button class="bt-acc-btn" type="button" id="btnAccMmpi2" aria-expanded="false" aria-controls="panelMmpi2">
+          <div>
+            <div class="bt-acc-kicker">Test psicométrico</div>
+            <div class="bt-acc-title">🧭 MMPI-2 — Minnesota Multiphasic Personality Inventory-2</div>
+            <div class="bt-acc-sub">Inventario amplio para describir patrones de síntomas y personalidad.</div>
+          </div>
+          <div class="bt-acc-icon" id="iconAccMmpi2" aria-hidden="true">＋</div>
+        </button>
+
+        <div class="bt-acc-panel" id="panelMmpi2" role="region" aria-label="Contenido MMPI-2">
+          <div class="bt-acc-inner">
+
+            <div class="bt-info-grid">
+              <div class="bt-info-card">
+                <div class="bt-info-card-title">Qué es</div>
+                <p style="font-size:.85rem;color:var(--c-muted);margin:0">
+                  Cuestionario de <strong>567 afirmaciones</strong> (V/F). Duración aprox. 60–90 min.
+                  Se interpreta junto a la entrevista clínica.
+                </p>
+              </div>
+              <div class="bt-info-card">
+                <div class="bt-info-card-title">Qué aporta</div>
+                <ul style="font-size:.85rem;color:var(--c-muted);margin:0;padding-left:16px">
+                  <li>Mapa del malestar emocional</li>
+                  <li>Estilo de afrontamiento</li>
+                  <li>Áreas para explorar clínicamente</li>
+                </ul>
+              </div>
+              <div class="bt-info-card">
+                <div class="bt-info-card-title">Escalas de validez</div>
+                <p style="font-size:.85rem;color:var(--c-muted);margin:0">
+                  Detectan respuestas al azar, defensividad extrema o exageración de síntomas.
+                </p>
+              </div>
+            </div>
+
+            <div class="bt-clinical-note" style="margin-top:12px">
+              <span class="bt-clinical-note-icon">💬</span>
+              <span>Mito frecuente: <em>"¿Es para ver si estoy loco?"</em> — No. Es una herramienta para describir patrones y reducir incertidumbre clínica.</span>
+            </div>
+
+            <!-- Infografía -->
+            <div class="bt-infografia" aria-label="Infografía MMPI-2">
+              <div class="bt-infografia-head">
+                <div>
+                  <p class="bt-infografia-title">Infografía: MMPI-2</p>
+                  <p class="bt-infografia-sub">Clic para pantalla completa · Pinch-to-zoom en móvil</p>
+                </div>
+                <span class="bt-pill">🔎 Zoom</span>
+              </div>
+              <img
+                class="bt-infografia-img"
+                id="mmpiThumb"
+                src="assets/img/infografia-mmpi2.webp?v=1"
+                alt="Infografía explicativa MMPI-2"
+                loading="lazy"
+              />
+              <div class="bt-infografia-actions">
+                <button class="bt-btn-ghost" id="btnOpenMmpiModal" type="button">Ver en pantalla completa</button>
+                <a class="bt-btn-ghost" href="assets/img/infografia-mmpi2.webp" download>Descargar infografía</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bt-divider"></div>
+
     <!-- ──────────────────────────────────────
          NOTA CLÍNICA
     ─────────────────────────────────────── -->
@@ -868,6 +1108,36 @@
     </div>
 
   </main>
+
+  <!-- ====== MODAL — Infografía MMPI-2 ====== -->
+  <div class="bt-modal-backdrop" id="mmpiModal" aria-hidden="true">
+    <div class="bt-modal" role="dialog" aria-modal="true" aria-label="Infografía MMPI-2 en pantalla completa">
+      <div class="bt-modal-head">
+        <div>
+          <p class="bt-modal-title">Infografía MMPI-2</p>
+          <p class="bt-modal-sub">Rueda / trackpad para zoom · 2 dedos en móvil · Doble toque · Arrastrar para mover</p>
+        </div>
+        <div class="bt-modal-actions">
+          <button class="btn-ghost" id="mmpiModalFit"  type="button">Ajustar</button>
+          <button class="btn-ghost" id="mmpiModal100"  type="button">100%</button>
+          <button class="btn-ghost" id="mmpiModalOut"  type="button">−</button>
+          <button class="btn-ghost" id="mmpiModalIn"   type="button">＋</button>
+          <button class="btn-ghost" id="mmpiModalClose" type="button">Cerrar ✕</button>
+        </div>
+      </div>
+      <div class="bt-modal-body" id="mmpiZoomArea">
+        <div class="bt-zoom-stage">
+          <img class="bt-zoom-img" id="mmpiZoomImg"
+            src="assets/img/infografia-mmpi2.webp?v=1"
+            alt="Infografía MMPI-2 ampliada" draggable="false" />
+        </div>
+      </div>
+      <div class="bt-modal-foot">
+        <span class="bt-modal-hint">Cerrar con ESC o el botón superior</span>
+        <a class="btn-secondary" href="assets/img/infografia-mmpi2.webp" download>Descargar</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts del ecosistema -->
   <script src="assets/js/i18n.js?v=1"></script>
@@ -1589,6 +1859,236 @@
     window.saveHTP      = saveHTP;
     window.saveBender   = saveBender;
     window.saveRainTest = saveRainTest;
+
+    /* ─────────────────────────────────────────
+       STORAGE STATUS — indica qué datos hay guardados
+    ───────────────────────────────────────── */
+    function updateStorageStatus() {
+      var txt = $('storageStatusText');
+      if (!txt) return;
+      var nombre = localStorage.getItem('bt_ptNombre') || '';
+      var dni    = localStorage.getItem('bt_ptDni')    || '';
+      var hasTests = ['bt_canvas_casa','bt_canvas_bender','bt_canvas_rain']
+        .some(function(k){ return !!localStorage.getItem(k); });
+
+      if (nombre || dni) {
+        var label = nombre ? nombre : 'Paciente';
+        if (dni) label += ' · DNI ' + dni;
+        txt.textContent = '💾 Guardado en este dispositivo: ' + label + (hasTests ? ' (con dibujos)' : '');
+      } else {
+        txt.textContent = 'Los datos se guardan automáticamente en este dispositivo';
+      }
+    }
+    updateStorageStatus();
+    // Actualizar cuando cambian los campos
+    ['ptNombre','ptDni'].forEach(function(id) {
+      var el = $(id);
+      el && el.addEventListener('input', updateStorageStatus);
+    });
+
+    /* ─────────────────────────────────────────
+       ACORDEÓN MMPI-2
+    ───────────────────────────────────────── */
+    var accBtn   = $('btnAccMmpi2');
+    var accPanel = $('panelMmpi2');
+    var accIcon  = $('iconAccMmpi2');
+
+    if (accBtn && accPanel) {
+      accBtn.addEventListener('click', function() {
+        var open = accBtn.getAttribute('aria-expanded') === 'true';
+        if (open) {
+          accBtn.setAttribute('aria-expanded','false');
+          accPanel.style.maxHeight = '0px';
+          if (accIcon) accIcon.textContent = '＋';
+        } else {
+          accBtn.setAttribute('aria-expanded','true');
+          accPanel.style.maxHeight = accPanel.scrollHeight + 'px';
+          if (accIcon) accIcon.textContent = '−';
+        }
+      });
+      // Recalcular al resize
+      window.addEventListener('resize', function() {
+        if (accBtn.getAttribute('aria-expanded') === 'true') {
+          accPanel.style.maxHeight = accPanel.scrollHeight + 'px';
+        }
+      });
+    }
+
+    /* ─────────────────────────────────────────
+       MODAL MMPI-2 — pinch-to-zoom + pan + doble toque
+    ───────────────────────────────────────── */
+    (function() {
+      var modal    = $('mmpiModal');
+      var zoomImg  = $('mmpiZoomImg');
+      var zoomArea = $('mmpiZoomArea');
+      var btnOpen  = $('btnOpenMmpiModal');
+      var thumb    = $('mmpiThumb');
+      var btnClose = $('mmpiModalClose');
+      var btnFit   = $('mmpiModalFit');
+      var btn100   = $('mmpiModal100');
+      var btnIn    = $('mmpiModalIn');
+      var btnOut   = $('mmpiModalOut');
+
+      if (!modal || !zoomImg || !zoomArea) return;
+
+      var baseScale = 1, scale = 1, x = 0, y = 0;
+      var isPanning = false, lastTap = 0;
+
+      function clamp(v,mn,mx){ return Math.max(mn,Math.min(mx,v)); }
+      function getRect(el){ return el.getBoundingClientRect(); }
+
+      function apply(){
+        zoomImg.style.transform = 'translate('+x+'px,'+y+'px) scale('+scale+')';
+      }
+      function computeBase(){
+        var r  = getRect(zoomArea);
+        var nw = zoomImg.naturalWidth  || 1;
+        var nh = zoomImg.naturalHeight || 1;
+        return clamp(Math.min(r.width/nw, r.height/nh), 0.05, 10);
+      }
+      function fitScreen(){
+        baseScale = computeBase();
+        scale = baseScale; x = 0; y = 0; apply();
+      }
+      function set100(){
+        baseScale = computeBase();
+        scale = 1; x = 0; y = 0; apply();
+      }
+
+      function openModal(){
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        if (zoomImg.complete) fitScreen();
+        else zoomImg.onload = fitScreen;
+        setTimeout(function(){ btnClose && btnClose.focus(); }, 50);
+      }
+      function closeModal(){
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+        setTimeout(function(){ (btnOpen||thumb) && (btnOpen||thumb).focus(); }, 50);
+      }
+
+      btnOpen  && btnOpen.addEventListener('click', openModal);
+      thumb    && thumb.addEventListener('click', openModal);
+      btnClose && btnClose.addEventListener('click', closeModal);
+      btnFit   && btnFit.addEventListener('click', fitScreen);
+      btn100   && btn100.addEventListener('click', set100);
+      modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+      window.addEventListener('keydown', function(e){
+        if (modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal();
+      });
+
+      btnIn && btnIn.addEventListener('click', function(){
+        scale = clamp(scale*1.15, baseScale*0.6, baseScale*8); apply();
+      });
+      btnOut && btnOut.addEventListener('click', function(){
+        scale = clamp(scale/1.15, baseScale*0.6, baseScale*8);
+        if (scale<=baseScale){ x=0; y=0; } apply();
+      });
+
+      // Wheel zoom
+      zoomArea.addEventListener('wheel', function(e){
+        if (modal.getAttribute('aria-hidden')!=='false') return;
+        e.preventDefault();
+        var r  = getRect(zoomArea);
+        var px = e.clientX - r.left, py = e.clientY - r.top;
+        var os = scale;
+        var f  = e.deltaY>0 ? 1/1.12 : 1.12;
+        var ns = clamp(os*f, baseScale*0.6, baseScale*8);
+        var rt = ns/os;
+        x = px - (px-x)*rt;
+        y = py - (py-y)*rt;
+        scale = ns; apply();
+      }, { passive: false });
+
+      // Mouse pan
+      zoomImg.addEventListener('mousedown', function(e){
+        if (modal.getAttribute('aria-hidden')!=='false') return;
+        if (scale<=baseScale) return;
+        isPanning = true;
+        zoomImg.dataset.sx = e.clientX;
+        zoomImg.dataset.sy = e.clientY;
+        zoomImg.dataset.ox = x;
+        zoomImg.dataset.oy = y;
+      });
+      window.addEventListener('mousemove', function(e){
+        if (!isPanning) return;
+        x = Number(zoomImg.dataset.ox) + (e.clientX - Number(zoomImg.dataset.sx));
+        y = Number(zoomImg.dataset.oy) + (e.clientY - Number(zoomImg.dataset.sy));
+        apply();
+      });
+      window.addEventListener('mouseup', function(){ isPanning = false; });
+
+      // Touch
+      var touchMode='none', startDist=0, startScale=1;
+      var startX=0, startY=0, startTx=0, startTy=0, pinchC={x:0,y:0};
+
+      function tDist(t1,t2){ return Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY); }
+      function tMid(t1,t2,r){ return { x:((t1.clientX+t2.clientX)/2)-r.left, y:((t1.clientY+t2.clientY)/2)-r.top }; }
+
+      zoomArea.addEventListener('touchstart', function(e){
+        if (modal.getAttribute('aria-hidden')!=='false') return;
+        var now = Date.now();
+        if (e.touches.length===1) {
+          if (now - lastTap < 260) {
+            var r  = getRect(zoomArea);
+            var px = e.touches[0].clientX - r.left;
+            var py = e.touches[0].clientY - r.top;
+            var tgt = scale<=baseScale*1.05 ? baseScale*2.2 : baseScale;
+            var ns  = clamp(tgt, baseScale*0.6, baseScale*8);
+            var rt  = ns/scale;
+            x = px-(px-x)*rt; y = py-(py-y)*rt;
+            scale = ns;
+            if (scale<=baseScale){ x=0; y=0; }
+            apply(); return;
+          }
+          lastTap = now;
+          touchMode = 'pan';
+          startX=e.touches[0].clientX; startY=e.touches[0].clientY;
+          startTx=x; startTy=y;
+        }
+        if (e.touches.length===2) {
+          touchMode = 'pinch';
+          var r2 = getRect(zoomArea);
+          startDist  = tDist(e.touches[0],e.touches[1]);
+          startScale = scale;
+          pinchC     = tMid(e.touches[0],e.touches[1],r2);
+          startTx=x; startTy=y;
+        }
+      }, { passive: true });
+
+      zoomArea.addEventListener('touchmove', function(e){
+        if (modal.getAttribute('aria-hidden')!=='false') return;
+        if (touchMode==='pan' && e.touches.length===1) {
+          if (scale<=baseScale) return;
+          x = startTx + (e.touches[0].clientX - startX);
+          y = startTy + (e.touches[0].clientY - startY);
+          apply(); return;
+        }
+        if (touchMode==='pinch' && e.touches.length===2) {
+          var d  = tDist(e.touches[0],e.touches[1]);
+          var ns = clamp(startScale*(d/(startDist||1)), baseScale*0.6, baseScale*8);
+          var rt = ns/scale;
+          x = pinchC.x-(pinchC.x-x)*rt;
+          y = pinchC.y-(pinchC.y-y)*rt;
+          scale = ns; apply();
+        }
+      }, { passive: true });
+
+      zoomArea.addEventListener('touchend', function(){
+        touchMode = 'none';
+        if (scale<=baseScale){ x=0; y=0; apply(); }
+      }, { passive: true });
+
+      window.addEventListener('resize', function(){
+        if (modal.getAttribute('aria-hidden')==='false') {
+          var ob = baseScale, os2 = scale;
+          baseScale = computeBase();
+          if (os2<=ob*1.02) { fitScreen(); }
+          else { scale = clamp(baseScale*(os2/(ob||1)), baseScale*0.6, baseScale*8); apply(); }
+        }
+      });
+    })();
 
   })();
   </script>
