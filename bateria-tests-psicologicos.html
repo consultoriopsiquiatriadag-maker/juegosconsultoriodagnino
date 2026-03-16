@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Batería de tests psicológicos — Sala de espera virtual</title>
+  <title>Batería de tests gráficos — Dr. Dagnino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Guía para pacientes: conocer tests psicológicos básicos que pueden utilizarse durante el tratamiento.">
+  <meta name="description" content="Administración digital de tests gráficos psicológicos: HTP, Bender y Persona bajo la lluvia.">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -13,9 +13,9 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,180 +25,593 @@
   </script>
 
   <!-- Estilo ecosistema -->
-  <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/app.css?v=2">
 
   <style>
-    /* ===== Acordeones (autocontenido) ===== */
-    .acc{ border:1px solid rgba(148,163,184,.45); border-radius: 18px; overflow:hidden; background: rgba(255,255,255,.95); }
-    .acc + .acc{ margin-top: 12px; }
-    .acc-btn{
-      width:100%; text-align:left; cursor:pointer;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
-      padding:16px 16px; background: transparent; border:0;
+    /* ──────────────────────────────────────────────
+       VARIABLES LOCALES
+    ────────────────────────────────────────────── */
+    :root {
+      --c-navy:   #0e2239;
+      --c-blue:   #1b3d63;
+      --c-accent: #2563eb;
+      --c-green:  #22c55e;
+      --c-amber:  #c47a2b;
+      --c-light:  #f2f5f8;
+      --c-white:  #ffffff;
+      --c-text:   #0f172a;
+      --c-muted:  #64748b;
+      --c-border: rgba(15,23,42,.10);
+      --radius:   18px;
+      --shadow:   0 8px 32px rgba(2,6,23,.08);
     }
-    .acc-btn:hover{ background: rgba(37,99,235,.06); }
-    .acc-kicker{ font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color: rgba(37,99,235,.95); font-weight:700; }
-    .acc-title{ font-size: 1.08rem; font-weight: 700; margin-top:4px; }
-    .acc-sub{ color: rgba(71,85,105,.95); margin-top:6px; line-height:1.35; }
-    .acc-icon{ font-size: 1.35rem; line-height:1; margin-top:2px; opacity:.7; }
-    .acc-panel{ overflow:hidden; max-height:0; transition:max-height .28s ease; }
-    .acc-panel-inner{ padding: 0 16px 16px; border-top:1px solid rgba(148,163,184,.35); }
 
-    .badge-mini{
-      display:inline-flex; align-items:center; gap:8px;
-      background: rgba(255,255,255,.12);
+    /* ──────────────────────────────────────────────
+       HERO SIMPLIFICADO
+    ────────────────────────────────────────────── */
+    .bt-hero {
+      background: linear-gradient(135deg, var(--c-navy) 0%, var(--c-blue) 100%);
+      padding: 48px 0 40px;
+    }
+    .bt-hero-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .bt-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.10);
       border: 1px solid rgba(255,255,255,.18);
-      padding: 8px 12px; border-radius: 999px;
-      color: rgba(255,255,255,.92);
+      padding: 6px 14px;
+      border-radius: 999px;
+      color: rgba(255,255,255,.88);
+      font-size: .83rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
       backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      font-size: .92rem;
     }
-    .badge-dot{ width:10px; height:10px; border-radius:999px; background: #34d399; box-shadow: 0 0 0 6px rgba(52,211,153,.14); }
-    .text-tight li{ margin: 6px 0; }
-    .mini-grid{ display:grid; gap:12px; grid-template-columns: repeat(3, minmax(0,1fr)); }
-    @media (max-width: 900px){ .mini-grid{ grid-template-columns: 1fr; } }
-    .mini-card{ border:1px solid rgba(148,163,184,.35); border-radius: 16px; padding: 14px; background: rgba(255,255,255,.92); }
-    .mini-title{ font-weight: 700; margin-bottom: 6px; }
+    .bt-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 0 5px rgba(52,211,153,.18);
+    }
+    .bt-hero h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .bt-hero p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.72);
+      max-width: 560px;
+      line-height: 1.5;
+    }
+    .bt-hero-nav {
+      margin-top: 22px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-    .btn-speak{ white-space: nowrap; }
+    /* ──────────────────────────────────────────────
+       LAYOUT PRINCIPAL
+    ────────────────────────────────────────────── */
+    .bt-main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 36px 24px 64px;
+    }
+    .bt-section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--c-accent);
+      margin-bottom: 10px;
+    }
 
-    /* ===== Bloque infografía MMPI-2 ===== */
-    .infografia{
-      margin-top: 12px;
-      border: 1px solid rgba(148,163,184,.35);
-      border-radius: 16px;
-      background: rgba(255,255,255,.92);
-      overflow: hidden;
+    /* ──────────────────────────────────────────────
+       TARJETA PACIENTE
+    ────────────────────────────────────────────── */
+    .bt-card {
+      background: #fff;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 24px;
     }
-    .infografia-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(148,163,184,.28);
-      background: rgba(37,99,235,.06);
+    .bt-card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0 0 6px;
+      color: var(--c-text);
     }
-    .infografia-title{ font-weight: 800; margin:0; }
-    .infografia-sub{ margin: 4px 0 0 0; color: rgba(71,85,105,.95); font-size: .95rem; }
-    .infografia-img{
-      display:block;
-      width:100%;
-      height:auto;
-      max-height: 720px;
-      object-fit: contain;
+    .bt-card-sub {
+      font-size: .9rem;
+      color: var(--c-muted);
+      margin: 0 0 20px;
+    }
+    .bt-form-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    @media (max-width: 680px) {
+      .bt-form-grid { grid-template-columns: 1fr; }
+    }
+    .bt-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .bt-label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--c-muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .bt-input {
+      appearance: none;
+      background: var(--c-light);
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: .97rem;
+      color: var(--c-text);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      width: 100%;
+    }
+    .bt-input:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
       background: #fff;
     }
-    .infografia-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      padding: 12px 12px;
+    .bt-input.error {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.10);
     }
-    .infografia-actions .btn-full{
-      background: rgba(37,99,235,.10);
-      border: 1px solid rgba(37,99,235,.25);
+    .bt-input-hint {
+      font-size: .78rem;
+      color: var(--c-muted);
+    }
+    .bt-input-hint.error-msg {
+      color: #ef4444;
     }
 
-    /* ===== Modal visor (ULTRA PRO) ===== */
-    .modal-backdrop{
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,.72);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 9999;
+    /* ──────────────────────────────────────────────
+       SELECTOR DE TEST (3 tarjetas)
+    ────────────────────────────────────────────── */
+    .bt-test-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 4px;
+    }
+    @media (max-width: 760px) {
+      .bt-test-grid { grid-template-columns: 1fr; }
+    }
+    .bt-test-card {
+      position: relative;
+      background: #fff;
+      border: 2px solid var(--c-border);
+      border-radius: var(--radius);
+      padding: 24px 20px 20px;
+      cursor: pointer;
+      transition: border-color .22s, box-shadow .22s, transform .18s;
+      box-shadow: var(--shadow);
+      text-align: left;
+      user-select: none;
+    }
+    .bt-test-card:hover {
+      border-color: var(--c-accent);
+      box-shadow: 0 8px 28px rgba(37,99,235,.13);
+      transform: translateY(-2px);
+    }
+    .bt-test-card.active {
+      border-color: var(--c-accent);
+      background: rgba(37,99,235,.04);
+      box-shadow: 0 8px 28px rgba(37,99,235,.15);
+    }
+    .bt-test-card.active::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(var(--radius) + 2px);
+      border: 2px solid var(--c-accent);
+      pointer-events: none;
+    }
+    .bt-test-icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .bt-test-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--c-text);
+      margin: 0 0 5px;
+    }
+    .bt-test-desc {
+      font-size: .85rem;
+      color: var(--c-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .bt-test-check {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--c-accent);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 14px;
     }
-    .modal-backdrop[aria-hidden="false"]{ display: flex; }
-
-    .modal{
-      width: min(1200px, 98vw);
-      height: min(860px, 92vh);
-      background: rgba(255,255,255,.96);
-      border: 1px solid rgba(148,163,184,.35);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    .bt-test-card.active .bt-test-check {
       display: flex;
-      flex-direction: column;
+    }
+    .bt-test-check svg {
+      width: 12px; height: 12px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .modal-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 10px 12px;
-      background: rgba(37,99,235,.06);
-      border-bottom: 1px solid rgba(148,163,184,.28);
+    /* ──────────────────────────────────────────────
+       SECCIONES DE TEST
+    ────────────────────────────────────────────── */
+    .bt-test-section {
+      display: none;
+      animation: btFadeIn .3s ease;
     }
-    .modal-title{ margin: 0; font-weight: 800; font-size: 1rem; }
-    .modal-sub{ margin: 3px 0 0 0; font-size: .92rem; color: rgba(71,85,105,.95); }
-    .modal-actions{ display:flex; gap:8px; align-items:center; flex-wrap: wrap; }
-
-    .modal-body{
-      position: relative;
-      flex: 1;
-      background: #0b1220;
-      overflow: hidden;
-      touch-action: none; /* clave para pinch/pan */
+    .bt-test-section.visible {
+      display: block;
+    }
+    @keyframes btFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .zoom-stage{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select: none;
-      -webkit-user-select: none;
+    /* ──────────────────────────────────────────────
+       SUBTÍTULO DE TEST
+    ────────────────────────────────────────────── */
+    .bt-test-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
-
-    .zoom-img{
-      max-width: 100%;
-      max-height: 100%;
-      transform-origin: 0 0;
-      cursor: grab;
-      will-change: transform;
-    }
-    .zoom-img:active{ cursor: grabbing; }
-
-    .modal-foot{
-      padding: 10px 12px;
-      border-top: 1px solid rgba(148,163,184,.28);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      background: rgba(255,255,255,.96);
-    }
-    .modal-hint{ font-size: .92rem; color: rgba(71,85,105,.95); }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,.35);
-      background: rgba(255,255,255,.75);
+    .bt-test-title {
+      font-size: 1.5rem;
       font-weight: 800;
-      font-size: .92rem;
+      margin: 0 0 4px;
+      color: var(--c-text);
+    }
+    .bt-test-instruction {
+      font-size: .93rem;
+      color: var(--c-muted);
+      margin: 0;
+      max-width: 560px;
     }
 
-    @media (max-width: 520px){
-      .modal{ height: 94vh; }
-      .modal-actions{ gap:6px; }
+    /* ──────────────────────────────────────────────
+       CANVAS MODULES
+    ────────────────────────────────────────────── */
+    .bt-canvas-wrap {
+      background: #fff;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .bt-canvas-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--c-border);
+      background: rgba(37,99,235,.03);
+      flex-wrap: wrap;
+    }
+    .bt-canvas-label {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--c-text);
+    }
+
+    /* Toolbar */
+    .bt-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .bt-tool-btn {
+      appearance: none;
+      background: transparent;
+      border: 1.5px solid var(--c-border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: .82rem;
+      font-family: inherit;
+      font-weight: 600;
+      color: var(--c-muted);
+      cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .bt-tool-btn:hover {
+      background: rgba(37,99,235,.07);
+      border-color: var(--c-accent);
+      color: var(--c-accent);
+    }
+    .bt-tool-btn.active {
+      background: var(--c-accent);
+      border-color: var(--c-accent);
+      color: #fff;
+    }
+    .bt-tool-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--c-border);
+      margin: 0 2px;
+    }
+    .bt-color-input {
+      appearance: none;
+      width: 30px; height: 28px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 8px;
+      padding: 2px;
+      cursor: pointer;
+      background: transparent;
+    }
+    .bt-size-input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 70px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--c-border);
+      outline: none;
+      cursor: pointer;
+    }
+    .bt-size-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--c-accent);
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+
+    /* Canvas area */
+    .bt-canvas-area {
+      position: relative;
+      background: #fafbfc;
+      touch-action: none;
+    }
+    .bt-canvas {
+      display: block;
+      cursor: crosshair;
+      width: 100%;
+      touch-action: none;
+    }
+
+    /* ──────────────────────────────────────────────
+       HTP: 3 columnas
+    ────────────────────────────────────────────── */
+    .bt-htp-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 900px) {
+      .bt-htp-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ──────────────────────────────────────────────
+       BENDER: referencia + canvas
+    ────────────────────────────────────────────── */
+    .bt-bender-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr 2fr;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      .bt-bender-layout { grid-template-columns: 1fr; }
+    }
+    .bt-bender-ref {
+      background: #fff;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .bt-bender-ref-head {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--c-border);
+      background: rgba(196,122,43,.06);
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--c-amber);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .bt-bender-ref-body {
+      padding: 16px;
+    }
+    .bt-bender-fig-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .bt-fig-btn {
+      appearance: none;
+      background: var(--c-light);
+      border: 1.5px solid var(--c-border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: .82rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .18s, border-color .18s;
+      color: var(--c-text);
+    }
+    .bt-fig-btn:hover,
+    .bt-fig-btn.active {
+      background: var(--c-accent);
+      border-color: var(--c-accent);
+      color: #fff;
+    }
+    .bt-bender-canvas-ref {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--c-border);
+    }
+
+    /* ──────────────────────────────────────────────
+       FEEDBACK GUARDADO
+    ────────────────────────────────────────────── */
+    .bt-save-feedback {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.3);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: .9rem;
+      font-weight: 600;
+      color: #15803d;
+      margin-top: 14px;
+    }
+    .bt-save-feedback.visible {
+      display: flex;
+      animation: btFadeIn .25s ease;
+    }
+
+    /* ──────────────────────────────────────────────
+       BOTONES ACCIÓN
+    ────────────────────────────────────────────── */
+    .bt-action-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      align-items: center;
+    }
+    .bt-btn-primary {
+      appearance: none;
+      background: var(--c-accent);
+      border: none;
+      border-radius: 10px;
+      padding: 11px 22px;
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(37,99,235,.25);
+    }
+    .bt-btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37,99,235,.32);
+    }
+    .bt-btn-ghost {
+      appearance: none;
+      background: transparent;
+      border: 1.5px solid var(--c-border);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-family: inherit;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--c-muted);
+      cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .bt-btn-ghost:hover {
+      background: rgba(37,99,235,.06);
+      border-color: var(--c-accent);
+      color: var(--c-accent);
+    }
+
+    /* ──────────────────────────────────────────────
+       DIVIDER & SPACING
+    ────────────────────────────────────────────── */
+    .bt-divider {
+      height: 1px;
+      background: var(--c-border);
+      margin: 36px 0;
+    }
+    .bt-gap-sm { margin-top: 12px; }
+    .bt-gap-md { margin-top: 24px; }
+    .bt-gap-lg { margin-top: 36px; }
+
+    /* ──────────────────────────────────────────────
+       NOTA CLÍNICA (discreta)
+    ────────────────────────────────────────────── */
+    .bt-clinical-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(196,122,43,.07);
+      border: 1px solid rgba(196,122,43,.22);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: .83rem;
+      color: #7c4c0e;
+      line-height: 1.5;
+      margin-top: 36px;
+    }
+    .bt-clinical-note-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ──────────────────────────────────────────────
+       RESPONSIVE
+    ────────────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .bt-card { padding: 18px 16px; }
+      .bt-test-card { padding: 18px 16px; }
+      .bt-main { padding: 24px 16px 48px; }
+      .bt-hero { padding: 32px 0 28px; }
+      .bt-toolbar { gap: 4px; }
+      .bt-tool-btn { padding: 5px 8px; font-size: .78rem; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Header -->
+  <!-- ====== Header ecosistema ====== -->
   <header>
     <div class="wrap header-inner">
       <div class="brand" aria-label="Identidad institucional">
@@ -206,576 +619,978 @@
           <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
         </div>
         <div class="brand-text">
-          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Psiquiatría y Medicina Aeronáutica</div>
           <div class="brand-sub">Sala de espera virtual</div>
         </div>
       </div>
-
       <div class="controls" aria-label="Controles">
         <div class="font-size-controls" aria-label="Tamaño de letra">
-          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
-          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button" aria-label="Aumentar letra">A+</button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero" aria-label="Portada">
-    <div class="wrap hero-inner">
-      <div>
-        <div class="badge-mini" aria-label="Guía para pacientes">
-          <span class="badge-dot" aria-hidden="true"></span>
-          <span>Guía para pacientes</span>
-        </div>
-
-        <h1 class="hero-title" style="margin-top:14px">Batería de tests psicológicos</h1>
-
-        <p class="hero-bridge">
-          Una explicación clara y tranquila de pruebas psicológicas básicas que solemos utilizar como apoyo durante el trabajo clínico.
-        </p>
-
-        <p class="hero-meta" style="margin-top:10px">
-          <strong>Podrías ser sometido a estos test durante el tratamiento, aquí te invito a conocerlos.</strong>
-        </p>
-
-        <div class="btn-row" style="margin-top:14px">
-          <a class="btn-primary" href="#contenido" data-spa="0">Comenzar</a>
-          <button class="btn-secondary btn-speak" id="btnSpeakIntro" type="button">▶️ Escuchar introducción</button>
-          <a class="btn-secondary" href="index.html" data-spa="1">Volver al inicio</a>
-        </div>
-
-        <div class="note" style="margin-top:12px">
-          Nota: esta guía es informativa. No reemplaza una evaluación profesional individual ni atiende urgencias.
-        </div>
+  <!-- ====== HERO ====== -->
+  <section class="bt-hero" aria-label="Encabezado">
+    <div class="bt-hero-inner">
+      <div class="bt-badge">
+        <span class="bt-badge-dot" aria-hidden="true"></span>
+        Tests gráficos psicológicos
       </div>
-
-      <aside class="hero-side" aria-label="Objetivo">
-        <h3>Objetivo</h3>
-        <p>Que entiendas qué es cada test, para qué sirve y cómo encararlo sin presión.</p>
-        <p class="muted">No se trata de “hacerlo perfecto”. Se trata de aportar información clínica útil.</p>
-      </aside>
+      <h1>Batería de evaluación gráfica</h1>
+      <p>Herramienta de administración digital para HTP, Bender y Persona bajo la lluvia.</p>
+      <nav class="bt-hero-nav">
+        <a class="btn-primary" href="#identificacion">Comenzar</a>
+        <a class="btn-secondary" href="index.html" data-spa="1">Volver al inicio</a>
+      </nav>
     </div>
   </section>
 
-  <main id="spaMain" class="wrap" aria-label="Contenido principal">
+  <!-- ====== MAIN ====== -->
+  <main class="bt-main" id="spaMain">
 
-    <section class="section" id="contenido">
-      <div class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">¿Qué vas a encontrar acá?</h2>
-            <p class="card-sub">
-              Una guía breve para aprender sobre tests psicológicos frecuentes. A veces se usan para conocer tu estado actual,
-              observar tu forma de responder al estrés y sumar información a la entrevista clínica.
+    <!-- ──────────────────────────────────────
+         BLOQUE 1 — IDENTIFICACIÓN
+    ─────────────────────────────────────── -->
+    <section id="identificacion">
+      <div class="bt-section-label">Paso 1</div>
+      <div class="bt-card">
+        <h2 class="bt-card-title">Datos del paciente</h2>
+        <p class="bt-card-sub">Completá antes de comenzar cualquier test.</p>
+        <div class="bt-form-grid">
+          <div class="bt-field">
+            <label class="bt-label" for="ptNombre">Nombre y apellido</label>
+            <input class="bt-input" type="text" id="ptNombre" name="ptNombre"
+              placeholder="Ej. María González" autocomplete="off">
+          </div>
+          <div class="bt-field">
+            <label class="bt-label" for="ptDni">DNI</label>
+            <input class="bt-input" type="text" id="ptDni" name="ptDni"
+              placeholder="Sin puntos — 7 u 8 dígitos" autocomplete="off" inputmode="numeric" maxlength="8">
+            <span class="bt-input-hint" id="dniHint">7 u 8 dígitos numéricos</span>
+          </div>
+          <div class="bt-field">
+            <label class="bt-label" for="ptFecha">Fecha</label>
+            <input class="bt-input" type="date" id="ptFecha" name="ptFecha">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bt-divider"></div>
+
+    <!-- ──────────────────────────────────────
+         BLOQUE 2 — SELECCIÓN DE TEST
+    ─────────────────────────────────────── -->
+    <section>
+      <div class="bt-section-label">Paso 2</div>
+      <h2 style="font-size:1.2rem;font-weight:800;margin:0 0 6px;color:var(--c-text)">Elegí el test</h2>
+      <p style="font-size:.9rem;color:var(--c-muted);margin:0 0 18px">Hacé clic en una de las opciones para desplegar el área de dibujo.</p>
+
+      <div class="bt-test-grid" role="group" aria-label="Selección de test">
+
+        <button class="bt-test-card" id="btnSelectHTP" type="button" aria-pressed="false">
+          <div class="bt-test-check" aria-hidden="true">
+            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+          </div>
+          <div class="bt-test-icon">🏠</div>
+          <div class="bt-test-name">HTP</div>
+          <p class="bt-test-desc">Casa — Árbol — Persona<br>Tres dibujos secuenciales.</p>
+        </button>
+
+        <button class="bt-test-card" id="btnSelectBender" type="button" aria-pressed="false">
+          <div class="bt-test-check" aria-hidden="true">
+            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+          </div>
+          <div class="bt-test-icon">🔷</div>
+          <div class="bt-test-name">Bender</div>
+          <p class="bt-test-desc">Test Gestáltico Visomotor.<br>Copia de figuras de referencia.</p>
+        </button>
+
+        <button class="bt-test-card" id="btnSelectRain" type="button" aria-pressed="false">
+          <div class="bt-test-check" aria-hidden="true">
+            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+          </div>
+          <div class="bt-test-icon">🌧️</div>
+          <div class="bt-test-name">Persona bajo la lluvia</div>
+          <p class="bt-test-desc">Figura humana en situación de estrés.</p>
+        </button>
+
+      </div>
+    </section>
+
+    <div class="bt-divider"></div>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN HTP
+    ══════════════════════════════════════════════ -->
+    <section class="bt-test-section" id="sectionHTP" aria-label="Test HTP">
+      <div class="bt-test-header">
+        <div>
+          <h2 class="bt-test-title">🏠 HTP — Casa · Árbol · Persona</h2>
+          <p class="bt-test-instruction">Dibujá cada elemento en su área correspondiente. Usá el lápiz libremente.</p>
+        </div>
+      </div>
+
+      <div class="bt-htp-grid">
+
+        <!-- Canvas Casa -->
+        <div class="bt-canvas-wrap" id="wrapCasa">
+          <div class="bt-canvas-head">
+            <span class="bt-canvas-label">🏠 Casa</span>
+            <div class="bt-toolbar" id="tbCasa"></div>
+          </div>
+          <div class="bt-canvas-area">
+            <canvas class="bt-canvas" id="canvasCasa"></canvas>
+          </div>
+        </div>
+
+        <!-- Canvas Árbol -->
+        <div class="bt-canvas-wrap" id="wrapArbol">
+          <div class="bt-canvas-head">
+            <span class="bt-canvas-label">🌳 Árbol</span>
+            <div class="bt-toolbar" id="tbArbol"></div>
+          </div>
+          <div class="bt-canvas-area">
+            <canvas class="bt-canvas" id="canvasArbol"></canvas>
+          </div>
+        </div>
+
+        <!-- Canvas Persona -->
+        <div class="bt-canvas-wrap" id="wrapPersona">
+          <div class="bt-canvas-head">
+            <span class="bt-canvas-label">🧍 Persona</span>
+            <div class="bt-toolbar" id="tbPersona"></div>
+          </div>
+          <div class="bt-canvas-area">
+            <canvas class="bt-canvas" id="canvasPersona"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bt-action-row">
+        <button class="bt-btn-primary" id="btnSaveHTP" type="button">💾 Guardar HTP</button>
+        <button class="bt-btn-ghost"   id="btnClearHTP" type="button">Limpiar todo</button>
+      </div>
+      <div class="bt-save-feedback" id="fbHTP">
+        <span>✅</span> HTP guardado correctamente
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN BENDER
+    ══════════════════════════════════════════════ -->
+    <section class="bt-test-section" id="sectionBender" aria-label="Test de Bender">
+      <div class="bt-test-header">
+        <div>
+          <h2 class="bt-test-title">🔷 Test de Bender</h2>
+          <p class="bt-test-instruction">Mirá la figura de referencia y reproducila en el área de dibujo.</p>
+        </div>
+      </div>
+
+      <div class="bt-bender-layout">
+
+        <!-- Panel de referencia -->
+        <div class="bt-bender-ref">
+          <div class="bt-bender-ref-head">Figura de referencia</div>
+          <div class="bt-bender-ref-body">
+            <div class="bt-bender-fig-nav" id="benderFigNav">
+              <!-- Botones A, 1–8 generados por JS -->
+            </div>
+            <canvas class="bt-bender-canvas-ref" id="benderRefCanvas" width="220" height="180"></canvas>
+            <p style="font-size:.78rem;color:var(--c-muted);margin-top:8px;line-height:1.4">
+              Seleccioná la figura a copiar arriba.
             </p>
           </div>
         </div>
 
-        <div class="mini-grid" style="margin-top:10px">
-          <div class="mini-card">
-            <div class="mini-title">✅ Para qué sirve</div>
-            <p class="muted">Aporta información adicional (no reemplaza la entrevista). Ayuda a ordenar hipótesis y próximos pasos.</p>
+        <!-- Canvas de dibujo -->
+        <div class="bt-canvas-wrap">
+          <div class="bt-canvas-head">
+            <span class="bt-canvas-label">✏️ Tu reproducción</span>
+            <div class="bt-toolbar" id="tbBender"></div>
           </div>
-          <div class="mini-card">
-            <div class="mini-title">✅ Cómo hacerlo</div>
-            <p class="muted">Con calma, honestidad y simpleza. Lo más valioso es lo espontáneo y consistente.</p>
-          </div>
-          <div class="mini-card">
-            <div class="mini-title">🚫 Qué no es</div>
-            <p class="muted">No es un examen para “aprobar o desaprobar”, ni un juicio sobre tu valor personal.</p>
+          <div class="bt-canvas-area">
+            <canvas class="bt-canvas" id="canvasBender"></canvas>
           </div>
         </div>
 
-        <div class="btn-row" style="margin-top:12px">
-          <button class="btn-secondary" id="btnExpandAll" type="button">Expandir todo</button>
-          <button class="btn-secondary" id="btnCollapseAll" type="button">Contraer todo</button>
-          <a class="btn-secondary" href="#recomendaciones" data-spa="0">Recomendaciones</a>
-        </div>
+      </div>
+
+      <div class="bt-action-row">
+        <button class="bt-btn-primary" id="btnSaveBender" type="button">💾 Guardar Bender</button>
+        <button class="bt-btn-ghost"   id="btnClearBender" type="button">Limpiar dibujo</button>
+      </div>
+      <div class="bt-save-feedback" id="fbBender">
+        <span>✅</span> Bender guardado correctamente
       </div>
     </section>
 
-    <div class="divider" aria-hidden="true"></div>
-
-    <!-- Acordeón MMPI-2 (con infografía) -->
-    <section class="section" aria-label="Tests">
-
-      <div class="acc" id="mmpi2">
-        <button class="acc-btn" type="button" aria-expanded="false" aria-controls="panel-mmpi2">
-          <div>
-            <div class="acc-kicker">Test</div>
-            <div class="acc-title">🧭 MMPI-2 (Minnesota Multiphasic Personality Inventory-2)</div>
-            <div class="acc-sub">Inventario psicométrico amplio para describir patrones de síntomas y personalidad.</div>
-          </div>
-          <div class="acc-icon" aria-hidden="true">＋</div>
-        </button>
-
-        <div class="acc-panel" id="panel-mmpi2" role="region" aria-label="Contenido MMPI-2">
-          <div class="acc-panel-inner">
-
-            <div class="mini-grid" style="margin-top:14px">
-              <div class="mini-card">
-                <div class="mini-title">Qué es</div>
-                <p class="muted">
-                  Cuestionario de <b>567 afirmaciones</b> (V/F). Se completa aprox. <b>60–90 min</b>.
-                  Se interpreta junto a la entrevista clínica.
-                </p>
-              </div>
-
-              <div class="mini-card">
-                <div class="mini-title">Qué aporta</div>
-                <ul class="muted text-tight" style="padding-left:18px">
-                  <li>Mapa del malestar emocional</li>
-                  <li>Estilo de afrontamiento</li>
-                  <li>Áreas para explorar clínicamente</li>
-                </ul>
-              </div>
-
-              <div class="mini-card">
-                <div class="mini-title">Validez</div>
-                <p class="muted">
-                  Escalas que ayudan a detectar respuestas al azar, defensividad extrema o exageración de síntomas.
-                </p>
-              </div>
-            </div>
-
-            <div class="note" style="margin-top:12px">
-              Mito frecuente: “¿Es para ver si estoy loco?”. No. Es una herramienta para describir patrones y reducir incertidumbre clínica.
-            </div>
-
-            <div class="infografia" aria-label="Infografía MMPI-2">
-              <div class="infografia-head">
-                <div>
-                  <p class="infografia-title" style="margin:0">Infografía: MMPI-2 (Guía clara)</p>
-                  <p class="infografia-sub">Click para pantalla completa. Pinch-to-zoom real (2 dedos).</p>
-                </div>
-                <span class="pill" aria-label="Tip">🔎 Zoom</span>
-              </div>
-
-              <img
-                class="infografia-img"
-                id="mmpiInfografiaThumb"
-                src="assets/img/infografia-mmpi2.webp?v=1"
-                alt="Infografía explicativa sobre MMPI-2: funcionamiento, validez y mitos frecuentes"
-                loading="lazy"
-                style="cursor: zoom-in;"
-              />
-
-              <div class="infografia-actions">
-                <button class="btn-secondary btn-full" id="btnOpenInfografia" type="button">Ver en pantalla completa</button>
-                <a class="btn-secondary" href="assets/img/infografia-mmpi2.webp" download>Descargar infografía</a>
-                <a class="btn-secondary" href="#recomendaciones" data-spa="0">Ir a recomendaciones</a>
-              </div>
-            </div>
-
-          </div>
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN PERSONA BAJO LA LLUVIA
+    ══════════════════════════════════════════════ -->
+    <section class="bt-test-section" id="sectionRain" aria-label="Persona bajo la lluvia">
+      <div class="bt-test-header">
+        <div>
+          <h2 class="bt-test-title">🌧️ Persona bajo la lluvia</h2>
+          <p class="bt-test-instruction">Dibujá una persona bajo la lluvia. Utilizá el espacio libremente.</p>
         </div>
       </div>
 
-    </section>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <section class="section" id="recomendaciones">
-      <div class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">✅ Recomendaciones prácticas</h2>
-            <p class="card-sub">Una checklist simple para que los tests te salgan “a favor” (sin presión).</p>
-          </div>
+      <div class="bt-canvas-wrap">
+        <div class="bt-canvas-head">
+          <span class="bt-canvas-label">🖊️ Dibujo</span>
+          <div class="bt-toolbar" id="tbRain"></div>
         </div>
-
-        <div class="mini-grid" style="margin-top:10px">
-          <div class="mini-card">
-            <div class="mini-title">1) Calmá el cuerpo</div>
-            <p class="muted">Respirá lento 3 ciclos: inhalá 4 → exhalá 6.</p>
-          </div>
-          <div class="mini-card">
-            <div class="mini-title">2) Evitá perfeccionismo</div>
-            <p class="muted">No busques “quedar impecable”. Lo útil es tu patrón natural.</p>
-          </div>
-          <div class="mini-card">
-            <div class="mini-title">3) Si algo incomoda</div>
-            <p class="muted">Decilo. Esa info a veces mejora la interpretación y la contención.</p>
-          </div>
+        <div class="bt-canvas-area">
+          <canvas class="bt-canvas" id="canvasRain"></canvas>
         </div>
       </div>
+
+      <div class="bt-action-row">
+        <button class="bt-btn-primary" id="btnSaveRain" type="button">💾 Guardar Persona bajo la lluvia</button>
+        <button class="bt-btn-ghost"   id="btnClearRain" type="button">Limpiar dibujo</button>
+      </div>
+      <div class="bt-save-feedback" id="fbRain">
+        <span>✅</span> Guardado correctamente
+      </div>
     </section>
+
+    <!-- ──────────────────────────────────────
+         NOTA CLÍNICA
+    ─────────────────────────────────────── -->
+    <div class="bt-clinical-note" role="note">
+      <span class="bt-clinical-note-icon">⚕️</span>
+      <span>Las producciones gráficas se almacenan como material clínico complementario. Su interpretación corresponde exclusivamente al profesional tratante.</span>
+    </div>
 
   </main>
 
-  <!-- ===== Modal visor (ULTRA PRO) ===== -->
-  <div class="modal-backdrop" id="infografiaModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Infografía MMPI-2 en pantalla completa">
-      <div class="modal-head">
-        <div>
-          <p class="modal-title" style="margin:0">Infografía: MMPI-2</p>
-          <p class="modal-sub" style="margin:3px 0 0 0">Pinch-to-zoom (2 dedos), arrastrar y doble toque para acercar. Cerrar con ESC.</p>
-        </div>
-
-        <div class="modal-actions">
-          <!-- Botones separados como pediste -->
-          <button class="btn-ghost" id="btnFit" type="button" aria-label="Ajustar a pantalla">Ajustar</button>
-          <button class="btn-ghost" id="btn100" type="button" aria-label="Ver al 100%">100%</button>
-
-          <button class="btn-ghost" id="btnZoomOut" type="button" aria-label="Alejar">−</button>
-          <button class="btn-ghost" id="btnZoomIn" type="button" aria-label="Acercar">＋</button>
-          <button class="btn-ghost" id="btnCloseModal" type="button" aria-label="Cerrar">Cerrar ✕</button>
-        </div>
-      </div>
-
-      <div class="modal-body" id="zoomArea">
-        <div class="zoom-stage">
-          <img
-            class="zoom-img"
-            id="zoomImg"
-            src="assets/img/infografia-mmpi2.webp?v=1"
-            alt="Infografía MMPI-2 en vista ampliada"
-            draggable="false"
-          />
-        </div>
-      </div>
-
-      <div class="modal-foot">
-        <div class="modal-hint">PC: rueda/trackpad. Móvil: pellizcá con 2 dedos. Doble toque = zoom.</div>
-        <a class="btn-secondary" href="assets/img/infografia-mmpi2.webp" download>Descargar</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tus scripts del ecosistema (si existen) -->
+  <!-- Scripts del ecosistema -->
   <script src="assets/js/i18n.js?v=1"></script>
   <script src="assets/js/audio.js?v=1"></script>
   <script src="assets/js/spa.js?v=1"></script>
   <script src="assets/js/app.js?v=1"></script>
 
-  <!-- JS local: acordeón + voz + ULTRA PRO pinch-to-zoom -->
+  <!-- ========================================================
+       JS PRINCIPAL — BATERÍA DE TESTS GRÁFICOS
+       Canvas engine propio, sin dependencias externas.
+  ======================================================== -->
   <script>
-    (function(){
+  (function () {
+    'use strict';
 
-      // ===== Acordeones =====
-      const btns = Array.from(document.querySelectorAll('.acc-btn'));
+    /* ─────────────────────────────────────────
+       UTILIDADES GENERALES
+    ───────────────────────────────────────── */
+    function $(id) { return document.getElementById(id); }
 
-      function setIcon(btn, isOpen){
-        const icon = btn.querySelector('.acc-icon');
-        if (icon) icon.textContent = isOpen ? '−' : '＋';
-      }
-      function open(btn){
-        const panelId = btn.getAttribute('aria-controls');
-        const panel = panelId ? document.getElementById(panelId) : null;
-        if (!panel) return;
-        btn.setAttribute('aria-expanded','true');
-        setIcon(btn,true);
-        panel.style.maxHeight = panel.scrollHeight + 'px';
-      }
-      function close(btn){
-        const panelId = btn.getAttribute('aria-controls');
-        const panel = panelId ? document.getElementById(panelId) : null;
-        if (!panel) return;
-        btn.setAttribute('aria-expanded','false');
-        setIcon(btn,false);
-        panel.style.maxHeight = '0px';
-      }
-      function toggle(btn){
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        expanded ? close(btn) : open(btn);
-      }
-      btns.forEach(btn => btn.addEventListener('click', () => toggle(btn)));
+    // Rellena fecha de hoy si el campo está vacío
+    const todayISO = new Date().toISOString().split('T')[0];
+    const ptFecha = $('ptFecha');
+    if (ptFecha && !ptFecha.value) ptFecha.value = todayISO;
 
-      document.getElementById('btnExpandAll')?.addEventListener('click', () => btns.forEach(open));
-      document.getElementById('btnCollapseAll')?.addEventListener('click', () => btns.forEach(close));
-
-      window.addEventListener('resize', () => {
-        btns.forEach(btn => {
-          if (btn.getAttribute('aria-expanded') === 'true') {
-            const panel = document.getElementById(btn.getAttribute('aria-controls'));
-            if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
-          }
-        });
+    // Restaurar datos de paciente desde localStorage
+    ['ptNombre','ptDni','ptFecha'].forEach(function(id) {
+      var el = $(id);
+      if (!el) return;
+      var saved = localStorage.getItem('bt_' + id);
+      if (saved) el.value = saved;
+      el.addEventListener('input', function() {
+        localStorage.setItem('bt_' + id, el.value);
       });
+    });
 
-      // ===== Web Speech: introducción =====
-      const speakBtn = document.getElementById('btnSpeakIntro');
-      function canSpeak(){
-        return ('speechSynthesis' in window) && ('SpeechSynthesisUtterance' in window);
+    /* ─────────────────────────────────────────
+       VALIDACIÓN DNI ARGENTINO
+    ───────────────────────────────────────── */
+    var dniInput = $('ptDni');
+    var dniHint  = $('dniHint');
+    function validateDNI() {
+      var v = dniInput.value.replace(/\D/g,'');
+      dniInput.value = v;
+      if (v.length > 0 && (v.length < 7 || v.length > 8)) {
+        dniInput.classList.add('error');
+        dniHint.textContent = 'El DNI debe tener 7 u 8 dígitos';
+        dniHint.classList.add('error-msg');
+        return false;
+      } else {
+        dniInput.classList.remove('error');
+        dniHint.textContent = '7 u 8 dígitos numéricos';
+        dniHint.classList.remove('error-msg');
+        return true;
       }
-      function speak(text){
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'es-AR';
-        u.rate = 1.0;
-        u.pitch = 1.0;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(u);
-      }
-      speakBtn?.addEventListener('click', () => {
-        if (!canSpeak()){
-          alert('Tu navegador no permite lectura por voz. Podés leer el contenido igualmente.');
+    }
+    dniInput && dniInput.addEventListener('input', validateDNI);
+
+    /* ─────────────────────────────────────────
+       SELECTOR DE TEST
+    ───────────────────────────────────────── */
+    var testCards   = ['HTP','Bender','Rain'];
+    var testSections = {
+      HTP:    $('sectionHTP'),
+      Bender: $('sectionBender'),
+      Rain:   $('sectionRain')
+    };
+    var testBtns = {
+      HTP:    $('btnSelectHTP'),
+      Bender: $('btnSelectBender'),
+      Rain:   $('btnSelectRain')
+    };
+
+    function selectTest(key) {
+      testCards.forEach(function(k) {
+        var btn = testBtns[k];
+        var sec = testSections[k];
+        if (k === key) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed','true');
+          sec.classList.add('visible');
+          // resize canvas when shown
+          setTimeout(function() { resizeAllCanvases(); }, 50);
+          // scroll suave
+          setTimeout(function() {
+            sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 80);
+        } else {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed','false');
+          sec.classList.remove('visible');
+        }
+      });
+    }
+
+    testCards.forEach(function(k) {
+      testBtns[k] && testBtns[k].addEventListener('click', function() {
+        var wasActive = testBtns[k].classList.contains('active');
+        if (wasActive) {
+          testBtns[k].classList.remove('active');
+          testBtns[k].setAttribute('aria-pressed','false');
+          testSections[k].classList.remove('visible');
+        } else {
+          selectTest(k);
+        }
+      });
+    });
+
+    /* ─────────────────────────────────────────
+       MOTOR DE CANVAS — clase DrawingCanvas
+    ───────────────────────────────────────── */
+    function DrawingCanvas(canvasEl, options) {
+      var self = this;
+      options = options || {};
+
+      self.canvas  = canvasEl;
+      self.ctx     = canvasEl.getContext('2d');
+      self.tool    = 'pencil';   // 'pencil' | 'eraser'
+      self.color   = '#1a1a1a';
+      self.size     = 3;
+      self.drawing = false;
+      self.lastX   = 0;
+      self.lastY   = 0;
+
+      // Historia para undo/redo
+      self.history = [];
+      self.histIdx = -1;
+      var MAX_HISTORY = 40;
+
+      // Guarda snapshot del estado actual
+      self.snapshot = function() {
+        var data = self.ctx.getImageData(0, 0, self.canvas.width, self.canvas.height);
+        if (self.histIdx < self.history.length - 1) {
+          self.history = self.history.slice(0, self.histIdx + 1);
+        }
+        self.history.push(data);
+        if (self.history.length > MAX_HISTORY) self.history.shift();
+        self.histIdx = self.history.length - 1;
+      };
+
+      self.undo = function() {
+        if (self.histIdx <= 0) {
+          self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+          self.fillWhite();
+          self.histIdx = 0;
           return;
         }
-        speak('Bienvenido. Esta es una guía para conocer tests psicológicos básicos. No es un examen. El objetivo es entender para qué sirve cada prueba y encararla con calma y honestidad.');
+        self.histIdx--;
+        self.ctx.putImageData(self.history[self.histIdx], 0, 0);
+      };
+
+      self.redo = function() {
+        if (self.histIdx >= self.history.length - 1) return;
+        self.histIdx++;
+        self.ctx.putImageData(self.history[self.histIdx], 0, 0);
+      };
+
+      self.fillWhite = function() {
+        self.ctx.fillStyle = '#ffffff';
+        self.ctx.fillRect(0, 0, self.canvas.width, self.canvas.height);
+      };
+
+      self.clear = function() {
+        self.fillWhite();
+        self.snapshot();
+      };
+
+      // Coordenadas relativas al canvas, respetando su tamaño lógico vs. visual
+      self.getPos = function(e) {
+        var rect = self.canvas.getBoundingClientRect();
+        var scaleX = self.canvas.width  / rect.width;
+        var scaleY = self.canvas.height / rect.height;
+        var clientX, clientY;
+        if (e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+          clientX = e.changedTouches[0].clientX;
+          clientY = e.changedTouches[0].clientY;
+        } else {
+          clientX = e.clientX;
+          clientY = e.clientY;
+        }
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top)  * scaleY
+        };
+      };
+
+      self.startDraw = function(e) {
+        e.preventDefault();
+        self.drawing = true;
+        var pos = self.getPos(e);
+        self.lastX = pos.x;
+        self.lastY = pos.y;
+        // Punto de un solo clic
+        self.ctx.beginPath();
+        self.ctx.arc(pos.x, pos.y, (self.tool === 'eraser' ? self.size * 3 : self.size) / 2, 0, Math.PI * 2);
+        self.ctx.fillStyle = self.tool === 'eraser' ? '#ffffff' : self.color;
+        self.ctx.fill();
+      };
+
+      self.draw = function(e) {
+        if (!self.drawing) return;
+        e.preventDefault();
+        var pos = self.getPos(e);
+        self.ctx.beginPath();
+        self.ctx.moveTo(self.lastX, self.lastY);
+        self.ctx.lineTo(pos.x, pos.y);
+        if (self.tool === 'eraser') {
+          self.ctx.strokeStyle = '#ffffff';
+          self.ctx.lineWidth   = self.size * 4;
+        } else {
+          self.ctx.strokeStyle = self.color;
+          self.ctx.lineWidth   = self.size;
+        }
+        self.ctx.lineCap     = 'round';
+        self.ctx.lineJoin    = 'round';
+        self.ctx.stroke();
+        self.lastX = pos.x;
+        self.lastY = pos.y;
+      };
+
+      self.endDraw = function(e) {
+        if (self.drawing) {
+          self.drawing = false;
+          self.snapshot();
+        }
+      };
+
+      // Eventos mouse
+      self.canvas.addEventListener('mousedown',  self.startDraw.bind(self));
+      self.canvas.addEventListener('mousemove',  self.draw.bind(self));
+      self.canvas.addEventListener('mouseup',    self.endDraw.bind(self));
+      self.canvas.addEventListener('mouseleave', self.endDraw.bind(self));
+
+      // Eventos touch
+      self.canvas.addEventListener('touchstart', self.startDraw.bind(self), { passive: false });
+      self.canvas.addEventListener('touchmove',  self.draw.bind(self),      { passive: false });
+      self.canvas.addEventListener('touchend',   self.endDraw.bind(self),   { passive: false });
+
+      // Init
+      self.fillWhite();
+      self.snapshot();
+    }
+
+    /* ─────────────────────────────────────────
+       FUNCIÓN TOOLBAR — construye la barra de herramientas
+    ───────────────────────────────────────── */
+    function buildToolbar(toolbarEl, dc) {
+      toolbarEl.innerHTML = '';
+
+      // Lápiz
+      var btnPencil = document.createElement('button');
+      btnPencil.className = 'bt-tool-btn active';
+      btnPencil.type = 'button';
+      btnPencil.title = 'Lápiz';
+      btnPencil.textContent = '✏️';
+      btnPencil.addEventListener('click', function() {
+        dc.tool = 'pencil';
+        btnPencil.classList.add('active');
+        btnEraser.classList.remove('active');
       });
 
-      // ===== Visor ULTRA PRO: pinch-to-zoom real + pan + doble toque =====
-      const modal = document.getElementById('infografiaModal');
-      const btnOpen = document.getElementById('btnOpenInfografia');
-      const thumb = document.getElementById('mmpiInfografiaThumb');
-      const btnClose = document.getElementById('btnCloseModal');
+      // Goma
+      var btnEraser = document.createElement('button');
+      btnEraser.className = 'bt-tool-btn';
+      btnEraser.type = 'button';
+      btnEraser.title = 'Goma de borrar';
+      btnEraser.textContent = '🧹';
+      btnEraser.addEventListener('click', function() {
+        dc.tool = 'eraser';
+        btnEraser.classList.add('active');
+        btnPencil.classList.remove('active');
+      });
 
-      const btnFit = document.getElementById('btnFit');
-      const btn100 = document.getElementById('btn100');
-      const btnIn = document.getElementById('btnZoomIn');
-      const btnOut = document.getElementById('btnZoomOut');
+      // Color
+      var colorInput = document.createElement('input');
+      colorInput.type  = 'color';
+      colorInput.value = dc.color;
+      colorInput.className = 'bt-color-input';
+      colorInput.title = 'Color';
+      colorInput.addEventListener('input', function() {
+        dc.color = colorInput.value;
+        dc.tool  = 'pencil';
+        btnPencil.classList.add('active');
+        btnEraser.classList.remove('active');
+      });
 
-      const zoomImg = document.getElementById('zoomImg');
-      const zoomArea = document.getElementById('zoomArea');
+      // Separador
+      var sep1 = document.createElement('span');
+      sep1.className = 'bt-tool-sep';
 
-      if(modal && zoomImg && zoomArea){
+      // Tamaño
+      var sizeInput = document.createElement('input');
+      sizeInput.type  = 'range';
+      sizeInput.min   = '1';
+      sizeInput.max   = '20';
+      sizeInput.value = String(dc.size);
+      sizeInput.className = 'bt-size-input';
+      sizeInput.title = 'Grosor';
+      sizeInput.addEventListener('input', function() {
+        dc.size = parseInt(sizeInput.value, 10);
+      });
 
-        let baseScale = 1;  // escala de ajuste a pantalla
-        let scale = 1;      // escala actual
-        let x = 0, y = 0;   // traslación
-        let isPanning = false;
+      // Separador
+      var sep2 = document.createElement('span');
+      sep2.className = 'bt-tool-sep';
 
-        let lastTap = 0;
+      // Deshacer
+      var btnUndo = document.createElement('button');
+      btnUndo.className = 'bt-tool-btn';
+      btnUndo.type = 'button';
+      btnUndo.title = 'Deshacer';
+      btnUndo.textContent = '↩';
+      btnUndo.addEventListener('click', function() { dc.undo(); });
 
-        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-        const rect = el => el.getBoundingClientRect();
+      // Rehacer
+      var btnRedo = document.createElement('button');
+      btnRedo.className = 'bt-tool-btn';
+      btnRedo.type = 'button';
+      btnRedo.title = 'Rehacer';
+      btnRedo.textContent = '↪';
+      btnRedo.addEventListener('click', function() { dc.redo(); });
 
-        function apply(){
-          zoomImg.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-        }
+      toolbarEl.appendChild(btnPencil);
+      toolbarEl.appendChild(btnEraser);
+      toolbarEl.appendChild(colorInput);
+      toolbarEl.appendChild(sep1);
+      toolbarEl.appendChild(sizeInput);
+      toolbarEl.appendChild(sep2);
+      toolbarEl.appendChild(btnUndo);
+      toolbarEl.appendChild(btnRedo);
+    }
 
-        function computeBaseScale(){
-          const area = rect(zoomArea);
-          const naturalW = zoomImg.naturalWidth || 1;
-          const naturalH = zoomImg.naturalHeight || 1;
-          const s = Math.min(area.width / naturalW, area.height / naturalH);
-          return clamp(s, 0.05, 10);
-        }
-
-        function fitToScreen(){
-          baseScale = computeBaseScale();
-          scale = baseScale;
-          x = 0; y = 0;
-          apply();
-        }
-
-        function set100(){
-          baseScale = computeBaseScale(); // mantenemos baseScale útil para "Ajustar"
-          scale = 1; // 100% real del archivo
-          x = 0; y = 0;
-          apply();
-        }
-
-        function openModal(){
-          modal.setAttribute('aria-hidden','false');
-          document.body.style.overflow = 'hidden';
-
-          if(zoomImg.complete) fitToScreen();
-          else zoomImg.onload = () => fitToScreen();
-
-          setTimeout(()=> btnClose?.focus(), 50);
-        }
-
-        function closeModal(){
-          modal.setAttribute('aria-hidden','true');
-          document.body.style.overflow = '';
-          setTimeout(()=> (btnOpen || thumb)?.focus?.(), 50);
-        }
-
-        btnOpen?.addEventListener('click', openModal);
-        thumb?.addEventListener('click', openModal);
-
-        btnClose?.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
-
-        window.addEventListener('keydown', (e)=>{
-          if(modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') closeModal();
-        });
-
-        btnFit?.addEventListener('click', fitToScreen);
-        btn100?.addEventListener('click', set100);
-
-        btnIn?.addEventListener('click', ()=>{
-          scale = clamp(scale * 1.15, baseScale * 0.6, baseScale * 8);
-          apply();
-        });
-        btnOut?.addEventListener('click', ()=>{
-          scale = clamp(scale / 1.15, baseScale * 0.6, baseScale * 8);
-          if(scale <= baseScale){ x = 0; y = 0; }
-          apply();
-        });
-
-        // Zoom PC (wheel) hacia el puntero
-        zoomArea.addEventListener('wheel', (e)=>{
-          if(modal.getAttribute('aria-hidden') !== 'false') return;
-          e.preventDefault();
-
-          const r = rect(zoomArea);
-          const px = e.clientX - r.left;
-          const py = e.clientY - r.top;
-
-          const oldScale = scale;
-          const factor = (e.deltaY > 0) ? 1/1.12 : 1.12;
-          const newScale = clamp(oldScale * factor, baseScale * 0.6, baseScale * 8);
-
-          const dx = px - x;
-          const dy = py - y;
-          const ratio = newScale / oldScale;
-          x = px - dx * ratio;
-          y = py - dy * ratio;
-
-          scale = newScale;
-          apply();
-        }, { passive: false });
-
-        // Pan con mouse
-        zoomImg.addEventListener('mousedown', (e)=>{
-          if(modal.getAttribute('aria-hidden') !== 'false') return;
-          if(scale <= baseScale) return;
-          isPanning = true;
-          zoomImg.dataset.sx = String(e.clientX);
-          zoomImg.dataset.sy = String(e.clientY);
-          zoomImg.dataset.ox = String(x);
-          zoomImg.dataset.oy = String(y);
-        });
-        window.addEventListener('mousemove', (e)=>{
-          if(!isPanning) return;
-          const sx = Number(zoomImg.dataset.sx || 0);
-          const sy = Number(zoomImg.dataset.sy || 0);
-          const ox = Number(zoomImg.dataset.ox || 0);
-          const oy = Number(zoomImg.dataset.oy || 0);
-          x = ox + (e.clientX - sx);
-          y = oy + (e.clientY - sy);
-          apply();
-        });
-        window.addEventListener('mouseup', ()=>{ isPanning = false; });
-
-        // Touch: pinch-to-zoom real + pan + doble toque
-        let touchMode = "none"; // "pan" | "pinch"
-        let startDist = 0;
-        let startScale = 1;
-        let startX = 0, startY = 0;
-        let startTx = 0, startTy = 0;
-        let pinchCenter = {x:0, y:0};
-
-        function dist(t1, t2){
-          const dx = t2.clientX - t1.clientX;
-          const dy = t2.clientY - t1.clientY;
-          return Math.hypot(dx, dy);
-        }
-        function midpoint(t1, t2, r){
-          return {
-            x: ((t1.clientX + t2.clientX)/2) - r.left,
-            y: ((t1.clientY + t2.clientY)/2) - r.top
-          };
-        }
-
-        zoomArea.addEventListener('touchstart', (e)=>{
-          if(modal.getAttribute('aria-hidden') !== 'false') return;
-          const now = Date.now();
-
-          if(e.touches.length === 1){
-            const dt = now - lastTap;
-            lastTap = now;
-
-            // doble toque: toggle zoom
-            if(dt < 260){
-              const r = rect(zoomArea);
-              const px = e.touches[0].clientX - r.left;
-              const py = e.touches[0].clientY - r.top;
-
-              const target = (scale <= baseScale * 1.05) ? baseScale * 2.2 : baseScale;
-              const oldScale = scale;
-              const newScale = clamp(target, baseScale * 0.6, baseScale * 8);
-
-              const dx = px - x;
-              const dy = py - y;
-              const ratio = newScale / oldScale;
-              x = px - dx * ratio;
-              y = py - dy * ratio;
-
-              scale = newScale;
-              if(scale <= baseScale){ x = 0; y = 0; }
-              apply();
-              return;
-            }
-
-            touchMode = "pan";
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            startTx = x;
-            startTy = y;
-          }
-
-          if(e.touches.length === 2){
-            touchMode = "pinch";
-            const r = rect(zoomArea);
-            startDist = dist(e.touches[0], e.touches[1]);
-            startScale = scale;
-            pinchCenter = midpoint(e.touches[0], e.touches[1], r);
-            startTx = x;
-            startTy = y;
-          }
-        }, { passive: true });
-
-        zoomArea.addEventListener('touchmove', (e)=>{
-          if(modal.getAttribute('aria-hidden') !== 'false') return;
-
-          if(touchMode === "pan" && e.touches.length === 1){
-            if(scale <= baseScale) return;
-            const dx = e.touches[0].clientX - startX;
-            const dy = e.touches[0].clientY - startY;
-            x = startTx + dx;
-            y = startTy + dy;
-            apply();
-            return;
-          }
-
-          if(touchMode === "pinch" && e.touches.length === 2){
-            const d = dist(e.touches[0], e.touches[1]);
-            const factor = d / (startDist || 1);
-            const newScale = clamp(startScale * factor, baseScale * 0.6, baseScale * 8);
-
-            const px = pinchCenter.x;
-            const py = pinchCenter.y;
-
-            const oldScale = scale;
-            const ratio = newScale / oldScale;
-
-            const dx = px - x;
-            const dy = py - y;
-            x = px - dx * ratio;
-            y = py - dy * ratio;
-
-            scale = newScale;
-            apply();
-          }
-        }, { passive: true });
-
-        zoomArea.addEventListener('touchend', ()=>{
-          touchMode = "none";
-          if(scale <= baseScale){ x = 0; y = 0; apply(); }
-        }, { passive: true });
-
-        window.addEventListener('resize', ()=>{
-          if(modal.getAttribute('aria-hidden') === 'false'){
-            const oldBase = baseScale;
-            const oldScale = scale;
-            baseScale = computeBaseScale();
-
-            if(oldScale <= oldBase * 1.02){
-              fitToScreen();
-            } else {
-              const ratio = oldScale / (oldBase || 1);
-              scale = clamp(baseScale * ratio, baseScale * 0.6, baseScale * 8);
-              apply();
-            }
-          }
-        });
+    /* ─────────────────────────────────────────
+       RESIZE CANVAS — mantiene relación aspecto
+    ───────────────────────────────────────── */
+    function setCanvasSize(canvas, w, h) {
+      // Guarda contenido
+      var imgData = null;
+      try { imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height); } catch(e){}
+      canvas.width  = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      if (imgData) {
+        try { ctx.putImageData(imgData, 0, 0); } catch(e){}
       }
+    }
 
-    })();
+    function resizeCanvas(canvas, aspectW, aspectH) {
+      var parent = canvas.parentElement;
+      if (!parent) return;
+      var w = parent.clientWidth || 320;
+      var h = Math.round(w * aspectH / aspectW);
+      if (canvas.width !== w || canvas.height !== h) {
+        setCanvasSize(canvas, w, h);
+      }
+    }
+
+    var allCanvasConfigs = [];
+
+    function resizeAllCanvases() {
+      allCanvasConfigs.forEach(function(cfg) {
+        resizeCanvas(cfg.canvas, cfg.aw, cfg.ah);
+      });
+    }
+
+    /* ─────────────────────────────────────────
+       INICIALIZAR CANVAS DE CADA TEST
+    ───────────────────────────────────────── */
+
+    // HTP: 3 canvases cuadrados
+    var canvasCasa   = $('canvasCasa');
+    var canvasArbol  = $('canvasArbol');
+    var canvasPersona= $('canvasPersona');
+
+    setCanvasSize(canvasCasa,    400, 380);
+    setCanvasSize(canvasArbol,   400, 380);
+    setCanvasSize(canvasPersona, 400, 380);
+
+    var dcCasa    = new DrawingCanvas(canvasCasa);
+    var dcArbol   = new DrawingCanvas(canvasArbol);
+    var dcPersona = new DrawingCanvas(canvasPersona);
+
+    buildToolbar($('tbCasa'),    dcCasa);
+    buildToolbar($('tbArbol'),   dcArbol);
+    buildToolbar($('tbPersona'), dcPersona);
+
+    allCanvasConfigs.push({ canvas: canvasCasa,    aw: 1, ah: 0.95 });
+    allCanvasConfigs.push({ canvas: canvasArbol,   aw: 1, ah: 0.95 });
+    allCanvasConfigs.push({ canvas: canvasPersona, aw: 1, ah: 0.95 });
+
+    // Bender
+    var canvasBender = $('canvasBender');
+    setCanvasSize(canvasBender, 640, 480);
+    var dcBender = new DrawingCanvas(canvasBender);
+    buildToolbar($('tbBender'), dcBender);
+    allCanvasConfigs.push({ canvas: canvasBender, aw: 4, ah: 3 });
+
+    // Rain
+    var canvasRain = $('canvasRain');
+    setCanvasSize(canvasRain, 640, 520);
+    var dcRain = new DrawingCanvas(canvasRain);
+    buildToolbar($('tbRain'), dcRain);
+    allCanvasConfigs.push({ canvas: canvasRain, aw: 4, ah: 3.25 });
+
+    window.addEventListener('resize', function() { resizeAllCanvases(); });
+
+    /* ─────────────────────────────────────────
+       BENDER — FIGURAS DE REFERENCIA
+       Dibujadas con Canvas 2D (no requiere imágenes)
+    ───────────────────────────────────────── */
+    var benderFigs = {
+      'A': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.fillStyle = 'none';
+        // Círculo
+        ctx.beginPath(); ctx.arc(w*.28, h*.5, h*.22, 0, Math.PI*2); ctx.stroke();
+        // Rombo
+        var cx = w*.68, cy = h*.5, rw = w*.18, rh = h*.22;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - rh);
+        ctx.lineTo(cx + rw, cy);
+        ctx.lineTo(cx, cy + rh);
+        ctx.lineTo(cx - rw, cy);
+        ctx.closePath(); ctx.stroke();
+      },
+      '1': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Fila de 12 puntos
+        for (var i = 0; i < 12; i++) {
+          ctx.beginPath();
+          ctx.arc(w*(.1 + i*0.072), h*.5, 4, 0, Math.PI*2);
+          ctx.fillStyle = '#111'; ctx.fill();
+        }
+      },
+      '2': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // 10 pequeños círculos en diagonal
+        for (var i = 0; i < 10; i++) {
+          ctx.beginPath();
+          ctx.arc(w*(.1 + i*0.085), h*(.3 + i*0.042), 5, 0, Math.PI*2);
+          ctx.fillStyle = '#111'; ctx.fill();
+        }
+      },
+      '3': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Patrón de puntos en forma de punta de flecha
+        var pts = [[0,0],[1,0],[2,0],[3,0],[4,0],[2,1],[2,2],[2,3],[3,2],[4,3],[1,2],[0,3]];
+        pts.forEach(function(p) {
+          ctx.beginPath();
+          ctx.arc(w*(.15 + p[0]*0.12), h*(.2 + p[1]*0.18), 4, 0, Math.PI*2);
+          ctx.fillStyle = '#111'; ctx.fill();
+        });
+      },
+      '4': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // L + curva
+        ctx.beginPath();
+        ctx.moveTo(w*.15, h*.25); ctx.lineTo(w*.15, h*.75); ctx.lineTo(w*.55, h*.75);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(w*.45, h*.25); ctx.quadraticCurveTo(w*.75, h*.25, w*.85, h*.55);
+        ctx.stroke();
+      },
+      '5': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Arco de puntos + línea diagonal
+        for (var i = 0; i < 11; i++) {
+          var angle = Math.PI + (i / 10) * Math.PI;
+          ctx.beginPath();
+          ctx.arc(w*.35 + Math.cos(angle)*w*.2, h*.5 + Math.sin(angle)*h*.2, 4, 0, Math.PI*2);
+          ctx.fillStyle = '#111'; ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.moveTo(w*.35, h*.5); ctx.lineTo(w*.8, h*.3);
+        ctx.stroke();
+      },
+      '6': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Dos líneas sinusoidales
+        ctx.beginPath();
+        for (var x = 0; x <= w; x += 4) {
+          var y1 = h*.38 + Math.sin(x / (w/4) * Math.PI) * h*.1;
+          x === 0 ? ctx.moveTo(x, y1) : ctx.lineTo(x, y1);
+        }
+        ctx.stroke();
+        ctx.beginPath();
+        for (var x2 = 0; x2 <= w; x2 += 4) {
+          var y2 = h*.62 + Math.sin(x2 / (w/3) * Math.PI * 0.7) * h*.12;
+          x2 === 0 ? ctx.moveTo(x2, y2) : ctx.lineTo(x2, y2);
+        }
+        ctx.stroke();
+      },
+      '7': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Dos hexágonos superpuestos
+        function hexPath(cx, cy, r) {
+          ctx.beginPath();
+          for (var i = 0; i < 6; i++) {
+            var angle = (Math.PI/3)*i - Math.PI/6;
+            var px = cx + r * Math.cos(angle);
+            var py = cy + r * Math.sin(angle);
+            i === 0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+          }
+          ctx.closePath(); ctx.stroke();
+        }
+        hexPath(w*.38, h*.5, h*.3);
+        hexPath(w*.62, h*.5, h*.3);
+      },
+      '8': function(ctx, w, h) {
+        ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+        // Hexágono grande con rombo interior
+        function hexP(cx, cy, r) {
+          ctx.beginPath();
+          for (var i = 0; i < 6; i++) {
+            var a = (Math.PI/3)*i - Math.PI/6;
+            i === 0 ? ctx.moveTo(cx+r*Math.cos(a), cy+r*Math.sin(a))
+                    : ctx.lineTo(cx+r*Math.cos(a), cy+r*Math.sin(a));
+          }
+          ctx.closePath(); ctx.stroke();
+        }
+        hexP(w*.5, h*.5, h*.38);
+        ctx.beginPath();
+        ctx.moveTo(w*.5, h*.18); ctx.lineTo(w*.72, h*.5);
+        ctx.lineTo(w*.5, h*.82); ctx.lineTo(w*.28, h*.5);
+        ctx.closePath(); ctx.stroke();
+      }
+    };
+
+    var benderFigNames = ['A','1','2','3','4','5','6','7','8'];
+    var currentBenderFig = 'A';
+    var benderRefCanvas  = $('benderRefCanvas');
+    var benderFigNav     = $('benderFigNav');
+
+    function drawBenderRef(key) {
+      var ctx = benderRefCanvas.getContext('2d');
+      var w   = benderRefCanvas.width;
+      var h   = benderRefCanvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      if (benderFigs[key]) benderFigs[key](ctx, w, h);
+    }
+
+    benderFigNames.forEach(function(name) {
+      var btn = document.createElement('button');
+      btn.className = 'bt-fig-btn' + (name === 'A' ? ' active' : '');
+      btn.type = 'button';
+      btn.textContent = 'Fig. ' + name;
+      btn.addEventListener('click', function() {
+        currentBenderFig = name;
+        benderFigNav.querySelectorAll('.bt-fig-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        drawBenderRef(name);
+      });
+      benderFigNav.appendChild(btn);
+    });
+
+    drawBenderRef('A');
+
+    /* ─────────────────────────────────────────
+       RESTAURAR DIBUJOS desde localStorage
+    ───────────────────────────────────────── */
+    function restoreCanvas(canvas, key) {
+      var saved = localStorage.getItem(key);
+      if (!saved) return;
+      var img = new Image();
+      img.onload = function() {
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = saved;
+    }
+
+    restoreCanvas(canvasCasa,    'bt_canvas_casa');
+    restoreCanvas(canvasArbol,   'bt_canvas_arbol');
+    restoreCanvas(canvasPersona, 'bt_canvas_persona');
+    restoreCanvas(canvasBender,  'bt_canvas_bender');
+    restoreCanvas(canvasRain,    'bt_canvas_rain');
+
+    /* ─────────────────────────────────────────
+       FEEDBACK TEMPORAL
+    ───────────────────────────────────────── */
+    function showFeedback(el) {
+      el.classList.add('visible');
+      setTimeout(function() { el.classList.remove('visible'); }, 3000);
+    }
+
+    /* ─────────────────────────────────────────
+       DATOS COMUNES DE SESIÓN
+    ───────────────────────────────────────── */
+    function getPatientData() {
+      return {
+        nombre:    ($('ptNombre') || {}).value || '',
+        dni:       ($('ptDni')    || {}).value || '',
+        fecha:     ($('ptFecha')  || {}).value || todayISO,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    /* ─────────────────────────────────────────
+       saveHTP()
+       Guarda los tres dibujos HTP en localStorage
+       y prepara objeto para envío a backend futuro.
+    ───────────────────────────────────────── */
+    function saveHTP() {
+      var patient  = getPatientData();
+      var casaImg  = canvasCasa.toDataURL('image/png');
+      var arbolImg = canvasArbol.toDataURL('image/png');
+      var persImg  = canvasPersona.toDataURL('image/png');
+
+      localStorage.setItem('bt_canvas_casa',    casaImg);
+      localStorage.setItem('bt_canvas_arbol',   arbolImg);
+      localStorage.setItem('bt_canvas_persona', persImg);
+
+      // Objeto listo para backend:
+      var payload = Object.assign({}, patient, {
+        test:    'HTP',
+        casa:    casaImg,
+        arbol:   arbolImg,
+        persona: persImg
+      });
+      localStorage.setItem('bt_htp_session', JSON.stringify({
+        nombre: payload.nombre,
+        dni: payload.dni,
+        fecha: payload.fecha,
+        timestamp: payload.timestamp
+      }));
+
+      showFeedback($('fbHTP'));
+
+      // Para conectar backend: descomentar y completar URL
+      // fetch('/api/tests/htp', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(payload)
+      // });
+    }
+
+    /* ─────────────────────────────────────────
+       saveBender()
+    ───────────────────────────────────────── */
+    function saveBender() {
+      var patient   = getPatientData();
+      var benderImg = canvasBender.toDataURL('image/png');
+
+      localStorage.setItem('bt_canvas_bender', benderImg);
+
+      var payload = Object.assign({}, patient, {
+        test:   'Bender',
+        figura: currentBenderFig,
+        dibujo: benderImg
+      });
+      localStorage.setItem('bt_bender_session', JSON.stringify({
+        nombre: payload.nombre,
+        dni: payload.dni,
+        fecha: payload.fecha,
+        timestamp: payload.timestamp
+      }));
+
+      showFeedback($('fbBender'));
+
+      // fetch('/api/tests/bender', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    }
+
+    /* ─────────────────────────────────────────
+       saveRainTest()
+    ───────────────────────────────────────── */
+    function saveRainTest() {
+      var patient = getPatientData();
+      var rainImg = canvasRain.toDataURL('image/png');
+
+      localStorage.setItem('bt_canvas_rain', rainImg);
+
+      var payload = Object.assign({}, patient, {
+        test:   'PersonaBajoLaLluvia',
+        dibujo: rainImg
+      });
+      localStorage.setItem('bt_rain_session', JSON.stringify({
+        nombre: payload.nombre,
+        dni: payload.dni,
+        fecha: payload.fecha,
+        timestamp: payload.timestamp
+      }));
+
+      showFeedback($('fbRain'));
+
+      // fetch('/api/tests/rain', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    }
+
+    /* ─────────────────────────────────────────
+       BOTONES GUARDAR
+    ───────────────────────────────────────── */
+    $('btnSaveHTP')    && $('btnSaveHTP').addEventListener('click',    saveHTP);
+    $('btnSaveBender') && $('btnSaveBender').addEventListener('click', saveBender);
+    $('btnSaveRain')   && $('btnSaveRain').addEventListener('click',   saveRainTest);
+
+    /* ─────────────────────────────────────────
+       BOTONES LIMPIAR
+    ───────────────────────────────────────── */
+    $('btnClearHTP') && $('btnClearHTP').addEventListener('click', function() {
+      if (confirm('¿Limpiar los tres dibujos del HTP?')) {
+        dcCasa.clear(); dcArbol.clear(); dcPersona.clear();
+      }
+    });
+    $('btnClearBender') && $('btnClearBender').addEventListener('click', function() {
+      dcBender.clear();
+    });
+    $('btnClearRain') && $('btnClearRain').addEventListener('click', function() {
+      dcRain.clear();
+    });
+
+    /* ─────────────────────────────────────────
+       EXPONER FUNCIONES AL SCOPE GLOBAL
+       (útil para integración con backend)
+    ───────────────────────────────────────── */
+    window.saveHTP      = saveHTP;
+    window.saveBender   = saveBender;
+    window.saveRainTest = saveRainTest;
+
+  })();
   </script>
 
 </body>
