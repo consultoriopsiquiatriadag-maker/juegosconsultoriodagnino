@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ejercicio en Silla · Método Dagnino</title>
+  <meta name="description" content="Rutina terapéutica de regulación somática en silla — 3:28 — Método Dagnino">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0B1120">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --primary:  #0B1120;
+      --secondary:#1E293B;
+      --accent:   #38BDF8;
+      --tension:  #F59E0B;
+      --calm:     #10B981;
+      --text:     #F1F5F9;
+      --muted:    #94A3B8;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--primary);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      min-height: 100dvh;
+      overscroll-behavior: none;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(56,189,248,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Glass panels ── */
+    .glass {
+      background: rgba(30,41,59,.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(148,163,184,.1);
+      border-radius: 24px;
+    }
+    .glass-sm {
+      background: rgba(30,41,59,.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(148,163,184,.08);
+      border-radius: 16px;
+    }
+
+    /* ── Canvas container ── */
+    #canvasWrap {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 30%, #0d2040 0%, #060c18 100%);
+      border: 1px solid rgba(56,189,248,.12);
+      cursor: pointer;
+      user-select: none;
+    }
+    #threeCanvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 24px;
+    }
+    /* SVG ring overlay */
+    #progressRingWrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #progressRingWrap svg {
+      width: 88%; height: 88%;
+      transform: rotate(-90deg);
+    }
+    #ringBg   { stroke: rgba(148,163,184,.1); fill: none; }
+    #ringFill { fill: none; stroke-linecap: round; transition: stroke .6s ease; }
+
+    /* Phase badge overlay */
+    #phaseBadge {
+      position: absolute;
+      bottom: 14px; left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: rgba(11,17,32,.8);
+      border: 1px solid rgba(56,189,248,.25);
+      color: var(--accent);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      transition: color .5s, border-color .5s;
+    }
+
+    /* View label */
+    #viewLabel {
+      position: absolute;
+      top: 10px; right: 12px;
+      font-size: .7rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    /* ── Timer ── */
+    #timerDisplay {
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: .02em;
+      line-height: 1;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      transition: color .5s;
+    }
+
+    /* ── Control buttons ── */
+    .ctrl-btn {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.3rem;
+      transition: transform .15s, box-shadow .15s, background .3s;
+      flex-shrink: 0;
+    }
+    .ctrl-btn:active { transform: scale(.91); }
+    .ctrl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    #btnMain {
+      width: 72px; height: 72px;
+      background: var(--accent);
+      color: #0B1120;
+      font-size: 1.6rem;
+      box-shadow: 0 0 24px rgba(56,189,248,.35);
+    }
+    #btnMain:hover { box-shadow: 0 0 32px rgba(56,189,248,.5); }
+    #btnMain.running { background: #e2e8f0; }
+    #btnReset {
+      background: rgba(30,41,59,.8);
+      color: var(--muted);
+      border: 1px solid rgba(148,163,184,.15);
+    }
+    #btnAudio {
+      background: rgba(30,41,59,.8);
+      color: var(--muted);
+      border: 1px solid rgba(148,163,184,.15);
+    }
+    #btnAudio.muted { color: #ef4444; }
+    #btnFocus {
+      background: rgba(30,41,59,.8);
+      color: var(--muted);
+      border: 1px solid rgba(148,163,184,.15);
+    }
+    #btnFocus.active { color: var(--tension); border-color: rgba(245,158,11,.3); }
+    #btnReduceMotion {
+      background: rgba(30,41,59,.8);
+      color: var(--muted);
+      border: 1px solid rgba(148,163,184,.15);
+    }
+    #btnReduceMotion.active { color: var(--calm); }
+
+    /* ── Slider ── */
+    .anxiety-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%; height: 8px;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+      background: linear-gradient(to right, var(--calm) 0%, var(--tension) 50%, #ef4444 100%);
+    }
+    .anxiety-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      cursor: pointer;
+      transition: border-color .3s;
+    }
+    .anxiety-slider::-moz-range-thumb {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      cursor: pointer;
+    }
+
+    /* ── Tooltip ── */
+    .phase-tooltip {
+      font-size: .82rem;
+      color: var(--muted);
+      text-align: center;
+      min-height: 1.4em;
+      transition: opacity .4s;
+    }
+
+    /* ── Summary card ── */
+    #summaryCard {
+      display: none;
+    }
+    #summaryCard.visible {
+      display: block;
+    }
+
+    /* ── Focus mode ── */
+    body.focus-mode .hide-on-focus { display: none !important; }
+
+    /* ── Reduced motion ── */
+    body.reduced-motion * {
+      animation-duration: .01ms !important;
+      transition-duration: .01ms !important;
+    }
+
+    /* ── Phase color transitions ── */
+    .accent-A { color: var(--accent); }
+    .accent-B { color: var(--tension); }
+    .accent-C { color: #a78bfa; }
+    .accent-D { color: var(--calm); }
+
+    /* ── Instruction pill ── */
+    #instructionText {
+      transition: opacity .4s;
+    }
+
+    /* ── Confetti ── */
+    .confetti-piece {
+      position: fixed;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiFall 2.2s ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .ctrl-btn { width: 52px; height: 52px; }
+      #btnMain  { width: 64px; height: 64px; }
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148,163,184,.2); border-radius: 2px; }
+  </style>
+</head>
+
+<body class="relative z-10">
+
+<!-- ══════════════════════════════════════════
+     LAYOUT PRINCIPAL
+══════════════════════════════════════════════ -->
+<div class="flex flex-col min-h-dvh px-4 py-4 gap-3 max-w-lg mx-auto">
+
+  <!-- ── HEADER ── -->
+  <header class="flex items-center justify-between">
+    <div>
+      <div class="text-xs font-semibold tracking-widest uppercase text-[var(--muted)]">Método Dagnino</div>
+      <h1 class="text-base font-bold text-[var(--text)] leading-tight">Ejercicio en silla</h1>
+    </div>
+    <div id="timerDisplay" aria-live="polite" aria-label="Tiempo restante">03:28</div>
+  </header>
+
+  <!-- ── CANVAS 3D + RING ── -->
+  <div id="canvasWrap" role="img" aria-label="Avatar 3D del ejercicio" tabindex="0">
+    <canvas id="threeCanvas"></canvas>
+    <div id="progressRingWrap">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle id="ringBg"   cx="100" cy="100" r="94" stroke-width="4"/>
+        <circle id="ringFill" cx="100" cy="100" r="94" stroke-width="4"
+                stroke="var(--accent)" stroke-dasharray="590.6" stroke-dashoffset="590.6"/>
+      </svg>
+    </div>
+    <div id="phaseBadge">Listo</div>
+    <div id="viewLabel">◉ Frontal</div>
+  </div>
+
+  <!-- ── INSTRUCCIÓN DE FASE ── -->
+  <div class="glass-sm px-4 py-3 text-center hide-on-focus">
+    <div id="phaseTitle" class="text-sm font-bold text-[var(--accent)] mb-0.5">—</div>
+    <div id="instructionText" class="phase-tooltip">Presioná Iniciar para comenzar la rutina.</div>
+  </div>
+
+  <!-- ── CONTROLES ── -->
+  <div class="flex items-center justify-center gap-3">
+    <button id="btnReduceMotion" class="ctrl-btn" title="Reducir movimiento" aria-label="Reducir movimiento" aria-pressed="false">🐢</button>
+    <button id="btnReset"   class="ctrl-btn" title="Reiniciar" aria-label="Reiniciar rutina">↺</button>
+    <button id="btnMain"    class="ctrl-btn" title="Iniciar" aria-label="Iniciar rutina">▶</button>
+    <button id="btnAudio"   class="ctrl-btn" title="Audio" aria-label="Activar o silenciar audio">🔊</button>
+    <button id="btnFocus"   class="ctrl-btn hide-on-focus" title="Modo foco" aria-label="Modo foco" aria-pressed="false">◎</button>
+  </div>
+
+  <!-- ── ANSIEDAD ANTES ── -->
+  <div id="anxietyBefore" class="glass px-5 py-4 hide-on-focus">
+    <div class="flex justify-between items-center mb-2">
+      <label class="text-xs font-bold tracking-widest uppercase text-[var(--muted)]" for="sliderBefore">Ansiedad — Antes</label>
+      <span id="valBefore" class="text-xl font-black text-[var(--text)]">5</span>
+    </div>
+    <input id="sliderBefore" class="anxiety-slider" type="range" min="0" max="10" value="5"
+           aria-label="Nivel de ansiedad antes del ejercicio" aria-valuemin="0" aria-valuemax="10">
+    <div class="flex justify-between mt-1 text-xs text-[var(--muted)]"><span>0 Calma</span><span>10 Máxima</span></div>
+  </div>
+
+  <!-- ── ANSIEDAD DESPUÉS (aparece al terminar) ── -->
+  <div id="anxietyAfter" class="glass px-5 py-4 hide-on-focus" style="display:none">
+    <div class="flex justify-between items-center mb-2">
+      <label class="text-xs font-bold tracking-widest uppercase text-[var(--muted)] " for="sliderAfter">Ansiedad — Después</label>
+      <span id="valAfter" class="text-xl font-black text-[var(--text)]">3</span>
+    </div>
+    <input id="sliderAfter" class="anxiety-slider" type="range" min="0" max="10" value="3"
+           aria-label="Nivel de ansiedad después del ejercicio" aria-valuemin="0" aria-valuemax="10">
+    <div class="flex justify-between mt-1 text-xs text-[var(--muted)]"><span>0 Calma</span><span>10 Máxima</span></div>
+    <button id="btnFinalize" class="mt-3 w-full py-3 rounded-2xl bg-[var(--calm)] text-white font-bold text-sm tracking-wide"
+            style="min-height:48px">Generar resumen</button>
+  </div>
+
+  <!-- ── TARJETA RESUMEN ── -->
+  <div id="summaryCard" class="glass px-5 py-5 hide-on-focus" role="region" aria-label="Resumen de sesión">
+    <div class="text-xs font-bold tracking-widest uppercase text-[var(--muted)] mb-3">Resumen de sesión</div>
+    <div id="summaryBody" class="text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap mb-4"></div>
+    <div class="flex gap-2 flex-wrap">
+      <button id="btnCopy" class="flex-1 py-3 rounded-2xl glass-sm text-sm font-bold text-[var(--accent)]"
+              style="min-height:48px">Copiar</button>
+      <button id="btnShareResult" class="flex-1 py-3 rounded-2xl glass-sm text-sm font-bold text-[var(--muted)]"
+              style="min-height:48px; display:none">Compartir</button>
+      <button id="btnRestart" class="flex-1 py-3 rounded-2xl bg-[var(--accent)] text-[#0B1120] text-sm font-bold"
+              style="min-height:48px">Nueva sesión</button>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="text-center text-xs text-[var(--muted)] pb-2 hide-on-focus mt-auto">
+    <a href="index.html" class="underline underline-offset-2 hover:text-[var(--text)] transition-colors">← Volver al inicio</a>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════
+   CONFIGURACIÓN GLOBAL
+════════════════════════════════════════ */
+const PHASES = [
+  {
+    key: 'A', title: 'Aterrizaje',
+    duration: 30,
+    instruction: 'Pies al piso. Exhalación larga y suave.',
+    color: 0x38bdf8, emissive: 0x0a2540,
+    ringColor: '#38BDF8', badgeColor: '#38BDF8'
+  },
+  {
+    key: 'B', title: 'Tensión · Soltar',
+    duration: 57,
+    instruction: 'Puños cerrados y hombros altos. Sostené… y soltá todo.',
+    color: 0xfbbf24, emissive: 0x3d2000,
+    ringColor: '#F59E0B', badgeColor: '#F59E0B'
+  },
+  {
+    key: 'C', title: 'Isométricos',
+    duration: 68,
+    instruction: 'Empujá pies contra el piso. Apretá palmas entre sí.',
+    color: 0xa78bfa, emissive: 0x1a0a40,
+    ringColor: '#A78BFA', badgeColor: '#A78BFA'
+  },
+  {
+    key: 'D', title: 'Descarga suave',
+    duration: 53,
+    instruction: 'Hombros caen. Rota el cuello lentamente. Respirá.',
+    color: 0x10b981, emissive: 0x002b1a,
+    ringColor: '#10B981', badgeColor: '#10B981'
+  }
+];
+const TOTAL_SEC = PHASES.reduce((s, p) => s + p.duration, 0); // 208
+const RING_CIRCUMFERENCE = 2 * Math.PI * 94; // 590.6
+
+const AUDIO_PATHS = {
+  chime:  '/audio/airport_chime.mp3',
+  intro:  '/audio/silla_intro.mp3',
+  A:      '/audio/silla_A_aterrizaje.mp3',
+  B:      '/audio/silla_B_tension_soltar.mp3',
+  C:      '/audio/silla_C_isometricos.mp3',
+  D:      '/audio/silla_D_descarga_suave.mp3',
+  finish: '/audio/premio_excelente.mp3',
+};
+
+/* ═══════════════════════════════════════
+   UTILIDADES
+════════════════════════════════════════ */
+const lerp  = (a, b, t) => a + (b - a) * t;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const fmt   = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+function getPhaseAt(elapsedSec) {
+  let acc = 0;
+  for (let i = 0; i < PHASES.length; i++) {
+    const p = PHASES[i];
+    if (elapsedSec < acc + p.duration) {
+      return { phase: p, index: i, into: elapsedSec - acc, t: (elapsedSec - acc) / p.duration };
+    }
+    acc += p.duration;
+  }
+  return null;
+}
+
+/* ═══════════════════════════════════════
+   MASTER CLOCK
+════════════════════════════════════════ */
+class MasterClock {
+  constructor() {
+    this.elapsed   = 0;    // seconds elapsed
+    this.running   = false;
+    this._lastRAF  = null;
+    this._accMs    = 0;    // accumulated ms (for 1s ticks)
+    this._rafId    = null;
+    this.onTick    = null; // (elapsedSec) => void
+    this.onFinish  = null;
+  }
+
+  _tick(timestamp) {
+    if (!this.running) return;
+    if (this._lastRAF !== null) {
+      const dt = timestamp - this._lastRAF;
+      this._accMs += dt;
+      // Fire integer-second ticks
+      while (this._accMs >= 1000) {
+        this._accMs -= 1000;
+        this.elapsed = Math.min(this.elapsed + 1, TOTAL_SEC);
+        if (this.onTick) this.onTick(this.elapsed);
+        if (this.elapsed >= TOTAL_SEC) {
+          this.running = false;
+          if (this.onFinish) this.onFinish();
+          return;
+        }
+      }
+    }
+    this._lastRAF = timestamp;
+    this._rafId = requestAnimationFrame(ts => this._tick(ts));
+  }
+
+  start() {
+    if (this.running) return;
+    this.running  = true;
+    this._lastRAF = null;
+    this._accMs   = 0;
+    this._rafId   = requestAnimationFrame(ts => this._tick(ts));
+  }
+
+  pause() {
+    this.running  = false;
+    this._lastRAF = null;
+    if (this._rafId) cancelAnimationFrame(this._rafId);
+  }
+
+  reset() {
+    this.pause();
+    this.elapsed = 0;
+    this._accMs  = 0;
+  }
+}
+
+/* ═══════════════════════════════════════
+   AVATAR 3D — seated humanoid figure
+════════════════════════════════════════ */
+class Avatar3D {
+  constructor(scene) {
+    this.scene   = scene;
+    this.root    = new THREE.Group();
+    this.reduced = false;
+    scene.add(this.root);
+
+    // Shared material — emissive changes per phase
+    this.mat = new THREE.MeshStandardMaterial({
+      color:     0xc8d8e8,
+      roughness: 0.55,
+      metalness: 0.08,
+      emissive:  new THREE.Color(0x0a2540),
+      emissiveIntensity: 0.35
+    });
+    this.jointMat = new THREE.MeshStandardMaterial({
+      color:     0x8090a8,
+      roughness: 0.5,
+      metalness: 0.1,
+      emissive:  new THREE.Color(0x0a2540),
+      emissiveIntensity: 0.3
+    });
+
+    this._build();
+    this._baseState();
+  }
+
+  // ── Build anatomy ──────────────────────────────
+  _build() {
+    const M  = this.mat;
+    const MJ = this.jointMat;
+    const mesh = (geom, mat, x, y, z) => {
+      const m = new THREE.Mesh(geom, mat);
+      m.position.set(x, y, z);
+      m.castShadow = true;
+      return m;
+    };
+    const cyl = (rt, rb, h, s=8) => new THREE.CylinderGeometry(rt, rb, h, s);
+    const sph = (r, ws=12, hs=8)  => new THREE.SphereGeometry(r, ws, hs);
+    const box = (w, h, d)         => new THREE.BoxGeometry(w, h, d);
+
+    // ── HEAD ──
+    this.head = mesh(sph(.21, 16, 12), M, 0, 2.62, 0);
+    this.root.add(this.head);
+
+    // Neck
+    this.root.add(mesh(cyl(.065, .07, .18, 8), M, 0, 2.38, 0));
+
+    // ── TORSO GROUP (pivot for breathing) ──
+    this.torsoPivot = new THREE.Group();
+    this.torsoPivot.position.set(0, 1.95, 0);
+    this.root.add(this.torsoPivot);
+
+    const torsoBody = mesh(cyl(.2, .17, .62, 10), M, 0, 0, 0);
+    this.torsoPivot.add(torsoBody);
+
+    // ── SHOULDER PIVOTS ──
+    this.shoulderPivots = [];
+    this.forearmPivots  = [];
+
+    [[-1, -0.3], [1, 0.3]].forEach(([side, zRot]) => {
+      const sx = side * 0.28;
+      // shoulder sphere
+      const shSph = mesh(sph(.085, 8, 6), MJ, sx, .25, 0);
+      this.torsoPivot.add(shSph);
+
+      // upper-arm pivot (at shoulder)
+      const shPivot = new THREE.Group();
+      shPivot.position.set(sx, .22, 0);
+      this.torsoPivot.add(shPivot);
+      this.shoulderPivots.push(shPivot);
+
+      // upper arm
+      const ua = mesh(cyl(.065, .06, .33, 8), M, 0, -0.17, 0);
+      shPivot.add(ua);
+
+      // elbow
+      const elbow = mesh(sph(.072, 8, 6), MJ, 0, -0.35, 0);
+      shPivot.add(elbow);
+
+      // forearm pivot (at elbow)
+      const faPivot = new THREE.Group();
+      faPivot.position.set(0, -0.35, 0);
+      faPivot.rotation.x = .5;   // angle toward knees
+      faPivot.rotation.z = -zRot * .55;
+      shPivot.add(faPivot);
+      this.forearmPivots.push(faPivot);
+
+      // forearm
+      const fa = mesh(cyl(.055, .05, .29, 8), M, 0, -0.145, 0);
+      faPivot.add(fa);
+
+      // hand (rests on knee)
+      const hand = mesh(box(.11, .07, .09), M, 0, -0.3, 0);
+      faPivot.add(hand);
+
+      // initial shoulder rotation (arms down-outward)
+      shPivot.rotation.z = zRot * .15;
+    });
+
+    // ── HIPS ──
+    this.hips = mesh(box(.44, .2, .28), M, 0, -.35, 0);
+    this.torsoPivot.add(this.hips);
+
+    // ── LEGS ──
+    this.legPivots = [];
+    [-1, 1].forEach((side) => {
+      const lx = side * 0.18;
+
+      // Hip joint
+      this.root.add(mesh(sph(.092, 8, 6), MJ, lx, 1.55, 0));
+
+      // Thigh pivot (from hip joint)
+      const legPivot = new THREE.Group();
+      legPivot.position.set(lx, 1.55, 0);
+      legPivot.rotation.x = 1.35; // ~77° forward (seated)
+      this.root.add(legPivot);
+      this.legPivots.push(legPivot);
+
+      // Thigh
+      const thigh = mesh(cyl(.088, .082, .42, 8), M, 0, -.21, 0);
+      legPivot.add(thigh);
+
+      // Knee
+      const knee = mesh(sph(.09, 8, 6), MJ, 0, -.43, 0);
+      legPivot.add(knee);
+
+      // Shin (straight down from knee)
+      const shinPivot = new THREE.Group();
+      shinPivot.position.set(0, -.43, 0);
+      shinPivot.rotation.x = -1.3; // shin goes straight down
+      legPivot.add(shinPivot);
+
+      const shin = mesh(cyl(.072, .065, .38, 8), M, 0, -.19, 0);
+      shinPivot.add(shin);
+
+      // Ankle + foot
+      const ankle = mesh(sph(.07, 8, 6), MJ, 0, -.39, 0);
+      shinPivot.add(ankle);
+      const foot  = mesh(box(.12, .065, .22), M, 0, -.41, .06);
+      shinPivot.add(foot);
+    });
+
+    // Offset whole figure so feet approach y≈0
+    this.root.position.y = -1.05;
+    // Slight perspective tilt
+    this.root.rotation.x = .05;
+  }
+
+  // ── Store baseline transforms for lerping ──────
+  _baseState() {
+    this._headBaseRot    = { x: 0, y: 0 };
+    this._torsoBaseScale = { x: 1, y: 1, z: 1 };
+    this._shoulderBaseZ  = [this.shoulderPivots[0].rotation.z, this.shoulderPivots[1].rotation.z];
+    this._forearmBaseX   = [this.forearmPivots[0].rotation.x,  this.forearmPivots[1].rotation.x];
+
+    // Animation state
+    this.headRot    = { x: 0, y: 0 };
+    this.torsoScale = { x: 1, y: 1 };
+    this.shoulderElevation = 0; // +y offset
+    this.forearmFwd = 0;        // x rotation of forearm pivots
+    this.tensionShake = 0;
+    this.currentPhaseKey = null;
+    this._phaseT = 0;           // 0→1 within phase
+    this._time   = 0;           // running time for oscillations
+  }
+
+  // ── Update called every render frame ──────────
+  update(dt, elapsedSec, phaseInfo) {
+    if (this.reduced) return;
+    this._time += dt;
+    const t = this._time;
+
+    if (!phaseInfo) {
+      // Idle: gentle breathing
+      this.torsoPivot.scale.y = 1 + Math.sin(t * 1.1) * 0.015;
+      this.head.position.y = 2.62 + Math.sin(t * 1.1) * 0.012;
+      return;
+    }
+
+    const { phase, into, t: phaseT } = phaseInfo;
+    this._phaseT = phaseT;
+
+    switch (phase.key) {
+      case 'A': this._animA(t, phaseT, into); break;
+      case 'B': this._animB(t, phaseT, into); break;
+      case 'C': this._animC(t, phaseT, into); break;
+      case 'D': this._animD(t, phaseT, into); break;
+    }
+  }
+
+  // PHASE A — Aterrizaje: slow breathing, upright
+  _animA(t, phaseT, into) {
+    const breath = Math.sin(t * 0.9) * 0.022;
+    this.torsoPivot.scale.y = 1 + breath;
+    this.torsoPivot.scale.x = 1 - breath * .4;
+    this.head.position.y    = 2.62 + Math.sin(t * 0.9) * 0.014;
+
+    // Gently settle shoulders
+    this.shoulderPivots[0].position.y = lerp(this.shoulderPivots[0].position.y, 0, 0.04);
+    this.shoulderPivots[1].position.y = lerp(this.shoulderPivots[1].position.y, 0, 0.04);
+    this.forearmPivots[0].rotation.x  = lerp(this.forearmPivots[0].rotation.x,  .5,  .04);
+    this.forearmPivots[1].rotation.x  = lerp(this.forearmPivots[1].rotation.x,  .5,  .04);
+    this.head.rotation.y = lerp(this.head.rotation.y, 0, .04);
+  }
+
+  // PHASE B — Tensión/Soltar: raise shoulders → hold → drop
+  _animB(t, phaseT, into) {
+    const halfT = phaseT < .45 ? phaseT / .45 : 1 - ((phaseT - .45) / .55);
+    const tension = clamp(halfT, 0, 1);
+
+    // Shoulder elevation
+    const shY = tension * .18;
+    this.shoulderPivots[0].position.y = lerp(this.shoulderPivots[0].position.y, shY, .07);
+    this.shoulderPivots[1].position.y = lerp(this.shoulderPivots[1].position.y, shY, .07);
+
+    // Arms pull slightly back (rotation.z increases)
+    const bkZ = tension * .12;
+    this.shoulderPivots[0].rotation.z = this._shoulderBaseZ[0] + bkZ;
+    this.shoulderPivots[1].rotation.z = this._shoulderBaseZ[1] - bkZ;
+
+    // Forearms tighten
+    this.forearmPivots[0].rotation.x = lerp(this.forearmPivots[0].rotation.x, .5 - tension * .2, .06);
+    this.forearmPivots[1].rotation.x = lerp(this.forearmPivots[1].rotation.x, .5 - tension * .2, .06);
+
+    // Microvibration only during hold (phaseT .2–.45)
+    if (phaseT > .2 && phaseT < .48) {
+      const shake = (Math.random() - .5) * .008 * tension;
+      this.root.rotation.z = shake;
+    } else {
+      this.root.rotation.z = lerp(this.root.rotation.z, 0, .1);
+    }
+
+    // Breathing still going
+    this.torsoPivot.scale.y = 1 + Math.sin(t * 1.3) * .014 * (1 - tension * .5);
+    this.head.position.y    = 2.62 + Math.sin(t * 1.3) * .01;
+  }
+
+  // PHASE C — Isométricos: arms forward, leg push
+  _animC(t, phaseT, into) {
+    // Forearms extend forward
+    const push = clamp(phaseT * 3, 0, 1);
+    this.forearmPivots[0].rotation.x = lerp(this.forearmPivots[0].rotation.x, .5 + push * .55, .05);
+    this.forearmPivots[1].rotation.x = lerp(this.forearmPivots[1].rotation.x, .5 + push * .55, .05);
+
+    // Slight forward lean on torso
+    this.torsoPivot.rotation.x = lerp(this.torsoPivot.rotation.x, push * .08, .04);
+
+    // Tension microtremble
+    const tr = Math.sin(t * 18) * .005 * push;
+    this.root.rotation.z = tr;
+    this.torsoPivot.scale.y = 1 + Math.sin(t * 1.5) * .01;
+
+    // Shoulders stay level
+    this.shoulderPivots[0].position.y = lerp(this.shoulderPivots[0].position.y, 0, .05);
+    this.shoulderPivots[1].position.y = lerp(this.shoulderPivots[1].position.y, 0, .05);
+  }
+
+  // PHASE D — Descarga suave: head sway, arms relax, green
+  _animD(t, phaseT, into) {
+    // Arms return to rest
+    this.forearmPivots[0].rotation.x  = lerp(this.forearmPivots[0].rotation.x, .5, .04);
+    this.forearmPivots[1].rotation.x  = lerp(this.forearmPivots[1].rotation.x, .5, .04);
+    this.torsoPivot.rotation.x        = lerp(this.torsoPivot.rotation.x, 0, .04);
+    this.root.rotation.z              = lerp(this.root.rotation.z, 0, .06);
+
+    // Head gently sways side to side (neck rotation)
+    const swayAmp = Math.min(phaseT * 3, 1) * .18;
+    this.head.rotation.z = Math.sin(t * .65) * swayAmp;
+
+    // Deep breathing
+    this.torsoPivot.scale.y = 1 + Math.sin(t * 0.75) * .025;
+    this.torsoPivot.scale.x = 1 - Math.sin(t * 0.75) * .01;
+    this.head.position.y    = 2.62 + Math.sin(t * .75) * .015;
+
+    // Shoulders drop slightly
+    this.shoulderPivots[0].position.y = lerp(this.shoulderPivots[0].position.y, -.04, .04);
+    this.shoulderPivots[1].position.y = lerp(this.shoulderPivots[1].position.y, -.04, .04);
+  }
+
+  // ── Setcolor per phase ──────────────────────────
+  setPhase(phaseKey) {
+    if (this.currentPhaseKey === phaseKey) return;
+    this.currentPhaseKey = phaseKey;
+    const p = PHASES.find(p => p.key === phaseKey);
+    if (!p) return;
+    const col = new THREE.Color(p.color).multiplyScalar(.45).add(new THREE.Color(0x8090a8).multiplyScalar(.55));
+    this.mat.color.set(col);
+    this.mat.emissive.set(p.emissive);
+    this.jointMat.emissive.set(p.emissive);
+  }
+
+  resetPose() {
+    this.currentPhaseKey = null;
+    this._time = 0;
+    this.root.rotation.set(.05, 0, 0);
+    this.torsoPivot.rotation.set(0, 0, 0);
+    this.torsoPivot.scale.set(1, 1, 1);
+    this.head.rotation.set(0, 0, 0);
+    this.head.position.set(0, 2.62, 0);
+    this.shoulderPivots.forEach((p, i) => {
+      p.position.y = 0;
+      p.rotation.z = this._shoulderBaseZ[i];
+    });
+    this.forearmPivots.forEach((p, i) => {
+      p.rotation.x = .5;
+    });
+    this.mat.color.set(0xc8d8e8);
+    this.mat.emissive.set(0x0a2540);
+    this.jointMat.emissive.set(0x0a2540);
+  }
+
+  toggleView(isSide) {
+    const target = isSide ? Math.PI / 2 : 0;
+    // Animate rotation smoothly via a flag
+    this._targetRotY = target;
+    this._rotatingView = true;
+  }
+}
+
+/* ═══════════════════════════════════════
+   PARTICLE SYSTEM
+════════════════════════════════════════ */
+class ParticleSystem {
+  constructor(scene) {
+    this.N = window.innerWidth < 480 ? 50 : 80;
+    const pos = new Float32Array(this.N * 3);
+    this.geom = new THREE.BufferGeometry();
+    this.geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+    this.mat = new THREE.PointsMaterial({
+      size: .045, color: 0x38bdf8,
+      transparent: true, opacity: .65,
+      depthWrite: false, sizeAttenuation: true
+    });
+
+    this.mesh = new THREE.Points(this.geom, this.mat);
+    scene.add(this.mesh);
+
+    this.particles = Array.from({length: this.N}, () => this._spawn(true));
+    this._phaseKey = null;
+    this.enabled = true;
+  }
+
+  _spawn(random = false) {
+    return {
+      x: (Math.random() - .5) * 2.2,
+      y: random ? Math.random() * 3.5 : -.2,
+      z: (Math.random() - .5) * 1.2,
+      vx: (Math.random() - .5) * .008,
+      vy: .008 + Math.random() * .018,
+      vz: (Math.random() - .5) * .006,
+      life: random ? Math.random() : 0,
+      maxLife: 1.5 + Math.random() * 2
+    };
+  }
+
+  setPhase(key) {
+    this._phaseKey = key;
+    const colors = { A: 0x38bdf8, B: 0xf59e0b, C: 0xa78bfa, D: 0x10b981 };
+    this.mat.color.set(colors[key] || 0x38bdf8);
+  }
+
+  update(dt) {
+    if (!this.enabled) { this.mesh.visible = false; return; }
+    this.mesh.visible = true;
+    const pos = this.geom.attributes.position.array;
+    const key = this._phaseKey;
+
+    this.particles.forEach((p, i) => {
+      p.life += dt;
+      if (p.life > p.maxLife) Object.assign(p, this._spawn(false));
+
+      if (key === 'A') {
+        // gentle ascent
+        p.vy = .012 + Math.sin(p.life * 1.2) * .003;
+        p.vx *= .98;
+      } else if (key === 'B') {
+        // erratic tension
+        p.vx += (Math.random() - .5) * .004;
+        p.vy = .006 + Math.random() * .008;
+        p.vz += (Math.random() - .5) * .004;
+      } else if (key === 'C') {
+        // radiate outward
+        const dx = p.x, dz = p.z;
+        const d = Math.sqrt(dx*dx + dz*dz) || 1;
+        p.vx += (dx/d) * .003;
+        p.vz += (dz/d) * .003;
+        p.vy = .004;
+      } else if (key === 'D') {
+        // slow waves
+        p.vy = .005 + Math.sin(p.life * .8) * .004;
+        p.vx = Math.sin(p.life * 1.2 + p.y) * .006;
+      }
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+
+      // Wrap
+      if (p.y > 3.8) p.y = -.2;
+      if (Math.abs(p.x) > 1.6) p.vx *= -.5;
+      if (Math.abs(p.z) > .9)  p.vz *= -.5;
+
+      pos[i*3]   = p.x;
+      pos[i*3+1] = p.y;
+      pos[i*3+2] = p.z;
+    });
+
+    this.geom.attributes.position.needsUpdate = true;
+    const lifeRatio = this.particles.reduce((s,p) => s + p.life/p.maxLife, 0) / this.N;
+    this.mat.opacity = clamp(.3 + lifeRatio * .35, .2, .7);
+  }
+
+  reset() {
+    this.particles = this.particles.map(() => this._spawn(true));
+    this.mat.color.set(0x38bdf8);
+    this._phaseKey = null;
+  }
+}
+
+/* ═══════════════════════════════════════
+   AUDIO ENGINE
+════════════════════════════════════════ */
+class AudioEngine {
+  constructor() {
+    this.enabled    = true;
+    this._el        = new Audio();
+    this._el.preload = 'auto';
+    this._el.playsInline = true;
+    this._ctx       = null;
+    this._lastKey   = null;
+    this._initiated = false;
+  }
+
+  init() {
+    if (this._initiated) return;
+    this._initiated = true;
+    try {
+      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) {}
+  }
+
+  play(key, vol = 1) {
+    if (!this.enabled) return;
+    this._el.pause();
+    this._lastKey = key;
+    const src = AUDIO_PATHS[key];
+    if (!src) return;
+    this._el.src = src;
+    this._el.volume = clamp(vol, 0, 1);
+    this._el.play().catch(() => this._tone(key));
+  }
+
+  _tone(key) {
+    if (!this._ctx) return;
+    const freqs = { A: 220, B: 160, C: 280, D: 196, chime: 523, finish: 659 };
+    const freq = freqs[key] || 220;
+    try {
+      const osc  = this._ctx.createOscillator();
+      const gain = this._ctx.createGain();
+      osc.connect(gain); gain.connect(this._ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, this._ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(.12, this._ctx.currentTime + .15);
+      gain.gain.linearRampToValueAtTime(0,   this._ctx.currentTime + 1.2);
+      osc.start(this._ctx.currentTime);
+      osc.stop(this._ctx.currentTime + 1.4);
+    } catch(e) {}
+  }
+
+  stop() {
+    try { this._el.pause(); this._el.currentTime = 0; } catch(e) {}
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    if (!this.enabled) this.stop();
+    return this.enabled;
+  }
+}
+
+/* ═══════════════════════════════════════
+   ANXIETY TRACKER
+════════════════════════════════════════ */
+class AnxietyTracker {
+  constructor() {
+    this.before = 5;
+    this.after  = null;
+    this._slBefore = document.getElementById('sliderBefore');
+    this._slAfter  = document.getElementById('sliderAfter');
+    this._valBefore= document.getElementById('valBefore');
+    this._valAfter = document.getElementById('valAfter');
+
+    this._slBefore.addEventListener('input', () => {
+      this.before = +this._slBefore.value;
+      this._valBefore.textContent = this.before;
+      this._colorVal(this._valBefore, this.before);
+    });
+    this._slAfter.addEventListener('input', () => {
+      this.after = +this._slAfter.value;
+      this._valAfter.textContent = this.after;
+      this._colorVal(this._valAfter, this.after);
+    });
+    this._colorVal(this._valBefore, this.before);
+  }
+
+  _colorVal(el, v) {
+    el.style.color = v <= 3 ? '#10B981' : v <= 6 ? '#F59E0B' : '#ef4444';
+  }
+
+  showAfter() {
+    document.getElementById('anxietyAfter').style.display = 'block';
+  }
+
+  buildSummary() {
+    const b = this.before;
+    const a = this.after !== null ? this.after : +this._slAfter.value;
+    const diff = b - a;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const timeStr = now.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit' });
+
+    let msg = '';
+    if (diff >= 4)      msg = '✅ Excelente regulación. El ejercicio fue muy efectivo.';
+    else if (diff >= 2) msg = '✅ Buena respuesta. Notás mejoría significativa.';
+    else if (diff >= 0) msg = '🔄 Pequeña mejoría o mantenimiento. Normal en sesiones iniciales.';
+    else                msg = '💡 La ansiedad aumentó levemente. Puede ser activación inicial — repetí.';
+
+    return `Ejercicio en Silla · Método Dagnino
+─────────────────────────────
+Fecha:          ${dateStr}
+Hora:           ${timeStr}
+─────────────────────────────
+Ansiedad antes: ${b}/10
+Ansiedad después: ${a}/10
+Diferencia:     ${diff >= 0 ? '-' : '+'}${Math.abs(diff)} puntos
+─────────────────────────────
+${msg}
+─────────────────────────────
+Dr. Pedro Nicolás Dagnino
+Psiquiatría · Medicina Aeronáutica`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   UI MANAGER
+════════════════════════════════════════ */
+class UIManager {
+  constructor() {
+    this.timerEl      = document.getElementById('timerDisplay');
+    this.phaseTitle   = document.getElementById('phaseTitle');
+    this.instructEl   = document.getElementById('instructionText');
+    this.phaseBadge   = document.getElementById('phaseBadge');
+    this.ringFill     = document.getElementById('ringFill');
+    this.btnMain      = document.getElementById('btnMain');
+    this.btnReset     = document.getElementById('btnReset');
+    this.btnAudio     = document.getElementById('btnAudio');
+    this.btnFocus     = document.getElementById('btnFocus');
+    this.btnRMot      = document.getElementById('btnReduceMotion');
+    this.summaryCard  = document.getElementById('summaryCard');
+    this.summaryBody  = document.getElementById('summaryBody');
+    this.viewLabel    = document.getElementById('viewLabel');
+    this._focusOn     = false;
+    this._sideView    = false;
+  }
+
+  reset() {
+    this.timerEl.textContent = fmt(TOTAL_SEC);
+    this.timerEl.style.color = '';
+    this.phaseTitle.textContent = '—';
+    this.instructEl.textContent = 'Presioná Iniciar para comenzar la rutina.';
+    this.phaseBadge.textContent = 'Listo';
+    this.phaseBadge.style.color = '';
+    this.phaseBadge.style.borderColor = '';
+    this.ringFill.style.strokeDashoffset = RING_CIRCUMFERENCE;
+    this.ringFill.style.stroke = 'var(--accent)';
+    this.btnMain.textContent = '▶';
+    this.btnMain.classList.remove('running');
+    this.btnMain.setAttribute('aria-label', 'Iniciar rutina');
+    this.summaryCard.classList.remove('visible');
+    document.getElementById('anxietyAfter').style.display = 'none';
+  }
+
+  tick(elapsedSec) {
+    const remaining = TOTAL_SEC - elapsedSec;
+    this.timerEl.textContent = fmt(remaining);
+
+    // Ring
+    const pct = elapsedSec / TOTAL_SEC;
+    const offset = RING_CIRCUMFERENCE * (1 - pct);
+    this.ringFill.style.strokeDashoffset = offset.toFixed(1);
+
+    // Phase info
+    const info = getPhaseAt(elapsedSec);
+    if (info) {
+      const { phase } = info;
+      this.phaseTitle.textContent   = `Fase ${phase.key} — ${phase.title}`;
+      this.instructEl.textContent   = phase.instruction;
+      this.phaseBadge.textContent   = phase.title;
+      this.phaseBadge.style.color       = phase.badgeColor;
+      this.phaseBadge.style.borderColor = phase.badgeColor + '55';
+      this.ringFill.style.stroke    = phase.ringColor;
+      this.timerEl.style.color      = phase.ringColor;
+    }
+  }
+
+  setRunning(isRunning) {
+    this.btnMain.textContent = isRunning ? '⏸' : '▶';
+    isRunning ? this.btnMain.classList.add('running') : this.btnMain.classList.remove('running');
+    this.btnMain.setAttribute('aria-label', isRunning ? 'Pausar rutina' : 'Reanudar rutina');
+  }
+
+  setAudioIcon(enabled) {
+    this.btnAudio.textContent = enabled ? '🔊' : '🔇';
+    enabled ? this.btnAudio.classList.remove('muted') : this.btnAudio.classList.add('muted');
+  }
+
+  showFinish() {
+    this.phaseBadge.textContent = '✓ Completado';
+    this.phaseBadge.style.color = '#10B981';
+    this.phaseBadge.style.borderColor = '#10B98155';
+    this.ringFill.style.strokeDashoffset = '0';
+    this.timerEl.textContent = '00:00';
+    this.timerEl.style.color = '#10B981';
+    this.phaseTitle.textContent = 'Rutina completada';
+    this.instructEl.textContent = 'Excelente. Calificá tu ansiedad ahora.';
+    this.btnMain.textContent = '▶';
+    this.btnMain.classList.remove('running');
+  }
+
+  showSummary(text) {
+    this.summaryBody.textContent = text;
+    this.summaryCard.classList.add('visible');
+    this.summaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  toggleFocus() {
+    this._focusOn = !this._focusOn;
+    document.body.classList.toggle('focus-mode', this._focusOn);
+    this.btnFocus.classList.toggle('active', this._focusOn);
+    this.btnFocus.setAttribute('aria-pressed', String(this._focusOn));
+  }
+
+  toggleView(avatar) {
+    this._sideView = !this._sideView;
+    avatar.toggleView(this._sideView);
+    this.viewLabel.textContent = this._sideView ? '◉ Lateral' : '◉ Frontal';
+  }
+}
+
+/* ═══════════════════════════════════════
+   CONFETTI
+════════════════════════════════════════ */
+function spawnConfetti() {
+  const colors = ['#38BDF8','#10B981','#F59E0B','#A78BFA','#fff'];
+  for (let i = 0; i < 38; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left  = Math.random() * 100 + 'vw';
+      el.style.top   = '-10px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width  = (6 + Math.random() * 8) + 'px';
+      el.style.height = (6 + Math.random() * 8) + 'px';
+      el.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+      el.style.animationDelay   = (Math.random() * .4) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }, i * 40);
+  }
+}
+
+/* ═══════════════════════════════════════
+   THREE.JS SCENE SETUP
+════════════════════════════════════════ */
+function setupScene() {
+  const canvas   = document.getElementById('threeCanvas');
+  const wrap     = document.getElementById('canvasWrap');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(46, 1, .1, 60);
+  camera.position.set(0, 1.5, 4.6);
+  camera.lookAt(0, 1.5, 0);
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0xffffff, .55);
+  scene.add(ambient);
+
+  const sun = new THREE.DirectionalLight(0xb8d8ff, 1.1);
+  sun.position.set(2, 5, 3);
+  sun.castShadow = true;
+  scene.add(sun);
+
+  const fill = new THREE.DirectionalLight(0x38bdf8, .35);
+  fill.position.set(-2, 1, -2);
+  scene.add(fill);
+
+  const rim = new THREE.DirectionalLight(0x10b981, .2);
+  rim.position.set(0, -1, -3);
+  scene.add(rim);
+
+  // Ground plane (chair seat suggestion)
+  const gGeom = new THREE.CylinderGeometry(.55, .55, .06, 32);
+  const gMat  = new THREE.MeshStandardMaterial({ color: 0x1e3a5f, roughness: .8 });
+  const ground = new THREE.Mesh(gGeom, gMat);
+  ground.position.set(0, -.02, .1);
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // Resize handler
+  function resize() {
+    const w = wrap.clientWidth;
+    renderer.setSize(w, w, false);
+    camera.aspect = 1;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  return { renderer, scene, camera };
+}
+
+/* ═══════════════════════════════════════
+   GESTURE HANDLER
+════════════════════════════════════════ */
+class GestureHandler {
+  constructor(el, onSwipe, onDoubleTap) {
+    this._el = el;
+    this._onSwipe = onSwipe;
+    this._onDoubleTap = onDoubleTap;
+    this._startX = 0; this._startY = 0;
+    this._lastTap = 0;
+
+    el.addEventListener('touchstart',  e => this._ts(e), { passive: true });
+    el.addEventListener('touchend',    e => this._te(e), { passive: true });
+  }
+  _ts(e) {
+    this._startX = e.touches[0].clientX;
+    this._startY = e.touches[0].clientY;
+  }
+  _te(e) {
+    const dx = e.changedTouches[0].clientX - this._startX;
+    const dy = e.changedTouches[0].clientY - this._startY;
+    const abs = Math.max(Math.abs(dx), Math.abs(dy));
+
+    // Double tap
+    if (abs < 12) {
+      const now = Date.now();
+      if (now - this._lastTap < 280) { this._onDoubleTap(); this._lastTap = 0; return; }
+      this._lastTap = now;
+      return;
+    }
+
+    if (abs < 30) return;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      this._onSwipe(dx > 0 ? 'right' : 'left');
+    } else {
+      this._onSwipe(dy < 0 ? 'up' : 'down');
+    }
+  }
+}
+
+/* ═══════════════════════════════════════
+   MAIN — INITIALIZATION & ORCHESTRATION
+════════════════════════════════════════ */
+(function main() {
+
+  const { renderer, scene, camera } = setupScene();
+  const avatar    = new Avatar3D(scene);
+  const particles = new ParticleSystem(scene);
+  const audio     = new AudioEngine();
+  const clock     = new MasterClock();
+  const ui        = new UIManager();
+  const anxiety   = new AnxietyTracker();
+
+  let startedOnce   = false;
+  let currentPhaseIdx = -1;
+  let isReduced     = false;
+  let viewRotating  = false;
+
+  // ── Render loop ──────────────────────────────────
+  const threeClock = new THREE.Clock();
+  function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    const dt = threeClock.getDelta();
+
+    // Smooth view rotation
+    if (avatar._rotatingView) {
+      const target = avatar._targetRotY || 0;
+      avatar.root.rotation.y = lerp(avatar.root.rotation.y, target, .08);
+      if (Math.abs(avatar.root.rotation.y - target) < .005) {
+        avatar.root.rotation.y = target;
+        avatar._rotatingView = false;
+      }
+    }
+
+    // Get current phase info for avatar
+    const phaseInfo = clock.elapsed > 0 ? getPhaseAt(clock.elapsed) : null;
+    if (!isReduced) {
+      avatar.update(dt, clock.elapsed, phaseInfo);
+      particles.update(dt);
+    }
+
+    renderer.render(scene, camera);
+  }
+  renderLoop();
+
+  // ── Clock callbacks ──────────────────────────────
+  clock.onTick = (elapsedSec) => {
+    ui.tick(elapsedSec);
+
+    // Phase change detection
+    const info = getPhaseAt(elapsedSec);
+    if (info && info.index !== currentPhaseIdx) {
+      currentPhaseIdx = info.index;
+      const phase = info.phase;
+      avatar.setPhase(phase.key);
+      particles.setPhase(phase.key);
+      audio.play(phase.key, .9);
+    }
+  };
+
+  clock.onFinish = () => {
+    ui.showFinish();
+    audio.play('finish', .7);
+    if (!isReduced) spawnConfetti();
+    anxiety.showAfter();
+    document.dispatchEvent(new CustomEvent('sillaRutinaFinalizada'));
+  };
+
+  // ── Button: Start / Pause / Resume ───────────────
+  document.getElementById('btnMain').addEventListener('click', () => {
+    audio.init();
+
+    if (!startedOnce) {
+      startedOnce = true;
+      audio.play('chime', .45);
+      setTimeout(() => {
+        audio.play('intro', .9);
+        setTimeout(() => {
+          clock.start();
+          ui.setRunning(true);
+          currentPhaseIdx = -1;
+        }, 2400); // after intro (~2.4s estimate; timer starts regardless)
+      }, 600);
+      return;
+    }
+
+    if (clock.running) {
+      clock.pause();
+      audio.stop();
+      ui.setRunning(false);
+    } else {
+      if (clock.elapsed >= TOTAL_SEC) return;
+      clock.start();
+      ui.setRunning(true);
+      // Resume audio for current phase
+      const info = getPhaseAt(clock.elapsed);
+      if (info) audio.play(info.phase.key, .9);
+    }
+  });
+
+  // ── Button: Reset ────────────────────────────────
+  document.getElementById('btnReset').addEventListener('click', () => {
+    clock.reset();
+    audio.stop();
+    startedOnce   = false;
+    currentPhaseIdx = -1;
+    avatar.resetPose();
+    particles.reset();
+    ui.reset();
+    document.getElementById('anxietyAfter').style.display = 'none';
+  });
+
+  // ── Button: Audio toggle ─────────────────────────
+  document.getElementById('btnAudio').addEventListener('click', () => {
+    const on = audio.toggle();
+    ui.setAudioIcon(on);
+  });
+
+  // ── Button: Focus ────────────────────────────────
+  document.getElementById('btnFocus').addEventListener('click', () => {
+    ui.toggleFocus();
+  });
+
+  // ── Button: Reduce motion ────────────────────────
+  document.getElementById('btnReduceMotion').addEventListener('click', () => {
+    isReduced = !isReduced;
+    document.body.classList.toggle('reduced-motion', isReduced);
+    avatar.reduced = isReduced;
+    particles.enabled = !isReduced;
+    document.getElementById('btnReduceMotion').classList.toggle('active', isReduced);
+    document.getElementById('btnReduceMotion').setAttribute('aria-pressed', String(isReduced));
+  });
+
+  // Respect system preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    isReduced = true;
+    avatar.reduced = true;
+    particles.enabled = false;
+    document.getElementById('btnReduceMotion').classList.add('active');
+    document.body.classList.add('reduced-motion');
+  }
+
+  // ── Finalize button (after test) ─────────────────
+  document.getElementById('btnFinalize').addEventListener('click', () => {
+    const text = anxiety.buildSummary();
+    ui.showSummary(text);
+    document.getElementById('anxietyAfter').style.display = 'none';
+
+    // Web Share API
+    const shareBtn = document.getElementById('btnShareResult');
+    if (navigator.share) shareBtn.style.display = 'flex';
+    shareBtn.addEventListener('click', () => {
+      navigator.share({ title: 'Ejercicio en Silla · Método Dagnino', text }).catch(() => {});
+    }, { once: true });
+  });
+
+  // ── Copy button ──────────────────────────────────
+  document.getElementById('btnCopy').addEventListener('click', () => {
+    const text = document.getElementById('summaryBody').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btnCopy');
+        btn.textContent = '✓ Copiado';
+        setTimeout(() => { btn.textContent = 'Copiar'; }, 2000);
+      });
+    }
+  });
+
+  // ── New session ──────────────────────────────────
+  document.getElementById('btnRestart').addEventListener('click', () => {
+    clock.reset();
+    audio.stop();
+    startedOnce   = false;
+    currentPhaseIdx = -1;
+    avatar.resetPose();
+    particles.reset();
+    ui.reset();
+    document.getElementById('anxietyAfter').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Gestures on canvas ───────────────────────────
+  new GestureHandler(
+    document.getElementById('canvasWrap'),
+    (dir) => {
+      if (dir === 'left') {
+        if (clock.running) { clock.pause(); audio.stop(); ui.setRunning(false); }
+      } else if (dir === 'right') {
+        if (!clock.running && startedOnce && clock.elapsed < TOTAL_SEC) {
+          clock.start(); ui.setRunning(true);
+          const info = getPhaseAt(clock.elapsed);
+          if (info) audio.play(info.phase.key, .9);
+        }
+      } else if (dir === 'up') {
+        ui.toggleFocus();
+      }
+    },
+    () => ui.toggleView(avatar)
+  );
+
+  // ── Keyboard support ─────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === ' ' || e.key === 'Enter') {
+      document.getElementById('btnMain').click(); e.preventDefault();
+    }
+    if (e.key === 'r' || e.key === 'R') document.getElementById('btnReset').click();
+    if (e.key === 'm' || e.key === 'M') document.getElementById('btnAudio').click();
+    if (e.key === 'f' || e.key === 'F') document.getElementById('btnFocus').click();
+    if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) ui.toggleFocus();
+  });
+
+  // ── Initial UI state ─────────────────────────────
+  ui.reset();
+
+})();
+</script>
+
+</body>
+</html>
