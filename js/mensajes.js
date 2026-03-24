@@ -134,6 +134,18 @@
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ─── Formato de timestamp legible ────────────────────────────────────────────
+  function _formatTs(ts) {
+    if (!ts) return '';
+    var d   = new Date(ts);
+    var now = new Date();
+    if (d.toDateString() === now.toDateString()) {
+      return 'Hoy a las ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+    var dias = ['dom','lun','mar','mié','jue','vie','sáb'];
+    return dias[d.getDay()] + '. ' + d.getDate() + '/' + (d.getMonth() + 1);
+  }
+
   // ─── Widget visual ───────────────────────────────────────────────────────────
   // Renderiza dentro del elemento con id = containerId.
   // Muestra el mensaje actual con badge de categoría y botón "Siguiente →".
@@ -143,11 +155,15 @@
 
     function pintar() {
       var msg = getActual();
-      if (!msg) { el.style.display = 'none'; return; }
+      if (!msg) {
+        el.innerHTML = '<p style="margin:0;font-size:.88rem;color:var(--muted,#8a9bb5);font-style:italic">No hay mensajes disponibles.</p>';
+        return;
+      }
       _guardarUltimo(msg);
 
-      var p = _paletaDe(msg.categoria);
-      el.style.display = 'block';
+      var p   = _paletaDe(msg.categoria);
+      var u   = getUltimo();
+      var ts  = u && u.ts ? _formatTs(u.ts) : '';
 
       el.innerHTML =
         '<div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">' +
@@ -161,6 +177,7 @@
               'color:var(--text,#cdd6e4);font-style:italic">' +
               '&#8220;' + _esc(msg.texto) + '&#8221;' +
             '</p>' +
+            (ts ? '<p style="margin:6px 0 0;font-size:.7rem;color:var(--muted,#8a9bb5);opacity:.55">' + _esc(ts) + '</p>' : '') +
           '</div>' +
           '<button id="msg-sig-btn" type="button" aria-label="Ver siguiente mensaje" ' +
             'style="flex-shrink:0;align-self:flex-end;font-size:.75rem;padding:5px 13px;' +
