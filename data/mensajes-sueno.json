@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "tipo": "sueno",
+    "titulo": "Empezá a bajar el ritmo",
+    "mensaje": "El día ya cumplió su parte. Empezá a soltar las tareas pendientes y preparate mentalmente para la noche.",
+    "hora": "20:00",
+    "duracion_min": 60,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "tipo": "sueno",
+    "titulo": "Bajá la intensidad del día",
+    "mensaje": "Evitá decisiones importantes o conversaciones que activen tu mente ahora. El cuerpo necesita señales claras de que es de noche.",
+    "hora": "21:00",
+    "duracion_min": 30,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "tipo": "sueno",
+    "titulo": "Prepará el ambiente",
+    "mensaje": "Bajá las luces si podés. La luz intensa le indica al cerebro que sigue siendo de día. Un ambiente tenue favorece la liberación de melatonina.",
+    "hora": "21:30",
+    "duracion_min": 30,
+    "activo": true
+  },
+  {
+    "id": 4,
+    "tipo": "sueno",
+    "titulo": "Reducí las pantallas",
+    "mensaje": "La luz azul de celulares y televisores puede retrasar el sueño hasta dos horas. Si podés, dejá el teléfono fuera del cuarto.",
+    "hora": "22:00",
+    "duracion_min": 30,
+    "activo": true
+  },
+  {
+    "id": 5,
+    "tipo": "sueno",
+    "titulo": "Iniciá tu rutina de sueño",
+    "mensaje": "Una rutina breve y repetida —higiene personal, lectura liviana, respiración— le indica al sistema nervioso que es momento de bajar la guardia.",
+    "hora": "22:30",
+    "duracion_min": 30,
+    "activo": true
+  },
+  {
+    "id": 6,
+    "tipo": "sueno",
+    "titulo": "Priorizá el descanso",
+    "mensaje": "Lo que queda pendiente puede esperar hasta mañana. El sueño perdido esta noche no se recupera con la misma calidad al día siguiente.",
+    "hora": "23:00",
+    "duracion_min": 30,
+    "activo": true
+  },
+  {
+    "id": 7,
+    "tipo": "sueno",
+    "titulo": "Hora de dormir",
+    "mensaje": "Si todavía estás con el teléfono, este es el recordatorio: dejalo. El descanso empieza con una decisión, no con el sueño.",
+    "hora": "23:30",
+    "duracion_min": 60,
+    "activo": true
+  }
+]
