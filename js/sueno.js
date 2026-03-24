@@ -31,10 +31,24 @@
   ];
 
   // ─── Fuente de datos ───────────────────────────────────────────────────────
-  // PUNTO DE MIGRACIÓN: para conectar con Firebase, reemplazar esta función
-  // por una que llame a Firestore.collection('mensajes_sueno').get()
-  // y devuelva el array al mismo callback.
+  // PUNTO DE MIGRACIÓN [FIREBASE]: reemplazar esta función por una consulta a
+  // Firestore.collection('mensajes_sueno').where('activo','==',true).get()
+  // y pasar el array resultante al callback. El resto del módulo no cambia.
   function cargarMensajes(callback) {
+    // Prioridad 1: datos editados desde el panel admin (localStorage)
+    var adminData = localStorage.getItem('admin_mensajes_sueno');
+    if (adminData) {
+      try {
+        var parsed = JSON.parse(adminData);
+        var activos = parsed.filter(function (m) { return m.activo !== false; });
+        if (activos.length > 0) {
+          callback(activos);
+          return;
+        }
+      } catch (_) { /* JSON inválido, continuar con fetch */ }
+    }
+
+    // Prioridad 2: JSON original
     fetch('/data/mensajes-sueno.json')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);

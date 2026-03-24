@@ -25,7 +25,29 @@
   var _pendingCallbacks = [];
 
   // ─── Carga del JSON ──────────────────────────────────────────────────────────
+  // PUNTO DE MIGRACIÓN [FIREBASE]: reemplazar esta función por una consulta a
+  // Firestore.collection('mensajes_generales').where('activo','==',true).get()
   function cargar() {
+    // Prioridad 1: datos editados desde el panel admin (localStorage)
+    var adminData = localStorage.getItem('admin_mensajes_generales');
+    if (adminData) {
+      try {
+        var parsed = JSON.parse(adminData);
+        // El admin guarda en formato {titulo, mensaje, tipo}; convertir al formato interno
+        var activos = parsed.filter(function (m) { return m.activo !== false; });
+        if (activos.length > 0) {
+          _mensajes = activos.map(function (m) {
+            return { id: m.id, categoria: m.tipo, texto: m.mensaje, activo: m.activo };
+          });
+          _listo = true;
+          _pendingCallbacks.forEach(function (cb) { try { cb(); } catch (_) {} });
+          _pendingCallbacks = [];
+          return;
+        }
+      } catch (_) { /* JSON inválido, continuar con fetch */ }
+    }
+
+    // Prioridad 2: JSON original
     fetch('/data/mensajes-generales.json')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
