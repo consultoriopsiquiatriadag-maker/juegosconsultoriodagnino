@@ -570,6 +570,28 @@ a.btn-primary[href*="whatsapp"]{
   </div>
 </section>
 
+<div class="divider" aria-hidden="true"></div>
+
+<!-- Recordatorios de bienestar -->
+<section class="section">
+  <div class="section-card hint-bg" id="notif-card">
+    <div class="card-head">
+      <div>
+        <h3 class="card-title">Recordatorios de bienestar</h3>
+        <p class="card-sub">Activá frases motivacionales y recordatorios saludables directamente en tu dispositivo.</p>
+      </div>
+      <button class="btn-primary" id="notif-btn" type="button">Activar recordatorios</button>
+    </div>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <p id="notif-status" style="margin:0;font-size:.85rem;color:var(--muted,#8a9bb5)"></p>
+      <button id="notif-demo-btn" type="button"
+        style="display:none;font-size:.78rem;padding:5px 16px;border:1px solid #4a90d9;background:transparent;color:#4a90d9;border-radius:20px;cursor:pointer;transition:opacity .2s"
+        onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        Probar notificación
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- Noticias de salud mental -->
 <section class="section">
@@ -652,5 +674,7 @@ a.btn-primary[href*="whatsapp"]{
   <script src="assets/js/audio.js?v=2"></script>
   <script src="assets/js/spa.js?v=2"></script>
   <script src="assets/js/app.js?v=2"></script>
+  <script src="js/register-sw.js"></script>
+  <script src="js/notifications.js"></script>
 </body>
 </html>

@@ -90,3 +90,43 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+// ─── Push Notifications ──────────────────────────────────────────────────────
+
+self.addEventListener("push", (event) => {
+  let data = {
+    title: "Recordatorio de bienestar",
+    body: "Tomá un momento para vos hoy.",
+    url: "/"
+  };
+
+  if (event.data) {
+    try { Object.assign(data, event.data.json()); }
+    catch (_) { data.body = event.data.text(); }
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(data.title || "Dr. Dagnino", {
+      body:      data.body  || "",
+      icon:      "/icon-192.png",
+      badge:     "/icon-192.png",
+      tag:       "bienestar",
+      renotify:  true,
+      vibrate:   [200, 100, 200],
+      data:      { url: data.url || "/" }
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "/";
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if (client.url.endsWith(url) && "focus" in client) return client.focus();
+      }
+      return clients.openWindow ? clients.openWindow(url) : null;
+    })
+  );
+});
