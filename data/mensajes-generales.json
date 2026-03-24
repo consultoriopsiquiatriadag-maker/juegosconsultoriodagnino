@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "categoria": "pausa",
+    "texto": "Detenete un momento. Respirar también es avanzar.",
+    "activo": true
+  },
+  {
+    "id": 2,
+    "categoria": "pausa",
+    "texto": "No todo necesita resolverse ahora. Algunas cosas se acomodan solas si les dás espacio.",
+    "activo": true
+  },
+  {
+    "id": 3,
+    "categoria": "pausa",
+    "texto": "Una pequeña pausa puede cambiar el resto del día. Cinco minutos sin pantalla cuentan.",
+    "activo": true
+  },
+  {
+    "id": 4,
+    "categoria": "motivacional",
+    "texto": "No necesitás estar bien todo el tiempo. Solo hacer lo que podés con lo que tenés hoy.",
+    "activo": true
+  },
+  {
+    "id": 5,
+    "categoria": "motivacional",
+    "texto": "Cada día que llegaste hasta aquí cuenta. Aunque no lo parezca, es suficiente.",
+    "activo": true
+  },
+  {
+    "id": 6,
+    "categoria": "motivacional",
+    "texto": "Pedir ayuda es un acto de valentía. Reconocer lo que sentís es el primer paso.",
+    "activo": true
+  },
+  {
+    "id": 7,
+    "categoria": "autocuidado",
+    "texto": "¿Tomaste agua hoy? ¿Comiste algo? El cuerpo también necesita atención, no solo la mente.",
+    "activo": true
+  },
+  {
+    "id": 8,
+    "categoria": "autocuidado",
+    "texto": "Dormir no es perder el tiempo. Es parte del proceso. Respetá tus horas de descanso.",
+    "activo": true
+  },
+  {
+    "id": 9,
+    "categoria": "autocuidado",
+    "texto": "Cuidarte no es egoísmo. Es la condición para poder cuidar a otros, si eso es lo que elegís.",
+    "activo": true
+  },
+  {
+    "id": 10,
+    "categoria": "regulacion",
+    "texto": "Sentir no es sufrir. Observá lo que sentís sin juzgarlo. Solo nombrarlo ya ayuda.",
+    "activo": true
+  },
+  {
+    "id": 11,
+    "categoria": "regulacion",
+    "texto": "Si el pensamiento se acelera, anclate: nombrá 5 cosas que ves, 4 que tocás, 3 que escuchás.",
+    "activo": true
+  },
+  {
+    "id": 12,
+    "categoria": "regulacion",
+    "texto": "Una respiración lenta activa el sistema nervioso parasimpático. Inhalá 4 segundos, exhalá 6.",
+    "activo": true
+  }
+]

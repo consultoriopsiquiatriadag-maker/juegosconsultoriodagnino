@@ -1,5 +1,6 @@
 // js/notifications.js — Recordatorios de bienestar
-// Infraestructura mínima para notificaciones push (fase demo sin backend).
+// Gestiona permisos, estados UI y notificaciones locales demo.
+// Delega los mensajes a window.MensajesManager (js/mensajes.js).
 // Compatible con Netlify, vanilla JS, sin Firebase.
 
 (function () {
@@ -7,23 +8,23 @@
 
   var LS_KEY = 'notif_subscribed';
 
-  // Frases de bienestar para modo demo local
-  var DEMO_MSGS = [
-    '¿Respiraste hondo hoy? Un minuto de pausa puede cambiar tu jornada.',
-    'Pedir ayuda es un acto de valentía, no de debilidad.',
-    'Tu mente también necesita descanso. Date un momento para vos.',
-    '¿Cómo te sentís ahora mismo? Tomá un instante para notarlo.',
-    'Pequeños pasos cuentan. ¿Cuál fue el tuyo hoy?',
-    'Recordá hidratarte. El bienestar también es físico.',
-    'Una pausa de 5 minutos al aire libre puede bajar el cortisol notablemente.'
-  ];
-
-  function randomMsg() {
-    return DEMO_MSGS[Math.floor(Math.random() * DEMO_MSGS.length)];
+  // ─── Mensaje para notificación ───────────────────────────────────────────────
+  // Usa MensajesManager si está disponible; si no, fallback hardcodeado.
+  function obtenerMensaje() {
+    if (window.MensajesManager && typeof window.MensajesManager.getRandom === 'function') {
+      var m = window.MensajesManager.getRandom();
+      if (m && m.texto) return m.texto;
+    }
+    // Fallback mínimo (no debería ocurrir si mensajes.js carga antes)
+    var fallback = [
+      'Detenete un momento. Respirar también es avanzar.',
+      'No todo necesita resolverse ahora.',
+      'Una pequeña pausa puede cambiar el resto del día.'
+    ];
+    return fallback[Math.floor(Math.random() * fallback.length)];
   }
 
-  // --- Estado ---
-
+  // ─── Estado ──────────────────────────────────────────────────────────────────
   function getPermission() {
     if (!('Notification' in window)) return 'unsupported';
     return Notification.permission; // 'default' | 'granted' | 'denied'
@@ -38,8 +39,7 @@
     else localStorage.removeItem(LS_KEY);
   }
 
-  // --- UI ---
-
+  // ─── UI del botón ────────────────────────────────────────────────────────────
   function updateUI() {
     var btn     = document.getElementById('notif-btn');
     var status  = document.getElementById('notif-status');
@@ -99,8 +99,7 @@
     if (demoBtn) demoBtn.style.display = 'none';
   }
 
-  // --- Notificación local (sin push backend) ---
-
+  // ─── Notificación local (sin push backend) ───────────────────────────────────
   function showLocalNotification(title, body) {
     if (getPermission() !== 'granted') return;
 
@@ -114,7 +113,8 @@
     };
 
     // Preferir SW para que funcione en background / PWA instalada
-    var swReady = window.SWReady || ('serviceWorker' in navigator ? navigator.serviceWorker.ready : null);
+    var swReady = window.SWReady ||
+      ('serviceWorker' in navigator ? navigator.serviceWorker.ready : null);
 
     if (swReady) {
       swReady.then(function (reg) {
@@ -127,8 +127,7 @@
     }
   }
 
-  // --- Flujo principal ---
-
+  // ─── Flujo de activación ─────────────────────────────────────────────────────
   function requestAndSubscribe() {
     if (!('Notification' in window)) return;
 
@@ -145,10 +144,9 @@
       status.style.color = '#4a90d9';
     }
 
-    // Notification.requestPermission puede devolver promesa o usar callback (legacy)
+    // requestPermission puede ser promesa o callback (Safari antiguo)
     var permPromise = Notification.requestPermission();
     if (!(permPromise && typeof permPromise.then === 'function')) {
-      // Fallback para Safari antiguo
       permPromise = new Promise(function (resolve) {
         Notification.requestPermission(resolve);
       });
@@ -156,7 +154,6 @@
 
     permPromise.then(function (permission) {
       if (permission === 'granted') {
-        // Demo: guardar estado en localStorage sin backend
         setSubscribed(true);
         updateUI();
         showLocalNotification(
@@ -172,20 +169,22 @@
     });
   }
 
+  // ─── Demo / prueba local ─────────────────────────────────────────────────────
   function showDemo() {
     var perm = getPermission();
     if (perm === 'unsupported' || perm === 'denied') return;
-    if (perm !== 'granted') {
-      requestAndSubscribe();
-      return;
-    }
-    showLocalNotification('Recordatorio de bienestar', randomMsg());
+    if (perm !== 'granted') { requestAndSubscribe(); return; }
+    showLocalNotification('Recordatorio de bienestar', obtenerMensaje());
   }
 
-  // --- Inicialización ---
-
+  // ─── Inicialización ──────────────────────────────────────────────────────────
   function init() {
     updateUI();
+
+    // Widget de mensajes (si el elemento existe en el DOM)
+    if (window.MensajesManager) {
+      MensajesManager.renderWidget('msg-widget');
+    }
 
     var btn     = document.getElementById('notif-btn');
     var demoBtn = document.getElementById('notif-demo-btn');
@@ -217,13 +216,13 @@
     init();
   }
 
-  // API pública para consola / debugging
+  // ─── API pública (consola / debugging) ───────────────────────────────────────
   window.NotifManager = {
-    showDemo:           showDemo,
+    showDemo:            showDemo,
     requestAndSubscribe: requestAndSubscribe,
-    updateUI:           updateUI,
-    getPermission:      getPermission,
-    isSubscribed:       isSubscribed,
+    updateUI:            updateUI,
+    getPermission:       getPermission,
+    isSubscribed:        isSubscribed,
     resetDemo: function () { setSubscribed(false); updateUI(); }
   };
 
