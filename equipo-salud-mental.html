@@ -24,15 +24,14 @@
 <style>
     .team-grid{display:grid; grid-template-columns:1fr; gap:16px}
     @media (min-width: 900px){ .team-grid{grid-template-columns:1fr} }
-    .team-avatar{
-      width:110px; height:110px; border-radius:22px;
+    .team-img{
+      width:120px; height:120px; border-radius:16px;
       background: rgba(255,255,255,.8);
       border:1px solid rgba(15,23,42,.10);
       box-shadow: 0 10px 30px rgba(2,6,23,.08);
-      display:flex; align-items:center; justify-content:center;
-      overflow:hidden; flex:0 0 auto;
+      overflow:hidden; flex-shrink:0; flex:0 0 auto;
     }
-    .avatar-img{width:100%; height:100%; object-fit:cover}
+    .team-img img, .avatar-img{width:100%; height:100%; object-fit:cover; aspect-ratio:1/1; border-radius:16px}
     .avatar-fallback{
       width:100%; height:100%;
       display:flex; align-items:center; justify-content:center;
@@ -216,7 +215,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
   <div class="card-head" style="align-items:flex-start">
     <div style="display:flex; gap:16px; align-items:flex-start">
-      <div aria-label="Foto o avatar del profesional" class="team-avatar">
+      <div aria-label="Foto o avatar del profesional" class="team-img">
         <img
           alt="Licenciada Yanina Leguizamon"
           class="avatar-img"
@@ -249,7 +248,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:center">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada María Paula Galderisi" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-galderisi.jpg"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Licenciada María Paula Galderisi" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-galderisi.jpg"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Licenciada María Paula Galderisi</h3>
 <p class="card-sub">Licenciada en Psicología</p>
@@ -262,7 +261,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Antonella Revello" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/antonella-revello.jpg"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Licenciada Antonella Revello" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/antonella-revello.jpg"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Licenciada Antonella Revello</h3>
 <p class="card-sub">Licenciada en Psicología</p>
@@ -276,7 +275,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Gisele S. Pohle" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/gisele-s-pohle.png"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Licenciada Gisele S. Pohle" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/gisele-s-pohle.png"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Licenciada Gisele S. Pohle</h3>
 <p class="card-sub">Licenciada en Psicología</p>
@@ -290,7 +289,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Belén Zugasti" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-belen-zugasti.png"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Dra. María Belén Zugasti" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-belen-zugasti.png"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Dra. María Belén Zugasti</h3>
 <p class="card-sub">Médica Especialista en Psiquiatría</p>
@@ -304,7 +303,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Paula Peralta" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-peralta.jpg"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Dra. María Paula Peralta" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maria-paula-peralta.jpg"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Dra. María Paula Peralta</h3>
 <p class="card-sub">Médica Especialista en Psiquiatría</p>
@@ -318,7 +317,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciado Maximiliano Siegler" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maximiliano-siegler.jpeg"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Licenciado Maximiliano Siegler" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/maximiliano-siegler.jpeg"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Licenciado Maximiliano Siegler</h3>
 <p class="card-sub">Licenciado en Psicología</p>
@@ -332,7 +331,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Licenciada Noel López Besada" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/noel-lopez-besada.jpg"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Licenciada Noel López Besada" class="avatar-img" loading="lazy" src="/Asociados_salud_mental/noel-lopez-besada.jpg"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Licenciada Noel López Besada</h3>
 <p class="card-sub">Licenciada en Psicología</p>
@@ -346,7 +345,7 @@
 <article class="section-card hint-bg" style="overflow:hidden">
 <div class="card-head" style="align-items:flex-start">
 <div style="display:flex; gap:16px; align-items:flex-start">
-<div aria-label="Foto o avatar del profesional" class="team-avatar"><img alt="Dra. María Tiziana Fenochietto" class="avatar-img" loading="lazy" src="/asociados_salud_mental/maria-tiziana-fenochietto.png"/></div>
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Dra. María Tiziana Fenochietto" class="avatar-img" loading="lazy" src="/asociados_salud_mental/maria-tiziana-fenochietto.png"/></div>
 <div>
 <h3 class="card-title" style="margin:0">Dra. María Tiziana Fenochietto</h3>
 <p class="card-sub">Médica especialista en Psiquiatría</p>
@@ -354,6 +353,22 @@
 </div>
 <div class="btn-row" style="margin:0; justify-content:flex-end">
 <a class="btn-primary" href="https://wa.me/5491155680034?text=Me%20ha%20recomendado%20el%20Doctor%20Pedro%20Nicolas%20Dagnino%20para%20obtener%20turnos%20con%20usted." rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+</article>
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div style="display:flex; gap:16px; align-items:flex-start">
+<div aria-label="Foto o avatar del profesional" class="team-img"><img alt="Dra. Jennifer Esqueff" class="avatar-img" loading="lazy" src="/asociados_salud_mental/Jennifer-Esqueff.png"/></div>
+<div>
+<h3 class="card-title" style="margin:0">Dra. Jennifer Esqueff</h3>
+<p class="card-sub">Médica</p>
+<p class="card-sub" style="margin-top:4px">Corrientes Capital — Belgrano 1343</p>
+<p class="card-sub" style="margin-top:2px">Tel: 3794-061900</p>
+</div>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="tel:+543794061900">Contacto (Llamar)</a>
 </div>
 </div>
 </article>
