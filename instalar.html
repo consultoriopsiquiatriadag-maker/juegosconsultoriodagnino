@@ -43,6 +43,72 @@
     .lang-btn[aria-pressed="false"]{ background:rgba(255,255,255,.12);color:#fff }
     .soft-shadow { box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08); }
     .card { background:#fff; border:1px solid rgba(15,30,51,.10); }
+
+    /* ===== section-card styles for modules ===== */
+    .section-card {
+      background: #fff;
+      border: 1px solid rgba(15,30,51,.10);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(2,6,23,.08);
+    }
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .card-icon {
+      font-size: 1.75rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f1e33;
+      margin: 0 0 4px;
+    }
+    .card-sub {
+      font-size: .875rem;
+      color: #475569;
+      margin: 0;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #2563eb;
+      color: #fff;
+      padding: 8px 18px;
+      font-size: .875rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: opacity .2s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { opacity: .9; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: transparent;
+      color: #2563eb;
+      padding: 8px 18px;
+      font-size: .875rem;
+      font-weight: 500;
+      border: 1px solid #2563eb;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-secondary:hover { opacity: .8; }
+    .note {
+      font-size: .8rem;
+      color: #475569;
+      margin-top: .5rem;
+    }
   </style>
 <style>
     /* iOS install help modal (reuse navsheet look) */
@@ -107,7 +173,7 @@
       <div id="iosInAppBanner" class="note" style="display:none; margin: 14px 0 18px;">
         <strong>iPhone / iPad:</strong> estás abriendo la página dentro de WhatsApp/Instagram (navegador embebido).
         Para poder <strong>instalar la app</strong>, abrila en <strong>Safari</strong>:
-        tocá <strong>⋯</strong> o <strong>Compartir</strong> y elegí <strong>“Abrir en Safari”</strong>.
+        tocá <strong>⋯</strong> o <strong>Compartir</strong> y elegí <strong>"Abrir en Safari"</strong>.
         Luego: <strong>Compartir → Añadir a pantalla de inicio</strong>.
         <div style="margin-top:10px" class="btn-row">
           <button id="iosStepsBtn" class="btn-primary" type="button">Ver pasos iPhone</button>
@@ -153,7 +219,7 @@
             <div id="qrBox" class="p-2"></div>
           </div>
           <div class="text-xs text-gray text-center max-w-[18rem]">
-            Tip: en Android, después de abrir el link en Chrome → menú ⋮ → “Instalar app”.
+            Tip: en Android, después de abrir el link en Chrome → menú ⋮ → "Instalar app".
           </div>
         </div>
       </div>
@@ -181,8 +247,8 @@
         <div class="font-medium text-navy mb-1">Dónde aparece después de instalar</div>
         <ul class="list-disc ml-5 space-y-1">
           <li>En la mayoría de Android, queda en la <b>pantalla de inicio</b> como una app.</li>
-          <li>Si no la ves en el “menú/cajón de apps”, buscala en <b>Ajustes → Apps</b> como “Consultorio”.</li>
-          <li>Importante: elegí <b>“Instalar app”</b> (no solo “Agregar a pantalla principal”).</li>
+          <li>Si no la ves en el "menú/cajón de apps", buscala en <b>Ajustes → Apps</b> como "Consultorio".</li>
+          <li>Importante: elegí <b>"Instalar app"</b> (no solo "Agregar a pantalla principal").</li>
         </ul>
 
         <details class="mt-3">
@@ -205,7 +271,7 @@
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Abrí esta web en Google Chrome.</li>
             <li>Tocá el menú ⋮.</li>
-            <li>Elegí <b>“Instalar app”</b>. <span class="text-gray">(Si solo ves “Agregar a pantalla principal”, puede ser un acceso directo.)</span></li>
+            <li>Elegí <b>"Instalar app"</b>. <span class="text-gray">(Si solo ves "Agregar a pantalla principal", puede ser un acceso directo.)</span></li>
             <li>Confirmá.</li>
           </ol>
         </div>
@@ -214,8 +280,8 @@
           <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Abrí esta web en Safari.</li>
-            <li>Tocá “Compartir”.</li>
-            <li>Elegí “Agregar a pantalla de inicio”.</li>
+            <li>Tocá "Compartir".</li>
+            <li>Elegí "Agregar a pantalla de inicio".</li>
             <li>Confirmá.</li>
           </ol>
         </div>
@@ -230,7 +296,7 @@
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Open this site in Google Chrome.</li>
             <li>Tap the three-dot menu.</li>
-            <li>Select <b>“Install app”</b>. <span class="text-gray">(If you only see “Add to Home screen”, it may be just a shortcut.)</span></li>
+            <li>Select <b>"Install app"</b>. <span class="text-gray">(If you only see "Add to Home screen", it may be just a shortcut.)</span></li>
             <li>Confirm.</li>
           </ol>
         </div>
@@ -239,8 +305,8 @@
           <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Open this site in Safari.</li>
-            <li>Tap “Share”.</li>
-            <li>Select “Add to Home Screen”.</li>
+            <li>Tap "Share".</li>
+            <li>Select "Add to Home Screen".</li>
             <li>Confirm.</li>
           </ol>
         </div>
@@ -255,7 +321,7 @@
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Abra este site no Google Chrome.</li>
             <li>Toque no menu ⋮.</li>
-            <li>Selecione <b>“Instalar app”</b>. <span class="text-gray">(Se aparecer apenas “Adicionar à tela inicial”, pode ser só um atalho.)</span></li>
+            <li>Selecione <b>"Instalar app"</b>. <span class="text-gray">(Se aparecer apenas "Adicionar à tela inicial", pode ser só um atalho.)</span></li>
             <li>Confirme.</li>
           </ol>
         </div>
@@ -264,12 +330,41 @@
           <h3 class="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
           <ol class="list-decimal ml-5 space-y-1 text-gray">
             <li>Abra este site no Safari.</li>
-            <li>Toque em “Compartilhar”.</li>
-            <li>Selecione “Adicionar à Tela de Início”.</li>
+            <li>Toque em "Compartilhar".</li>
+            <li>Selecione "Adicionar à Tela de Início".</li>
             <li>Confirme.</li>
           </ol>
         </div>
       </div>
+    </section>
+
+    <!-- Módulo: Recordatorios de bienestar -->
+    <section class="section-card" id="notif-card" aria-labelledby="notif-title">
+      <div class="card-head">
+        <span class="card-icon" aria-hidden="true">🔔</span>
+        <div>
+          <h2 class="card-title" id="notif-title">Recordatorios de bienestar</h2>
+          <p class="card-sub">Mensajes motivacionales y recordatorios saludables durante el día.</p>
+        </div>
+      </div>
+      <div id="msg-widget"></div>
+      <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+        <button id="notif-btn" class="btn-primary">Activar recordatorios</button>
+        <button id="notif-demo-btn" class="btn-secondary">Ver demo</button>
+      </div>
+      <p id="notif-status" class="note" style="margin-top:.5rem"></p>
+    </section>
+
+    <!-- Módulo: Higiene del sueño -->
+    <section class="section-card" id="sueno-card" aria-labelledby="sueno-title">
+      <div class="card-head">
+        <span class="card-icon" aria-hidden="true">🌙</span>
+        <div>
+          <h2 class="card-title" id="sueno-title">Higiene del sueño</h2>
+          <p class="card-sub">Recordatorios nocturnos adaptativos para mejorar la calidad de tu descanso.</p>
+        </div>
+      </div>
+      <div id="sueno-widget"></div>
     </section>
 
     <!-- CTA final -->
@@ -394,13 +489,13 @@
       <div class="eps-navsheet-body" style="gap:12px">
         <div class="note" style="margin:0">
           <ol style="margin:0; padding-left:18px">
-            <li><strong>Abrí en Safari:</strong> en WhatsApp/Instagram tocá <strong>⋯</strong> o <strong>Compartir</strong> → <strong>“Abrir en Safari”</strong>.</li>
+            <li><strong>Abrí en Safari:</strong> en WhatsApp/Instagram tocá <strong>⋯</strong> o <strong>Compartir</strong> → <strong>"Abrir en Safari"</strong>.</li>
             <li>En Safari tocá el botón <strong>Compartir</strong> (cuadrado con flecha hacia arriba).</li>
-            <li>Elegí <strong>“Añadir a pantalla de inicio”</strong> y confirmá <strong>Añadir</strong>.</li>
+            <li>Elegí <strong>"Añadir a pantalla de inicio"</strong> y confirmá <strong>Añadir</strong>.</li>
           </ol>
         </div>
         <div class="note" style="margin:0">
-          Si no ves “Añadir a pantalla de inicio”, casi siempre es porque no estás en Safari (estás en un navegador embebido).
+          Si no ves "Añadir a pantalla de inicio", casi siempre es porque no estás en Safari (estás en un navegador embebido).
         </div>
         <button class="btn-primary" id="iosModalOk" type="button">Entendido</button>
       </div>
@@ -450,5 +545,9 @@
     }
   })();
   </script>
+
+  <script src="assets/js/mensajes.js?v=2" defer></script>
+  <script src="assets/js/notifications.js?v=2" defer></script>
+  <script src="assets/js/sueno.js?v=2" defer></script>
 </body>
 </html>

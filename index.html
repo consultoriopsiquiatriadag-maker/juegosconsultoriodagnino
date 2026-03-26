@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -66,21 +66,25 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 32% 42%;
-      display: block;
-      opacity: 0.35;
-      filter: blur(2px) saturate(0.7);
-      transform: scale(1.05);
+      object-position: 85% 70%;   /* desplazar lejos del rostro */
+      opacity: 0.18;
+      filter: blur(7px) saturate(0.4) brightness(0.75);
+      transform: scale(1.08);
+      pointer-events: none;
     }
 
-    /* Gradiente: oscuro editorial multi-dirección */
+    /* Gradiente: cálido y editorial */
     .hero-section::before{
-      content: “”;
+      content: '';
       position: absolute;
       inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10, 18, 35, 0.92) 0%,
+        rgba(25, 45, 90, 0.78) 45%,
+        rgba(10, 18, 35, 0.70) 100%
+      );
       z-index: 1;
-      background: linear-gradient(135deg, rgba(15,23,42,0.82) 0%, rgba(30,58,138,0.65) 50%, rgba(15,23,42,0.55) 100%);
-      pointer-events: none;
     }
 
     /* Difuminado inferior */
@@ -135,14 +139,16 @@
         min-height: 720px;
       }
       .hero-image{
-        object-position: 42% 28%;
+        object-position: 85% 70%;
+        opacity: 0.18;
+        filter: blur(7px) saturate(0.4) brightness(0.75);
       }
       .hero-section::before{
         background: linear-gradient(
-          180deg,
-          rgba(8,26,47,0) 40%,
-          rgba(8,26,47,.55) 70%,
-          rgba(8,26,47,.88) 100%
+          135deg,
+          rgba(10, 18, 35, 0.92) 0%,
+          rgba(25, 45, 90, 0.78) 45%,
+          rgba(10, 18, 35, 0.70) 100%
         );
       }
       .hero-card{
@@ -160,7 +166,7 @@
     }
 
 
-  
+
 
 /* ===== BOTÓN VERDE (WhatsApp / CTA) TITILANDO CONTINUO =====
    Uso: agregá la clase .btn-pulse-green al botón que quieras resaltar.
@@ -556,64 +562,15 @@ a.btn-primary[href*="whatsapp"]{
       <a class="btn-primary" href="instalar.html" data-spa="1" data-i18n="cta_install">Ver instrucciones</a>
     </div>
 
-    <div class=”app-preview”>
-      <div class=”app-icon” aria-label=”Vista previa del ícono de la aplicación”>
-        <img src=”icon-512.png” alt=”Icono de app”>
+    <div class="app-preview">
+      <div class="app-icon" aria-label="Vista previa del ícono de la aplicación">
+        <img src="icon-512.png" alt="Icono de app">
       </div>
-      <p class=”app-steps” data-i18n=”pwa_steps”>
-        Tip: en Android, tocá “Instalar app”. En iPhone, tocá “Compartir” → “Agregar a pantalla de inicio”.
+      <p class="app-steps" data-i18n="pwa_steps">
+        Tip: en Android, tocá "Instalar app". En iPhone, tocá "Compartir" → "Agregar a pantalla de inicio".
       </p>
     </div>
 
-    <!-- Submódulos de la app: Recordatorios y Sueño -->
-    <div class=”pwa-submods”>
-
-      <!-- Recordatorios de bienestar -->
-      <div class=”section-card hint-bg” id=”notif-card” style=”margin-top:20px”>
-        <div class=”card-head”>
-          <div>
-            <h3 class=”card-title”>Recordatorios de bienestar</h3>
-            <p class=”card-sub”>Activá frases motivacionales y recordatorios saludables directamente en tu dispositivo.</p>
-          </div>
-          <button class=”btn-primary” id=”notif-btn” type=”button”>Activar recordatorios</button>
-        </div>
-        <div style=”margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap”>
-          <p id=”notif-status” style=”margin:0;font-size:.85rem;color:var(--muted,#8a9bb5)”></p>
-          <button id=”notif-demo-btn” type=”button”
-            style=”display:none;font-size:.78rem;padding:5px 16px;border:1px solid #4a90d9;background:transparent;color:#4a90d9;border-radius:20px;cursor:pointer;transition:opacity .2s”
-            onmouseover=”this.style.opacity='.7'” onmouseout=”this.style.opacity='1'”>
-            Probar notificación
-          </button>
-        </div>
-
-        <!-- Frase del día / Recordatorio actual -->
-        <div style=”margin-top:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px”>
-          <p style=”margin:0 0 8px;font-size:.68rem;font-weight:700;letter-spacing:.1em;
-                    text-transform:uppercase;color:var(--muted,#8a9bb5)”>— Frase del día —</p>
-          <div id=”msg-widget”
-            style=”padding:14px 16px;border-radius:10px;
-                   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)”>
-            <p style=”margin:0;font-size:.88rem;color:var(--muted,#8a9bb5);font-style:italic”>
-              Cargando recordatorio…
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recomendaciones de sueño -->
-      <div class=”section-card hint-bg” id=”sueno-card” style=”margin-top:16px”>
-        <div class=”card-head”>
-          <div>
-            <h3 class=”card-title”>Higiene del sueño</h3>
-            <p class=”card-sub”>Recordatorios nocturnos adaptativos para mejorar la calidad de tu descanso.</p>
-          </div>
-        </div>
-        <div id=”sueno-widget” style=”margin-top:6px”>
-          <p style=”font-size:.88rem;color:var(--muted,#8a9bb5);font-style:italic”>Cargando…</p>
-        </div>
-      </div>
-
-    </div><!-- /.pwa-submods -->
   </div>
 </section>
 
@@ -699,8 +656,5 @@ a.btn-primary[href*="whatsapp"]{
   <script src="assets/js/spa.js?v=2"></script>
   <script src="assets/js/app.js?v=2"></script>
   <script src="js/register-sw.js"></script>
-  <script src="js/mensajes.js"></script>
-  <script src="js/notifications.js"></script>
-  <script src="js/sueno.js"></script>
 </body>
 </html>
