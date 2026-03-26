@@ -52,12 +52,12 @@
     }
 
 
-    /* ===== HERO REDISEÑADO: FOTO FULL + CARD FLOTANTE ===== */
+    /* ===== HERO REDISEÑADO: FOTO FULL VISIBLE ===== */
     .hero-section{
       position: relative;
       overflow: hidden;
       background: #081a2f;
-      min-height: 580px;
+      min-height: 360px;
     }
 
     .hero-image{
@@ -66,45 +66,48 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 85% 70%;   /* desplazar lejos del rostro */
-      opacity: 0.18;
-      filter: blur(7px) saturate(0.4) brightness(0.75);
-      transform: scale(1.08);
+      object-position: center 38%;
+      display: block;
       pointer-events: none;
     }
 
-    /* Gradiente: cálido y editorial */
+    /* Overlay suave: la imagen se ve */
     .hero-section::before{
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(10, 18, 35, 0.92) 0%,
-        rgba(25, 45, 90, 0.78) 45%,
-        rgba(10, 18, 35, 0.70) 100%
-      );
-      z-index: 1;
-    }
-
-    /* Difuminado inferior */
-    .hero-section::after{
       content: "";
       position: absolute;
       inset: 0;
       z-index: 1;
-      background: linear-gradient(
-        180deg,
-        rgba(8,26,47,.15) 0%,
-        rgba(8,26,47,0) 30%,
-        rgba(8,26,47,0) 55%,
-        rgba(8,26,47,.60) 80%,
-        rgba(8,26,47,.93) 100%
-      );
+      background:
+        linear-gradient(
+          180deg,
+          rgba(8,26,47,0.28) 0%,
+          rgba(8,26,47,0.18) 28%,
+          rgba(8,26,47,0.22) 58%,
+          rgba(8,26,47,0.34) 100%
+        ),
+        linear-gradient(
+          90deg,
+          rgba(8,26,47,0.10) 0%,
+          rgba(8,26,47,0.14) 45%,
+          rgba(8,26,47,0.22) 100%
+        );
       pointer-events: none;
     }
 
-    /* Card glassmorphism flotante */
+    /* Difuminado inferior suave */
+    .hero-section::after{
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent 0%, rgba(8,26,47,0.35) 100%);
+      pointer-events: none;
+    }
+
+    /* Card glassmorphism — conservado para no romper nada; el inline lo sobreescribe */
     .hero-card{
       position: absolute;
       right: 6%;
@@ -133,23 +136,29 @@
       color: rgba(255,255,255,.82) !important;
     }
 
-    /* Móvil: card anclada abajo sobre la imagen */
+    /* Móvil: card en 900px — conservado por seguridad */
     @media (max-width: 900px){
       .hero-section{
-        min-height: 720px;
+        min-height: 280px;
       }
       .hero-image{
-        object-position: 85% 70%;
-        opacity: 0.18;
-        filter: blur(7px) saturate(0.4) brightness(0.75);
+        object-position: center 38%;
       }
       .hero-section::before{
-        background: linear-gradient(
-          135deg,
-          rgba(10, 18, 35, 0.92) 0%,
-          rgba(25, 45, 90, 0.78) 45%,
-          rgba(10, 18, 35, 0.70) 100%
-        );
+        background:
+          linear-gradient(
+            180deg,
+            rgba(8,26,47,0.28) 0%,
+            rgba(8,26,47,0.18) 28%,
+            rgba(8,26,47,0.22) 58%,
+            rgba(8,26,47,0.34) 100%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(8,26,47,0.10) 0%,
+            rgba(8,26,47,0.14) 45%,
+            rgba(8,26,47,0.22) 100%
+          );
       }
       .hero-card{
         position: absolute;
@@ -163,6 +172,11 @@
         border-radius: 16px;
         padding: 24px 20px;
       }
+    }
+
+    @media (max-width: 640px){
+      .hero-section{ min-height: 230px; }
+      .hero-image{ object-position: center 35%; }
     }
 
 
@@ -186,7 +200,90 @@ a.btn-primary[href*="whatsapp"]{
   100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(34,197,94,0);    filter: brightness(1); }
 }
 
-/* ===== Ola de transición hero → contenido ===== */
+/* ===== Luz strobe dentro del hero ===== */
+.hero-strobe{
+  position: absolute;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.95);
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.10),
+    0 0 10px 3px rgba(255,255,255,0.45),
+    0 0 22px 8px rgba(160,220,255,0.18);
+  top: 34%;
+  right: 13.8%;
+  animation: heroStrobe 2.1s infinite ease-in-out;
+}
+@keyframes heroStrobe{
+  0%, 82%, 100%{
+    opacity: 0.18;
+    transform: scale(1);
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,0.06),
+      0 0 8px 2px rgba(255,255,255,0.18),
+      0 0 16px 6px rgba(160,220,255,0.08);
+  }
+  84%{
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,0.14),
+      0 0 18px 5px rgba(255,255,255,0.58),
+      0 0 32px 12px rgba(160,220,255,0.24);
+  }
+  86%{ opacity: 0.25; transform: scale(1); }
+  88%{ opacity: 0.95; transform: scale(1.08); }
+}
+@media (max-width: 640px){
+  .hero-strobe{
+    top: 30%;
+    right: 10.5%;
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* ===== Línea divisoria blanca ===== */
+.hero-divider{
+  height: 2px;
+  width: 100%;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 0 8px rgba(255,255,255,0.10);
+}
+
+/* ===== Zócalo Sala de espera virtual ===== */
+.hero-intro-wrap{
+  background: #f2f5f8;
+  padding: 0 0 8px;
+}
+.hero-card--inline{
+  position: relative;
+  right: auto;
+  top: auto;
+  transform: none;
+  width: min(100%, 520px);
+  max-width: 100%;
+  margin: 18px 0 0 auto;
+  background: rgba(15,30,55,.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  padding: 28px 26px;
+  box-shadow: 0 18px 38px rgba(3,10,20,.20);
+}
+@media (max-width: 640px){
+  .hero-card--inline{
+    width: 100%;
+    margin: 14px 0 0 0;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+}
+
+/* ===== Ola de transición hero → contenido (conservada) ===== */
 .hero-wave{
   margin-top: -2px;
   line-height: 0;
@@ -230,29 +327,28 @@ a.btn-primary[href*="whatsapp"]{
   <!-- HERO -->
   <section class="hero-section" aria-label="Portada institucional">
     <img class="hero-image"
-         src="assets/img/dr-dagnino-backup.webp"
-         alt="Dr. Pedro Nicolas Dagnino en el consultorio"
+         src="portada.png"
+         alt="Portada institucional — Consultorio Dr. Dagnino"
          loading="eager"
          fetchpriority="high">
-
-    <div class="hero-card">
-      <div class="pill" aria-label="Estado del servicio">
-        <span class="dot" aria-hidden="true"></span>
-        <span data-i18n="hero_pill">Espacio virtual disponible</span>
-      </div>
-
-      <h1 class="hero-title" data-i18n="hero_title">Sala de espera virtual</h1>
-
-
-    </div>
+    <span class="hero-strobe" aria-hidden="true"></span>
   </section>
 
-  <!-- Transición suave hero → contenido -->
-  <div class="hero-wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,32 C240,64 480,0 720,28 C960,56 1200,8 1440,32 L1440,64 L0,64 Z" fill="#f2f5f8"/>
-    </svg>
-  </div>
+  <!-- Línea divisoria blanca -->
+  <div class="hero-divider" aria-hidden="true"></div>
+
+  <!-- Sala de espera virtual -->
+  <section class="hero-intro-wrap">
+    <div class="wrap">
+      <div class="hero-card hero-card--inline">
+        <div class="pill" aria-label="Estado del servicio">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-i18n="hero_pill">Espacio virtual disponible</span>
+        </div>
+        <h1 class="hero-title" data-i18n="hero_title">Sala de espera virtual</h1>
+      </div>
+    </div>
+  </section>
 
   <!-- Main -->
   <main id="spaMain" class="wrap" aria-label="Contenido principal">
