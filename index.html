@@ -63,8 +63,8 @@
 }
 
 .hero-frame{
-  width: min(100%, 1380px);
-  margin: 0 auto;
+  width: min(92%, 1200px);
+  margin: 40px auto 10px auto;
   position: relative;
 }
 
@@ -73,7 +73,11 @@
   width: 100%;
   line-height: 0;
   overflow: hidden;
+  border-radius: 18px;
   animation: heroFadeIn 0.9s ease-out both;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.25),
+    0 8px 20px rgba(0,0,0,0.18);
 }
 
 .hero-image{
@@ -90,6 +94,7 @@
   backface-visibility: hidden;
 }
 
+/* overlay base */
 .hero-section::before{
   content: "";
   position: absolute;
@@ -110,21 +115,39 @@
       rgba(8,26,47,0.14) 100%
     );
   pointer-events: none;
+  transition: background 320ms ease, opacity 320ms ease;
 }
 
+/* fade suave inferior */
 .hero-section::after{
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 34px;
+  height: 22px;
   z-index: 1;
   background: linear-gradient(180deg, transparent 0%, rgba(8,26,47,0.18) 100%);
   pointer-events: none;
 }
 
-/* Glow cabina sobrio */
+/* difuminado de bordes premium */
+.hero-image-wrap::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(8,26,47,0) 60%,
+      rgba(8,26,47,0.15) 75%,
+      rgba(8,26,47,0.35) 88%,
+      rgba(8,26,47,0.60) 100%);
+  transition: background 320ms ease, opacity 320ms ease;
+}
+
+/* glow cabina sobrio */
 .hero-cabin-glow{
   position: absolute;
   z-index: 2;
@@ -143,6 +166,7 @@
   opacity: .75;
   pointer-events: none;
   animation: cabinGlowPulse 6.2s ease-in-out infinite;
+  transition: opacity 320ms ease, filter 320ms ease, background 320ms ease;
 }
 
 .hero-cabin-glow-secondary{
@@ -274,7 +298,8 @@ a.btn-primary[href*="whatsapp"]{
 /* TABLET */
 @media (max-width: 900px){
   .hero-frame{
-    width: 100%;
+    width: 94%;
+    margin: 24px auto 8px auto;
   }
 
   .hero-cabin-glow{
@@ -312,22 +337,13 @@ a.btn-primary[href*="whatsapp"]{
 
 /* MOBILE REAL */
 @media (max-width: 640px){
-  .hero-section{
-    background: #081a2f;
-  }
-
   .hero-frame{
-    width: 100%;
+    width: 94%;
+    margin: 18px auto 6px auto;
   }
 
   .hero-image-wrap{
-    overflow: hidden;
-  }
-
-  .hero-image{
-    width: 100%;
-    height: auto;
-    transform: none !important;
+    border-radius: 14px;
   }
 
   .hero-strobe{
@@ -380,6 +396,76 @@ a.btn-primary[href*="whatsapp"]{
   }
 }
 
+/* ===== Modo día/noche — hero dinámico ===== */
+.hero-mode-day .hero-section::before{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8,26,47,0.14) 0%,
+      rgba(8,26,47,0.05) 24%,
+      rgba(8,26,47,0.09) 58%,
+      rgba(8,26,47,0.16) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(8,26,47,0.05) 0%,
+      rgba(8,26,47,0.03) 42%,
+      rgba(8,26,47,0.10) 100%
+    );
+}
+
+.hero-mode-day .hero-cabin-glow{
+  opacity: .45;
+  filter: blur(18px);
+}
+
+.hero-mode-evening .hero-section::before{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,24,44,0.22) 0%,
+      rgba(16,36,62,0.10) 26%,
+      rgba(18,40,70,0.16) 60%,
+      rgba(10,24,44,0.24) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(12,28,50,0.08) 0%,
+      rgba(20,44,76,0.05) 42%,
+      rgba(10,24,44,0.15) 100%
+    );
+}
+
+.hero-mode-evening .hero-cabin-glow{
+  opacity: .68;
+}
+
+.hero-mode-night .hero-section::before{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,14,28,0.34) 0%,
+      rgba(5,14,28,0.18) 24%,
+      rgba(8,20,38,0.24) 58%,
+      rgba(5,14,28,0.38) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5,14,28,0.14) 0%,
+      rgba(5,14,28,0.08) 42%,
+      rgba(5,14,28,0.20) 100%
+    );
+}
+
+.hero-mode-night .hero-cabin-glow{
+  opacity: .84;
+  filter: blur(24px);
+}
+
+.hero-mode-night .hero-cabin-glow-secondary{
+  opacity: .62;
+}
+
 /* ===== Línea divisoria blanca ===== */
 .hero-divider{
   height: 2px;
@@ -393,6 +479,7 @@ a.btn-primary[href*="whatsapp"]{
   background: #f2f5f8;
   padding: 0 0 8px;
 }
+
 .hero-card--inline{
   position: relative;
   right: auto;
@@ -401,20 +488,53 @@ a.btn-primary[href*="whatsapp"]{
   width: min(100%, 520px);
   max-width: 100%;
   margin: 18px 0 0 auto;
-  background: rgba(15,30,55,.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 22px;
-  padding: 28px 26px;
-  box-shadow: 0 18px 38px rgba(3,10,20,.20);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 18px;
+  padding: 22px 20px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.6);
 }
+
+.hero-card--inline .hero-title{
+  color: #0a1f36 !important;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: none !important;
+}
+
+.hero-card--inline .pill{
+  color: #2b2b2b !important;
+}
+
+.hero-card--inline .pill .dot{
+  background: #34c759;
+  box-shadow: 0 0 0 0 rgba(52,199,89,0.7);
+  animation: onlinePulseCard 2.2s infinite;
+}
+
+@keyframes onlinePulseCard{
+  0%{
+    box-shadow: 0 0 0 0 rgba(52,199,89,0.7);
+  }
+  70%{
+    box-shadow: 0 0 0 8px rgba(52,199,89,0);
+  }
+  100%{
+    box-shadow: 0 0 0 0 rgba(52,199,89,0);
+  }
+}
+
 @media (max-width: 640px){
   .hero-card--inline{
     width: 100%;
     margin: 14px 0 0 0;
-    padding: 22px 18px;
-    border-radius: 18px;
+    padding: 20px 18px;
+    border-radius: 16px;
   }
 }
 
@@ -932,6 +1052,28 @@ a.btn-primary[href*="whatsapp"]{
   updateParallax();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+})();
+</script>
+
+<script>
+(function () {
+  const target = document.body;
+  if (!target) return;
+
+  const now = new Date();
+  const hour = now.getHours();
+  const min = now.getMinutes();
+  const totalMin = hour * 60 + min;
+
+  target.classList.remove('hero-mode-day', 'hero-mode-evening', 'hero-mode-night');
+
+  if (totalMin >= 7 * 60 && totalMin < 18 * 60) {
+    target.classList.add('hero-mode-day');
+  } else if (totalMin >= 18 * 60 && totalMin < 20 * 60 + 30) {
+    target.classList.add('hero-mode-evening');
+  } else {
+    target.classList.add('hero-mode-night');
+  }
 })();
 </script>
 </body>
