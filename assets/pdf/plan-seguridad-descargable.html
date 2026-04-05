@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan de seguridad en crisis suicida</title>
+  <meta name="description" content="Plan de seguridad en crisis suicida: versión imprimible y descargable en HTML." />
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg-soft:#0c1828;
+      --card:#10233a;
+      --card-2:#15304d;
+      --text:#eef4fb;
+      --muted:#bfd0e3;
+      --accent:#63b3ff;
+      --accent-soft:#9fd0ff;
+      --danger:#ff8f8f;
+      --success:#9fe0c2;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 20px 50px rgba(0,0,0,.20);
+      --radius:22px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:linear-gradient(180deg,#07111f 0%, #0c1828 100%);
+      color:var(--text);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    .page{
+      max-width:980px;
+      margin:0 auto;
+      padding:32px 20px 60px;
+    }
+
+    .toolbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+      padding:16px;
+      margin-bottom:24px;
+      background:rgba(7,17,31,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:999px;
+      padding:12px 18px;
+      background:linear-gradient(135deg,var(--accent),#3f8de2);
+      color:#04101c;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(99,179,255,.22);
+      transition:transform .15s ease, opacity .15s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn.secondary{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:none;
+    }
+
+    .sheet{
+      background:linear-gradient(180deg, rgba(16,35,58,.96), rgba(12,24,40,.98));
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:34px;
+      box-shadow:var(--shadow);
+    }
+
+    .header{
+      text-align:center;
+      padding-bottom:22px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      margin-bottom:28px;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      font-size:.92rem;
+      color:var(--accent-soft);
+      background:rgba(99,179,255,.12);
+      border:1px solid rgba(159,208,255,.12);
+      padding:7px 14px;
+      border-radius:999px;
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(2rem, 4vw, 3rem);
+      line-height:1.08;
+      letter-spacing:-.03em;
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+
+    .intro{
+      margin-top:24px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:18px 20px;
+      color:var(--text);
+    }
+
+    .urgent{
+      margin-top:22px;
+      background:rgba(255,143,143,.09);
+      border:1px solid rgba(255,143,143,.20);
+      border-radius:20px;
+      padding:18px 20px;
+    }
+
+    .urgent strong{
+      display:block;
+      margin-bottom:8px;
+      color:#fff;
+      font-size:1.02rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:20px;
+      min-height:220px;
+      break-inside:avoid;
+    }
+
+    .step-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .step-num{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:var(--accent);
+      color:#06111d;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+
+    .card h2{
+      margin:0;
+      font-size:1.15rem;
+      line-height:1.2;
+    }
+
+    .card p{
+      margin:0 0 12px;
+      color:var(--muted);
+    }
+
+    .checklist{
+      margin:10px 0 14px;
+      padding:0;
+      list-style:none;
+    }
+
+    .checklist li{
+      margin:8px 0;
+      color:var(--text);
+    }
+
+    .line-field{
+      margin-top:10px;
+    }
+
+    .label{
+      display:block;
+      font-size:.9rem;
+      color:var(--accent-soft);
+      margin-bottom:6px;
+      font-weight:600;
+    }
+
+    .blank{
+      min-height:34px;
+      border-bottom:2px solid rgba(255,255,255,.18);
+    }
+
+    .contact-box{
+      margin-top:28px;
+      padding:22px;
+      border-radius:22px;
+      border:1px solid rgba(159,208,255,.14);
+      background:rgba(99,179,255,.08);
+    }
+
+    .contact-box h3{
+      margin:0 0 14px;
+      font-size:1.18rem;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px 24px;
+    }
+
+    .contact-item .blank{
+      min-height:30px;
+    }
+
+    .footer-note{
+      margin-top:28px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.10);
+      text-align:center;
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .print-only{
+      display:none;
+    }
+
+    @media (max-width: 780px){
+      .grid,
+      .contact-grid{
+        grid-template-columns:1fr;
+      }
+
+      .sheet{
+        padding:24px;
+        border-radius:22px;
+      }
+    }
+
+    @page{
+      size:A4;
+      margin:14mm;
+    }
+
+    @media print{
+      body{
+        background:#ffffff;
+        color:#111;
+      }
+
+      .toolbar{
+        display:none !important;
+      }
+
+      .page{
+        max-width:none;
+        padding:0;
+        margin:0;
+      }
+
+      .sheet{
+        background:#ffffff;
+        color:#111;
+        border:none;
+        box-shadow:none;
+        border-radius:0;
+        padding:0;
+      }
+
+      .eyebrow{
+        background:#eef5ff;
+        color:#1f4f84;
+        border:1px solid #cfe0f4;
+      }
+
+      .subtitle,
+      .card p,
+      .footer-note,
+      .intro{
+        color:#333 !important;
+      }
+
+      .intro,
+      .card,
+      .contact-box{
+        background:#ffffff;
+        border:1px solid #cfcfcf;
+        box-shadow:none;
+      }
+
+      .urgent{
+        background:#fff5f5;
+        border:1px solid #e5bcbc;
+      }
+
+      .blank{
+        border-bottom:1.8px solid #444;
+      }
+
+      .step-num{
+        background:#d9ebff;
+        color:#111;
+        border:1px solid #aac8e9;
+      }
+
+      .print-only{
+        display:block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+    <button class="btn secondary" onclick="downloadHTML()">Descargar HTML</button>
+  </div>
+
+  <main class="page">
+    <section class="sheet">
+      <header class="header">
+        <div class="eyebrow">Consultorio Dr. Dagnino · Recurso psicoeducativo</div>
+        <h1>Plan de seguridad en crisis suicida</h1>
+        <p class="subtitle">6 pasos para atravesar este momento con ayuda</p>
+      </header>
+
+      <section class="intro">
+        Una crisis emocional intensa puede hacerte sentir sin salida. Este plan no resuelve todo hoy, pero puede ayudarte a atravesar este momento con más seguridad, más acompañamiento y más claridad. No tenés que hacerlo solo/a.
+      </section>
+
+      <section class="urgent">
+        <strong>Importante</strong>
+        Si el riesgo es alto, si hay intención actual de dañarse o si la persona no puede mantenerse segura, no debe quedarse sola. Buscá ayuda urgente, acompañamiento inmediato y evaluación profesional.
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">1</div>
+            <h2>Reconocer</h2>
+          </div>
+          <p>¿Qué señales me indican que estoy entrando en crisis?</p>
+          <ul class="checklist">
+            <li>☐ Angustia intensa</li>
+            <li>☐ Pensamientos negativos repetitivos</li>
+            <li>☐ Sensación de no poder más</li>
+            <li>☐ Aislamiento</li>
+          </ul>
+          <div class="line-field">
+            <span class="label">Mis señales</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">2</div>
+            <h2>Bajar intensidad</h2>
+          </div>
+          <p>¿Qué me ayuda a frenar y a pasar este momento sin actuar impulsivamente?</p>
+          <ul class="checklist">
+            <li>☐ Respirar lento</li>
+            <li>☐ Tomar agua</li>
+            <li>☐ Salir del lugar</li>
+            <li>☐ Escuchar música tranquila</li>
+          </ul>
+          <div class="line-field">
+            <span class="label">Lo que me sirve</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">3</div>
+            <h2>No quedarme solo/a</h2>
+          </div>
+          <p>¿Qué personas o lugares me ayudan a pasar esta crisis con más seguridad?</p>
+          <div class="line-field">
+            <span class="label">Persona 1</span>
+            <div class="blank"></div>
+          </div>
+          <div class="line-field">
+            <span class="label">Persona 2</span>
+            <div class="blank"></div>
+          </div>
+          <div class="line-field">
+            <span class="label">Lugar seguro</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">4</div>
+            <h2>Pedir ayuda ahora</h2>
+          </div>
+          <p>Tener los datos listos facilita actuar a tiempo.</p>
+          <div class="line-field">
+            <span class="label">Contacto 1</span>
+            <div class="blank"></div>
+          </div>
+          <div class="line-field">
+            <span class="label">Contacto 2</span>
+            <div class="blank"></div>
+          </div>
+          <div class="line-field">
+            <span class="label">Guardia / Emergencia / Profesional</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">5</div>
+            <h2>Hacer el entorno más seguro</h2>
+          </div>
+          <p>Reducir el acceso a medios de daño y aumentar acompañamiento puede ser decisivo.</p>
+          <ul class="checklist">
+            <li>☐ Alejar objetos peligrosos</li>
+            <li>☐ Evitar consumo de alcohol u otras sustancias</li>
+            <li>☐ Cambiar de ambiente</li>
+            <li>☐ Estar acompañado/a</li>
+          </ul>
+          <div class="line-field">
+            <span class="label">Qué voy a hacer hoy para estar más seguro/a</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="step-top">
+            <div class="step-num">6</div>
+            <h2>Recordar</h2>
+          </div>
+          <p>
+            La crisis es intensa, pero puede pasar. No hace falta resolver toda la vida hoy.
+            Lo importante es llegar a las próximas horas con más seguridad y con ayuda.
+          </p>
+          <div class="line-field">
+            <span class="label">Una frase que me ayude a sostenerme</span>
+            <div class="blank"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="contact-box">
+        <h3>Contactos importantes</h3>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <span class="label">Nombre y teléfono de apoyo 1</span>
+            <div class="blank"></div>
+          </div>
+          <div class="contact-item">
+            <span class="label">Nombre y teléfono de apoyo 2</span>
+            <div class="blank"></div>
+          </div>
+          <div class="contact-item">
+            <span class="label">Profesional / servicio / guardia</span>
+            <div class="blank"></div>
+          </div>
+          <div class="contact-item">
+            <span class="label">Lugar donde no estar solo/a</span>
+            <div class="blank"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        Consultorio Dr. Dagnino · Material psicoeducativo orientativo. No reemplaza la evaluación profesional ni la consulta urgente si existe riesgo inmediato.
+      </div>
+
+      <div class="print-only" style="margin-top:18px; text-align:center; font-size:12px; color:#444;">
+        Plan de seguridad en crisis suicida
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function downloadHTML() {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'plan-seguridad-descargable.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

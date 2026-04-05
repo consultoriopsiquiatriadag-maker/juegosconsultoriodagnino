@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Crisis suicida y autolesiones | Plan de seguridad — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía clara y práctica sobre crisis suicida y autolesiones: señales de alarma, plan de seguridad en 6 pasos, cómo ayudar a alguien y checklist copiable para consulta." />
+  <meta name="keywords" content="prevención del suicidio, autolesiones, plan de seguridad, señales de alarma, cómo ayudar a alguien, crisis suicida, posvención" />
+
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* ── Alerta urgente superior ─────────────────────────────── */
+    .alert-urgente {
+      background: linear-gradient(135deg, #7c1c2e 0%, #9b2236 100%);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .alert-urgente .alert-icon { font-size: 1.55rem; flex-shrink:0; margin-top: 2px; }
+    .alert-urgente strong { display:block; font-size: 1.05rem; margin-bottom: 4px; }
+    .alert-urgente p { margin: 0; font-size: .93rem; opacity:.93; line-height:1.5; }
+    .alert-urgente .lineas { margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .alert-urgente .linea-item {
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-weight: 700;
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+
+    /* ── Hero portada ─────────────────────────────────────────── */
+    .topic-hero {
+      overflow: hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.12) 0%, rgba(14,34,57,.62) 65%, rgba(14,34,57,.78) 100%);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .topic-hero .titlebox {
+      position: absolute; left: 16px; right: 16px; bottom: 14px;
+      color: #fff;
+    }
+    .topic-hero h1 { margin: 0; font-size: clamp(20px, 3vw, 32px); line-height: 1.1; }
+    .topic-hero p { margin: 8px 0 0 0; opacity: .92; max-width: 72ch; }
+
+    /* ── Acceso rápido ────────────────────────────────────────── */
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* ── Audio / Video ────────────────────────────────────────── */
+    .audio-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .audio-player { width: 100%; border-radius: 12px; }
+    .audio-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .video-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .video-player { width: 100%; border-radius: 12px; background: #000; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700;
+      font-size: .92rem;
+      white-space: nowrap;
+    }
+
+    /* ── Pasos ────────────────────────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+    }
+    .step-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(37,99,235,.14);
+      border: 1.5px solid rgba(37,99,235,.28);
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1d4ed8;
+      flex-shrink: 0;
+    }
+    .step-body { flex: 1; }
+    .step-body strong { display: block; font-size: .98rem; margin-bottom: 4px; }
+    .step-body p { margin: 0; font-size: .92rem; line-height: 1.55; }
+
+    /* ── Checklist interactivo ────────────────────────────────── */
+    .checklist { display: grid; gap: 10px; margin-top: 10px; }
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+      cursor: pointer;
+    }
+    .check-item input { margin-top: 3px; flex-shrink: 0; }
+    .check-item.alerta-alta {
+      border-color: rgba(185, 28, 28, .35);
+      background: rgba(254,226,226,.35);
+    }
+    .check-item:has(input:checked).alerta-alta {
+      background: rgba(254,202,202,.55);
+      border-color: rgba(185,28,28,.55);
+    }
+
+    .input-field {
+      width: 100%;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+      font-size: .95rem;
+      box-sizing: border-box;
+    }
+    .input-field:focus {
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    textarea.note-input {
+      width: 100%;
+      min-height: 84px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none;
+      font-size: .95rem;
+      box-sizing: border-box;
+    }
+    textarea.note-input:focus {
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    .copy-ok {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    /* ── Descarga ─────────────────────────────────────────────── */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .download-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+      align-items: flex-start;
+    }
+    .download-card .dl-icon { font-size: 2rem; }
+    .download-card strong { font-size: .97rem; }
+    .download-card p { margin: 0; font-size: .88rem; line-height: 1.45; }
+
+    /* ── Lectura larga ────────────────────────────────────────── */
+    .longread { line-height: 1.65; }
+
+    /* ── Campo de contactos ───────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .contact-cell { display: flex; flex-direction: column; gap: 6px; }
+    .contact-cell label { font-weight: 700; font-size: .9rem; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER / TOPBAR -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>💙</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Crisis suicida y autolesiones</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus"  class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   ALERTA DE URGENCIA                     ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <div class="alert-urgente" role="alert" aria-live="polite">
+      <div class="alert-icon" aria-hidden="true">🆘</div>
+      <div>
+        <strong>Si hay riesgo inmediato ahora mismo, no estés solo/a.</strong>
+        <p>Llamá a emergencias o dirigite a la guardia más cercana. Pedile a alguien de confianza que se quede contigo. Abajo encontrás información para planificar y prevenir, pero nada reemplaza una evaluación profesional urgente.</p>
+        <div class="lineas" aria-label="Líneas de ayuda">
+          <!-- ✏️ Reemplazá estos valores por los recursos locales reales -->
+          <span class="linea-item">🚑 Emergencias: 107 / 911</span>
+          <span class="linea-item">📞 Centro de Asistencia al Suicida: 135</span>
+          <span class="linea-item">📞 SAME (CABA): 107</span>
+          <!-- Podés agregar más líneas aquí: hospitales locales, líneas provinciales, etc. -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   PORTADA / HERO                         ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- ✅ Guardá la imagen en assets/img/crisis-suicida-portada.webp (sin texto sobre métodos) -->
+        <img src="assets/img/crisis-suicida-portada.webp?v=1"
+             alt="Ilustración abstracta y cálida que representa apoyo en momentos de crisis" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Crisis suicida y autolesiones</h1>
+          <p>Plan de seguridad, señales de alarma y cómo acompañar a alguien que está pasando por un momento muy difícil.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   AUDIO: PODCAST PRINCIPAL               ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Una guía hablada: qué es una crisis, señales de alarma y plan de seguridad.</p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+        </div>
+
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <!-- ✅ Guardá el archivo en assets/audio/crisis-suicida-plan-seguridad-podcast.m4a -->
+            <source src="assets/audio/crisis-suicida-plan-seguridad-podcast.m4a" type="audio/mp4" />
+            <source src="assets/audio/crisis-suicida-plan-seguridad-podcast.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="assets/audio/crisis-suicida-plan-seguridad-podcast.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   AUDIO BREVE: QUÉ HACER HOY             ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="audio-breve">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Audio breve: "Qué hacer hoy"</h2>
+            <p class="card-sub">Si estás en este momento difícil, este audio corto es para vos. Bajo 3 minutos.</p>
+          </div>
+          <span class="chip" aria-label="Audio breve">⏱ Breve</span>
+        </div>
+
+        <div class="audio-wrap">
+          <div style="
+            padding: 18px 20px;
+            border-radius: 14px;
+            background: rgba(255,255,255,.06);
+            border: 1px dashed rgba(148,163,184,.35);
+            color: rgba(148,163,184,.8);
+            font-size: .95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          ">
+            <span style="font-size:1.4rem" aria-hidden="true">⏳</span>
+            <span><strong style="color:inherit">Próximamente.</strong> Este audio breve estará disponible en breve.</span>
+          </div>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-hacer-hoy">Leer: qué hacer hoy</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   VIDEO BREVE                            ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="video">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Mirá el resumen en video</h2>
+            <p class="card-sub">Señales de alarma + plan de seguridad en pocas palabras.</p>
+          </div>
+          <span class="chip" aria-label="Video disponible">🎬 Video</span>
+        </div>
+
+        <div class="video-wrap">
+          <video class="video-player" controls preload="metadata" playsinline
+                 poster="assets/img/plan-seguridad-poster.webp">
+            <!-- ✅ Guardá el archivo en assets/videos/crisis-suicida-plan-seguridad.mp4 -->
+            <source src="assets/videos/crisis-suicida-plan-seguridad.mp4" type="video/mp4" />
+            Tu navegador no soporta video.
+          </video>
+
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Volver a la lectura</a>
+            <a class="btn btn-ghost" href="assets/videos/crisis-suicida-plan-seguridad.mp4" download>Descargar video</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   ACCESO RÁPIDO                          ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Podés ir directo a lo que necesitás ahora.</p>
+            <div class="toc" aria-label="Índice de contenidos">
+              <a class="btn btn-ghost" href="#que-es">Qué es una crisis</a>
+              <a class="btn btn-ghost" href="#autolesiones">Autolesiones</a>
+              <a class="btn btn-ghost" href="#alarmas">Señales de alarma</a>
+              <a class="btn btn-ghost" href="#que-hacer-hoy">Qué hacer hoy</a>
+              <a class="btn btn-ghost" href="#plan-seguridad">Plan de seguridad</a>
+              <a class="btn btn-ghost" href="#como-ayudar">Cómo ayudar</a>
+              <a class="btn btn-ghost" href="#despues">Después de la crisis</a>
+              <a class="btn btn-ghost" href="#checklist">Checklist copiable</a>
+              <a class="btn btn-ghost" href="#descarga">Descargar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   QUÉ ES UNA CRISIS SUICIDA              ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es una crisis suicida</h2>
+            <p class="card-sub">Comprender qué pasa ayuda a responder mejor.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:12px">
+          <p>
+            Una crisis suicida es un momento de gran sufrimiento en el que la persona siente que el dolor
+            es insoportable y que no hay salida. No es una decisión fría ni un rasgo permanente de carácter:
+            es una tormenta transitoria que puede aplacarse con acompañamiento, seguridad y tiempo.
+          </p>
+          <p>
+            El pensamiento suicida es más frecuente de lo que se cree. Aparece en distintos grados:
+            desde pensamientos pasivos ("preferiría no estar") hasta ideas más activas con mayor urgencia.
+            Su presencia no garantiza que se vaya a actuar, pero siempre merece atención y evaluación profesional.
+          </p>
+          <p>
+            En una crisis, el pensamiento se estrecha: es difícil ver alternativas, la desesperanza toma el centro
+            y el dolor emocional se vuelve abrumador. Por eso el objetivo inmediato es <b>ganar tiempo</b>,
+            <b>reducir el acceso a medios de daño</b> y <b>no estar solo/a</b> hasta que el momento más agudo pase.
+          </p>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Esta información no reemplaza la evaluación de un profesional de salud mental. Si hay riesgo inmediato, buscá ayuda urgente.
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   AUTOLESIONES                           ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="autolesiones">
+      <div class="grid-2" style="margin-top:10px">
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Qué son las autolesiones</h2>
+              <p class="card-sub">
+                Las autolesiones no suicidas son conductas de daño al propio cuerpo que <em>no</em> tienen intención de morir.
+                Suelen ser un intento de manejar emociones muy intensas que la persona no sabe cómo procesar de otro modo.
+              </p>
+            </div>
+          </div>
+          <div class="note" style="margin-top:12px">
+            No son un "intento de llamar la atención": son una señal real de que alguien necesita ayuda y nuevas herramientas emocionales.
+          </div>
+        </div>
+
+        <div class="section-card hint-bg" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title" style="margin:0">Por qué importan</h2>
+              <p class="card-sub">
+                Las autolesiones, aunque no sean suicidas, merecen atención clínica. Indican un nivel de sufrimiento
+                elevado y aumentan el riesgo de crisis más severas si no se trabaja en profundidad.
+              </p>
+            </div>
+          </div>
+          <div class="note" style="margin-top:12px">
+            El abordaje no es punitivo sino comprensivo: entender qué función cumple la autolesión y aprender a regularse de otra manera.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   SEÑALES DE ALARMA                      ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="alarmas">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Señales de alarma</h2>
+            <p class="card-sub">Cuándo prestar atención con mayor urgencia — en uno mismo o en alguien cercano.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Señales en lo que dice</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>"Sería mejor si no estuviera", "no tengo salida", "no vale la pena seguir".</li>
+              <li>Hablar de ser una carga para los demás.</li>
+              <li>Expresar desesperanza sobre el futuro.</li>
+              <li>Despedidas o frases de cierre poco comunes.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Señales en lo que hace</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>Regalar objetos importantes de forma inesperada.</li>
+              <li>Aislamiento marcado y repentino.</li>
+              <li>Búsqueda de acceso a medios de daño.</li>
+              <li>Cambios abruptos de humor: calma súbita tras agitación intensa.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Contextos de mayor riesgo</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>Antecedentes de intentos o autolesiones previas.</li>
+              <li>Pérdidas recientes (vínculos, trabajo, salud).</li>
+              <li>Consumo elevado de alcohol u otras sustancias.</li>
+              <li>Dolor crónico o enfermedad grave.</li>
+              <li>Acceso a medios de daño en el entorno.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Señales emocionales</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>Desesperanza persistente ("nada va a cambiar nunca").</li>
+              <li>Angustia intensa, agitación o insomnio severo.</li>
+              <li>Sentimientos de vergüenza, culpa o humillación intensa.</li>
+              <li>Sensación de estar atrapado/a sin salida posible.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Ante cualquier señal directa ("me quiero matar", "tengo ganas de hacerme daño"), tomala en serio. Preguntar directamente <em>no</em> aumenta el riesgo: al contrario, puede abrir el diálogo.
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   QUÉ HACER HOY                          ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="que-hacer-hoy">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué hacer hoy</h2>
+            <p class="card-sub">Si estás en un momento muy difícil ahora mismo. Pasos concretos, sin presión.</p>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>No te quedes solo/a.</strong>
+              <p>Llamá a alguien de confianza ahora. No necesitás explicar todo: "Estoy mal y necesito que estés" es suficiente. Si no tenés a nadie cerca, llamá a una línea de crisis (ver arriba).</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Alejate temporalmente de lo que puede hacerte daño.</strong>
+              <p>Pedile a alguien que guarde o retire objetos de daño de tu entorno inmediato. No es para siempre: es solo para que este momento pase con más seguridad.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Contactá a un profesional de salud mental o guardia.</strong>
+              <p>Si ya tenés tratamiento, comunicate con tu terapeuta o psiquiatra hoy. Si no, podés ir a la guardia de un hospital público o llamar a la línea 135.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Recordá que este momento va a pasar.</strong>
+              <p>El dolor de una crisis es real e intenso, pero no es permanente. Las crisis suelen tener un pico y luego ceden — especialmente con acompañamiento.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Evitá el alcohol y otras sustancias ahora.</strong>
+              <p>Aumentan la impulsividad y el riesgo. Si ya consumiste, avisale a quien esté con vos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   PLAN DE SEGURIDAD EN 6 PASOS           ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="plan-seguridad">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Plan de seguridad en 6 pasos</h2>
+            <p class="card-sub">Un plan de seguridad se construye con calma, idealmente con un profesional. Lo usás cuando el malestar empieza a escalar.</p>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Reconocer mis señales de alarma personales.</strong>
+              <p>¿Qué pensamientos, imágenes o sensaciones avisan que la crisis está llegando? Anotarlas te ayuda a actuar antes de llegar al pico.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Lo que puedo hacer solo/a para calmarme.</strong>
+              <p>Actividades que funcionan para vos: caminar, escuchar música, respiración lenta, contacto con una mascota, ducha fría, salir al balcón. Tener una lista lista — no improvisarla en crisis.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Situaciones y personas que me distraen positivamente.</strong>
+              <p>Lugares donde no estoy solo/a. Actividades o contactos que me sacan del circuito de pensamientos. Identificarlos de antemano.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Personas a quienes puedo pedir ayuda personal.</strong>
+              <p>Nombre + teléfono de al menos dos personas de confianza que sepan que pueden recibir tu llamado. Cargarlos en el celular con etiqueta visible.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Profesionales y servicios de crisis.</strong>
+              <p>Nombre y número de tu terapeuta/psiquiatra, línea de crisis local (135), guardia del hospital de referencia. Guardados con acceso rápido.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">6</div>
+            <div class="step-body">
+              <strong>Reducir el acceso a medios de daño.</strong>
+              <p>Este paso es el más concreto y uno de los más efectivos: que otra persona custodie o retire lo que podría usarse para hacerse daño. No es permanente.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Armar el plan con tu terapeuta o médico hace que sea mucho más efectivo. El checklist de más abajo te ayuda a tener los datos al alcance.
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   CÓMO AYUDAR A ALGUIEN                  ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="como-ayudar">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cómo ayudar a alguien</h2>
+            <p class="card-sub">Para familias, docentes, compañeros de trabajo y primer respondiente no especialista.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Qué hacer</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li><b>Preguntá directamente:</b> "¿Estás pensando en hacerte daño?" Preguntar no lo planta ni lo incita — al contrario, suele aliviar.</li>
+              <li>Escuchá sin juzgar ni minimizar ("Entiendo que estás sufriendo mucho").</li>
+              <li>Quedate con la persona físicamente si hay riesgo inmediato.</li>
+              <li>Ayudá a que acceda a atención profesional: acompañala si podés.</li>
+              <li>Reducí el acceso a medios de daño en el entorno.</li>
+              <li>Informate sobre los recursos disponibles (líneas, guardias).</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Qué evitar</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>No desestimar: "Eso es solo para llamar la atención", "ya se le va a pasar".</li>
+              <li>No desafiar ni retar: "¿Y por qué no lo hacés entonces?"</li>
+              <li>No prometer guardar el secreto sobre riesgo de vida.</li>
+              <li>No dejar sola a la persona en momento de crisis aguda.</li>
+              <li>No demandarle que "se mejore" o "sea fuerte".</li>
+              <li>No difundir detalles si hubo un intento o fallecimiento (riesgo de imitación).</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Acompañar a alguien en crisis es agotador. Cuidar a quien acompaña también importa. Buscá supervisión o apoyo si sos profesional o si sentís que la situación te desborda.
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   DESPUÉS DE LA CRISIS (POSVENCIÓN)      ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="despues">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Después de la crisis</h2>
+            <p class="card-sub">El período post-crisis es crítico. Hay pasos importantes que hacen diferencia.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:12px">
+          <p>
+            Superar el momento más agudo es solo el primer paso. El período que sigue — conocido en salud pública como <em>posvención</em> — requiere
+            seguimiento activo, no solo "esperar que todo vuelva a la normalidad".
+          </p>
+
+          <ul>
+            <li><b>Seguimiento profesional inmediato:</b> acordar una consulta en los días siguientes, no postergarlo.</li>
+            <li><b>Revisar y actualizar el plan de seguridad</b> con lo aprendido del episodio.</li>
+            <li><b>Evaluar ajuste de tratamiento</b> (medicación, psicoterapia, frecuencia de consultas).</li>
+            <li><b>Hablar sobre lo que pasó</b> en un contexto seguro y sin prisa — procesar ayuda a integrar.</li>
+            <li><b>Atención a la familia y cuidadores:</b> también pueden necesitar apoyo o psicoeducación.</li>
+            <li><b>Reducir factores de riesgo del entorno</b> de forma sostenida (no solo en el momento agudo).</li>
+          </ul>
+
+          <p>
+            La presencia de una crisis previa no define el futuro. Con tratamiento adecuado y red de apoyo,
+            las personas superan estos episodios y recuperan calidad de vida.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   CHECKLIST INTERACTIVO                  ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="checklist">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Checklist de alerta y plan copiable</h2>
+            <p class="card-sub">No es un diagnóstico. Sirve para ordenar lo que está pasando y tener un resumen listo para traer a consulta o compartir con un profesional.</p>
+          </div>
+          <span class="chip">📋 Checklist</span>
+        </div>
+
+        <!-- ── Banderas de alerta ── -->
+        <div style="margin-top:14px">
+          <h3 class="card-title" style="margin-top:0; margin-bottom:8px">¿Estoy notando esto? (marcar lo que aplica)</h3>
+
+          <div class="checklist" role="group" aria-label="Señales de alerta">
+            <label class="check-item alerta-alta">
+              <input type="checkbox" class="flag" id="f_desesperanza">
+              <span><b>Desesperanza:</b> siento que nada va a cambiar, que no tiene sentido seguir.</span>
+            </label>
+            <label class="check-item alerta-alta">
+              <input type="checkbox" class="flag" id="f_aislamiento">
+              <span><b>Aislamiento:</b> me fui alejando de personas cercanas, no quiero hablar con nadie.</span>
+            </label>
+            <label class="check-item alerta-alta">
+              <input type="checkbox" class="flag" id="f_ideas">
+              <span><b>Ideas de daño:</b> tengo pensamientos de hacerme daño o de no querer estar.</span>
+            </label>
+            <label class="check-item alerta-alta">
+              <input type="checkbox" class="flag" id="f_previo">
+              <span><b>Intento o autolesión previa:</b> ya me pasó antes algo parecido o me lastimé.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="flag" id="f_consumo">
+              <span><b>Consumo aumentado:</b> estoy tomando más alcohol u otras sustancias que antes.</span>
+            </label>
+            <label class="check-item alerta-alta">
+              <input type="checkbox" class="flag" id="f_medios">
+              <span><b>Acceso a medios:</b> tengo cerca objetos o medios con los que podría hacerme daño.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="flag" id="f_solo">
+              <span><b>Estoy solo/a hoy:</b> no voy a tener compañía en las próximas horas.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ── Datos del plan ── -->
+        <div style="margin-top:18px">
+          <h3 class="card-title" style="margin-top:0; margin-bottom:8px">Mi plan de seguridad (datos de acceso rápido)</h3>
+
+          <div class="contact-grid">
+            <div class="contact-cell">
+              <label for="contacto1">Contacto 1 (nombre + teléfono)</label>
+              <input id="contacto1" type="text" class="input-field" placeholder="Ej.: Mamá — 11-xxxx-xxxx" autocomplete="off" />
+            </div>
+            <div class="contact-cell">
+              <label for="contacto2">Contacto 2 (nombre + teléfono)</label>
+              <input id="contacto2" type="text" class="input-field" placeholder="Ej.: Amiga Ana — 11-xxxx-xxxx" autocomplete="off" />
+            </div>
+            <div class="contact-cell">
+              <label for="profesional">Profesional / guardia</label>
+              <input id="profesional" type="text" class="input-field" placeholder="Ej.: Dra. García — consultorio / guardia X" autocomplete="off" />
+            </div>
+            <div class="contact-cell">
+              <label for="lugar-seguro">Lugar seguro</label>
+              <input id="lugar-seguro" type="text" class="input-field" placeholder="Ej.: casa de mi hermana, plaza cerca" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Nota libre ── -->
+        <div style="margin-top:14px">
+          <label for="nota" style="font-weight:700; display:block; margin-bottom:6px">Nota libre (opcional)</label>
+          <textarea id="nota" class="note-input"
+            placeholder="Ej.: qué me está costando más, qué me ayuda a calmarme, qué quiero decirle al profesional..."></textarea>
+        </div>
+
+        <!-- ── Acciones ── -->
+        <div class="audio-actions" style="margin-top:14px">
+          <button class="btn" id="btnCopy" type="button">Copiar resumen</button>
+          <button class="btn btn-ghost" id="btnReset" type="button">Limpiar</button>
+          <a class="btn btn-ghost" href="#plan-seguridad">Ver plan de seguridad</a>
+        </div>
+
+        <div class="copy-ok" id="copyOk" role="status">
+          ✅ Copiado. Podés pegarlo en WhatsApp, enviarlo a tu profesional o traerlo a consulta.
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          Este checklist no produce un score diagnóstico. Cualquier señal de alerta marcada merece conversación con un profesional de salud mental, sin importar cuántas sean.
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   DESCARGA INFOGRAFÍA / PDF              ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section" id="descarga">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Descargar material</h2>
+            <p class="card-sub">Para tener a mano, compartir con alguien o imprimir.</p>
+          </div>
+        </div>
+
+        <div class="download-grid">
+          <div class="download-card">
+            <div class="dl-icon">📄</div>
+            <strong>Plan de seguridad descargable</strong>
+            <p>PDF con los 6 pasos y espacio para completar tus contactos y señales personales.</p>
+            <a class="btn" href="assets/pdf/plan-seguridad-descargable.html" target="_blank" rel="noopener">Abrir plan (imprimible)</a>
+          </div>
+
+          <div class="download-card">
+            <div class="dl-icon">🖼️</div>
+            <strong>Infografía: señales de alarma</strong>
+            <p>Imagen en alta resolución con señales de alarma y recursos de ayuda para compartir.</p>
+            <a class="btn" href="assets/img/plan-seguridad-poster.webp" download>Descargar infografía</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   CTA FINAL                              ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Necesitás orientación profesional?</h3>
+            <p class="card-sub">
+              Si lo que leíste te resuena, o si hay alguien en tu entorno que necesita ayuda,
+              la Central de Turnos puede ayudarte a coordinar una consulta. No hay que esperar a estar "en crisis total".
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Checklist JS -->
+  <script>
+    (function(){
+
+      const FLAGS = [
+        { id:"f_desesperanza",  label:"Desesperanza" },
+        { id:"f_aislamiento",   label:"Aislamiento" },
+        { id:"f_ideas",         label:"Ideas de daño" },
+        { id:"f_previo",        label:"Intento/autolesión previa" },
+        { id:"f_consumo",       label:"Consumo aumentado" },
+        { id:"f_medios",        label:"Acceso a medios de daño" },
+        { id:"f_solo",          label:"Estoy solo/a hoy" }
+      ];
+
+      const note         = document.getElementById("nota");
+      const contacto1    = document.getElementById("contacto1");
+      const contacto2    = document.getElementById("contacto2");
+      const profesional  = document.getElementById("profesional");
+      const lugarSeguro  = document.getElementById("lugar-seguro");
+      const btnCopy      = document.getElementById("btnCopy");
+      const btnReset     = document.getElementById("btnReset");
+      const copyOk       = document.getElementById("copyOk");
+
+      function nowStr(){
+        const d   = new Date();
+        const pad = n => String(n).padStart(2,"0");
+        return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      function flagsStr(){
+        const on = [];
+        FLAGS.forEach(({ id, label }) => {
+          const el = document.getElementById(id);
+          if(el && el.checked) on.push(label);
+        });
+        return on.length ? on.join(", ") : "Ninguna marcada";
+      }
+
+      async function copyText(txt){
+        try{
+          await navigator.clipboard.writeText(txt);
+        } catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+      }
+
+      if(btnCopy){
+        btnCopy.addEventListener("click", async () => {
+          const txt =
+            `=== Crisis suicida — Checklist de alerta ===\n` +
+            `Fecha/hora: ${nowStr()}\n\n` +
+            `SEÑALES MARCADAS:\n${flagsStr()}\n\n` +
+            `PLAN DE SEGURIDAD:\n` +
+            `• Contacto 1: ${(contacto1?.value||"").trim() || "—"}\n` +
+            `• Contacto 2: ${(contacto2?.value||"").trim() || "—"}\n` +
+            `• Profesional/guardia: ${(profesional?.value||"").trim() || "—"}\n` +
+            `• Lugar seguro: ${(lugarSeguro?.value||"").trim() || "—"}\n\n` +
+            `NOTA LIBRE:\n${(note?.value||"").trim() || "—"}\n\n` +
+            `Generado con: consultoriodagnino.com.ar\n` +
+            `Esta información no reemplaza evaluación profesional.`;
+
+          await copyText(txt);
+          if(copyOk){
+            copyOk.style.display = "block";
+            setTimeout(() => copyOk.style.display = "none", 4000);
+          }
+        });
+      }
+
+      if(btnReset){
+        btnReset.addEventListener("click", () => {
+          FLAGS.forEach(({ id }) => {
+            const el = document.getElementById(id);
+            if(el) el.checked = false;
+          });
+          if(contacto1)   contacto1.value   = "";
+          if(contacto2)   contacto2.value   = "";
+          if(profesional) profesional.value = "";
+          if(lugarSeguro) lugarSeguro.value = "";
+          if(note)        note.value        = "";
+          if(copyOk)      copyOk.style.display = "none";
+        });
+      }
+
+      // Sync volumen global al podcast principal
+      const podcastAudio = document.getElementById("podcastAudio");
+      const audioBreve   = document.getElementById("audioBreve");
+      const vol = document.getElementById("volumeRange");
+      if(vol){
+        const applyVol = () => {
+          const v = Math.max(0, Math.min(1, (Number(vol.value)||35) / 100));
+          if(podcastAudio) podcastAudio.volume = v;
+          if(audioBreve)   audioBreve.volume   = v;
+        };
+        vol.addEventListener("input", applyVol);
+        applyVol();
+      }
+
+    })();
+  </script>
+
+</body>
+</html>
