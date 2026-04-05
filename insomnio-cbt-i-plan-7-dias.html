@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Insomnio | CBT-I y plan de 7 días — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="Guía clínica y práctica sobre insomnio crónico: qué es CBT-I, qué mantiene el insomnio, higiene del sueño sin mitos, plan de 7 días y diario de sueño interactivo." />
+  <meta name="keywords" content="insomnio, CBT-I, higiene del sueño, diario de sueño, despertarse de noche, sueño no reparador" />
+
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <style>
+    /* ── Hero portada ─────────────────────────────────────────── */
+    .topic-hero {
+      overflow: hidden;
+      border-radius: 18px;
+      position: relative;
+    }
+    .topic-hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .topic-hero .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.10) 0%, rgba(14,34,57,.58) 65%, rgba(14,34,57,.76) 100%);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .topic-hero .titlebox {
+      position: absolute; left: 16px; right: 16px; bottom: 14px;
+      color: #fff;
+    }
+    .topic-hero h1 { margin: 0; font-size: clamp(20px, 3vw, 32px); line-height: 1.1; }
+    .topic-hero p  { margin: 8px 0 0 0; opacity: .92; max-width: 72ch; }
+
+    /* ── Acceso rápido ────────────────────────────────────────── */
+    .toc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+
+    /* ── Audio / Video ────────────────────────────────────────── */
+    .audio-wrap  { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .audio-player{ width: 100%; border-radius: 12px; }
+    .audio-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .video-wrap  { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .video-player{ width: 100%; border-radius: 12px; background: #000; }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(148,163,184,.25);
+      font-weight: 700; font-size: .92rem; white-space: nowrap;
+    }
+
+    /* ── Plan 7 días ──────────────────────────────────────────── */
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .plan-day {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+      break-inside: avoid;
+    }
+    .plan-day-head {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .plan-day-num {
+      min-width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(37,99,235,.14);
+      border: 1.5px solid rgba(37,99,235,.28);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .9rem; color: #1d4ed8;
+      flex-shrink: 0;
+    }
+    .plan-day strong { font-size: .97rem; }
+    .plan-day p { margin: 0; font-size: .9rem; line-height: 1.5; }
+
+    /* ── Diario de sueño ──────────────────────────────────────── */
+    .diary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .diary-field {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .diary-field label {
+      font-weight: 700; font-size: .88rem; line-height: 1.3;
+    }
+    .diary-field .hint {
+      font-size: .8rem; opacity: .7; margin-top: -4px;
+    }
+    .diary-input {
+      width: 100%; border-radius: 12px;
+      padding: 9px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none; font-size: .93rem;
+      box-sizing: border-box;
+    }
+    .diary-input:focus {
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .diary-select {
+      width: 100%; border-radius: 12px;
+      padding: 9px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none; font-size: .93rem;
+      box-sizing: border-box; cursor: pointer;
+      appearance: auto;
+    }
+    .diary-select:focus {
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    textarea.diary-textarea {
+      width: 100%; min-height: 78px; resize: vertical;
+      border-radius: 12px; padding: 10px 12px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.85);
+      outline: none; font-size: .93rem;
+      box-sizing: border-box;
+    }
+    textarea.diary-textarea:focus {
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    .diary-full { grid-column: 1 / -1; }
+
+    /* ── Calidad / energía slider ─────────────────────────────── */
+    .range-row {
+      display: flex; gap: 12px; align-items: center;
+      flex-wrap: wrap; margin-top: 4px;
+    }
+    .range-row input[type="range"] { flex: 1; min-width: 140px; }
+    .pill-val {
+      padding: 5px 10px; border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 800; min-width: 42px; text-align: center;
+      font-size: .9rem;
+    }
+
+    /* ── Copy ok ──────────────────────────────────────────────── */
+    .copy-ok {
+      display: none; margin-top: 10px;
+      padding: 10px 12px; border-radius: 14px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.28);
+    }
+
+    /* ── Mitos / checklist ────────────────────────────────────── */
+    .myth-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px; margin-top: 12px;
+    }
+    .myth-card {
+      padding: 14px 16px; border-radius: 16px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+    }
+    .myth-card .myth-label {
+      font-size: .78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; margin-bottom: 6px; display: block;
+    }
+    .myth-card.mito .myth-label  { color: #b91c1c; }
+    .myth-card.real .myth-label  { color: #15803d; }
+    .myth-card p { margin: 0; font-size: .91rem; line-height: 1.5; }
+
+    /* ── Comorbilidades chips ──────────────────────────────────── */
+    .comor-list {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;
+    }
+    .comor-chip {
+      padding: 8px 14px; border-radius: 999px;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(148,163,184,.25);
+      font-size: .9rem;
+    }
+
+    /* ── Lectura larga ────────────────────────────────────────── */
+    .longread { line-height: 1.65; }
+
+    /* ── Próximamente ─────────────────────────────────────────── */
+    .proximamente {
+      padding: 16px 18px; border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px dashed rgba(148,163,184,.35);
+      color: rgba(148,163,184,.8);
+      font-size: .95rem;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .proximamente span.icon { font-size: 1.4rem; flex-shrink: 0; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════ TOPBAR -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>🌙</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · Insomnio: CBT-I y plan de 7 días</div>
+        </div>
+      </div>
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver">← Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus"  class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- ══════════════════════════════════════════ 1 · PORTADA -->
+    <section class="section">
+      <div class="topic-hero">
+        <img src="assets/img/insomnio-portada.webp?v=1"
+             alt="Ilustración editorial del insomnio: noche, vigilia y quietud" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>Insomnio: CBT-I y plan de 7 días</h1>
+          <p>Cuando el sueño no llega, no se sostiene o no repara. El tratamiento con evidencia más sólida, explicado con claridad.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 2 · AUDIO PRINCIPAL -->
+    <section class="section" id="audio">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
+            <p class="card-sub">Qué es el insomnio crónico, por qué persiste y qué cambia con CBT-I.</p>
+          </div>
+          <span class="chip">🎧 Audio</span>
+        </div>
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata" id="podcastAudio">
+            <!-- ✅ Archivo esperado: audio/insomnio-cbti-podcast.m4a -->
+            <source src="audio/insomnio-cbti-podcast.m4a" type="audio/mp4" />
+            <source src="audio/insomnio-cbti-podcast.m4a" type="audio/x-m4a" />
+            Tu navegador no soporta audio.
+          </audio>
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Ir a la lectura</a>
+            <a class="btn btn-ghost" href="audio/insomnio-cbti-podcast.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 3 · AUDIO RELAJACIÓN -->
+    <section class="section" id="audio-relajacion">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Audio breve de relajación</h2>
+            <p class="card-sub">Un ejercicio guiado breve para bajar la activación antes de dormir. Menos de 10 minutos.</p>
+          </div>
+          <span class="chip">🌿 Relajación</span>
+        </div>
+        <div class="audio-wrap">
+          <!-- ✅ Archivo esperado: audio/relajacion-breve-sueno.m4a -->
+          <div class="proximamente">
+            <span class="icon">⏳</span>
+            <span><strong style="color:inherit">Próximamente.</strong> El audio de relajación guiada estará disponible en breve.</span>
+          </div>
+          <div class="audio-actions" style="margin-top:4px">
+            <a class="btn" href="#plan">Ir al plan de 7 días</a>
+            <a class="btn btn-ghost" href="#diario">Ir al diario de sueño</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- ══════════════════════════════════════════ 4 · ACCESO RÁPIDO -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Acceso rápido</h2>
+            <p class="card-sub">Podés ir directo a lo que necesitás.</p>
+            <div class="toc" aria-label="Índice de contenidos">
+              <a class="btn btn-ghost" href="#que-es">Qué es el insomnio</a>
+              <a class="btn btn-ghost" href="#cbti">Qué es CBT-I</a>
+              <a class="btn btn-ghost" href="#mantiene">Qué lo mantiene</a>
+              <a class="btn btn-ghost" href="#higiene">Higiene del sueño</a>
+              <a class="btn btn-ghost" href="#plan">Plan 7 días</a>
+              <a class="btn btn-ghost" href="#diario">Diario de sueño</a>
+              <a class="btn btn-ghost" href="#cuando">Cuándo consultar</a>
+              <a class="btn btn-ghost" href="#comorbilidades">Comorbilidades</a>
+              <a class="btn btn-ghost" href="#video">Video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 5 · QUÉ ES EL INSOMNIO -->
+    <section class="section" id="que-es">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es el insomnio</h2>
+            <p class="card-sub">Más que "dormir poco": una alteración persistente del sistema sueño-vigilia.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Tipos principales</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li><b>Insomnio de conciliación:</b> costás conciliar el sueño al acostarte.</li>
+              <li><b>Insomnio de mantenimiento:</b> te despertás de noche y te cuesta volver a dormir.</li>
+              <li><b>Despertar precoz:</b> te despertás antes de lo que querés y no podés continuar.</li>
+              <li><b>Sueño no reparador:</b> dormís horas suficientes pero te levantás sin descansar.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Cuándo se vuelve crónico</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>3 o más noches por semana, durante 3 o más meses.</li>
+              <li>Con impacto diurno: fatiga, concentración, humor, desempeño.</li>
+              <li>No explicado únicamente por otra condición médica o sustancia.</li>
+            </ul>
+            <div class="note" style="margin-top:10px">
+              El insomnio crónico afecta al 10–15% de la población adulta. No es "mala costumbre" ni "debilidad": tiene mecanismos específicos mantenedores.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 6 · QUÉ ES CBT-I -->
+    <section class="section" id="cbti">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué es CBT-I</h2>
+            <p class="card-sub">Terapia Cognitivo-Conductual para el Insomnio: primera línea según las guías internacionales.</p>
+          </div>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:10px">
+          <p>
+            CBT-I (por su sigla en inglés: <em>Cognitive Behavioural Therapy for Insomnia</em>) es el tratamiento
+            con mayor evidencia científica para el insomnio crónico. Las principales guías clínicas internacionales
+            (American Academy of Sleep Medicine, European Sleep Research Society) la ubican como <b>primera línea</b>,
+            por encima de la medicación a largo plazo.
+          </p>
+          <p>
+            No se trata de "aprender a relajarse" ni de seguir una lista de hábitos. CBT-I actúa directamente
+            sobre los mecanismos que <em>mantienen</em> el insomnio: la hiperestimulación del sistema de alerta,
+            las creencias disfuncionales sobre el sueño y los comportamientos que, aunque parecen razonables,
+            perpetúan el problema.
+          </p>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Componentes principales</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li><b>Restricción del tiempo en cama (TIB):</b> reduce la fragmentación y consolida el sueño.</li>
+              <li><b>Control de estímulos:</b> rompe la asociación cama-vigilia/ansiedad.</li>
+              <li><b>Higiene del sueño selectiva:</b> solo lo que tiene evidencia, sin mitos.</li>
+              <li><b>Reestructuración cognitiva:</b> trabaja las creencias sobre el sueño que lo empeoran.</li>
+              <li><b>Técnicas de relajación:</b> bajan la activación fisiológica nocturna.</li>
+              <li><b>Diario de sueño:</b> monitoreo objetivo de patrones y evolución.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Por qué es superior a la medicación a largo plazo</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li>Efectos que se sostienen después de terminar el tratamiento.</li>
+              <li>Sin riesgo de dependencia ni tolerancia.</li>
+              <li>Actúa sobre la causa, no solo los síntomas.</li>
+              <li>Compatible con tratamiento farmacológico puntual si se necesita.</li>
+            </ul>
+            <div class="note" style="margin-top:10px">
+              La medicación puede tener un rol en fases agudas o de arranque, pero CBT-I es el tratamiento que cambia el patrón de fondo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 7 · QUÉ MANTIENE EL INSOMNIO -->
+    <section class="section" id="mantiene">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Qué mantiene el insomnio</h2>
+            <p class="card-sub">El modelo de las 3P: predisponente, precipitante y <strong>perpetuante</strong> (lo que CBT-I ataca).</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">Factores perpetuantes (los más relevantes)</h3>
+            <ul class="card-sub" style="margin-top:8px">
+              <li><b>Compensaciones contraproducentes:</b> acostarse muy temprano, quedarse en cama largo rato, siestas largas o tardías.</li>
+              <li><b>Hipervigilancia:</b> monitorear el propio sueño, mirar el reloj, calcular horas.</li>
+              <li><b>Asociación cama-alerta:</b> la cama se convierte en lugar de pensamientos y preocupación, no de sueño.</li>
+              <li><b>Creencias disfuncionales:</b> "si no duermo 8 horas todo irá mal", "nunca voy a mejorar".</li>
+              <li><b>Anticipación ansiosa:</b> empezar a preocuparse por el sueño horas antes de acostarse.</li>
+            </ul>
+          </div>
+
+          <div class="section-card hint-bg" style="margin:0">
+            <h3 class="card-title" style="margin-top:0">El ciclo que se sostiene solo</h3>
+            <div class="card-sub" style="margin-top:8px; line-height:1.65">
+              <p>Noche con mal sueño → preocupación y compensación → más tiempo en cama sin dormir → cama asociada a alerta → más dificultad para dormir → más preocupación.</p>
+              <p style="margin-top:10px">
+                CBT-I interrumpe este ciclo atacando cada eslabón: reduce el tiempo en cama, trabaja la asociación, modifica las creencias y baja la activación.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 8 · HIGIENE DEL SUEÑO SIN MITOS -->
+    <section class="section" id="higiene">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Higiene del sueño sin mitos</h2>
+            <p class="card-sub">Lo que tiene evidencia y lo que no. La higiene del sueño sola no alcanza para el insomnio crónico, pero estos puntos apoyan el tratamiento.</p>
+          </div>
+        </div>
+
+        <div class="myth-grid">
+          <div class="myth-card mito">
+            <span class="myth-label">✗ Mito</span>
+            <p>"Si no puedo dormir, quédate en cama descansando para al menos recuperar algo."</p>
+          </div>
+          <div class="myth-card real">
+            <span class="myth-label">✓ Evidencia</span>
+            <p>Estar en cama despierto refuerza la asociación cama-alerta. Si pasaron 20 min sin dormir, es mejor levantarse y hacer algo tranquilo hasta tener sueño.</p>
+          </div>
+
+          <div class="myth-card mito">
+            <span class="myth-label">✗ Mito</span>
+            <p>"Las siestas recuperan el sueño perdido y no afectan la noche."</p>
+          </div>
+          <div class="myth-card real">
+            <span class="myth-label">✓ Evidencia</span>
+            <p>Las siestas largas (&gt;20–30 min) o tardías (&gt;3 pm) reducen la presión de sueño nocturna y dificultan la conciliación. En CBT-I se limitan o eliminan.</p>
+          </div>
+
+          <div class="myth-card mito">
+            <span class="myth-label">✗ Mito</span>
+            <p>"Acostarse más temprano para tener más tiempo de dormir."</p>
+          </div>
+          <div class="myth-card real">
+            <span class="myth-label">✓ Evidencia</span>
+            <p>Aumenta el tiempo en cama sin dormir y fragmenta el sueño. CBT-I trabaja con ventanas de sueño ajustadas para consolidar primero.</p>
+          </div>
+
+          <div class="myth-card mito">
+            <span class="myth-label">✗ Mito</span>
+            <p>"Mirar el celular o la tele te relaja antes de dormir."</p>
+          </div>
+          <div class="myth-card real">
+            <span class="myth-label">✓ Evidencia</span>
+            <p>La luz azul y la estimulación cognitiva retrasan el inicio del sueño. Pantallas fuera al menos 30–60 min antes de acostarse.</p>
+          </div>
+
+          <div class="myth-card mito">
+            <span class="myth-label">✗ Mito</span>
+            <p>"El alcohol ayuda a dormir."</p>
+          </div>
+          <div class="myth-card real">
+            <span class="myth-label">✓ Evidencia</span>
+            <p>Facilita la conciliación pero fragmenta el sueño en la segunda mitad de la noche, reduce sueño REM y empeora la calidad global.</p>
+          </div>
+
+          <div class="myth-card real">
+            <span class="myth-label">✓ Sí funciona</span>
+            <p>Temperatura fresca en el cuarto (~18–20°C), oscuridad, hora relativamente fija de levantarse (anclaje circadiano), rutina de cierre coherente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 9 · PLAN 7 DÍAS -->
+    <section class="section" id="plan">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Plan de 7 días</h2>
+            <p class="card-sub">No es "curarte en una semana". Es instalar las bases de CBT-I y observar el patrón. Cada día suma.</p>
+          </div>
+        </div>
+
+        <div class="plan-grid">
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">1</div>
+              <strong>Ancla de levantada</strong>
+            </div>
+            <p>Elegí una hora fija de levantarte y mantenela todos los días, aunque hayas dormido mal. Es la base del ritmo circadiano. No ajustes el despertador "un rato más".</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">2</div>
+              <strong>Ventana de sueño real</strong>
+            </div>
+            <p>Calculá cuántas horas realmente dormís (no cuánto tiempo pasás en cama). Esa es tu ventana inicial. Acostarte más tarde de lo habitual durante unos días consolida el sueño.</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">3</div>
+              <strong>Cama solo para dormir</strong>
+            </div>
+            <p>Retirá pantallas, trabajo, discusiones y preocupaciones de la cama y el cuarto. Si estás despierto 20 min o más, levantate hasta tener sueño real.</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">4</div>
+              <strong>Rutina de cierre</strong>
+            </div>
+            <p>30–45 min antes de acostarte: baja la intensidad luminosa, hacé algo tranquilo (leer en papel, estiramiento suave, ducha tibia). La misma secuencia cada noche le avisa al cerebro que viene el sueño.</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">5</div>
+              <strong>Reducir la lucha mental</strong>
+            </div>
+            <p>No "intentar dormir": el esfuerzo activa el sistema de alerta. Cambiá el foco a relajarte. Si los pensamientos se aceleran, hacé respiración abdominal lenta (4–6 seg por ciclo).</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">6</div>
+              <strong>Siestas y cafeína</strong>
+            </div>
+            <p>Si usás siesta: máximo 20 min, antes de las 15 hs. Cafeína: última dosis antes de las 14 hs (incluso si no sentís efecto, sigue siendo activa 6–8 hs en el organismo).</p>
+          </div>
+
+          <div class="plan-day">
+            <div class="plan-day-head">
+              <div class="plan-day-num">7</div>
+              <strong>Diario + balance</strong>
+            </div>
+            <p>Completá el diario de sueño. Revisá la semana: ¿cuántas noches la latencia fue menor? ¿Menos despertares? ¿Mejor energía? Usá el resumen para tu próxima consulta.</p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          La restricción del tiempo en cama puede empeorar la somnolencia los primeros días antes de mejorar. Es una señal de que el sistema está respondiendo. Consultá con tu profesional si tenés condiciones como epilepsia, trastorno bipolar o somnolencia severa que implique riesgo.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 10 · DIARIO DE SUEÑO -->
+    <section class="section" id="diario">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Diario de sueño</h2>
+            <p class="card-sub">Completalo por la mañana, con lo que recordás de la noche anterior. No hace falta precisión perfecta — es orientativo. El resumen podés copiarlo para traerlo a consulta.</p>
+          </div>
+          <span class="chip">📓 Diario</span>
+        </div>
+
+        <div class="diary-grid">
+
+          <!-- Fila 1: tiempos -->
+          <div class="diary-field">
+            <label for="d_fecha">Fecha (noche de)</label>
+            <input id="d_fecha" type="date" class="diary-input" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_acuesto">Me acosté aproximadamente a las</label>
+            <input id="d_acuesto" type="time" class="diary-input" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_dormi">Me dormí aproximadamente a las</label>
+            <span class="hint">Estimado, no mirés el reloj</span>
+            <input id="d_dormi" type="time" class="diary-input" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_despertares">Cantidad de despertares nocturnos</label>
+            <input id="d_despertares" type="number" min="0" max="20" step="1"
+                   class="diary-input" placeholder="0" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_minutos_despierto">Minutos despierto en total (noche)</label>
+            <span class="hint">Suma de todos los despertares</span>
+            <input id="d_minutos_despierto" type="number" min="0" max="480" step="5"
+                   class="diary-input" placeholder="0" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_desperte">Me desperté definitivamente a las</label>
+            <input id="d_desperte" type="time" class="diary-input" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_levante">Me levanté de la cama a las</label>
+            <input id="d_levante" type="time" class="diary-input" />
+          </div>
+
+          <!-- Fila 2: hábitos -->
+          <div class="diary-field">
+            <label for="d_siesta">Siesta ayer</label>
+            <select id="d_siesta" class="diary-select">
+              <option value="">— sin siesta —</option>
+              <option value="breve (<20 min)">Breve (&lt;20 min)</option>
+              <option value="moderada (20-45 min)">Moderada (20–45 min)</option>
+              <option value="larga (>45 min)">Larga (&gt;45 min)</option>
+            </select>
+          </div>
+
+          <div class="diary-field">
+            <label for="d_cafeina">Última cafeína a las</label>
+            <span class="hint">Café, té, mate, bebidas energéticas</span>
+            <input id="d_cafeina" type="time" class="diary-input" />
+          </div>
+
+          <div class="diary-field">
+            <label for="d_ejercicio">Ejercicio físico ayer</label>
+            <select id="d_ejercicio" class="diary-select">
+              <option value="ninguno">Sin ejercicio</option>
+              <option value="leve">Leve (caminata)</option>
+              <option value="moderado">Moderado</option>
+              <option value="intenso mañana/mediodía">Intenso (mañana/mediodía)</option>
+              <option value="intenso tarde/noche">Intenso (tarde/noche)</option>
+            </select>
+          </div>
+
+          <!-- Fila 3: sliders subjetivos -->
+          <div class="diary-field diary-full">
+            <label>Calidad subjetiva del sueño (1 = pésima · 10 = excelente)</label>
+            <div class="range-row">
+              <input id="d_calidad" type="range" min="1" max="10" step="1" value="5" />
+              <span class="pill-val" id="d_calidadVal">5</span>
+            </div>
+          </div>
+
+          <div class="diary-field diary-full">
+            <label>Energía al día siguiente (1 = agotado/a · 10 = descansado/a)</label>
+            <div class="range-row">
+              <input id="d_energia" type="range" min="1" max="10" step="1" value="5" />
+              <span class="pill-val" id="d_energiaVal">5</span>
+            </div>
+          </div>
+
+          <!-- Nota libre -->
+          <div class="diary-field diary-full">
+            <label for="d_nota">Nota libre (opcional)</label>
+            <textarea id="d_nota" class="diary-textarea"
+              placeholder="Ej.: preocupaciones que aparecieron, algo que funcionó, cómo fue el ambiente, si tomaste medicación..."></textarea>
+          </div>
+
+        </div>
+
+        <!-- Acciones -->
+        <div class="audio-actions" style="margin-top:14px">
+          <button class="btn" id="btnCopy" type="button">Copiar resumen</button>
+          <button class="btn btn-ghost" id="btnReset" type="button">Limpiar</button>
+          <a class="btn btn-ghost" href="#plan">Ver plan 7 días</a>
+        </div>
+
+        <div class="copy-ok" id="copyOk" role="status">
+          ✅ Copiado. Podés pegarlo en WhatsApp o traerlo a tu próxima consulta.
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          El diario no diagnostica ni califica. Su valor está en la tendencia a lo largo de varios días, no en una noche aislada.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 11 · CUÁNDO CONSULTAR -->
+    <section class="section" id="cuando">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Cuándo consultar</h2>
+            <p class="card-sub">La información de este sitio no reemplaza una evaluación profesional. Estas son señales de que conviene priorizarla.</p>
+          </div>
+        </div>
+
+        <ul class="card-sub" style="margin-top:10px">
+          <li>Insomnio que dura 3 o más meses con impacto en el funcionamiento diario.</li>
+          <li>Somnolencia diurna intensa o irresistible (puede indicar otro trastorno del sueño: apnea, narcolepsia).</li>
+          <li>Ronquido intenso o pausas en la respiración nocturna (señal de apnea del sueño).</li>
+          <li>Piernas inquietas, movimientos involuntarios o conductas durante el sueño.</li>
+          <li>Insomnio que acompaña a síntomas de depresión, ansiedad, dolor crónico o enfermedad médica.</li>
+          <li>Uso creciente de medicación (hipnóticos, alcohol) para poder dormir.</li>
+          <li>Cuando el sueño interfiere con la seguridad (conducir, operar maquinaria).</li>
+        </ul>
+
+        <div class="note" style="margin-top:12px">
+          CBT-I puede implementarse en formato individual, grupal o digital (con guía profesional). La Central de Turnos puede orientarte sobre el mejor punto de entrada.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 12 · COMORBILIDADES -->
+    <section class="section" id="comorbilidades">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Comorbilidades y sueño</h2>
+            <p class="card-sub">El insomnio raramente aparece solo. Tratar solo una cara del problema suele ser insuficiente.</p>
+          </div>
+        </div>
+
+        <div class="comor-list" aria-label="Comorbilidades frecuentes">
+          <span class="comor-chip">😰 Ansiedad generalizada</span>
+          <span class="comor-chip">😔 Depresión</span>
+          <span class="comor-chip">🧠 TDAH</span>
+          <span class="comor-chip">😣 Dolor crónico</span>
+          <span class="comor-chip">💊 Dependencia a hipnóticos</span>
+          <span class="comor-chip">🍷 Consumo de alcohol</span>
+          <span class="comor-chip">💙 TEPT</span>
+          <span class="comor-chip">🫁 Apnea del sueño</span>
+          <span class="comor-chip">🦵 Síndrome de piernas inquietas</span>
+          <span class="comor-chip">💊 Burnout</span>
+        </div>
+
+        <div class="longread card-sub" style="margin-top:14px">
+          <p>
+            Durante años se pensó que el insomnio era solo un síntoma de otras condiciones y que tratar la causa
+            era suficiente. La evidencia actual muestra que el insomnio también <em>mantiene y amplifica</em>
+            las condiciones comórbidas: un sueño pobre agrava la ansiedad, hace más resistente la depresión
+            y aumenta la sensibilidad al dolor.
+          </p>
+          <p>
+            Por eso CBT-I tiene valor incluso cuando el insomnio coexiste con otras condiciones:
+            tratar el sueño mejora el cuadro general. El trabajo es en paralelo, no en secuencia.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 13 · VIDEO -->
+    <section class="section" id="video">
+      <div class="section-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Video: higiene del sueño sin mitos</h2>
+            <p class="card-sub">Qué funciona, qué no funciona y por qué cambiar el enfoque.</p>
+          </div>
+          <span class="chip">🎬 Video</span>
+        </div>
+        <div class="video-wrap">
+          <video class="video-player" controls preload="metadata" playsinline
+                 poster="assets/img/insomnio-video-poster.webp">
+            <!-- ✅ Archivo esperado: assets/videos/higiene-del-sueno-sin-mitos.mp4 -->
+            <source src="assets/videos/higiene-del-sueno-sin-mitos.mp4" type="video/mp4" />
+            Tu navegador no soporta video.
+          </video>
+          <div class="audio-actions">
+            <a class="btn" href="#que-es">Volver a la lectura</a>
+            <a class="btn btn-ghost" href="assets/videos/higiene-del-sueno-sin-mitos.mp4" download>Descargar video</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ 14 · CTA FINAL -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés hacer una evaluación del sueño?</h3>
+            <p class="card-sub">
+              Si el insomnio te está afectando hace semanas o meses, una evaluación clínica ayuda a definir
+              si es CBT-I puro, si hay comorbilidades que abordar, o si conviene apoyo farmacológico puntual.
+            </p>
+          </div>
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- Diario de sueño JS -->
+  <script>
+  (function(){
+
+    /* ── Sliders ─────────────────────────────────── */
+    const sliders = [
+      { range: "d_calidad", val: "d_calidadVal" },
+      { range: "d_energia", val: "d_energiaVal" }
+    ];
+    sliders.forEach(({ range, val }) => {
+      const r = document.getElementById(range);
+      const v = document.getElementById(val);
+      if (r && v) {
+        r.addEventListener("input", () => v.textContent = r.value);
+      }
+    });
+
+    /* ── Helpers ─────────────────────────────────── */
+    function nowStr() {
+      const d   = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function val(id)  { return (document.getElementById(id)?.value  || "").trim() || "—"; }
+    function sval(id) { const el = document.getElementById(id); return el ? (el.options[el.selectedIndex]?.text || "—") : "—"; }
+    function nval(id) { const v = document.getElementById(id)?.value; return (v !== "" && v != null) ? v : "—"; }
+
+    /* ── Copy ────────────────────────────────────── */
+    async function copyText(txt) {
+      try { await navigator.clipboard.writeText(txt); }
+      catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = txt; document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+    }
+
+    const btnCopy = document.getElementById("btnCopy");
+    const btnReset= document.getElementById("btnReset");
+    const copyOk  = document.getElementById("copyOk");
+
+    if (btnCopy) {
+      btnCopy.addEventListener("click", async () => {
+        const txt =
+          `=== Diario de sueño — Consultorio Dr. Dagnino ===\n` +
+          `Fecha/hora de registro: ${nowStr()}\n\n` +
+          `NOCHE DEL: ${val("d_fecha")}\n\n` +
+          `TIEMPOS:\n` +
+          `• Me acosté: ${val("d_acuesto")}\n` +
+          `• Me dormí aprox.: ${val("d_dormi")}\n` +
+          `• Despertares nocturnos: ${nval("d_despertares")}\n` +
+          `• Minutos despierto total: ${nval("d_minutos_despierto")} min\n` +
+          `• Me desperté definitivamente: ${val("d_desperte")}\n` +
+          `• Me levanté de la cama: ${val("d_levante")}\n\n` +
+          `HÁBITOS DEL DÍA ANTERIOR:\n` +
+          `• Siesta: ${sval("d_siesta")}\n` +
+          `• Última cafeína: ${val("d_cafeina")}\n` +
+          `• Ejercicio: ${sval("d_ejercicio")}\n\n` +
+          `VALORACIÓN SUBJETIVA:\n` +
+          `• Calidad del sueño: ${document.getElementById("d_calidad")?.value ?? "—"}/10\n` +
+          `• Energía al día siguiente: ${document.getElementById("d_energia")?.value ?? "—"}/10\n\n` +
+          `NOTA LIBRE:\n${val("d_nota")}\n\n` +
+          `---\nEste registro es orientativo y no reemplaza evaluación profesional.`;
+
+        await copyText(txt);
+        if (copyOk) {
+          copyOk.style.display = "block";
+          setTimeout(() => copyOk.style.display = "none", 4000);
+        }
+      });
+    }
+
+    /* ── Reset ───────────────────────────────────── */
+    if (btnReset) {
+      btnReset.addEventListener("click", () => {
+        ["d_fecha","d_acuesto","d_dormi","d_desperte","d_levante","d_cafeina","d_nota"]
+          .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+        ["d_despertares","d_minutos_despierto"]
+          .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+        const siesta = document.getElementById("d_siesta");
+        if (siesta) siesta.selectedIndex = 0;
+        const ejercicio = document.getElementById("d_ejercicio");
+        if (ejercicio) ejercicio.selectedIndex = 0;
+        const calidad = document.getElementById("d_calidad");
+        const calidadVal = document.getElementById("d_calidadVal");
+        if (calidad) { calidad.value = 5; if (calidadVal) calidadVal.textContent = "5"; }
+        const energia = document.getElementById("d_energia");
+        const energiaVal = document.getElementById("d_energiaVal");
+        if (energia) { energia.value = 5; if (energiaVal) energiaVal.textContent = "5"; }
+        if (copyOk) copyOk.style.display = "none";
+      });
+    }
+
+    /* ── Sync volumen global ─────────────────────── */
+    const podcastAudio = document.getElementById("podcastAudio");
+    const vol = document.getElementById("volumeRange");
+    if (podcastAudio && vol) {
+      const applyVol = () => {
+        podcastAudio.volume = Math.max(0, Math.min(1, (Number(vol.value) || 35) / 100));
+      };
+      vol.addEventListener("input", applyVol);
+      applyVol();
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
