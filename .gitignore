@@ -1,0 +1,10 @@
+# Windows system files
+desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# macOS
+.DS_Store
+
+# Claude worktrees
+.claude/worktrees/
