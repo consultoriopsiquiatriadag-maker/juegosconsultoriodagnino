@@ -189,12 +189,12 @@
     }
 
     /* ──────────────────────────────────────────────
-       SELECTOR DE TEST (3 tarjetas)
+       SELECTOR DE TEST
     ────────────────────────────────────────────── */
     .bt-test-grid {
       display: grid;
       gap: 16px;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
       margin-top: 4px;
     }
     @media (max-width: 760px) {
@@ -973,6 +973,15 @@
           <div class="bt-test-icon">🌧️</div>
           <div class="bt-test-name">Persona bajo la lluvia</div>
           <p class="bt-test-desc">Figura humana en situación de estrés.</p>
+        </button>
+
+        <button class="bt-test-card" id="btnSelectDagnino" type="button" aria-pressed="false" style="border-color:rgba(37,99,235,.22);background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);">
+          <div class="bt-test-check" aria-hidden="true">
+            <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+          </div>
+          <div class="bt-test-icon">📋</div>
+          <div class="bt-test-name" style="color:#1e40af;">Inventario Dagnino</div>
+          <p class="bt-test-desc">Autoobservación emocional, cognitiva y funcional.<br>≈ 10 minutos.</p>
         </button>
 
       </div>
@@ -2483,6 +2492,1008 @@
 
   })();
   </script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INVENTARIO DAGNINO DE AUTOOBSERVACIÓN — MÓDULO ENCAPSULADO
+     Todo prefijado con dagnino- para evitar conflictos
+     CSS + HTML + JS en IIFE. Lazy: Chart.js se carga al ver resultados.
+════════════════════════════════════════════════════════════════ -->
+<style id="dagnino-styles">
+/* === OVERLAY MODAL ============================================= */
+.dagnino-overlay {
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(8,26,47,.92);
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow-y: auto; padding: 20px 16px 48px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.dagnino-overlay.dagnino-open { opacity: 1; pointer-events: all; }
+
+/* === ROOT ===================================================== */
+.dagnino-root {
+  background: #fff; border-radius: 20px;
+  max-width: 840px; width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,.45);
+  overflow: hidden; position: relative; margin: auto;
+}
+
+/* === TOP BAR ================================================== */
+.dagnino-topbar {
+  background: linear-gradient(135deg,#0e2239 0%,#1b3d63 100%);
+  padding: 20px 24px 14px; position: relative;
+}
+.dagnino-topbar-title { color:#fff; font-size:1rem; font-weight:700; margin:0 0 3px; }
+.dagnino-topbar-sub { color:rgba(255,255,255,.6); font-size:.78rem; margin:0; }
+.dagnino-close-btn {
+  position:absolute; top:14px; right:14px;
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+  border-radius:50%; width:34px; height:34px; color:#fff; font-size:.95rem;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .2s; line-height:1;
+}
+.dagnino-close-btn:hover { background:rgba(255,255,255,.22); }
+
+/* === PROGRESS ================================================= */
+.dagnino-progress-wrap {
+  background:rgba(255,255,255,.12); height:4px; margin-top:12px; overflow:hidden;
+}
+.dagnino-progress-bar {
+  height:100%; background:#34d399; transition:width .4s ease; width:0%;
+}
+.dagnino-progress-label {
+  color:rgba(255,255,255,.5); font-size:.72rem; margin-top:5px;
+}
+
+/* === CONTENT ================================================== */
+.dagnino-content { padding: 28px 28px 24px; }
+@media(max-width:520px){ .dagnino-content{ padding:18px 16px 16px; } }
+
+/* === SCREENS ================================================== */
+.dagnino-screen { display:none; }
+.dagnino-screen.dagnino-active { display:block; }
+
+/* === WELCOME ================================================== */
+.dagnino-welcome-icon { font-size:2.8rem; display:block; margin-bottom:14px; }
+.dagnino-welcome-title { font-size:1.45rem; font-weight:800; color:#0e2239; margin:0 0 8px; line-height:1.2; }
+.dagnino-welcome-sub { font-size:.95rem; color:#64748b; margin:0 0 22px; line-height:1.65; }
+.dagnino-info-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px;
+}
+@media(max-width:480px){ .dagnino-info-grid{ grid-template-columns:1fr 1fr; } }
+.dagnino-info-card { background:#f2f5f8; border-radius:12px; padding:12px 16px; }
+.dagnino-info-card-label { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:#94a3b8; margin-bottom:3px; }
+.dagnino-info-card-val { font-size:.9rem; font-weight:700; color:#0e2239; }
+.dagnino-legal-note {
+  background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px;
+  padding:14px 16px; font-size:.82rem; color:#0369a1; line-height:1.65; margin-bottom:22px;
+}
+.dagnino-resume-banner {
+  background:#fefce8; border:1px solid #fde68a; border-radius:10px;
+  padding:12px 16px; margin-bottom:18px; font-size:.84rem; color:#78350f;
+  display:none; align-items:center; justify-content:space-between; gap:12px;
+  flex-wrap:wrap;
+}
+.dagnino-resume-banner button {
+  appearance:none; background:#f59e0b; border:none; border-radius:8px;
+  padding:6px 14px; font-family:inherit; font-size:.8rem; font-weight:700;
+  color:#fff; cursor:pointer; white-space:nowrap;
+}
+
+/* === FORM ===================================================== */
+.dagnino-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+.dagnino-form-full { grid-column:1/-1; }
+@media(max-width:520px){ .dagnino-form-grid{ grid-template-columns:1fr; } }
+.dagnino-field { display:flex; flex-direction:column; gap:5px; }
+.dagnino-label { font-size:.79rem; font-weight:600; color:#334155; }
+.dagnino-input,.dagnino-textarea {
+  font-family:inherit; font-size:.9rem; color:#0f172a;
+  background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px;
+  padding:10px 12px; outline:none; transition:border-color .2s, box-shadow .2s;
+}
+.dagnino-input:focus,.dagnino-textarea:focus {
+  border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.1); background:#fff;
+}
+.dagnino-textarea { resize:vertical; min-height:70px; }
+.dagnino-consent-wrap {
+  background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px;
+  padding:16px; margin-bottom:18px;
+}
+.dagnino-consent-text { font-size:.82rem; color:#475569; line-height:1.65; margin-bottom:14px; }
+.dagnino-consent-check-row { display:flex; align-items:flex-start; gap:10px; }
+.dagnino-consent-check-row input[type="checkbox"] {
+  width:18px; height:18px; margin-top:2px; accent-color:#2563eb; flex-shrink:0; cursor:pointer;
+}
+.dagnino-consent-check-label { font-size:.85rem; font-weight:600; color:#0e2239; cursor:pointer; line-height:1.5; }
+
+/* === QUESTIONNAIRE ============================================ */
+.dagnino-domain-number { font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:#2563eb; margin-bottom:4px; }
+.dagnino-domain-title { font-size:1.12rem; font-weight:800; color:#0e2239; margin:0 0 5px; }
+.dagnino-domain-count { font-size:.83rem; color:#64748b; margin:0 0 16px; }
+.dagnino-scale-legend {
+  display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;
+  padding:10px 14px; background:#f2f5f8; border-radius:10px;
+}
+.dagnino-scale-item { display:flex; align-items:center; gap:5px; font-size:.74rem; color:#475569; }
+.dagnino-scale-badge {
+  background:#e2e8f0; border-radius:6px; padding:2px 7px;
+  font-weight:700; font-size:.74rem; color:#334155;
+}
+.dagnino-item-list { display:flex; flex-direction:column; gap:12px; }
+.dagnino-item-row {
+  background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px;
+  padding:14px 16px; transition:background .15s, border-color .15s;
+}
+.dagnino-item-row.dagnino-answered { background:#f0fdf4; border-color:#bbf7d0; }
+.dagnino-item-row.dagnino-critical { border-color:#fca5a5; background:#fff5f5; }
+.dagnino-item-row.dagnino-critical.dagnino-answered { background:#fef2f2; border-color:#fca5a5; }
+.dagnino-item-num { font-size:.7rem; color:#94a3b8; font-weight:700; margin-right:5px; }
+.dagnino-item-text { font-size:.9rem; color:#1e293b; font-weight:500; line-height:1.5; margin-bottom:10px; }
+.dagnino-options-row { display:flex; gap:6px; }
+@media(max-width:420px){ .dagnino-options-row{ gap:3px; } }
+.dagnino-opt-btn {
+  flex:1; appearance:none; background:#fff; border:1.5px solid #cbd5e1;
+  border-radius:8px; padding:8px 3px; font-family:inherit; font-size:.82rem;
+  font-weight:700; color:#475569; cursor:pointer; text-align:center;
+  transition:background .12s, border-color .12s, color .12s, transform .1s;
+  line-height:1.2;
+}
+.dagnino-opt-btn:hover { border-color:#2563eb; color:#2563eb; background:#eff6ff; }
+.dagnino-opt-btn.dagnino-selected { background:#2563eb; border-color:#2563eb; color:#fff; transform:scale(1.05); }
+.dagnino-opt-label { display:block; font-size:.6rem; font-weight:400; opacity:.8; margin-top:2px; }
+@media(max-width:420px){ .dagnino-opt-btn{ font-size:.75rem; padding:7px 2px; } .dagnino-opt-label{ font-size:.55rem; } }
+
+/* === NAV BUTTONS ============================================== */
+.dagnino-nav-row {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  margin-top:26px; padding-top:18px; border-top:1px solid #e2e8f0;
+}
+@media(max-width:480px){ .dagnino-nav-row{ flex-direction:column-reverse; } }
+.dagnino-btn-primary {
+  appearance:none; background:#0e2239; border:none; border-radius:10px;
+  padding:12px 22px; font-family:inherit; font-size:.93rem; font-weight:700;
+  color:#fff; cursor:pointer; display:flex; align-items:center; gap:7px;
+  transition:background .2s, transform .15s;
+}
+.dagnino-btn-primary:hover { background:#0a1c30; transform:translateY(-1px); }
+.dagnino-btn-primary:disabled { opacity:.38; cursor:not-allowed; transform:none; }
+.dagnino-btn-secondary {
+  appearance:none; background:transparent; border:1.5px solid #cbd5e1;
+  border-radius:10px; padding:11px 18px; font-family:inherit; font-size:.88rem;
+  font-weight:600; color:#475569; cursor:pointer; transition:border-color .2s, background .2s;
+}
+.dagnino-btn-secondary:hover { border-color:#94a3b8; background:#f8fafc; }
+.dagnino-btn-reset {
+  appearance:none; background:transparent; border:none; color:#94a3b8;
+  font-family:inherit; font-size:.78rem; cursor:pointer; text-decoration:underline; padding:8px;
+}
+.dagnino-btn-reset:hover { color:#ef4444; }
+@media(max-width:480px){
+  .dagnino-btn-primary,.dagnino-btn-secondary{ width:100%; justify-content:center; text-align:center; }
+}
+
+/* === RESULTS ================================================== */
+.dagnino-results-header { text-align:center; margin-bottom:24px; padding-bottom:18px; border-bottom:1px solid #e2e8f0; }
+.dagnino-results-icon { font-size:2.4rem; display:block; margin-bottom:10px; }
+.dagnino-results-title { font-size:1.25rem; font-weight:800; color:#0e2239; margin:0 0 5px; }
+.dagnino-results-meta { font-size:.84rem; color:#64748b; margin:0; }
+
+.dagnino-global-score {
+  background:linear-gradient(135deg,#0e2239 0%,#1b3d63 100%);
+  border-radius:16px; padding:18px 22px; margin-bottom:22px;
+  display:flex; align-items:center; gap:18px;
+}
+@media(max-width:480px){ .dagnino-global-score{ flex-direction:column; text-align:center; } }
+.dagnino-score-circle {
+  width:76px; height:76px; border-radius:50%; flex-shrink:0;
+  background:rgba(255,255,255,.12); border:2px solid rgba(255,255,255,.22);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.dagnino-score-num { font-size:1.55rem; font-weight:800; color:#fff; line-height:1; }
+.dagnino-score-max { font-size:.65rem; color:rgba(255,255,255,.5); }
+.dagnino-global-band { font-size:.97rem; font-weight:700; color:#fff; margin:0 0 4px; }
+.dagnino-global-desc { font-size:.82rem; color:rgba(255,255,255,.65); margin:0; line-height:1.5; }
+
+.dagnino-alert-box {
+  background:#fef2f2; border:2px solid #ef4444; border-radius:14px;
+  padding:16px 18px; margin-bottom:20px;
+}
+.dagnino-alert-box.dagnino-alert-urgent { background:#7f1d1d; border-color:#7f1d1d; }
+.dagnino-alert-title { font-size:.97rem; font-weight:800; color:#b91c1c; margin:0 0 7px; display:flex; align-items:center; gap:7px; }
+.dagnino-alert-box.dagnino-alert-urgent .dagnino-alert-title { color:#fecaca; }
+.dagnino-alert-body { font-size:.85rem; color:#7f1d1d; line-height:1.65; margin:0; }
+.dagnino-alert-box.dagnino-alert-urgent .dagnino-alert-body { color:#fca5a5; }
+
+.dagnino-domain-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:22px; }
+@media(max-width:480px){ .dagnino-domain-grid{ grid-template-columns:1fr; } }
+.dagnino-domain-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:13px 15px; }
+.dagnino-domain-card-name { font-size:.76rem; font-weight:700; color:#475569; margin-bottom:7px; line-height:1.3; }
+.dagnino-domain-score-row { display:flex; align-items:baseline; gap:5px; margin-bottom:5px; }
+.dagnino-domain-score-val { font-size:1.3rem; font-weight:800; color:#0e2239; }
+.dagnino-domain-score-max { font-size:.7rem; color:#94a3b8; }
+.dagnino-domain-band-pill { display:inline-block; padding:2px 10px; border-radius:999px; font-size:.7rem; font-weight:700; letter-spacing:.04em; }
+.dagnino-band-bajo { background:#dcfce7; color:#166534; }
+.dagnino-band-leve { background:#fef9c3; color:#854d0e; }
+.dagnino-band-moderado { background:#fed7aa; color:#c2410c; }
+.dagnino-band-alto { background:#fee2e2; color:#b91c1c; }
+
+.dagnino-chart-wrap { background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:18px 18px 14px; margin-bottom:22px; }
+.dagnino-chart-title { font-size:.84rem; font-weight:700; color:#334155; margin:0 0 14px; }
+
+.dagnino-narrative { background:#f0f9ff; border:1px solid #bae6fd; border-radius:14px; padding:18px; margin-bottom:22px; }
+.dagnino-narrative-title { font-size:.78rem; font-weight:700; color:#0369a1; margin:0 0 9px; text-transform:uppercase; letter-spacing:.07em; }
+.dagnino-narrative-body { font-size:.87rem; color:#0c4a6e; line-height:1.72; margin:0; }
+
+.dagnino-patient-box {
+  background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px;
+  padding:14px 18px; margin-bottom:22px;
+  display:grid; grid-template-columns:1fr 1fr; gap:8px 20px;
+}
+@media(max-width:480px){ .dagnino-patient-box{ grid-template-columns:1fr; } }
+.dagnino-patient-item { display:flex; flex-direction:column; gap:2px; }
+.dagnino-patient-label { font-size:.66rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:#94a3b8; }
+.dagnino-patient-val { font-size:.87rem; font-weight:600; color:#0f172a; }
+
+.dagnino-export-row { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; }
+@media(max-width:480px){ .dagnino-export-row{ flex-direction:column; } }
+.dagnino-btn-export {
+  appearance:none; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px;
+  padding:9px 15px; font-family:inherit; font-size:.84rem; font-weight:600; color:#334155;
+  cursor:pointer; display:flex; align-items:center; gap:6px;
+  transition:background .15s, border-color .15s;
+}
+.dagnino-btn-export:hover { background:#e2e8f0; border-color:#94a3b8; }
+.dagnino-btn-export-email { background:#eff6ff; border-color:#bfdbfe; color:#1e40af; }
+.dagnino-btn-export-email:hover { background:#dbeafe; border-color:#2563eb; }
+@media(max-width:480px){ .dagnino-btn-export{ width:100%; justify-content:center; } }
+
+.dagnino-disclaimer { font-size:.72rem; color:#94a3b8; text-align:center; line-height:1.65; padding:0 8px; margin-top:14px; }
+
+/* === UNANSWERED COUNTER ======================================= */
+.dagnino-q-counter { font-size:.74rem; color:#94a3b8; }
+.dagnino-q-counter.dagnino-all-done { color:#16a34a; font-weight:600; }
+</style>
+
+<!-- ──── MODAL OVERLAY ──── -->
+<div id="dagnino-overlay" class="dagnino-overlay" role="dialog" aria-modal="true"
+     aria-label="Inventario Dagnino de Autoobservación" aria-hidden="true">
+  <div id="dagnino-inventario-root" class="dagnino-root">
+
+    <!-- TOP BAR -->
+    <div class="dagnino-topbar">
+      <p class="dagnino-topbar-title">Inventario Dagnino de Autoobservación</p>
+      <p class="dagnino-topbar-sub" id="dagnino-topbar-sub">Herramienta orientativa — no diagnóstica</p>
+      <button class="dagnino-close-btn" id="dagnino-close-btn" type="button" aria-label="Cerrar inventario">✕</button>
+      <div class="dagnino-progress-wrap" id="dagnino-progress-wrap" style="display:none;">
+        <div class="dagnino-progress-bar" id="dagnino-progress-bar"></div>
+      </div>
+      <p class="dagnino-progress-label" id="dagnino-progress-label" style="display:none;"></p>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div class="dagnino-content">
+
+      <!-- ── PANTALLA: BIENVENIDA ── -->
+      <div class="dagnino-screen" id="dagnino-screen-welcome">
+        <span class="dagnino-welcome-icon">📋</span>
+        <h2 class="dagnino-welcome-title">Inventario Dagnino de Autoobservación</h2>
+        <p class="dagnino-welcome-sub">
+          Herramienta digital orientativa de autoobservación emocional, cognitiva y funcional.
+          Compuesta por 64 afirmaciones organizadas en 8 áreas. Duración aproximada: 10 minutos.
+        </p>
+        <div class="dagnino-info-grid">
+          <div class="dagnino-info-card">
+            <div class="dagnino-info-card-label">Ítems</div>
+            <div class="dagnino-info-card-val">64 afirmaciones</div>
+          </div>
+          <div class="dagnino-info-card">
+            <div class="dagnino-info-card-label">Áreas</div>
+            <div class="dagnino-info-card-val">8 dominios</div>
+          </div>
+          <div class="dagnino-info-card">
+            <div class="dagnino-info-card-label">Duración</div>
+            <div class="dagnino-info-card-val">≈ 10 minutos</div>
+          </div>
+          <div class="dagnino-info-card">
+            <div class="dagnino-info-card-label">Tipo</div>
+            <div class="dagnino-info-card-val">Orientativo</div>
+          </div>
+        </div>
+        <div class="dagnino-legal-note">
+          <strong>Aviso importante:</strong> Este inventario es una herramienta de autoobservación orientativa,
+          de autoría propia, diseñada para facilitar la comunicación entre paciente y profesional.
+          <strong>No constituye diagnóstico clínico</strong>, no reemplaza la evaluación psiquiátrica o
+          psicológica, y en ningún caso sustituye una consulta de urgencias. Sus resultados son orientativos.
+        </div>
+        <div id="dagnino-resume-banner" class="dagnino-resume-banner">
+          <span>📂 Tenés una sesión guardada. ¿Continuar donde la dejaste?</span>
+          <button type="button" id="dagnino-btn-resume">Continuar</button>
+        </div>
+        <div class="dagnino-nav-row" style="border-top:none;padding-top:0;margin-top:0;justify-content:flex-end;gap:12px;">
+          <button type="button" class="dagnino-btn-reset" id="dagnino-btn-clear-welcome" style="display:none;">Reiniciar desde cero</button>
+          <button type="button" class="dagnino-btn-primary" id="dagnino-btn-start">Comenzar evaluación →</button>
+        </div>
+      </div>
+
+      <!-- ── PANTALLA: CONSENTIMIENTO + DATOS ── -->
+      <div class="dagnino-screen" id="dagnino-screen-consent">
+        <div style="margin-bottom:18px;">
+          <div class="dagnino-domain-number">Paso 1 de 10</div>
+          <h2 class="dagnino-domain-title">Consentimiento y datos personales</h2>
+          <p class="dagnino-domain-count">Complete sus datos antes de iniciar el cuestionario.</p>
+        </div>
+        <div class="dagnino-consent-wrap">
+          <p class="dagnino-consent-text">
+            Al completar este inventario, usted acepta que:<br><br>
+            • La información ingresada se almacena únicamente en este dispositivo.<br>
+            • Los resultados son orientativos y no constituyen diagnóstico clínico.<br>
+            • Este instrumento no reemplaza la evaluación de un profesional de la salud mental.<br>
+            • Ante cualquier urgencia o riesgo, debe contactar a un profesional o al servicio de emergencias.<br>
+            • Puede abandonar el proceso en cualquier momento.
+          </p>
+          <div class="dagnino-consent-check-row">
+            <input type="checkbox" id="dagnino-consent-check" name="consentimiento">
+            <label for="dagnino-consent-check" class="dagnino-consent-check-label">
+              He leído y acepto las condiciones de uso de esta herramienta orientativa.
+            </label>
+          </div>
+        </div>
+        <div class="dagnino-form-grid">
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-nombre">Nombre y apellido *</label>
+            <input class="dagnino-input" type="text" id="dagnino-nombre" placeholder="Ej. María González" autocomplete="off">
+          </div>
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-edad">Edad *</label>
+            <input class="dagnino-input" type="number" id="dagnino-edad" placeholder="Años" min="10" max="120">
+          </div>
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-dni">DNI / Documento (opcional)</label>
+            <input class="dagnino-input" type="text" id="dagnino-dni" placeholder="Sin puntos" inputmode="numeric" maxlength="9">
+          </div>
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-fecha">Fecha *</label>
+            <input class="dagnino-input" type="date" id="dagnino-fecha">
+          </div>
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-email">Email (opcional)</label>
+            <input class="dagnino-input" type="email" id="dagnino-email" placeholder="correo@ejemplo.com">
+          </div>
+          <div class="dagnino-field">
+            <label class="dagnino-label" for="dagnino-telefono">Teléfono (opcional)</label>
+            <input class="dagnino-input" type="tel" id="dagnino-telefono" placeholder="+54 11 1234-5678">
+          </div>
+          <div class="dagnino-field dagnino-form-full">
+            <label class="dagnino-label" for="dagnino-motivo">Motivo breve de consulta (opcional)</label>
+            <textarea class="dagnino-textarea" id="dagnino-motivo" placeholder="Describí brevemente qué te trajo a completar este inventario..."></textarea>
+          </div>
+        </div>
+        <div class="dagnino-nav-row">
+          <button type="button" class="dagnino-btn-secondary" id="dagnino-consent-back">← Volver</button>
+          <button type="button" class="dagnino-btn-primary" id="dagnino-consent-next" disabled>Iniciar cuestionario →</button>
+        </div>
+      </div>
+
+      <!-- ── PANTALLA: CUESTIONARIO (generado por JS) ── -->
+      <div class="dagnino-screen" id="dagnino-screen-questionnaire">
+        <div id="dagnino-q-header"></div>
+        <div class="dagnino-scale-legend">
+          <div class="dagnino-scale-item"><span class="dagnino-scale-badge">0</span>Nunca</div>
+          <div class="dagnino-scale-item"><span class="dagnino-scale-badge">1</span>Rara vez</div>
+          <div class="dagnino-scale-item"><span class="dagnino-scale-badge">2</span>A veces</div>
+          <div class="dagnino-scale-item"><span class="dagnino-scale-badge">3</span>Frecuentemente</div>
+          <div class="dagnino-scale-item"><span class="dagnino-scale-badge">4</span>Casi siempre</div>
+        </div>
+        <div class="dagnino-item-list" id="dagnino-item-list"></div>
+        <div class="dagnino-nav-row">
+          <button type="button" class="dagnino-btn-secondary" id="dagnino-q-back">← Anterior</button>
+          <span class="dagnino-q-counter" id="dagnino-q-counter"></span>
+          <button type="button" class="dagnino-btn-primary" id="dagnino-q-next">Siguiente →</button>
+        </div>
+      </div>
+
+      <!-- ── PANTALLA: RESULTADOS (generado por JS) ── -->
+      <div class="dagnino-screen" id="dagnino-screen-results"></div>
+
+    </div><!-- /dagnino-content -->
+  </div><!-- /dagnino-root -->
+</div><!-- /dagnino-overlay -->
+
+<script id="dagnino-script">
+(function () {
+  'use strict';
+
+  /* ── DATOS ─────────────────────────────────────────────────── */
+  var STORAGE_KEY = 'dagninoInventario';
+
+  var SCALE_LABELS = ['Nunca','Rara vez','A veces','Frecuentemente','Casi siempre'];
+
+  var DOMAINS = [
+    'Ansiedad y tensión interna',
+    'Estado de ánimo y desánimo',
+    'Regulación emocional e impulsividad',
+    'Funcionamiento cognitivo',
+    'Vínculos y percepción interpersonal',
+    'Sueño y activación psicofísica',
+    'Funcionamiento cotidiano',
+    'Indicadores de alerta clínica'
+  ];
+
+  var ITEMS = [
+    'Me cuesta dejar de preocuparme aunque quiera hacerlo.',
+    'Siento mi cuerpo en tensión incluso cuando no hay un motivo claro.',
+    'Anticipo problemas antes de que ocurran.',
+    'Me cuesta relajarme por completo.',
+    'Tengo sensación de apuro interno o inquietud.',
+    'Mi mente sigue funcionando aunque quiera descansar.',
+    'Me sobresalto o me mantengo en alerta con facilidad.',
+    'Siento que algo malo puede pasar en cualquier momento.',
+    'Me cuesta disfrutar cosas que antes me hacían bien.',
+    'En los últimos tiempos me he sentido más apagado o sin entusiasmo.',
+    'Tengo momentos de tristeza que me cuesta explicar.',
+    'Me cuesta proyectarme con ganas hacia adelante.',
+    'Siento que hago las cosas por obligación más que por interés.',
+    'Me noto emocionalmente más vacío o desconectado.',
+    'A veces siento que nada alcanza para sentirme mejor.',
+    'Me cuesta encontrar motivación para tareas habituales.',
+    'Reacciono con intensidad y después siento que fue demasiado.',
+    'Me cuesta frenar cuando algo me enoja o me frustra.',
+    'Paso rápido de estar bien a sentirme muy mal.',
+    'Digo o hago cosas impulsivamente y luego me arrepiento.',
+    'Me cuesta tolerar que las cosas no salgan como espero.',
+    'Siento que mis emociones a veces me desbordan.',
+    'Tengo cambios de humor que afectan mis vínculos o mi rutina.',
+    'Me cuesta recuperar la calma después de alterarme.',
+    'Me cuesta concentrarme en una sola cosa.',
+    'Siento mi mente cansada aunque no haya hecho grandes esfuerzos.',
+    'Pienso demasiado sobre temas que no logro resolver.',
+    'Me cuesta tomar decisiones simples.',
+    'A veces siento "niebla mental" o lentitud para pensar.',
+    'Me distraigo con facilidad.',
+    'Vuelvo una y otra vez sobre las mismas ideas.',
+    'Me cuesta ordenar mentalmente lo que tengo que hacer.',
+    'Me afecta mucho sentir que los demás me juzgan.',
+    'Necesito señales claras de aceptación para sentirme tranquilo.',
+    'Me cuesta confiar plenamente en otras personas.',
+    'Me siento poco comprendido por quienes me rodean.',
+    'Evito mostrar cómo me siento por temor a la reacción ajena.',
+    'Puedo aislarme cuando me siento mal.',
+    'Me cuesta pedir ayuda aunque la necesite.',
+    'Siento que pequeñas actitudes de otros me afectan más de lo deseable.',
+    'Me cuesta quedarme dormido.',
+    'Mi sueño no siempre me deja descansado.',
+    'Me despierto durante la noche o demasiado temprano.',
+    'El estrés repercute en mi cuerpo.',
+    'Siento cansancio físico o mental durante el día.',
+    'Tengo molestias físicas que empeoran cuando estoy sobrecargado.',
+    'Mi descanso se ve afectado por pensamientos o preocupaciones.',
+    'Aun descansando, no siempre recupero energía.',
+    'Mi malestar interfiere con mi rendimiento diario.',
+    'Me cuesta sostener una rutina ordenada.',
+    'Postergo tareas importantes más de lo que quisiera.',
+    'Me siento sobrepasado por obligaciones que antes manejaba mejor.',
+    'Me cuesta iniciar o terminar tareas.',
+    'Siento que estoy funcionando por debajo de mis posibilidades.',
+    'Mi organización diaria empeora cuando estoy emocionalmente cargado.',
+    'Hay días en que cumplir lo básico me demanda demasiado esfuerzo.',
+    'A veces siento que ya no puedo sostener lo que me pasa.',
+    'He pensado en desaparecer o dejar de estar, aunque no necesariamente en actuar.',
+    'A veces siento que perder el control podría ser un riesgo.',
+    'He usado sustancias, medicación o conductas de escape para sentir alivio.',
+    'Siento desesperanza intensa respecto del futuro.',
+    'Hay momentos en que me resulta difícil encontrar motivos para seguir.',
+    'Me asusta la intensidad de algunas cosas que pienso o siento.',
+    'Creo que necesitaría ayuda profesional más pronta que tarde.'
+  ];
+
+  /* ítems críticos 0-indexed (ítems 58, 62, 63 del enunciado) */
+  var CRITICAL_IDX = [57, 61, 62];
+
+  /* ── ESTADO ─────────────────────────────────────────────────── */
+  var state = freshState();
+
+  function freshState() {
+    return {
+      screen: 'welcome',
+      currentDomain: 0,
+      answers: new Array(64).fill(null),
+      userData: { nombre:'', edad:'', dni:'', fecha:'', email:'', telefono:'', motivo:'', consentimiento:false }
+    };
+  }
+
+  /* ── STORAGE ─────────────────────────────────────────────────── */
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+  }
+  function loadSaved() {
+    try { var s = localStorage.getItem(STORAGE_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; }
+  }
+  function clearStorage() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  }
+
+  /* ── CÁLCULOS ─────────────────────────────────────────────────── */
+  function domainScore(d) {
+    var s = 0, base = d * 8;
+    for (var i = base; i < base + 8; i++) s += (state.answers[i] !== null ? state.answers[i] : 0);
+    return s;
+  }
+  function totalScore() {
+    var t = 0;
+    for (var i = 0; i < 64; i++) t += (state.answers[i] !== null ? state.answers[i] : 0);
+    return t;
+  }
+  function domainBand(score) {
+    if (score <= 7)  return { label:'Bajo',     cls:'dagnino-band-bajo' };
+    if (score <= 15) return { label:'Leve',     cls:'dagnino-band-leve' };
+    if (score <= 23) return { label:'Moderado', cls:'dagnino-band-moderado' };
+    return               { label:'Alto',     cls:'dagnino-band-alto' };
+  }
+  function globalBand(score) {
+    if (score <= 51)  return { label:'Baja carga subjetiva actual', desc:'Los indicadores son bajos en general. El malestar actual sería leve o poco significativo.' };
+    if (score <= 102) return { label:'Carga leve',     desc:'Existe cierto nivel de malestar en algunas áreas. Conviene prestar atención a los dominios más elevados.' };
+    if (score <= 153) return { label:'Carga moderada', desc:'Hay malestar presente en varias áreas. Se recomienda consulta profesional para una evaluación más completa.' };
+    if (score <= 204) return { label:'Carga elevada',  desc:'El malestar subjetivo es considerable y afecta múltiples áreas. La consulta profesional es recomendable.' };
+    return                   { label:'Carga muy elevada', desc:'El malestar subjetivo es muy intenso y probablemente generalizado. Se recomienda consulta profesional a la brevedad.' };
+  }
+  function alertLevel() {
+    var d8 = domainScore(7);
+    if (d8 >= 24) return 'urgent';
+    var criticalHigh = CRITICAL_IDX.some(function(idx){ return state.answers[idx] !== null && state.answers[idx] >= 3; });
+    if (d8 >= 16 || criticalHigh) return 'alert';
+    return null;
+  }
+
+  function narrative(dScores, total, alert) {
+    var high = [], mod = [];
+    dScores.forEach(function(s, i){ if (s >= 24) high.push(DOMAINS[i]); else if (s >= 16) mod.push(DOMAINS[i]); });
+    var gb = globalBand(total);
+    var t = 'Los resultados muestran una <strong>' + gb.label.toLowerCase() + '</strong> en malestar subjetivo total (puntaje: ' + total + '/256). ';
+    if (high.length) t += 'Las áreas con mayor intensidad son: <strong>' + high.join(', ') + '</strong>. ';
+    if (mod.length)  t += 'También se observa activación moderada en: ' + mod.join(', ') + '. ';
+    if (!high.length && !mod.length) t += 'No se detectan áreas con malestar marcado en este momento. ';
+    if (dScores[6] >= 16) t += 'El funcionamiento cotidiano parece estar afectado de manera relevante. ';
+    if (dScores[5] >= 16) t += 'El área de sueño y activación psicofísica muestra niveles que merecen atención. ';
+    if (alert === 'urgent') {
+      t += '<br><br><strong>Importante:</strong> Algunas respuestas indican malestar intenso que requiere atención profesional a la brevedad.';
+    } else if (alert === 'alert') {
+      t += '<br><br>Se recomienda compartir estos resultados con su profesional tratante en la próxima consulta.';
+    } else if (total >= 103) {
+      t += 'Se sugiere conversar estos resultados con un profesional de la salud mental.';
+    } else {
+      t += 'Puede ser útil comentar estos resultados en el contexto de la consulta habitual.';
+    }
+    t += '<br><br><em>Estos resultados son orientativos. No constituyen diagnóstico clínico y deben interpretarse dentro del contexto de una evaluación profesional.</em>';
+    return t;
+  }
+
+  /* ── OVERLAY ─────────────────────────────────────────────────── */
+  var overlay   = document.getElementById('dagnino-overlay');
+  var closeBtn  = document.getElementById('dagnino-close-btn');
+  var triggerBtn = document.getElementById('btnSelectDagnino');
+
+  function openInventario() {
+    overlay.setAttribute('aria-hidden','false');
+    overlay.classList.add('dagnino-open');
+    document.body.style.overflow = 'hidden';
+    renderCurrentScreen();
+  }
+  function closeInventario() {
+    overlay.setAttribute('aria-hidden','true');
+    overlay.classList.remove('dagnino-open');
+    document.body.style.overflow = '';
+  }
+
+  if (triggerBtn) triggerBtn.addEventListener('click', openInventario);
+  closeBtn.addEventListener('click', closeInventario);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeInventario(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('dagnino-open')) closeInventario(); });
+
+  /* ── PROGRESO ─────────────────────────────────────────────────── */
+  function updateProgress() {
+    var pw = document.getElementById('dagnino-progress-wrap');
+    var pb = document.getElementById('dagnino-progress-bar');
+    var pl = document.getElementById('dagnino-progress-label');
+    if (state.screen === 'questionnaire') {
+      pw.style.display = 'block'; pl.style.display = 'block';
+      var pct = ((state.currentDomain + 1) / 8) * 100;
+      pb.style.width = pct + '%';
+      pl.textContent = 'Dominio ' + (state.currentDomain + 1) + ' de 8 · ' + Math.round(pct) + '%';
+    } else if (state.screen === 'results') {
+      pw.style.display = 'block'; pl.style.display = 'block';
+      pb.style.width = '100%'; pl.textContent = 'Evaluación completada ✓';
+    } else {
+      pw.style.display = 'none'; pl.style.display = 'none';
+    }
+  }
+
+  /* ── MOSTRAR PANTALLA ─────────────────────────────────────────── */
+  function showScreen(name) {
+    document.querySelectorAll('.dagnino-screen').forEach(function(s){ s.classList.remove('dagnino-active'); });
+    var target = document.getElementById('dagnino-screen-' + name);
+    if (target) target.classList.add('dagnino-active');
+    state.screen = name;
+    updateProgress();
+    var root = document.getElementById('dagnino-inventario-root');
+    if (root) root.scrollTop = 0;
+    overlay.scrollTop = 0;
+  }
+
+  function renderCurrentScreen() {
+    var s = state.screen;
+    if (s === 'welcome')       renderWelcome();
+    else if (s === 'consent')  renderConsent();
+    else if (s === 'questionnaire') renderQuestionnaire();
+    else if (s === 'results')  renderResults();
+    else renderWelcome();
+  }
+
+  /* ── BIENVENIDA ─────────────────────────────────────────────── */
+  function renderWelcome() {
+    showScreen('welcome');
+    var saved = loadSaved();
+    var hasSaved = saved && (saved.screen === 'questionnaire' || saved.screen === 'results' || saved.screen === 'consent');
+    var banner = document.getElementById('dagnino-resume-banner');
+    var clearBtn = document.getElementById('dagnino-btn-clear-welcome');
+    banner.style.display = hasSaved ? 'flex' : 'none';
+    clearBtn.style.display = hasSaved ? 'inline-block' : 'none';
+
+    document.getElementById('dagnino-btn-start').onclick = function() { state.screen = 'consent'; renderConsent(); };
+
+    document.getElementById('dagnino-btn-resume').onclick = function() {
+      var s2 = loadSaved();
+      if (s2) { state = s2; renderCurrentScreen(); }
+    };
+    clearBtn.onclick = function() {
+      if (confirm('¿Seguro que querés reiniciar? Se borrarán todas las respuestas guardadas.')) {
+        clearStorage(); state = freshState(); renderWelcome();
+      }
+    };
+  }
+
+  /* ── CONSENTIMIENTO ─────────────────────────────────────────── */
+  function renderConsent() {
+    showScreen('consent');
+    var u = state.userData;
+    setV('dagnino-nombre', u.nombre);
+    setV('dagnino-edad', u.edad);
+    setV('dagnino-dni', u.dni);
+    setV('dagnino-fecha', u.fecha || today());
+    setV('dagnino-email', u.email);
+    setV('dagnino-telefono', u.telefono);
+    setV('dagnino-motivo', u.motivo);
+    document.getElementById('dagnino-consent-check').checked = !!u.consentimiento;
+    checkConsentValid();
+
+    ['dagnino-nombre','dagnino-edad','dagnino-dni','dagnino-fecha','dagnino-email','dagnino-telefono','dagnino-motivo'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.oninput = function(){ collectUserData(); checkConsentValid(); };
+    });
+    document.getElementById('dagnino-consent-check').onchange = function(){ collectUserData(); checkConsentValid(); };
+
+    document.getElementById('dagnino-consent-back').onclick = function(){ state.screen = 'welcome'; renderWelcome(); };
+    document.getElementById('dagnino-consent-next').onclick = function(){
+      collectUserData(); state.currentDomain = 0; state.screen = 'questionnaire'; saveState(); renderQuestionnaire();
+    };
+  }
+
+  function collectUserData() {
+    state.userData = {
+      nombre: getV('dagnino-nombre'), edad: getV('dagnino-edad'),
+      dni: getV('dagnino-dni'), fecha: getV('dagnino-fecha'),
+      email: getV('dagnino-email'), telefono: getV('dagnino-telefono'),
+      motivo: getV('dagnino-motivo'),
+      consentimiento: document.getElementById('dagnino-consent-check').checked
+    };
+  }
+  function checkConsentValid() {
+    var btn = document.getElementById('dagnino-consent-next');
+    btn.disabled = !(getV('dagnino-nombre').trim() && getV('dagnino-edad').trim() && document.getElementById('dagnino-consent-check').checked);
+  }
+
+  /* ── CUESTIONARIO ───────────────────────────────────────────── */
+  function renderQuestionnaire() {
+    showScreen('questionnaire');
+    var d = state.currentDomain;
+    var header = document.getElementById('dagnino-q-header');
+    var list   = document.getElementById('dagnino-item-list');
+
+    header.innerHTML =
+      '<div class="dagnino-domain-number">Dominio ' + (d+1) + ' de 8 · Paso ' + (d+3) + ' de 10</div>' +
+      '<h2 class="dagnino-domain-title">' + DOMAINS[d] + '</h2>' +
+      '<p class="dagnino-domain-count">8 afirmaciones — indicá con qué frecuencia se aplica a vos en las últimas semanas.</p>';
+
+    var base = d * 8;
+    var isD8 = (d === 7);
+    var html = '';
+    for (var i = 0; i < 8; i++) {
+      var idx = base + i;
+      var val = state.answers[idx];
+      var answered = val !== null;
+      var critical = isD8 && CRITICAL_IDX.indexOf(idx) >= 0;
+      var rowCls = 'dagnino-item-row' + (answered ? ' dagnino-answered' : '') + (critical ? ' dagnino-critical' : '');
+      html += '<div class="' + rowCls + '" id="dirow-' + idx + '">';
+      html += '<div class="dagnino-item-text"><span class="dagnino-item-num">' + (idx+1) + '.</span>' + ITEMS[idx] + '</div>';
+      html += '<div class="dagnino-options-row">';
+      for (var v = 0; v <= 4; v++) {
+        var sel = (val === v) ? ' dagnino-selected' : '';
+        html += '<button type="button" class="dagnino-opt-btn' + sel + '" data-idx="' + idx + '" data-val="' + v + '">' +
+          v + '<span class="dagnino-opt-label">' + SCALE_LABELS[v] + '</span></button>';
+      }
+      html += '</div></div>';
+    }
+    list.innerHTML = html;
+
+    list.querySelectorAll('.dagnino-opt-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx2 = parseInt(this.getAttribute('data-idx'));
+        var v2   = parseInt(this.getAttribute('data-val'));
+        state.answers[idx2] = v2;
+        saveState();
+        var row = document.getElementById('dirow-' + idx2);
+        if (row) {
+          row.classList.add('dagnino-answered');
+          row.querySelectorAll('.dagnino-opt-btn').forEach(function(sb){
+            sb.classList.toggle('dagnino-selected', parseInt(sb.getAttribute('data-val')) === v2);
+          });
+        }
+        refreshCounter();
+      });
+    });
+    refreshCounter();
+
+    document.getElementById('dagnino-q-back').onclick = function(){
+      if (d === 0) { state.screen = 'consent'; renderConsent(); }
+      else { state.currentDomain--; state.screen = 'questionnaire'; saveState(); renderQuestionnaire(); }
+    };
+    document.getElementById('dagnino-q-next').onclick = function(){
+      if (d < 7) { state.currentDomain++; state.screen = 'questionnaire'; saveState(); renderQuestionnaire(); }
+      else { state.screen = 'results'; saveState(); renderResults(); }
+    };
+    var nextBtn = document.getElementById('dagnino-q-next');
+    nextBtn.textContent = d < 7 ? 'Siguiente dominio →' : 'Ver resultados →';
+  }
+
+  function refreshCounter() {
+    var d = state.currentDomain;
+    var base = d * 8;
+    var unanswered = 0;
+    for (var i = base; i < base + 8; i++) if (state.answers[i] === null) unanswered++;
+    var el = document.getElementById('dagnino-q-counter');
+    if (!el) return;
+    if (unanswered === 0) {
+      el.textContent = '✓ Todas respondidas';
+      el.className = 'dagnino-q-counter dagnino-all-done';
+    } else {
+      el.textContent = unanswered + ' sin responder (se cuentan como 0)';
+      el.className = 'dagnino-q-counter';
+    }
+  }
+
+  /* ── RESULTADOS ─────────────────────────────────────────────── */
+  function renderResults() {
+    showScreen('results');
+    var dScores = [];
+    for (var d = 0; d < 8; d++) dScores.push(domainScore(d));
+    var total  = totalScore();
+    var alert  = alertLevel();
+    var gb     = globalBand(total);
+    var narr   = narrative(dScores, total, alert);
+    var u      = state.userData;
+
+    var html = '';
+
+    /* header */
+    html += '<div class="dagnino-results-header">' +
+      '<span class="dagnino-results-icon">📊</span>' +
+      '<h2 class="dagnino-results-title">Resultados del inventario</h2>' +
+      '<p class="dagnino-results-meta">' + esc(u.nombre||'Paciente') + ' · ' + esc(u.fecha||today()) + '</p></div>';
+
+    /* datos paciente */
+    html += '<div class="dagnino-patient-box">';
+    if (u.nombre) html += patItem('Nombre', u.nombre);
+    if (u.edad)   html += patItem('Edad', u.edad + ' años');
+    if (u.dni)    html += patItem('DNI', u.dni);
+    html += patItem('Fecha', u.fecha||today());
+    if (u.motivo) html += '<div class="dagnino-patient-item" style="grid-column:1/-1">' + patItem('Motivo', u.motivo, true) + '</div>';
+    html += '</div>';
+
+    /* alerta */
+    if (alert === 'urgent') {
+      html += '<div class="dagnino-alert-box dagnino-alert-urgent">' +
+        '<p class="dagnino-alert-title">⚠️ Indicadores de alerta importantes</p>' +
+        '<p class="dagnino-alert-body">Algunas respuestas muestran indicadores de malestar muy intenso o posible riesgo. <strong>Se recomienda comunicarse con un profesional de salud mental a la brevedad.</strong> Si hay percepción de riesgo inmediato, llame al 107 (Argentina) o contacte a una persona de confianza. No está solo/a.</p>' +
+        '</div>';
+    } else if (alert === 'alert') {
+      html += '<div class="dagnino-alert-box">' +
+        '<p class="dagnino-alert-title">⚠️ Indicadores que merecen atención</p>' +
+        '<p class="dagnino-alert-body">Sus respuestas muestran indicadores de malestar importante. Se recomienda solicitar evaluación profesional a la brevedad. Si en algún momento siente urgencia o riesgo, llame al 107 (Argentina) o contacte a una persona de confianza.</p>' +
+        '</div>';
+    }
+
+    /* puntaje global */
+    html += '<div class="dagnino-global-score">' +
+      '<div class="dagnino-score-circle"><span class="dagnino-score-num">' + total + '</span><span class="dagnino-score-max">/256</span></div>' +
+      '<div><p class="dagnino-global-band">' + gb.label + '</p><p class="dagnino-global-desc">' + gb.desc + '</p>' +
+      '<p style="font-size:.7rem;color:rgba(255,255,255,.4);margin:5px 0 0;">Categorías orientativas — no equivalen a diagnóstico.</p></div></div>';
+
+    /* gráfico */
+    html += '<div class="dagnino-chart-wrap"><p class="dagnino-chart-title">Perfil por dominio (máx. 32 cada uno)</p>' +
+      '<canvas id="dagnino-chart-canvas"></canvas></div>';
+
+    /* dominios */
+    html += '<div class="dagnino-domain-grid">';
+    for (var i = 0; i < 8; i++) {
+      var sc = dScores[i];
+      var band = domainBand(sc);
+      html += '<div class="dagnino-domain-card">' +
+        '<div class="dagnino-domain-card-name">' + (i+1) + '. ' + DOMAINS[i] + '</div>' +
+        '<div class="dagnino-domain-score-row"><span class="dagnino-domain-score-val">' + sc + '</span><span class="dagnino-domain-score-max">/32</span></div>' +
+        '<span class="dagnino-domain-band-pill ' + band.cls + '">' + band.label + '</span>' +
+        '</div>';
+    }
+    html += '</div>';
+
+    /* narrativa */
+    html += '<div class="dagnino-narrative"><p class="dagnino-narrative-title">Resumen orientativo</p>' +
+      '<p class="dagnino-narrative-body">' + narr + '</p></div>';
+
+    /* exportación */
+    html += '<div class="dagnino-export-row">' +
+      '<button type="button" class="dagnino-btn-export" id="dagnino-btn-print">🖨️ Imprimir</button>' +
+      '<button type="button" class="dagnino-btn-export" id="dagnino-btn-pdf">📄 PDF</button>' +
+      '<button type="button" class="dagnino-btn-export" id="dagnino-btn-json">💾 Exportar JSON</button>' +
+      '<button type="button" class="dagnino-btn-export dagnino-btn-export-email" id="dagnino-btn-email">✉️ Enviar por correo</button>' +
+      '</div>';
+
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:6px;">' +
+      '<button type="button" class="dagnino-btn-reset" id="dagnino-btn-restart">🔄 Nueva evaluación</button>' +
+      '<button type="button" class="dagnino-btn-secondary" id="dagnino-btn-close-res">Cerrar</button>' +
+      '</div>';
+
+    html += '<p class="dagnino-disclaimer">Inventario Dagnino de Autoobservación · Herramienta orientativa de autoría propia.<br>' +
+      'No constituye diagnóstico. No reemplaza evaluación psiquiátrica, psicológica ni de urgencias.<br>' +
+      'Consultorio Dr. Pedro Nicolas Dagnino · Psiquiatría y Medicina Aeronáutica.</p>';
+
+    document.getElementById('dagnino-screen-results').innerHTML = html;
+
+    /* gráfico */
+    buildChart(dScores);
+
+    /* botones */
+    document.getElementById('dagnino-btn-print').onclick = function(){ doPrint(dScores, total, gb, alert, narr); };
+    document.getElementById('dagnino-btn-pdf').onclick   = function(){ doPrint(dScores, total, gb, alert, narr); };
+    document.getElementById('dagnino-btn-json').onclick  = function(){ doJSON(dScores, total); };
+    document.getElementById('dagnino-btn-email').onclick = function(){ doEmail(dScores, total, gb, alert); };
+    document.getElementById('dagnino-btn-restart').onclick = function(){
+      if (confirm('¿Iniciar nueva evaluación? Se borrarán los resultados actuales.')) {
+        clearStorage(); state = freshState(); renderWelcome();
+      }
+    };
+    document.getElementById('dagnino-btn-close-res').onclick = closeInventario;
+  }
+
+  /* ── GRÁFICO (Chart.js lazy) ─────────────────────────────── */
+  function buildChart(dScores) {
+    function draw() {
+      var canvas = document.getElementById('dagnino-chart-canvas');
+      if (!canvas) return;
+      var shorts = ['Ansiedad','Est. ánimo','Regulación','Cognitivo','Vínculos','Sueño','Func. diario','Alerta'];
+      var colors = dScores.map(function(s){
+        if (s <= 7)  return 'rgba(34,197,94,.75)';
+        if (s <= 15) return 'rgba(250,204,21,.8)';
+        if (s <= 23) return 'rgba(249,115,22,.8)';
+        return 'rgba(239,68,68,.85)';
+      });
+      new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: shorts,
+          datasets: [{ label:'Puntaje', data: dScores, backgroundColor: colors, borderRadius: 6, borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c){ return c.raw + '/32 — ' + domainBand(c.raw).label; } } }
+          },
+          scales: {
+            y: { min:0, max:32, ticks:{ stepSize:8, font:{size:11} }, grid:{ color:'rgba(0,0,0,.06)' } },
+            x: { grid:{ display:false }, ticks:{ font:{size:10}, maxRotation:30 } }
+          }
+        }
+      });
+    }
+    if (typeof Chart !== 'undefined') { draw(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+    s.onload = draw;
+    document.head.appendChild(s);
+  }
+
+  /* ── EXPORTACIÓN ─────────────────────────────────────────── */
+  function doPrint(dScores, total, gb, alert, narr) {
+    var u = state.userData;
+    var win = window.open('','_blank');
+    if (!win) { alert('Habilitá las ventanas emergentes para imprimir.'); return; }
+    var rows = DOMAINS.map(function(name,i){
+      var b = domainBand(dScores[i]);
+      return '<tr><td>' + (i+1) + '. ' + name + '</td><td style="text-align:center">' + dScores[i] + '/32</td><td style="text-align:center">' + b.label + '</td></tr>';
+    }).join('');
+    win.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">' +
+      '<title>Inventario Dagnino — ' + esc(u.nombre||'Paciente') + '</title>' +
+      '<style>body{font-family:Arial,sans-serif;max-width:720px;margin:36px auto;color:#1e293b;font-size:14px;line-height:1.6}' +
+      'h1{font-size:18px;color:#0e2239}h2{font-size:14px;margin:20px 0 8px;color:#0e2239}' +
+      'table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #e2e8f0;padding:7px 11px;text-align:left}th{background:#f2f5f8;font-weight:700}' +
+      '.alert{background:#fef2f2;border:2px solid #ef4444;padding:12px 14px;border-radius:8px;margin:14px 0;color:#7f1d1d}' +
+      '.urgent{background:#7f1d1d;color:#fca5a5;border-color:#7f1d1d}' +
+      '.score{background:#0e2239;color:#fff;padding:14px 18px;border-radius:8px;margin:14px 0}' +
+      '.narr{background:#f0f9ff;border:1px solid #bae6fd;padding:14px;border-radius:8px;margin:14px 0;font-size:13px}' +
+      '.foot{font-size:11px;color:#94a3b8;margin-top:28px;border-top:1px solid #e2e8f0;padding-top:10px}</style></head><body>');
+    win.document.write('<h1>Inventario Dagnino de Autoobservación</h1>');
+    win.document.write('<p><strong>Paciente:</strong> ' + esc(u.nombre||'—') + ' &nbsp;|&nbsp; <strong>Edad:</strong> ' + esc(u.edad||'—') + ' &nbsp;|&nbsp; <strong>Fecha:</strong> ' + esc(u.fecha||today()) + '</p>');
+    if (u.dni)    win.document.write('<p><strong>DNI:</strong> ' + esc(u.dni) + '</p>');
+    if (u.motivo) win.document.write('<p><strong>Motivo:</strong> ' + esc(u.motivo) + '</p>');
+    if (alert === 'urgent') win.document.write('<div class="alert urgent"><strong>⚠️ ALERTA:</strong> Se detectaron indicadores de malestar muy intenso. Atención profesional urgente recomendada.</div>');
+    else if (alert === 'alert') win.document.write('<div class="alert"><strong>⚠️ Indicadores que requieren atención.</strong> Consulta profesional a la brevedad recomendada.</div>');
+    win.document.write('<div class="score"><strong>Puntaje total: ' + total + '/256 — ' + gb.label + '</strong></div>');
+    win.document.write('<h2>Puntajes por dominio</h2><table><tr><th>Dominio</th><th>Puntaje</th><th>Banda</th></tr>' + rows + '</table>');
+    win.document.write('<h2>Resumen orientativo</h2><div class="narr">' + narr + '</div>');
+    win.document.write('<p class="foot">Inventario Dagnino de Autoobservación · Herramienta orientativa de autoría propia. No constituye diagnóstico clínico. Consultorio Dr. Pedro Nicolas Dagnino · Psiquiatría y Medicina Aeronáutica.</p>');
+    win.document.write('</body></html>');
+    win.document.close(); win.print();
+  }
+
+  function doJSON(dScores, total) {
+    var data = {
+      instrumento: 'Inventario Dagnino de Autoobservación', version: '1.0',
+      fecha: state.userData.fecha || today(),
+      paciente: { nombre: state.userData.nombre, edad: state.userData.edad, dni: state.userData.dni,
+                  email: state.userData.email, telefono: state.userData.telefono, motivo: state.userData.motivo },
+      resultados: {
+        puntajeTotal: total, bandaGlobal: globalBand(total).label,
+        alerta: alertLevel(),
+        dominios: DOMAINS.map(function(name,i){ return { numero:i+1, nombre:name, puntaje:dScores[i], banda:domainBand(dScores[i]).label }; })
+      },
+      respuestas: state.answers.map(function(val,i){
+        return { item:i+1, texto:ITEMS[i], valor: val!==null?val:0, etiqueta:SCALE_LABELS[val!==null?val:0] };
+      })
+    };
+    var blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    a.download = 'inventario-dagnino-' + (state.userData.nombre||'resultado').replace(/\s+/g,'-').toLowerCase() + '-' + (state.userData.fecha||today()) + '.json';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function doEmail(dScores, total, gb, alert) {
+    var u = state.userData;
+    var subject = 'Inventario Dagnino de Autoobservación — ' + (u.nombre||'Paciente') + ' — ' + (u.fecha||today());
+    var body = 'INVENTARIO DAGNINO DE AUTOOBSERVACIÓN\n======================================\n\n';
+    body += 'Paciente: ' + (u.nombre||'—') + '\nEdad: ' + (u.edad||'—') + '\nFecha: ' + (u.fecha||today()) + '\n';
+    if (u.dni)    body += 'DNI: ' + u.dni + '\n';
+    if (u.motivo) body += 'Motivo: ' + u.motivo + '\n';
+    body += '\nPUNTAJE TOTAL: ' + total + '/256 — ' + gb.label + '\n\nPUNTAJES POR DOMINIO:\n';
+    DOMAINS.forEach(function(name,i){ body += (i+1) + '. ' + name + ': ' + dScores[i] + '/32 (' + domainBand(dScores[i]).label + ')\n'; });
+    if (alert) body += '\n⚠️ ALERTA: Se detectaron indicadores que requieren atención profesional.\n';
+    body += '\n---\nInventario Dagnino de Autoobservación — Herramienta orientativa de autoría propia. No constituye diagnóstico.';
+    window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+
+  /* ── UTILS ───────────────────────────────────────────────── */
+  function getV(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+  function setV(id, val) { var el = document.getElementById(id); if (el) el.value = val||''; }
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function today() { var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function patItem(label, val, raw) {
+    return '<div class="dagnino-patient-item"><span class="dagnino-patient-label">' + label + '</span>' +
+      '<span class="dagnino-patient-val">' + (raw ? esc(val) : esc(val)) + '</span></div>';
+  }
+
+})();
+</script>
 
 </body>
 </html>
