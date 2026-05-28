@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Respiración guiada — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* ── Fondo bg-avion.jpg + overlay ── */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ── Utilidades ── */
+    .breath-hidden {
+      display: none !important;
+    }
+    .breath-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Card central ── */
+    .breath-card {
+      max-width: 480px;
+      margin: 0 auto 32px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+    @media (max-width: 480px) {
+      .breath-card { padding: 24px 18px; border-radius: 16px; }
+    }
+
+    /* ── INTRO ── */
+    .breath-intro-title {
+      font-size: calc(22px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+    .breath-intro-sub {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    .breath-steps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .breath-steps-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .breath-step-badge {
+      min-width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(100,160,255,.12);
+      border: 1px solid rgba(100,160,255,.20);
+      display: grid; place-items: center;
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 700;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .breath-disclaimer {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      background: rgba(14,34,57,.22);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    /* ── EXERCISE ── */
+    .breath-phase-label {
+      font-size: calc(28px * var(--text-scale));
+      font-weight: 300;
+      letter-spacing: -.01em;
+      color: var(--text);
+      text-align: center;
+      margin: 0 0 4px;
+      min-height: 1.35em;
+      transition: opacity .3s ease;
+    }
+    .breath-countdown {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      margin: 0 0 26px;
+      min-height: 1.4em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Circle */
+    .breath-circle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 26px;
+    }
+    .breath-circle-outer {
+      width: 190px; height: 190px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: radial-gradient(circle at center,
+        rgba(100,160,255,.09) 0%,
+        transparent 72%);
+    }
+    .breath-circle {
+      width: 116px; height: 116px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,
+        rgba(100,160,255,.32) 0%,
+        rgba(60,120,220,.18) 100%);
+      border: 2px solid rgba(100,160,255,.38);
+      box-shadow: 0 0 28px rgba(100,160,255,.16);
+      transform: scale(0.55);
+      /* JS drives the scale every 50 ms; short transition smooths the steps */
+      transition: transform 0.1s linear, box-shadow 0.25s ease;
+      will-change: transform;
+    }
+    /* Reduced motion: fixed mid-size circle, no transform changes */
+    @media (prefers-reduced-motion: reduce) {
+      .breath-circle {
+        transition: none !important;
+        transform: scale(0.8) !important;
+      }
+    }
+
+    /* Cycle dots */
+    .breath-cycles {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .breath-cycle-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .breath-cycle-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      transition: background .3s, outline .3s;
+    }
+    .breath-cycle-dot.done   { background: rgba(100,160,255,.75); }
+    .breath-cycle-dot.active {
+      background: rgba(100,160,255,.35);
+      outline: 2px solid rgba(100,160,255,.55);
+      outline-offset: 2px;
+    }
+
+    /* ── CLOSING ── */
+    .breath-closing-wrap {
+      text-align: center;
+    }
+    .breath-closing-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 18px;
+    }
+    .breath-closing-msg {
+      font-size: calc(19px * var(--text-scale));
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.55;
+      margin: 0 0 28px;
+    }
+
+    /* ── Botones ── */
+    .breath-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .breath-btn-primary {
+      display: inline-block;
+      background: var(--blue, #3a7bd5);
+      color: #fff;
+      font-family: inherit;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      line-height: 1.3;
+    }
+    .breath-btn-primary:hover { opacity: .88; }
+    .breath-btn-primary.breath-full { width: 100%; }
+
+    .breath-btn-ghost {
+      display: inline-block;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      line-height: 1.3;
+    }
+    .breath-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── Footer mínimo ── */
+    .breath-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0 8px;
+    }
+    .breath-footer-links a {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .breath-footer-links a:hover { color: var(--text); }
+    .breath-legal {
+      text-align: center;
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      padding-bottom: 24px;
+    }
+
+    /* ── Audio controls (desactivados, estructura lista para futuro) ── */
+    /*
+    .breath-audio-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 12px;
+    }
+    .breath-audio-btn { ... }
+    */
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt=""
+               style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button"
+                  aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button"
+                  aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" style="padding-top:28px;padding-bottom:52px;"
+        aria-label="Herramienta de respiración guiada">
+
+    <!-- Navegación: volver -->
+    <div style="margin-bottom:20px;">
+      <a class="btn-back" href="emociones.html" data-spa="0"
+         aria-label="Volver a Emociones">← Volver</a>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA A — Intro
+    ══════════════════════════════════════════ -->
+    <div id="breath-intro" role="region" aria-labelledby="breath-intro-heading">
+      <div class="breath-card">
+
+        <h1 class="breath-intro-title" id="breath-intro-heading">Respiración guiada</h1>
+        <p class="breath-intro-sub">
+          Un ejercicio breve para recuperar aire, disminuir tensión y volver al presente.<br><br>
+          Cuando sentís que todo va demasiado rápido, una respiración guiada puede ayudarte a bajar un cambio.
+        </p>
+
+        <!-- Secuencia -->
+        <ul class="breath-steps-list" aria-label="Secuencia de respiración">
+          <li>
+            <span class="breath-step-badge" aria-hidden="true">4″</span>
+            <span>Inhalá lento, por la nariz</span>
+          </li>
+          <li>
+            <span class="breath-step-badge" aria-hidden="true">2″</span>
+            <span>Sostené suave, sin forzar</span>
+          </li>
+          <li>
+            <span class="breath-step-badge" aria-hidden="true">6″</span>
+            <span>Exhalá despacio, por la boca</span>
+          </li>
+          <li>
+            <span class="breath-step-badge" aria-hidden="true">×5</span>
+            <span>Repetir 5 ciclos — total: 1 minuto</span>
+          </li>
+        </ul>
+
+        <!-- Disclaimer -->
+        <p class="breath-disclaimer" role="note">
+          Este recurso no reemplaza una consulta profesional ni está destinado a situaciones de urgencia.
+          Si sentís que podés hacerte daño, que no podés esperar o que estás en riesgo, buscá ayuda
+          inmediata en una guardia, servicio de emergencias o persona de confianza.
+        </p>
+
+        <div class="breath-nav">
+          <button id="breath-btn-start" class="breath-btn-primary breath-full" type="button">
+            Iniciar
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA B — Ejercicio
+    ══════════════════════════════════════════ -->
+    <div id="breath-exercise" class="breath-hidden"
+         role="region" aria-labelledby="breath-exercise-heading">
+      <div class="breath-card">
+
+        <span class="breath-sr-only" id="breath-exercise-heading">Ejercicio de respiración en curso</span>
+
+        <!-- Fase actual -->
+        <p id="breath-phase-label" class="breath-phase-label"
+           aria-live="polite" aria-atomic="true">
+          Preparate…
+        </p>
+        <p id="breath-countdown" class="breath-countdown" aria-live="off"></p>
+
+        <!-- Círculo animado -->
+        <div class="breath-circle-wrap" aria-hidden="true">
+          <div class="breath-circle-outer" id="breath-circle-outer">
+            <div class="breath-circle" id="breath-circle"></div>
+          </div>
+        </div>
+
+        <!-- Ciclos -->
+        <div class="breath-cycles">
+          <span>Ciclo&nbsp;<span id="breath-cycle-num">1</span>&nbsp;de&nbsp;5</span>
+          <div class="breath-cycle-dots" id="breath-cycle-dots"
+               aria-hidden="true" role="presentation">
+            <div class="breath-cycle-dot active" data-dot="0"></div>
+            <div class="breath-cycle-dot"        data-dot="1"></div>
+            <div class="breath-cycle-dot"        data-dot="2"></div>
+            <div class="breath-cycle-dot"        data-dot="3"></div>
+            <div class="breath-cycle-dot"        data-dot="4"></div>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="breath-nav">
+          <button id="breath-btn-pause"   class="breath-btn-ghost" type="button">Pausar</button>
+          <button id="breath-btn-resume"  class="breath-btn-ghost breath-hidden" type="button">Reanudar</button>
+          <button id="breath-btn-restart" class="breath-btn-ghost" type="button">Reiniciar</button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA C — Cierre
+    ══════════════════════════════════════════ -->
+    <div id="breath-closing" class="breath-hidden"
+         role="region" aria-labelledby="breath-closing-heading">
+      <div class="breath-card breath-closing-wrap">
+
+        <span class="breath-closing-icon" aria-hidden="true">🌿</span>
+        <h2 class="breath-sr-only" id="breath-closing-heading">Ejercicio completado</h2>
+        <p class="breath-closing-msg">
+          No hace falta resolver todo ahora.<br>
+          Primero recuperá aire.
+        </p>
+
+        <div class="breath-nav">
+          <button id="breath-btn-restart2" class="breath-btn-ghost" type="button">
+            ↺ Reiniciar
+          </button>
+          <a href="emociones.html" data-spa="0" class="breath-btn-ghost">
+            Volver a Emociones
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ===== Footer mínimo ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="breath-footer-links">
+        <a href="emociones.html"   data-spa="0">Emociones</a>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <a href="index.html"       data-spa="0">Inicio</a>
+      </div>
+      <p class="breath-legal">
+        Copyright © <span id="yearNow"></span> Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- Audio hook (desactivado) — listo para futura activación manual -->
+  <!-- <audio id="breath-audio-inhale" src="audio/breath-inhale.mp3" preload="none"></audio> -->
+  <!-- <audio id="breath-audio-exhale" src="audio/breath-exhale.mp3" preload="none"></audio> -->
+
+
+  <!-- ===== JS ===== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Persistencia compartida (ui settings) ── */
+      const store = {
+        get(k, d) {
+          try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
+          catch { return d; }
+        },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+      };
+
+      let scale = store.get('ui_text_scale', 100);
+
+      function applyUI() {
+        document.documentElement.style.setProperty('--text-scale', scale + '%');
+        const y = document.getElementById('yearNow');
+        if (y) y.textContent = String(new Date().getFullYear());
+      }
+
+      document.getElementById('btnAminus')?.addEventListener('click', () => {
+        scale = Math.max(85, scale - 5);
+        store.set('ui_text_scale', scale);
+        applyUI();
+      });
+      document.getElementById('btnAplus')?.addEventListener('click', () => {
+        scale = Math.min(130, scale + 5);
+        store.set('ui_text_scale', scale);
+        applyUI();
+      });
+
+      applyUI();
+
+
+      /* ══════════════════════════════════════════
+         Motor de respiración
+      ══════════════════════════════════════════ */
+
+      /*
+        Fases por ciclo:
+          inhale  → 4 000 ms  (escala 0.55 → 1.0)
+          hold    → 2 000 ms  (escala 1.0 fija)
+          exhale  → 6 000 ms  (escala 1.0 → 0.55)
+        Total por ciclo: 12 000 ms
+        Total ejercicio: 60 000 ms (5 ciclos)
+      */
+
+      const PHASES = [
+        { key: 'inhale', label: 'Inhalá…',  ms: 4000, sFrom: 0.55, sTo: 1.0  },
+        { key: 'hold',   label: 'Sostené…', ms: 2000, sFrom: 1.0,  sTo: 1.0  },
+        { key: 'exhale', label: 'Exhalá…',  ms: 6000, sFrom: 1.0,  sTo: 0.55 },
+      ];
+      const TOTAL_CYCLES = 5;
+      const TICK_MS      = 50;
+
+      /* Estado */
+      let phaseIdx     = 0;
+      let cycleIdx     = 0;
+      let phaseElapsed = 0;   // ms transcurridos en la fase actual
+      let state        = 'idle'; // idle | running | paused | done
+      let ticker       = null;
+
+      /* Detect reduced motion */
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* DOM */
+      const elIntro    = document.getElementById('breath-intro');
+      const elExercise = document.getElementById('breath-exercise');
+      const elClosing  = document.getElementById('breath-closing');
+      const elPhase    = document.getElementById('breath-phase-label');
+      const elCount    = document.getElementById('breath-countdown');
+      const elCircle   = document.getElementById('breath-circle');
+      const elCycleNum = document.getElementById('breath-cycle-num');
+      const elDots     = document.querySelectorAll('.breath-cycle-dot');
+
+      const btnStart    = document.getElementById('breath-btn-start');
+      const btnPause    = document.getElementById('breath-btn-pause');
+      const btnResume   = document.getElementById('breath-btn-resume');
+      const btnRestart  = document.getElementById('breath-btn-restart');
+      const btnRestart2 = document.getElementById('breath-btn-restart2');
+
+      /* Helpers de visibilidad */
+      function show(el) { el?.classList.remove('breath-hidden'); }
+      function hide(el) { el?.classList.add('breath-hidden'); }
+
+      /* ── Actualiza el círculo según progreso de fase ── */
+      function setCircleScale(progress, phIdx) {
+        if (reducedMotion) return;
+        const ph = PHASES[phIdx];
+        const s  = ph.sFrom + (ph.sTo - ph.sFrom) * Math.min(1, Math.max(0, progress));
+        // Intensidad de glow: máxima en hold, crece/cae con inhale/exhale
+        const expandRatio = (s - 0.55) / 0.45; // 0→1
+        const glow = Math.round(16 + 36 * expandRatio);
+        const alpha = (0.10 + 0.22 * expandRatio).toFixed(2);
+        elCircle.style.transform = `scale(${s.toFixed(3)})`;
+        elCircle.style.boxShadow = `0 0 ${glow}px rgba(100,160,255,${alpha})`;
+      }
+
+      /* ── Actualiza dots de ciclo ── */
+      function updateDots() {
+        elDots.forEach((dot, i) => {
+          dot.classList.remove('done', 'active');
+          if (i < cycleIdx)      dot.classList.add('done');
+          else if (i === cycleIdx) dot.classList.add('active');
+        });
+      }
+
+      /* ── Refresca toda la pantalla de ejercicio ── */
+      function refreshExercise() {
+        const ph        = PHASES[phaseIdx];
+        const remaining = Math.ceil((ph.ms - phaseElapsed) / 1000);
+        const progress  = phaseElapsed / ph.ms;
+
+        elPhase.textContent   = ph.label;
+        elCount.textContent   = remaining > 0 ? `${remaining}″` : '';
+        elCycleNum.textContent = String(cycleIdx + 1);
+
+        updateDots();
+        setCircleScale(progress, phaseIdx);
+      }
+
+      /* ── Tick principal ── */
+      function tick() {
+        phaseElapsed += TICK_MS;
+        const ph = PHASES[phaseIdx];
+
+        if (phaseElapsed >= ph.ms) {
+          phaseElapsed = 0;
+          phaseIdx++;
+
+          if (phaseIdx >= PHASES.length) {
+            phaseIdx = 0;
+            cycleIdx++;
+
+            if (cycleIdx >= TOTAL_CYCLES) {
+              // Ejercicio terminado
+              stopTicker();
+              state = 'done';
+              hide(elExercise);
+              show(elClosing);
+              return;
+            }
+          }
+        }
+
+        refreshExercise();
+      }
+
+      function startTicker() {
+        if (ticker) clearInterval(ticker);
+        ticker = setInterval(tick, TICK_MS);
+      }
+
+      function stopTicker() {
+        if (ticker) { clearInterval(ticker); ticker = null; }
+      }
+
+      /* ── Navegar a pantalla de ejercicio ── */
+      function goExercise() {
+        phaseIdx     = 0;
+        cycleIdx     = 0;
+        phaseElapsed = 0;
+        state        = 'running';
+
+        hide(elIntro);
+        hide(elClosing);
+        show(elExercise);
+        show(btnPause);
+        hide(btnResume);
+
+        // Inicializar círculo en escala inicial sin transición visible
+        if (!reducedMotion) {
+          elCircle.style.transition = 'none';
+          elCircle.style.transform  = 'scale(0.55)';
+          elCircle.style.boxShadow  = '0 0 16px rgba(100,160,255,0.10)';
+          // Reactivar transición en el próximo frame
+          requestAnimationFrame(() => {
+            elCircle.style.transition = '';
+          });
+        }
+
+        refreshExercise();
+        startTicker();
+      }
+
+      /* ── Pausar ── */
+      function pauseExercise() {
+        if (state !== 'running') return;
+        stopTicker();
+        state = 'paused';
+
+        // Congelar círculo en su posición actual
+        if (!reducedMotion) {
+          const computed = window.getComputedStyle(elCircle).transform;
+          elCircle.style.transition = 'none';
+          elCircle.style.transform  = computed;
+        }
+
+        hide(btnPause);
+        show(btnResume);
+        elPhase.textContent = 'Pausado';
+        elCount.textContent  = '';
+      }
+
+      /* ── Reanudar ── */
+      function resumeExercise() {
+        if (state !== 'paused') return;
+        state = 'running';
+
+        if (!reducedMotion) {
+          elCircle.style.transition = '';
+        }
+
+        show(btnPause);
+        hide(btnResume);
+        refreshExercise();
+        startTicker();
+      }
+
+      /* ── Botones ── */
+      btnStart?.addEventListener('click',    goExercise);
+      btnPause?.addEventListener('click',    pauseExercise);
+      btnResume?.addEventListener('click',   resumeExercise);
+      btnRestart?.addEventListener('click',  goExercise);
+      btnRestart2?.addEventListener('click', goExercise);
+
+    })();
+  </script>
+
+</body>
+</html>
