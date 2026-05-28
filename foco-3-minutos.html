@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Foco 3 minutos — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* ──────────────────────────────────────────────
+       FOCO 3 MINUTOS — estilos de página
+    ────────────────────────────────────────────── */
+
+    /* Fondo institucional (mismo overlay que emociones.html) */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ── Layout de la página ── */
+    .page-meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: var(--accent-warm);
+      background: var(--accent-warm-soft);
+      border: 1px solid rgba(196,122,43,.22);
+      border-radius: 8px;
+      padding: 5px 10px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Card del ejercicio ── */
+    .exercise-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 36px 28px 28px;
+      gap: 0;
+    }
+
+    /* ── Indicador de fases (puntos) ── */
+    .phase-dots {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .phase-dot {
+      width: 28px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(14,34,57,.12);
+      transition: background 0.4s ease, width 0.4s ease;
+    }
+    .phase-dot.active {
+      background: var(--blue, #1a6fa8);
+      width: 40px;
+    }
+    .phase-dot.done {
+      background: rgba(26,111,168,.30);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .phase-dot { transition: none; }
+    }
+
+    /* ── Ícono de fase ── */
+    .phase-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    /* ── Nombre de fase ── */
+    .phase-name {
+      font-size: calc(20px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 20px;
+    }
+
+    /* ── Timer con anillo SVG ── */
+    .timer-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 148px;
+      height: 148px;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+    .timer-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      overflow: visible;
+    }
+    .ring-bg {
+      fill: none;
+      stroke: rgba(14,34,57,.10);
+      stroke-width: 8;
+    }
+    .ring-fill {
+      fill: none;
+      stroke: var(--blue, #1a6fa8);
+      stroke-width: 8;
+      stroke-linecap: round;
+      /* circumference de r=54: 2π×54 ≈ 339.29 */
+      stroke-dasharray: 339.29;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear, stroke 0.6s ease;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ring-fill { transition: stroke 0.6s ease; }
+    }
+    .timer-text {
+      font-size: calc(30px * var(--text-scale));
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+      letter-spacing: -.03em;
+    }
+
+    /* ── Instrucciones de fase ── */
+    .phase-instruction {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-line;
+      margin: 0 0 10px;
+      max-width: 42ch;
+    }
+    .phase-sub {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      font-style: italic;
+      margin: 0 0 28px;
+    }
+
+    /* ── Controles del ejercicio ── */
+    .exercise-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    /* Botón fantasma para acciones secundarias */
+    .btn-ghost-sm {
+      background: transparent;
+      border: 1px solid rgba(14,34,57,.18);
+      color: var(--muted);
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-ghost-sm:hover,
+    .btn-ghost-sm:focus-visible {
+      background: rgba(14,34,57,.05);
+      border-color: rgba(14,34,57,.30);
+      outline: 2px solid rgba(14,34,57,.25);
+      outline-offset: 2px;
+    }
+
+    /* ── Pantalla de preparación ── */
+    .prereq-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      text-align: left;
+      max-width: 38ch;
+    }
+    .prereq-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: calc(14px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.55;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(14,34,57,.06);
+    }
+    .prereq-list li:last-child { border-bottom: none; }
+    .prereq-list li::before {
+      content: "✓";
+      font-size: 0.8em;
+      font-weight: 700;
+      color: var(--blue, #1a6fa8);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── Pantalla de cierre ── */
+    .completion-icon {
+      font-size: 3rem;
+      line-height: 1;
+      margin-bottom: 14px;
+      animation: pop 0.5s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes pop {
+      0%   { transform: scale(0.5); opacity: 0; }
+      70%  { transform: scale(1.12); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .completion-icon { animation: none; }
+    }
+
+    .completion-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    /* ── Nota de seguridad ── */
+    .safety-strip {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      max-width: 56ch;
+      margin: 16px auto 0;
+      line-height: 1.5;
+    }
+
+    /* ── Utilidades ── */
+    .hidden { display: none !important; }
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .text-center { text-align: center; }
+    .w-full { width: 100%; }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt=""
+               style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</div>
+          <div class="brand-sub">Sala de Espera Virtual · Foco 3 minutos</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <a href="emociones.html" class="btn-back" data-spa="0"
+           aria-label="Volver a recursos emocionales">← Volver</a>
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button"
+                  aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button"
+                  aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" id="main">
+
+    <!-- Encabezado de página -->
+    <section class="section" aria-labelledby="page-title">
+      <span class="page-meta-tag" aria-label="Tipo de recurso">
+        ⏱ Herramienta breve · 3 minutos
+      </span>
+      <h1 id="page-title" class="hero-title" style="margin-bottom:10px">
+        Foco — 3 minutos
+      </h1>
+      <p class="hero-bridge" style="max-width:55ch">
+        Un ejercicio guiado de atención breve. Cuatro fases cortas para recuperar el foco
+        cuando la mente está dispersa, acelerada o saturada.
+      </p>
+      <p class="note" role="note" style="margin-top:14px">
+        Este recurso no reemplaza una consulta. Si estás en crisis o urgencia,
+        utilizá los canales de emergencia locales.
+      </p>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         PANTALLA A: Preparación (visible al inicio)
+    ════════════════════════════════════════════ -->
+    <section class="section" id="screen-prereq" aria-labelledby="prereq-title">
+      <div class="section-card exercise-card">
+
+        <p class="phase-icon" aria-hidden="true">🪑</p>
+        <h2 id="prereq-title" class="phase-name">Antes de empezar</h2>
+
+        <ul class="prereq-list" role="list">
+          <li>Buscá un lugar donde puedas estar sin interrupciones por 3 minutos.</li>
+          <li>Podés estar sentado/a, parado/a o recostado/a.</li>
+          <li>No hace falta cerrar los ojos — bajar la mirada también funciona.</li>
+          <li>Si abriste este ejercicio desde el celular, dejá la pantalla encendida.</li>
+        </ul>
+
+        <button id="btn-start" class="btn-primary w-full"
+                aria-label="Iniciar ejercicio de foco de 3 minutos"
+                style="max-width:260px">
+          ▶ Comenzar ejercicio
+        </button>
+
+      </div><!-- /exercise-card -->
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         PANTALLA B: Ejercicio en curso
+    ════════════════════════════════════════════ -->
+    <section class="section hidden" id="screen-exercise"
+             aria-labelledby="phase-name-el"
+             aria-live="polite" aria-atomic="false">
+
+      <div class="section-card exercise-card">
+
+        <!-- Indicador de fases -->
+        <div class="phase-dots" role="group" aria-label="Progreso del ejercicio">
+          <div class="phase-dot" id="dot-0" aria-hidden="true"></div>
+          <div class="phase-dot" id="dot-1" aria-hidden="true"></div>
+          <div class="phase-dot" id="dot-2" aria-hidden="true"></div>
+          <div class="phase-dot" id="dot-3" aria-hidden="true"></div>
+        </div>
+
+        <!-- Ícono y nombre de fase -->
+        <p class="phase-icon" id="phase-icon" aria-hidden="true">⚓</p>
+        <h2 class="phase-name" id="phase-name-el">Aterrizar</h2>
+
+        <!-- Timer circular -->
+        <div class="timer-wrap"
+             role="timer"
+             aria-label="Tiempo restante en la fase actual"
+             aria-live="off">
+          <svg class="timer-svg"
+               viewBox="0 0 120 120"
+               xmlns="http://www.w3.org/2000/svg"
+               aria-hidden="true">
+            <circle class="ring-bg"   cx="60" cy="60" r="54"/>
+            <circle class="ring-fill" cx="60" cy="60" r="54" id="ring-fill"/>
+          </svg>
+          <span class="timer-text" id="timer-text">0:30</span>
+        </div>
+
+        <!-- Instrucciones -->
+        <p class="phase-instruction" id="phase-instruction"></p>
+        <p class="phase-sub"         id="phase-sub"></p>
+
+        <!-- Controles -->
+        <div class="exercise-controls" role="group" aria-label="Controles">
+          <button id="btn-pause" class="btn-secondary"
+                  aria-label="Pausar o continuar el ejercicio">
+            ⏸ Pausar
+          </button>
+          <button id="btn-reset" class="btn-ghost-sm"
+                  aria-label="Reiniciar desde el comienzo">
+            ↺ Reiniciar
+          </button>
+        </div>
+
+        <!-- Anuncio para lectores de pantalla -->
+        <p class="sr-only" id="sr-announce"
+           aria-live="polite" aria-atomic="true"></p>
+
+      </div><!-- /exercise-card -->
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         PANTALLA C: Ejercicio completado
+    ════════════════════════════════════════════ -->
+    <section class="section hidden" id="screen-completion"
+             aria-labelledby="completion-title">
+
+      <div class="section-card exercise-card">
+
+        <p class="completion-icon" aria-hidden="true">✨</p>
+
+        <h2 id="completion-title" class="phase-name">Ejercicio completo</h2>
+
+        <p class="hero-bridge" style="max-width:42ch">
+          Tomaste 3 minutos para vos.<br>Eso siempre vale.
+        </p>
+
+        <p class="phase-sub">
+          ¿Notás alguna diferencia respecto a cómo llegaste?
+        </p>
+
+        <div class="completion-actions">
+          <a href="emociones.html" class="btn-ghost-sm" data-spa="0"
+             aria-label="Volver a recursos emocionales">
+            ← Volver
+          </a>
+          <a href="registro-emocional.html" class="btn-primary" data-spa="0"
+             aria-label="Ir al registro emocional para anotar cómo te sentís">
+            Registrar cómo me siento
+          </a>
+        </div>
+
+      </div><!-- /exercise-card -->
+
+      <p class="safety-strip" role="note">
+        Este recurso es orientativo y no reemplaza una consulta médica.<br>
+        No está destinado a situaciones de urgencia o emergencia psiquiátrica.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <!-- ===== Footer minimal ===== -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="emociones.html"    data-spa="0">← Recursos emocionales</a>
+          <a href="aviso-legal.html"  data-spa="0">Aviso legal / Privacidad</a>
+          <a href="index.html"        data-spa="0">Inicio</a>
+        </div>
+      </div>
+      <div>
+        <div class="legal" id="legalBlock">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT — Año automático.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ─────────────────────────────────────────────
+       1. PERSISTENCIA + CONFIGURACIÓN DE UI
+    ───────────────────────────────────────────── */
+    const store = {
+      get (k, d) {
+        try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
+        catch { return d; }
+      },
+      set (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+    };
+
+    let scale        = store.get('ui_text_scale',    100);
+    let hiContrast   = store.get('ui_contrast',      false);
+    let reduceMotion = store.get('ui_reduce_motion', false);
+    let lineSpacing  = store.get('ui_line_spacing',  false);
+
+    function applyUI () {
+      document.documentElement.style.setProperty('--text-scale', scale + '%');
+      document.documentElement.classList.toggle('hi-contrast',   !!hiContrast);
+      document.documentElement.classList.toggle('reduce-motion', !!reduceMotion);
+      document.documentElement.classList.toggle('line-spacing',  !!lineSpacing);
+      const y = document.getElementById('yearNow');
+      if (y) y.textContent = String(new Date().getFullYear());
+    }
+
+    document.getElementById('btnAminus')?.addEventListener('click', () => {
+      scale = Math.max(85, scale - 5);
+      store.set('ui_text_scale', scale);
+      applyUI();
+    });
+    document.getElementById('btnAplus')?.addEventListener('click', () => {
+      scale = Math.min(130, scale + 5);
+      store.set('ui_text_scale', scale);
+      applyUI();
+    });
+
+    applyUI();
+
+
+    /* ─────────────────────────────────────────────
+       2. DEFINICIÓN DE FASES DEL EJERCICIO
+    ───────────────────────────────────────────── */
+    const PHASES = [
+      {
+        name:        'Aterrizar',
+        icon:        '⚓',
+        duration:    30,
+        ringColor:   '#1a6fa8',   /* azul institucional */
+        instruction: 'Sentate cómodo/a.\nApoyá los pies en el piso si podés.\nCerrá los ojos o bajá la mirada.\nSentí el peso de tu cuerpo en el asiento.',
+        sub:         'Solo estás llegando. No hay nada que hacer todavía.'
+      },
+      {
+        name:        'Observar',
+        icon:        '👁️',
+        duration:    60,
+        ringColor:   '#2e7d52',   /* verde calmo */
+        instruction: '¿Qué está pasando en tu cuerpo ahora mismo?\nNotá tensión, calor, incomodidad, cansancio.\nSolo observá — no necesitás cambiar nada.',
+        sub:         'Cada cosa que notás, la dejás pasar.'
+      },
+      {
+        name:        'Enfocar',
+        icon:        '🎯',
+        duration:    60,
+        ringColor:   '#1a6fa8',   /* azul */
+        instruction: 'Elegí UNA cosa en la que poner la atención.\nPuede ser la respiración, un sonido cercano\no una sensación en el cuerpo.\nCuando la mente se vaya, volvés suavemente.',
+        sub:         'No hay que forzar. Solo volver, cada vez.'
+      },
+      {
+        name:        'Cerrar',
+        icon:        '🌅',
+        duration:    30,
+        ringColor:   '#b87334',   /* ámbar cálido */
+        instruction: 'Respirá profundo una vez.\nSoltá despacio.\nCuando estés listo/a, abrí los ojos.',
+        sub:         'Llevás esta calma con vos.'
+      }
+    ];
+
+    const CIRCUMFERENCE = 2 * Math.PI * 54; /* ≈ 339.29 */
+
+
+    /* ─────────────────────────────────────────────
+       3. ESTADO DEL EJERCICIO
+    ───────────────────────────────────────────── */
+    let currentPhase = 0;
+    let timeLeft     = 0;
+    let isPaused     = false;
+    let isRunning    = false;
+    let intervalId   = null;
+
+
+    /* ─────────────────────────────────────────────
+       4. REFS A DOM
+    ───────────────────────────────────────────── */
+    const screenPrereq     = document.getElementById('screen-prereq');
+    const screenExercise   = document.getElementById('screen-exercise');
+    const screenCompletion = document.getElementById('screen-completion');
+
+    const phaseIconEl      = document.getElementById('phase-icon');
+    const phaseNameEl      = document.getElementById('phase-name-el');
+    const timerTextEl      = document.getElementById('timer-text');
+    const ringFillEl       = document.getElementById('ring-fill');
+    const phaseInstrEl     = document.getElementById('phase-instruction');
+    const phaseSubEl       = document.getElementById('phase-sub');
+    const srAnnounce       = document.getElementById('sr-announce');
+
+    const btnStart         = document.getElementById('btn-start');
+    const btnPause         = document.getElementById('btn-pause');
+    const btnReset         = document.getElementById('btn-reset');
+
+    const dots = [
+      document.getElementById('dot-0'),
+      document.getElementById('dot-1'),
+      document.getElementById('dot-2'),
+      document.getElementById('dot-3')
+    ];
+
+
+    /* ─────────────────────────────────────────────
+       5. UTILIDADES
+    ───────────────────────────────────────────── */
+    function fmtTime (secs) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function announce (msg) {
+      srAnnounce.textContent = '';
+      /* pequeño delay para que el lector de pantalla detecte el cambio */
+      setTimeout(() => { srAnnounce.textContent = msg; }, 60);
+    }
+
+    function updateRing (secsLeft, total) {
+      const frac   = total > 0 ? secsLeft / total : 0;
+      const offset = CIRCUMFERENCE * (1 - frac);
+      ringFillEl.style.strokeDashoffset = offset;
+    }
+
+    function updateDots (idx) {
+      dots.forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        if (i < idx)      d.classList.add('done');
+        else if (i === idx) d.classList.add('active');
+      });
+    }
+
+
+    /* ─────────────────────────────────────────────
+       6. RENDER DE FASE
+    ───────────────────────────────────────────── */
+    function renderPhase (idx) {
+      const p = PHASES[idx];
+
+      phaseIconEl.textContent      = p.icon;
+      phaseNameEl.textContent      = p.name;
+      phaseInstrEl.textContent     = p.instruction;
+      phaseSubEl.textContent       = p.sub;
+      timerTextEl.textContent      = fmtTime(p.duration);
+      ringFillEl.style.stroke      = p.ringColor;
+      ringFillEl.style.strokeDashoffset = 0;  /* reinicia visualmente */
+
+      updateDots(idx);
+      updateRing(p.duration, p.duration);
+
+      announce(p.name + '. ' + p.instruction.replace(/\n/g, ' '));
+    }
+
+
+    /* ─────────────────────────────────────────────
+       7. CONTROL DEL TIMER
+    ───────────────────────────────────────────── */
+    function startInterval () {
+      if (intervalId) clearInterval(intervalId);
+
+      intervalId = setInterval(() => {
+        if (isPaused || !isRunning) return;
+
+        timeLeft--;
+        timerTextEl.textContent = fmtTime(timeLeft);
+        updateRing(timeLeft, PHASES[currentPhase].duration);
+
+        if (timeLeft <= 0) {
+          /* pasar a la siguiente fase */
+          currentPhase++;
+
+          if (currentPhase >= PHASES.length) {
+            /* ejercicio completado */
+            clearInterval(intervalId);
+            intervalId = null;
+            isRunning  = false;
+            screenExercise.classList.add('hidden');
+            screenCompletion.classList.remove('hidden');
+            announce('Ejercicio completado. Tomaste 3 minutos para vos.');
+            return;
+          }
+
+          timeLeft = PHASES[currentPhase].duration;
+          renderPhase(currentPhase);
+        }
+      }, 1000);
+    }
+
+
+    /* ─────────────────────────────────────────────
+       8. ACCIONES DE BOTONES
+    ───────────────────────────────────────────── */
+    function doStart () {
+      screenPrereq.classList.add('hidden');
+      screenExercise.classList.remove('hidden');
+      screenCompletion.classList.add('hidden');
+
+      currentPhase = 0;
+      timeLeft     = PHASES[0].duration;
+      isPaused     = false;
+      isRunning    = true;
+
+      renderPhase(0);
+      btnPause.textContent = '⏸ Pausar';
+      btnPause.setAttribute('aria-label', 'Pausar el ejercicio');
+
+      startInterval();
+    }
+
+    function doTogglePause () {
+      isPaused = !isPaused;
+      if (isPaused) {
+        btnPause.textContent = '▶ Continuar';
+        btnPause.setAttribute('aria-label', 'Continuar el ejercicio');
+        announce('Pausado. Presioná Continuar para seguir.');
+      } else {
+        btnPause.textContent = '⏸ Pausar';
+        btnPause.setAttribute('aria-label', 'Pausar el ejercicio');
+        announce('Continuando — ' + PHASES[currentPhase].name + '.');
+      }
+    }
+
+    function doReset () {
+      if (intervalId) clearInterval(intervalId);
+      intervalId   = null;
+      isRunning    = false;
+      isPaused     = false;
+
+      screenExercise.classList.add('hidden');
+      screenCompletion.classList.add('hidden');
+      screenPrereq.classList.remove('hidden');
+
+      announce('Ejercicio reiniciado.');
+    }
+
+    btnStart?.addEventListener('click', doStart);
+    btnPause?.addEventListener('click', doTogglePause);
+    btnReset?.addEventListener('click', doReset);
+
+    /* Soporte de teclado explícito para Enter y Espacio */
+    [btnStart, btnPause, btnReset].forEach(btn => {
+      btn?.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

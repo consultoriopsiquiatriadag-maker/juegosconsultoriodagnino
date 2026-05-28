@@ -264,36 +264,99 @@
     </section>
 
 
-    <!-- ── Sección: Recursos en desarrollo ── -->
-    <section class="section" aria-label="Recursos en desarrollo">
+    <!-- ── Sección: Herramientas breves ── -->
+    <!--
+      FASE 1: Se reemplaza el bloque "Más recursos en camino" (2 cards placeholder)
+      por la sección "Herramientas breves" con 5 recursos.
+      Foco-3-minutos activo. Los 4 restantes se habilitan en fases sucesivas.
+    -->
+    <section class="section" aria-labelledby="herramientas-heading">
 
       <div class="section-lead">
-        <h2>Más recursos en camino</h2>
-        <p>Estamos incorporando nuevas herramientas para el bienestar cotidiano.</p>
+        <h2 id="herramientas-heading">Herramientas breves</h2>
+        <p>Ejercicios cortos para momentos puntuales del día. Entre 3 y 10 minutos cada uno.</p>
       </div>
 
-      <!-- Usa .grid-2 de app.css: 2 cols hasta 560px, luego 1 col -->
-      <div class="grid-2">
+      <div class="grid-resources">
 
-        <article class="section-card hint-bg disabled" aria-label="Próximas herramientas de calma y foco">
-          <h3 class="card-title">🧩 Herramientas de calma y foco</h3>
-          <p class="card-sub">
-            Recursos breves para manejar momentos de activación, dificultad para concentrarse
-            o cansancio mental acumulado.
+        <!-- ① Foco 3 minutos — ACTIVO -->
+        <article class="section-card card-hover hint-cog resource-card"
+                 aria-label="Foco 3 minutos">
+          <div class="resource-icon-wrap" aria-hidden="true">🎯</div>
+          <h3 class="resource-title">Foco — 3 minutos</h3>
+          <p class="resource-desc">
+            Un ejercicio guiado de atención breve para recuperar el foco
+            cuando la mente está dispersa o saturada.
           </p>
-          <span class="badge-soft">Próximamente</span>
+          <span class="resource-hint">Para momentos de dispersión</span>
+          <div class="resource-cta">
+            <a class="btn-primary" href="foco-3-minutos.html" data-spa="0"
+               aria-label="Iniciar ejercicio Foco 3 minutos">
+              Iniciar ejercicio
+            </a>
+          </div>
         </article>
 
-        <article class="section-card hint-bg disabled" aria-label="Audios y ejercicios guiados en desarrollo">
-          <h3 class="card-title">🛠️ Audios y ejercicios guiados</h3>
-          <p class="card-sub">
-            Respiración, relajación muscular progresiva, visualizaciones simples
-            y rutinas de cierre del día.
+        <!-- ② Respiración guiada — PRÓXIMAMENTE -->
+        <article class="section-card hint-bg disabled resource-card"
+                 aria-label="Respiración guiada, próximamente disponible">
+          <div class="resource-icon-wrap" aria-hidden="true">🌬️</div>
+          <h3 class="resource-title">Respiración guiada</h3>
+          <p class="resource-desc">
+            Técnica de respiración estructurada para bajar la activación rápidamente.
           </p>
-          <span class="badge-soft">En desarrollo</span>
+          <span class="resource-hint">Para momentos de ansiedad</span>
+          <div class="resource-cta">
+            <span class="badge-soft">Próximamente</span>
+          </div>
         </article>
 
-      </div>
+        <!-- ③ Volver al presente — PRÓXIMAMENTE -->
+        <article class="section-card hint-bg disabled resource-card"
+                 aria-label="Volver al presente, próximamente disponible">
+          <div class="resource-icon-wrap" aria-hidden="true">🌿</div>
+          <h3 class="resource-title">Volver al presente</h3>
+          <p class="resource-desc">
+            Ejercicio de anclaje sensorial para salir del espiral de pensamientos
+            y conectar con el aquí y ahora.
+          </p>
+          <span class="resource-hint">Para ansiedad anticipatoria</span>
+          <div class="resource-cta">
+            <span class="badge-soft">Próximamente</span>
+          </div>
+        </article>
+
+        <!-- ④ Soltar tensión — PRÓXIMAMENTE -->
+        <article class="section-card hint-bg disabled resource-card"
+                 aria-label="Soltar tensión, próximamente disponible">
+          <div class="resource-icon-wrap" aria-hidden="true">🪨</div>
+          <h3 class="resource-title">Soltar tensión</h3>
+          <p class="resource-desc">
+            Rutina breve de relajación muscular progresiva para liberar
+            tensión acumulada en el cuerpo.
+          </p>
+          <span class="resource-hint">Para tensión física y mental</span>
+          <div class="resource-cta">
+            <span class="badge-soft">Próximamente</span>
+          </div>
+        </article>
+
+        <!-- ⑤ Cierre del día — PRÓXIMAMENTE -->
+        <article class="section-card hint-bg disabled resource-card"
+                 aria-label="Cierre del día, próximamente disponible">
+          <div class="resource-icon-wrap" aria-hidden="true">🌙</div>
+          <h3 class="resource-title">Cierre del día</h3>
+          <p class="resource-desc">
+            Un ritual breve de finalización del día para soltar lo pendiente
+            y prepararse para el descanso.
+          </p>
+          <span class="resource-hint">Para el final del día</span>
+          <div class="resource-cta">
+            <span class="badge-soft">Próximamente</span>
+          </div>
+        </article>
+
+      </div><!-- /grid-resources herramientas breves -->
 
     </section>
 
