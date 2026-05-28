@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Soltar tensión — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* ── Fondo ── */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ── Utilidades ── */
+    .relax-hidden { display: none !important; }
+    .relax-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Card central ── */
+    .relax-card {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+    @media (max-width: 480px) {
+      .relax-card { padding: 24px 18px; border-radius: 16px; }
+    }
+
+    /* ── INTRO ── */
+    .relax-intro-title {
+      font-size: calc(22px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+    .relax-intro-sub {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    /* Lista de zonas en intro */
+    .relax-zone-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .relax-zone-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .relax-zone-badge {
+      min-width: 40px; height: 40px;
+      border-radius: 12px;
+      background: rgba(196,122,43,.10);
+      border: 1px solid rgba(196,122,43,.20);
+      display: grid; place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .relax-zone-num {
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 18px;
+    }
+
+    .relax-disclaimer {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      background: rgba(14,34,57,.22);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    /* ── PASOS ── */
+
+    /* Barra de progreso */
+    .relax-progress {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .relax-progress-seg {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,.15);
+      flex: 1;
+      max-width: 56px;
+      transition: background .3s ease;
+    }
+    .relax-progress-seg.done   { background: rgba(196,122,43,.75); }
+    .relax-progress-seg.active { background: rgba(196,122,43,.40); outline: 2px solid rgba(196,122,43,.50); outline-offset: 2px; }
+
+    /* Ícono de zona */
+    .relax-zone-icon-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+    .relax-zone-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      background: rgba(196,122,43,.10);
+      border: 1px solid rgba(196,122,43,.22);
+      display: grid; place-items: center;
+      font-size: 34px;
+      /* Pulso suave durante la fase de tensión */
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .relax-zone-icon.relax-tense {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(196,122,43,.22);
+    }
+    .relax-zone-icon.relax-release {
+      transform: scale(0.96);
+      box-shadow: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .relax-zone-icon { transition: none !important; transform: none !important; box-shadow: none !important; }
+    }
+
+    .relax-step-counter {
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* Título zona */
+    .relax-step-title {
+      font-size: calc(21px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.015em;
+      color: var(--text);
+      text-align: center;
+      margin: 0 0 22px;
+    }
+
+    /* Fichas de instrucción: tensión + soltar */
+    .relax-instruction-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 380px) {
+      .relax-instruction-grid { grid-template-columns: 1fr; }
+    }
+    .relax-instruction-card {
+      border-radius: 14px;
+      padding: 14px 12px;
+      line-height: 1.55;
+    }
+    .relax-instruction-card.relax-tense-card {
+      background: rgba(196,122,43,.08);
+      border: 1px solid rgba(196,122,43,.18);
+    }
+    .relax-instruction-card.relax-release-card {
+      background: rgba(100,180,140,.07);
+      border: 1px solid rgba(100,180,140,.18);
+    }
+    .relax-instruction-label {
+      font-size: calc(11px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .relax-tense-card  .relax-instruction-label { color: var(--accent-warm, #c47a2b); }
+    .relax-release-card .relax-instruction-label { color: rgba(100,180,140,.9); }
+    .relax-instruction-text {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+    }
+
+    /* Nota de ritmo */
+    .relax-rhythm-note {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* ── CIERRE ── */
+    .relax-closing-icon {
+      font-size: 48px;
+      display: block;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .relax-closing-msg {
+      font-size: calc(16px * var(--text-scale));
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.65;
+      text-align: center;
+      margin: 0 0 28px;
+    }
+
+    /* Resumen de zonas completadas */
+    .relax-done-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .relax-done-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+    }
+    .relax-done-check {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── Botones ── */
+    .relax-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .relax-btn-primary {
+      display: inline-block;
+      background: var(--blue, #3a7bd5);
+      color: #fff;
+      font-family: inherit;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .relax-btn-primary:hover { opacity: .88; }
+    .relax-btn-primary.relax-full { width: 100%; }
+
+    .relax-btn-ghost {
+      display: inline-block;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .relax-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── Footer mínimo ── */
+    .relax-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0 8px;
+    }
+    .relax-footer-links a {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .relax-footer-links a:hover { color: var(--text); }
+    .relax-legal {
+      text-align: center;
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      padding-bottom: 24px;
+    }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt=""
+               style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button"
+                  aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button"
+                  aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" style="padding-top:28px;padding-bottom:52px;"
+        aria-label="Herramienta Soltar tensión">
+
+    <!-- Navegación: volver -->
+    <div style="margin-bottom:20px;">
+      <a class="btn-back" href="emociones.html" data-spa="0"
+         aria-label="Volver a Emociones">← Volver</a>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA A — Intro
+    ══════════════════════════════════════════ -->
+    <div id="relax-intro" role="region" aria-labelledby="relax-intro-heading">
+      <div class="relax-card">
+
+        <h1 class="relax-intro-title" id="relax-intro-heading">Soltar tensión</h1>
+        <p class="relax-intro-sub">
+          Una secuencia breve para aflojar el cuerpo y registrar dónde estás cargando tensión.<br><br>
+          En cada paso vas a tensar suavemente una zona y luego soltarla. Eso es todo.
+          Andá a tu propio ritmo.
+        </p>
+
+        <!-- Zonas a trabajar -->
+        <ul class="relax-zone-list" aria-label="Zonas de la secuencia">
+          <li>
+            <span class="relax-zone-num" aria-hidden="true">1</span>
+            <span class="relax-zone-badge" aria-hidden="true">🤲</span>
+            <span><strong>Manos</strong> — apretar y soltar</span>
+          </li>
+          <li>
+            <span class="relax-zone-num" aria-hidden="true">2</span>
+            <span class="relax-zone-badge" aria-hidden="true">🪨</span>
+            <span><strong>Hombros</strong> — subir y aflojar</span>
+          </li>
+          <li>
+            <span class="relax-zone-num" aria-hidden="true">3</span>
+            <span class="relax-zone-badge" aria-hidden="true">😮</span>
+            <span><strong>Mandíbula</strong> — aflojar y abrir levemente</span>
+          </li>
+          <li>
+            <span class="relax-zone-num" aria-hidden="true">4</span>
+            <span class="relax-zone-badge" aria-hidden="true">🌬️</span>
+            <span><strong>Abdomen</strong> — respirar suave</span>
+          </li>
+          <li>
+            <span class="relax-zone-num" aria-hidden="true">5</span>
+            <span class="relax-zone-badge" aria-hidden="true">🦵</span>
+            <span><strong>Piernas</strong> — apoyar y descargar</span>
+          </li>
+        </ul>
+
+        <!-- Disclaimer -->
+        <p class="relax-disclaimer" role="note">
+          Este recurso no reemplaza una consulta profesional ni está destinado a situaciones de urgencia.
+          Si sentís dolor físico o malestar durante el ejercicio, detené la actividad.
+          Si estás en crisis, buscá ayuda inmediata en una guardia o persona de confianza.
+        </p>
+
+        <div class="relax-nav">
+          <button id="relax-btn-start" class="relax-btn-primary relax-full" type="button">
+            Iniciar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA B — Pasos
+    ══════════════════════════════════════════ -->
+    <div id="relax-steps" class="relax-hidden"
+         role="region" aria-labelledby="relax-steps-heading">
+      <div class="relax-card">
+
+        <span class="relax-sr-only" id="relax-steps-heading">Secuencia de relajación muscular</span>
+
+        <!-- Barra de progreso -->
+        <div class="relax-progress" id="relax-progress-bar" aria-hidden="true">
+          <div class="relax-progress-seg active" data-seg="0"></div>
+          <div class="relax-progress-seg"        data-seg="1"></div>
+          <div class="relax-progress-seg"        data-seg="2"></div>
+          <div class="relax-progress-seg"        data-seg="3"></div>
+          <div class="relax-progress-seg"        data-seg="4"></div>
+        </div>
+
+        <!-- Ícono de zona + contador -->
+        <div class="relax-zone-icon-wrap">
+          <div class="relax-zone-icon" id="relax-zone-icon" aria-hidden="true">🤲</div>
+          <span class="relax-step-counter" id="relax-step-counter"
+                aria-live="polite" aria-atomic="true">Zona 1 de 5</span>
+        </div>
+
+        <!-- Título -->
+        <h2 class="relax-step-title" id="relax-step-title"
+            aria-live="polite" aria-atomic="true">Manos</h2>
+
+        <!-- Fichas tensión / soltar -->
+        <div class="relax-instruction-grid" id="relax-instruction-grid">
+          <div class="relax-instruction-card relax-tense-card">
+            <p class="relax-instruction-label">Tensá</p>
+            <p class="relax-instruction-text" id="relax-tense-text"></p>
+          </div>
+          <div class="relax-instruction-card relax-release-card">
+            <p class="relax-instruction-label">Soltá</p>
+            <p class="relax-instruction-text" id="relax-release-text"></p>
+          </div>
+        </div>
+
+        <!-- Nota de ritmo -->
+        <p class="relax-rhythm-note" id="relax-rhythm-note"></p>
+
+        <!-- Navegación -->
+        <div class="relax-nav">
+          <button id="relax-btn-back" class="relax-btn-ghost relax-hidden" type="button">
+            ← Volver
+          </button>
+          <button id="relax-btn-next" class="relax-btn-primary" type="button">
+            Siguiente
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA C — Cierre
+    ══════════════════════════════════════════ -->
+    <div id="relax-closing" class="relax-hidden"
+         role="region" aria-labelledby="relax-closing-heading">
+      <div class="relax-card" style="text-align:center;">
+
+        <span class="relax-closing-icon" aria-hidden="true">🪨</span>
+        <h2 class="relax-sr-only" id="relax-closing-heading">Secuencia completada</h2>
+
+        <p class="relax-closing-msg">
+          Aflojar el cuerpo también puede ayudar<br>a bajar el ruido mental.
+        </p>
+
+        <!-- Lista de zonas completadas -->
+        <ul class="relax-done-list" id="relax-done-list"
+            aria-label="Zonas trabajadas" style="text-align:left;">
+        </ul>
+
+        <div class="relax-nav">
+          <button id="relax-btn-restart" class="relax-btn-ghost" type="button">
+            ↺ Reiniciar
+          </button>
+          <a href="emociones.html" data-spa="0" class="relax-btn-ghost">
+            Volver a Emociones
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ===== Footer mínimo ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="relax-footer-links">
+        <a href="emociones.html"   data-spa="0">Emociones</a>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <a href="index.html"       data-spa="0">Inicio</a>
+      </div>
+      <p class="relax-legal">
+        Copyright © <span id="yearNow"></span> Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── UI settings compartidos ── */
+      const store = {
+        get(k, d) {
+          try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
+          catch { return d; }
+        },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+      };
+      let scale = store.get('ui_text_scale', 100);
+      function applyUI() {
+        document.documentElement.style.setProperty('--text-scale', scale + '%');
+        const y = document.getElementById('yearNow');
+        if (y) y.textContent = String(new Date().getFullYear());
+      }
+      document.getElementById('btnAminus')?.addEventListener('click', () => {
+        scale = Math.max(85, scale - 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      document.getElementById('btnAplus')?.addEventListener('click', () => {
+        scale = Math.min(130, scale + 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      applyUI();
+
+
+      /* ══════════════════════════════════════════
+         Definición de zonas
+      ══════════════════════════════════════════ */
+      const ZONES = [
+        {
+          icon:    '🤲',
+          title:   'Manos',
+          tense:   'Cerrá los puños con fuerza. Sentí la tensión en los dedos, la palma y el antebrazo.',
+          release: 'Abrí las manos despacio. Dejá que los dedos caigan solos y notá el calor que queda.',
+          note:    'Tensá unos 5 segundos y luego soltá. Notá la diferencia.',
+          label:   'Manos trabajadas ✓'
+        },
+        {
+          icon:    '🪨',
+          title:   'Hombros',
+          tense:   'Subí los hombros hacia las orejas lo que puedas. Mantené esa posición.',
+          release: 'Dejalos caer por completo de golpe. Que cuelguen solos, sin sostenerlos.',
+          note:    'Repetí si querés. Es normal sentir alivio inmediato al soltar.',
+          label:   'Hombros trabajados ✓'
+        },
+        {
+          icon:    '😮',
+          title:   'Mandíbula',
+          tense:   'Apretá suavemente los dientes. Notá la tensión en la mandíbula y las sienes.',
+          release: 'Aflojá. Separás levemente los dientes, la boca entreabierta, labios sueltos.',
+          note:    'Muchas personas cargan tensión aquí sin darse cuenta.',
+          label:   'Mandíbula trabajada ✓'
+        },
+        {
+          icon:    '🌬️',
+          title:   'Abdomen',
+          tense:   'Inhalá lento por la nariz expandiendo el abdomen. Sostené un momento.',
+          release: 'Exhalá despacio por la boca. Dejá que el vientre caiga y todo se relaje.',
+          note:    'Dos o tres ciclos son suficientes. Sin forzar.',
+          label:   'Abdomen trabajado ✓'
+        },
+        {
+          icon:    '🦵',
+          title:   'Piernas',
+          tense:   'Apoyá bien los pies en el piso. Apretá los muslos y las pantorrillas.',
+          release: 'Soltá todo. Sentí el peso de las piernas apoyadas, el contacto con el suelo.',
+          note:    'Cerrá los ojos si podés. Tomá un momento antes de seguir.',
+          label:   'Piernas trabajadas ✓'
+        },
+      ];
+
+      /* ── Estado ── */
+      let currentStep = 0;
+
+      /* ── DOM ── */
+      const elIntro   = document.getElementById('relax-intro');
+      const elSteps   = document.getElementById('relax-steps');
+      const elClosing = document.getElementById('relax-closing');
+
+      const elIcon        = document.getElementById('relax-zone-icon');
+      const elCounter     = document.getElementById('relax-step-counter');
+      const elTitle       = document.getElementById('relax-step-title');
+      const elTenseText   = document.getElementById('relax-tense-text');
+      const elReleaseText = document.getElementById('relax-release-text');
+      const elRhythm      = document.getElementById('relax-rhythm-note');
+      const elSegs        = document.querySelectorAll('.relax-progress-seg');
+      const elDoneList    = document.getElementById('relax-done-list');
+
+      const btnStart   = document.getElementById('relax-btn-start');
+      const btnBack    = document.getElementById('relax-btn-back');
+      const btnNext    = document.getElementById('relax-btn-next');
+      const btnRestart = document.getElementById('relax-btn-restart');
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ── Helpers ── */
+      function show(el) { el?.classList.remove('relax-hidden'); }
+      function hide(el) { el?.classList.add('relax-hidden'); }
+
+      function updateSegs(idx) {
+        elSegs.forEach((seg, i) => {
+          seg.classList.remove('done', 'active');
+          if (i < idx)       seg.classList.add('done');
+          else if (i === idx) seg.classList.add('active');
+        });
+      }
+
+      function animateIcon(phase) {
+        if (reducedMotion) return;
+        elIcon.classList.remove('relax-tense', 'relax-release');
+        // Forzar reflow para reiniciar la transición
+        void elIcon.offsetWidth;
+        elIcon.classList.add(phase === 'tense' ? 'relax-tense' : 'relax-release');
+      }
+
+      /* ── Ir a un paso ── */
+      function goStep(idx) {
+        currentStep = idx;
+        const z = ZONES[idx];
+
+        elIcon.textContent      = z.icon;
+        elCounter.textContent   = `Zona ${idx + 1} de ${ZONES.length}`;
+        elTitle.textContent     = z.title;
+        elTenseText.textContent   = z.tense;
+        elReleaseText.textContent = z.release;
+        elRhythm.textContent    = z.note;
+
+        updateSegs(idx);
+        animateIcon('tense');
+
+        idx === 0 ? hide(btnBack) : show(btnBack);
+        btnNext.textContent = idx === ZONES.length - 1 ? 'Finalizar' : 'Siguiente';
+
+        hide(elIntro);
+        show(elSteps);
+        hide(elClosing);
+
+        // Foco accesible al cambiar de paso
+        requestAnimationFrame(() => elTitle.focus());
+      }
+
+      /* ── Pantalla de cierre ── */
+      function goClosing() {
+        // Construir lista de zonas completadas
+        elDoneList.innerHTML = '';
+        ZONES.forEach(z => {
+          const li = document.createElement('li');
+          const check = document.createElement('span');
+          check.className   = 'relax-done-check';
+          check.textContent = z.icon;
+          check.setAttribute('aria-hidden', 'true');
+          const text = document.createElement('span');
+          text.textContent = z.label;
+          li.appendChild(check);
+          li.appendChild(text);
+          elDoneList.appendChild(li);
+        });
+
+        hide(elIntro);
+        hide(elSteps);
+        show(elClosing);
+      }
+
+      /* ── Botones ── */
+      btnStart?.addEventListener('click', () => goStep(0));
+
+      btnBack?.addEventListener('click', () => {
+        if (currentStep > 0) goStep(currentStep - 1);
+      });
+
+      btnNext?.addEventListener('click', () => {
+        if (currentStep < ZONES.length - 1) {
+          goStep(currentStep + 1);
+        } else {
+          goClosing();
+        }
+      });
+
+      btnRestart?.addEventListener('click', () => goStep(0));
+
+      // Hacer focusable el título para a11y
+      document.getElementById('relax-step-title')?.setAttribute('tabindex', '-1');
+
+    })();
+  </script>
+
+</body>
+</html>
