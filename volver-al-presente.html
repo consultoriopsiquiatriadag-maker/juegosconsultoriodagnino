@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Volver al presente — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* ── Fondo ── */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ── Utilidades ── */
+    .ground-hidden { display: none !important; }
+    .ground-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Card central ── */
+    .ground-card {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+    @media (max-width: 480px) {
+      .ground-card { padding: 24px 18px; border-radius: 16px; }
+    }
+
+    /* ── INTRO ── */
+    .ground-intro-title {
+      font-size: calc(22px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+    .ground-intro-sub {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    /* Lista de pasos en intro */
+    .ground-sense-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .ground-sense-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .ground-sense-badge {
+      min-width: 40px; height: 40px;
+      border-radius: 12px;
+      background: rgba(100,180,140,.12);
+      border: 1px solid rgba(100,180,140,.22);
+      display: grid; place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .ground-sense-num {
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 18px;
+    }
+
+    .ground-disclaimer {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      background: rgba(14,34,57,.22);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    /* ── PASO (STEP) ── */
+
+    /* Barra de progreso */
+    .ground-progress {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .ground-progress-dot {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,.15);
+      flex: 1;
+      max-width: 52px;
+      transition: background .3s ease;
+    }
+    .ground-progress-dot.done   { background: rgba(100,180,140,.75); }
+    .ground-progress-dot.active { background: rgba(100,180,140,.40); outline: 2px solid rgba(100,180,140,.50); outline-offset: 2px; }
+
+    /* Ícono grande del sentido */
+    .ground-step-icon-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .ground-step-icon {
+      width: 64px; height: 64px;
+      border-radius: 18px;
+      background: rgba(100,180,140,.11);
+      border: 1px solid rgba(100,180,140,.20);
+      display: grid; place-items: center;
+      font-size: 30px;
+    }
+    .ground-step-counter {
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* Título del paso */
+    .ground-step-title {
+      font-size: calc(20px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.015em;
+      color: var(--text);
+      margin: 0 0 8px;
+      text-align: center;
+    }
+
+    /* Prompt / guía */
+    .ground-step-prompt {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 18px;
+      text-align: center;
+    }
+
+    /* Textarea */
+    .ground-textarea {
+      width: 100%;
+      min-height: 110px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      line-height: 1.6;
+      padding: 12px 14px;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      transition: border-color .2s;
+    }
+    .ground-textarea::placeholder { color: var(--muted); opacity: .6; }
+    .ground-textarea:focus { border-color: rgba(100,180,140,.45); }
+
+    .ground-field-note {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      margin-bottom: 22px;
+      line-height: 1.45;
+    }
+
+    /* ── RESUMEN / CIERRE ── */
+    .ground-closing-icon {
+      font-size: 48px;
+      display: block;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .ground-closing-msg {
+      font-size: calc(16px * var(--text-scale));
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.65;
+      text-align: center;
+      margin: 0 0 28px;
+    }
+
+    /* Grilla de respuestas */
+    .ground-summary-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .ground-summary-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .ground-summary-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .ground-summary-icon {
+      font-size: 16px;
+    }
+    .ground-summary-label {
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .ground-summary-value {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .ground-summary-value.ground-empty {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Botones ── */
+    .ground-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .ground-btn-primary {
+      display: inline-block;
+      background: var(--blue, #3a7bd5);
+      color: #fff;
+      font-family: inherit;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .ground-btn-primary:hover { opacity: .88; }
+    .ground-btn-primary.ground-full { width: 100%; }
+
+    .ground-btn-ghost {
+      display: inline-block;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .ground-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── Footer mínimo ── */
+    .ground-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0 8px;
+    }
+    .ground-footer-links a {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .ground-footer-links a:hover { color: var(--text); }
+    .ground-legal {
+      text-align: center;
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      padding-bottom: 24px;
+    }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt=""
+               style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button"
+                  aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button"
+                  aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" style="padding-top:28px;padding-bottom:52px;"
+        aria-label="Herramienta Volver al presente">
+
+    <!-- Navegación: volver -->
+    <div style="margin-bottom:20px;">
+      <a class="btn-back" href="emociones.html" data-spa="0"
+         aria-label="Volver a Emociones">← Volver</a>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA A — Intro
+    ══════════════════════════════════════════ -->
+    <div id="ground-intro" role="region" aria-labelledby="ground-intro-heading">
+      <div class="ground-card">
+
+        <h1 class="ground-intro-title" id="ground-intro-heading">Volver al presente</h1>
+        <p class="ground-intro-sub">
+          Una guía simple para salir de la aceleración mental y reconectarte con el aquí y ahora.<br><br>
+          Vas a recorrer cinco preguntas, una por sentido. Tomá el tiempo que necesités en cada una.
+        </p>
+
+        <!-- Vista previa de los 5 pasos -->
+        <ul class="ground-sense-list" aria-label="Los cinco pasos">
+          <li>
+            <span class="ground-sense-num" aria-hidden="true">5</span>
+            <span class="ground-sense-badge" aria-hidden="true">👁️</span>
+            <span>cosas que <strong>ves</strong></span>
+          </li>
+          <li>
+            <span class="ground-sense-num" aria-hidden="true">4</span>
+            <span class="ground-sense-badge" aria-hidden="true">✋</span>
+            <span>cosas que <strong>sentís</strong> con el cuerpo</span>
+          </li>
+          <li>
+            <span class="ground-sense-num" aria-hidden="true">3</span>
+            <span class="ground-sense-badge" aria-hidden="true">👂</span>
+            <span>sonidos que <strong>escuchás</strong></span>
+          </li>
+          <li>
+            <span class="ground-sense-num" aria-hidden="true">2</span>
+            <span class="ground-sense-badge" aria-hidden="true">👃</span>
+            <span>olores que <strong>percibís</strong></span>
+          </li>
+          <li>
+            <span class="ground-sense-num" aria-hidden="true">1</span>
+            <span class="ground-sense-badge" aria-hidden="true">🙏</span>
+            <span>cosa que podés <strong>agradecer o nombrar</strong></span>
+          </li>
+        </ul>
+
+        <!-- Disclaimer -->
+        <p class="ground-disclaimer" role="note">
+          Este recurso no reemplaza una consulta profesional ni está destinado a situaciones de urgencia.
+          Si sentís que podés hacerte daño, que no podés esperar o que estás en riesgo, buscá ayuda
+          inmediata en una guardia, servicio de emergencias o persona de confianza.
+        </p>
+
+        <div class="ground-nav">
+          <button id="ground-btn-start" class="ground-btn-primary ground-full" type="button">
+            Iniciar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA B — Pasos
+    ══════════════════════════════════════════ -->
+    <div id="ground-steps" class="ground-hidden"
+         role="region" aria-labelledby="ground-steps-heading">
+      <div class="ground-card">
+
+        <span class="ground-sr-only" id="ground-steps-heading">Ejercicio de anclaje sensorial</span>
+
+        <!-- Barra de progreso -->
+        <div class="ground-progress" id="ground-progress-bar" aria-hidden="true">
+          <div class="ground-progress-dot active" data-pdot="0"></div>
+          <div class="ground-progress-dot"        data-pdot="1"></div>
+          <div class="ground-progress-dot"        data-pdot="2"></div>
+          <div class="ground-progress-dot"        data-pdot="3"></div>
+          <div class="ground-progress-dot"        data-pdot="4"></div>
+        </div>
+
+        <!-- Ícono + contador -->
+        <div class="ground-step-icon-wrap">
+          <div class="ground-step-icon" id="ground-step-icon" aria-hidden="true">👁️</div>
+          <span class="ground-step-counter" id="ground-step-counter"
+                aria-live="polite" aria-atomic="true">Paso 1 de 5</span>
+        </div>
+
+        <!-- Título del paso -->
+        <h2 class="ground-step-title" id="ground-step-title"
+            aria-live="polite" aria-atomic="true">
+          5 cosas que ves
+        </h2>
+
+        <!-- Guía -->
+        <p class="ground-step-prompt" id="ground-step-prompt"></p>
+
+        <!-- Campo de texto -->
+        <textarea id="ground-textarea"
+                  class="ground-textarea"
+                  rows="4"
+                  placeholder=""
+                  aria-label="Tu respuesta"
+                  aria-describedby="ground-field-note">
+        </textarea>
+        <p class="ground-field-note" id="ground-field-note">
+          Escribí lo que notás. No hay respuestas correctas o incorrectas.
+        </p>
+
+        <!-- Navegación -->
+        <div class="ground-nav">
+          <button id="ground-btn-back" class="ground-btn-ghost ground-hidden" type="button">
+            ← Volver
+          </button>
+          <button id="ground-btn-next" class="ground-btn-primary" type="button">
+            Siguiente
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA C — Cierre
+    ══════════════════════════════════════════ -->
+    <div id="ground-closing" class="ground-hidden"
+         role="region" aria-labelledby="ground-closing-heading">
+      <div class="ground-card">
+
+        <span class="ground-closing-icon" aria-hidden="true">🌿</span>
+        <h2 class="ground-sr-only" id="ground-closing-heading">Ejercicio completado</h2>
+
+        <p class="ground-closing-msg">
+          Volver al presente no elimina el problema, pero puede ayudarte a recuperar
+          estabilidad para afrontarlo mejor.
+        </p>
+
+        <!-- Resumen de respuestas -->
+        <div class="ground-summary-grid" id="ground-summary-grid"
+             aria-label="Resumen de tus respuestas">
+        </div>
+
+        <div class="ground-nav">
+          <button id="ground-btn-restart" class="ground-btn-ghost" type="button">
+            ↺ Reiniciar
+          </button>
+          <a href="emociones.html" data-spa="0" class="ground-btn-ghost">
+            Volver a Emociones
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ===== Footer mínimo ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="ground-footer-links">
+        <a href="emociones.html"   data-spa="0">Emociones</a>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <a href="index.html"       data-spa="0">Inicio</a>
+      </div>
+      <p class="ground-legal">
+        Copyright © <span id="yearNow"></span> Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── UI settings compartidos ── */
+      const store = {
+        get(k, d) {
+          try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
+          catch { return d; }
+        },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+      };
+      let scale = store.get('ui_text_scale', 100);
+      function applyUI() {
+        document.documentElement.style.setProperty('--text-scale', scale + '%');
+        const y = document.getElementById('yearNow');
+        if (y) y.textContent = String(new Date().getFullYear());
+      }
+      document.getElementById('btnAminus')?.addEventListener('click', () => {
+        scale = Math.max(85, scale - 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      document.getElementById('btnAplus')?.addEventListener('click', () => {
+        scale = Math.min(130, scale + 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      applyUI();
+
+
+      /* ══════════════════════════════════════════
+         Definición de pasos — técnica 5-4-3-2-1
+      ══════════════════════════════════════════ */
+      const STEPS = [
+        {
+          num: 5,
+          icon: '👁️',
+          title: '5 cosas que ves',
+          prompt: 'Mirá lentamente a tu alrededor. Nombrá cinco cosas que podés ver ahora mismo, sin buscarlas demasiado.',
+          placeholder: 'Ej: la ventana, una silla, mis manos, el techo, una lámpara…',
+          label: '5 cosas que veo'
+        },
+        {
+          num: 4,
+          icon: '✋',
+          title: '4 cosas que sentís con el cuerpo',
+          prompt: 'Llevá la atención al cuerpo. ¿Qué sensaciones físicas notás? Temperatura, peso, textura, tensión.',
+          placeholder: 'Ej: el peso de mis pies en el piso, el frío del aire, la ropa sobre la piel…',
+          label: '4 cosas que siento'
+        },
+        {
+          num: 3,
+          icon: '👂',
+          title: '3 sonidos que escuchás',
+          prompt: 'Cerrá los ojos si podés. Escuchá con atención. ¿Qué sonidos te llegan, cercanos o lejanos?',
+          placeholder: 'Ej: el tráfico, mi respiración, voces, el viento, el silencio…',
+          label: '3 sonidos que escucho'
+        },
+        {
+          num: 2,
+          icon: '👃',
+          title: '2 olores que percibís',
+          prompt: 'Prestá atención a los olores del ambiente. Aunque sean sutiles o difíciles de describir.',
+          placeholder: 'Ej: el aire del cuarto, algo que comí, un perfume, el exterior…',
+          label: '2 olores que percibo'
+        },
+        {
+          num: 1,
+          icon: '🙏',
+          title: '1 cosa que podés agradecer o nombrar',
+          prompt: 'Elegí una sola cosa. Algo que podés agradecer, saborear, o simplemente reconocer que está.',
+          placeholder: 'Ej: este momento de pausa, estar respirando, una persona, algo pequeño que funcionó hoy…',
+          label: '1 cosa que agradezco'
+        },
+      ];
+
+      /* ── Estado (solo en memoria) ── */
+      let currentStep = 0;
+      const answers   = new Array(STEPS.length).fill('');
+
+      /* ── DOM ── */
+      const elIntro   = document.getElementById('ground-intro');
+      const elSteps   = document.getElementById('ground-steps');
+      const elClosing = document.getElementById('ground-closing');
+
+      const elIcon     = document.getElementById('ground-step-icon');
+      const elCounter  = document.getElementById('ground-step-counter');
+      const elTitle    = document.getElementById('ground-step-title');
+      const elPrompt   = document.getElementById('ground-step-prompt');
+      const elTextarea = document.getElementById('ground-textarea');
+
+      const elSummary  = document.getElementById('ground-summary-grid');
+      const elDots     = document.querySelectorAll('.ground-progress-dot');
+
+      const btnStart   = document.getElementById('ground-btn-start');
+      const btnBack    = document.getElementById('ground-btn-back');
+      const btnNext    = document.getElementById('ground-btn-next');
+      const btnRestart = document.getElementById('ground-btn-restart');
+
+      /* ── Helpers ── */
+      function show(el) { el?.classList.remove('ground-hidden'); }
+      function hide(el) { el?.classList.add('ground-hidden'); }
+
+      function updateDots(idx) {
+        elDots.forEach((dot, i) => {
+          dot.classList.remove('done', 'active');
+          if (i < idx)      dot.classList.add('done');
+          else if (i === idx) dot.classList.add('active');
+        });
+      }
+
+      /* ── Mostrar intro ── */
+      function goIntro() {
+        currentStep = 0;
+        answers.fill('');
+        show(elIntro);
+        hide(elSteps);
+        hide(elClosing);
+      }
+
+      /* ── Mostrar paso ── */
+      function goStep(idx) {
+        currentStep = idx;
+        const s = STEPS[idx];
+
+        // Rellenar UI
+        elIcon.textContent    = s.icon;
+        elCounter.textContent = `Paso ${idx + 1} de ${STEPS.length}`;
+        elTitle.textContent   = s.title;
+        elPrompt.textContent  = s.prompt;
+        elTextarea.placeholder = s.placeholder;
+        elTextarea.value      = answers[idx] || '';
+
+        updateDots(idx);
+
+        // Botón Volver: oculto en paso 0
+        idx === 0 ? hide(btnBack) : show(btnBack);
+
+        // Botón Siguiente vs Finalizar
+        if (idx === STEPS.length - 1) {
+          btnNext.textContent = 'Finalizar';
+        } else {
+          btnNext.textContent = 'Siguiente';
+        }
+
+        hide(elIntro);
+        show(elSteps);
+        hide(elClosing);
+
+        // Foco accesible en el textarea
+        requestAnimationFrame(() => elTextarea.focus());
+      }
+
+      /* ── Mostrar cierre ── */
+      function goClosing() {
+        // Construir resumen
+        elSummary.innerHTML = '';
+        STEPS.forEach((s, i) => {
+          const val   = (answers[i] || '').trim();
+          const isEmpty = val === '';
+
+          const item  = document.createElement('div');
+          item.className = 'ground-summary-item';
+
+          const header = document.createElement('div');
+          header.className = 'ground-summary-header';
+
+          const icon = document.createElement('span');
+          icon.className  = 'ground-summary-icon';
+          icon.textContent = s.icon;
+          icon.setAttribute('aria-hidden', 'true');
+
+          const label = document.createElement('span');
+          label.className = 'ground-summary-label';
+          label.textContent = s.label;
+
+          header.appendChild(icon);
+          header.appendChild(label);
+
+          const value = document.createElement('p');
+          value.className = 'ground-summary-value' + (isEmpty ? ' ground-empty' : '');
+          value.textContent = isEmpty ? '(sin respuesta)' : val;
+
+          item.appendChild(header);
+          item.appendChild(value);
+          elSummary.appendChild(item);
+        });
+
+        hide(elIntro);
+        hide(elSteps);
+        show(elClosing);
+      }
+
+      /* ── Eventos ── */
+      btnStart?.addEventListener('click', () => goStep(0));
+
+      btnBack?.addEventListener('click', () => {
+        answers[currentStep] = elTextarea.value;
+        if (currentStep > 0) goStep(currentStep - 1);
+      });
+
+      btnNext?.addEventListener('click', () => {
+        answers[currentStep] = elTextarea.value;
+        if (currentStep < STEPS.length - 1) {
+          goStep(currentStep + 1);
+        } else {
+          goClosing();
+        }
+      });
+
+      btnRestart?.addEventListener('click', () => goStep(0));
+
+    })();
+  </script>
+
+</body>
+</html>
