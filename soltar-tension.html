@@ -41,10 +41,13 @@
     .relax-card {
       max-width: 520px;
       margin: 0 auto 32px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.93);
+      border: 1px solid rgba(15,23,42,0.12);
       border-radius: 20px;
       padding: 32px 28px;
+      /* FASE 10: redefinir vars de color dentro del card */
+      --text: #0f172a;
+      --muted: #475569;
     }
     @media (max-width: 480px) {
       .relax-card { padding: 24px 18px; border-radius: 16px; }
@@ -300,6 +303,36 @@
       line-height: 1.3;
     }
     .relax-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── FASE 10: ajustes secundarios dentro del card ── */
+    /* Separadores de lista */
+    .relax-zone-list              { border-top-color: rgba(15,23,42,0.10); }
+    .relax-zone-list li           { border-bottom-color: rgba(15,23,42,0.10); }
+    /* Números laterales */
+    .relax-zone-num               { color: #64748b; }
+    /* Disclaimer */
+    .relax-disclaimer {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.12);
+      color: #475569;
+    }
+    /* Barra de progreso inactiva */
+    .relax-progress-seg           { background: rgba(15,23,42,0.13); }
+    /* Botón fantasma */
+    .relax-btn-ghost {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.18);
+      color: #334155;
+    }
+    .relax-btn-ghost:hover        { background: rgba(15,23,42,0.10); }
+    /* Lista de cierre */
+    .relax-done-list              { border-top-color: rgba(15,23,42,0.10); }
+    .relax-done-list li           { border-bottom-color: rgba(15,23,42,0.10); }
+    /* Fichas de instrucción: leve ajuste de borde para card clara */
+    .relax-instruction-card.relax-tense-card   { border-color: rgba(196,122,43,0.28); }
+    .relax-instruction-card.relax-release-card { border-color: rgba(100,180,140,0.28); }
+    .relax-rhythm-note            { color: #64748b; }
+    .relax-closing-msg            { color: #0f172a; }
 
     /* ── Footer mínimo ── */
     .relax-footer-links {

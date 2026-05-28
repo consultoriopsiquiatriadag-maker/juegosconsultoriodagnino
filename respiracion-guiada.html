@@ -44,10 +44,13 @@
     .breath-card {
       max-width: 480px;
       margin: 0 auto 32px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.93);
+      border: 1px solid rgba(15,23,42,0.12);
       border-radius: 20px;
       padding: 32px 28px;
+      /* FASE 10: redefinir vars de color dentro del card */
+      --text: #0f172a;
+      --muted: #475569;
     }
     @media (max-width: 480px) {
       .breath-card { padding: 24px 18px; border-radius: 16px; }
@@ -246,6 +249,28 @@
       line-height: 1.3;
     }
     .breath-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── FASE 10: ajustes secundarios dentro del card ── */
+    /* Separadores de lista → borde oscuro sobre fondo claro */
+    .breath-steps-list            { border-top-color: rgba(15,23,42,0.10); }
+    .breath-steps-list li         { border-bottom-color: rgba(15,23,42,0.10); }
+    /* Disclaimer → fondo claro con borde oscuro */
+    .breath-disclaimer {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.12);
+      color: #475569;
+    }
+    /* Dots de ciclo: fondo inactivo oscuro */
+    .breath-cycle-dot             { background: rgba(15,23,42,0.13); }
+    /* Botón fantasma: legible sobre card blanca */
+    .breath-btn-ghost {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.18);
+      color: #334155;
+    }
+    .breath-btn-ghost:hover       { background: rgba(15,23,42,0.10); }
+    /* Mensaje de cierre */
+    .breath-closing-msg           { color: #0f172a; }
 
     /* ── Footer mínimo ── */
     .breath-footer-links {

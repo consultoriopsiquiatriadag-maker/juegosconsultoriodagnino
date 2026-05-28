@@ -41,10 +41,13 @@
     .ground-card {
       max-width: 520px;
       margin: 0 auto 32px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.93);
+      border: 1px solid rgba(15,23,42,0.12);
       border-radius: 20px;
       padding: 32px 28px;
+      /* FASE 10: redefinir vars de color dentro del card */
+      --text: #0f172a;
+      --muted: #475569;
     }
     @media (max-width: 480px) {
       .ground-card { padding: 24px 18px; border-radius: 16px; }
@@ -297,6 +300,44 @@
       line-height: 1.3;
     }
     .ground-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── FASE 10: ajustes secundarios dentro del card ── */
+    /* Separadores de lista */
+    .ground-sense-list            { border-top-color: rgba(15,23,42,0.10); }
+    .ground-sense-list li         { border-bottom-color: rgba(15,23,42,0.10); }
+    /* Números del índice (5,4,3,2,1): legibles pero no compiten */
+    .ground-sense-num             { color: #64748b; }
+    /* Disclaimer → fondo claro */
+    .ground-disclaimer {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.12);
+      color: #475569;
+    }
+    /* Barra de progreso inactiva */
+    .ground-progress-dot          { background: rgba(15,23,42,0.13); }
+    /* Textarea sobre card blanca */
+    .ground-textarea {
+      background: rgba(255,255,255,0.90);
+      border-color: rgba(15,23,42,0.18);
+      color: #0f172a;
+    }
+    .ground-textarea:focus        { border-color: rgba(100,180,140,0.70); }
+    .ground-textarea::placeholder { color: #94a3b8; opacity: 1; }
+    .ground-field-note            { color: #64748b; }
+    /* Botón fantasma */
+    .ground-btn-ghost {
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.18);
+      color: #334155;
+    }
+    .ground-btn-ghost:hover       { background: rgba(15,23,42,0.10); }
+    /* Resumen */
+    .ground-summary-item {
+      background: rgba(15,23,42,0.04);
+      border-color: rgba(15,23,42,0.10);
+    }
+    .ground-summary-label         { color: #64748b; }
+    .ground-closing-msg           { color: #0f172a; }
 
     /* ── Footer mínimo ── */
     .ground-footer-links {

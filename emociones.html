@@ -118,6 +118,17 @@
       font-style: normal;
     }
 
+    /* ── FASE 10: contraste dentro de tarjetas de recurso ── */
+    /* Fuerza texto legible dentro de cada resource-card independientemente del tema */
+    .resource-card {
+      --text: #0f172a;
+      --muted: #475569;
+      --accent-warm: #b45309;
+    }
+    .resource-card .resource-title { color: #0f172a; }
+    .resource-card .resource-desc  { color: #475569; }
+    .resource-card .calmtools-duration { color: #64748b; }
+
     /* ── Encabezado de sección liviano (sin card envolvente) ── */
     .section-lead {
       margin-bottom: 20px;
