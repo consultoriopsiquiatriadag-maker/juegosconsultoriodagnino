@@ -103,6 +103,21 @@
     /* CTA anclado al fondo de la tarjeta */
     .resource-cta { margin-top: auto; }
 
+    /* ── Duración estimada de cada herramienta (prefijo calmtools-) ── */
+    .calmtools-duration {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .calmtools-duration::before {
+      content: "⏱";
+      font-style: normal;
+    }
+
     /* ── Encabezado de sección liviano (sin card envolvente) ── */
     .section-lead {
       margin-bottom: 20px;
@@ -270,11 +285,11 @@
       por la sección "Herramientas breves" con 5 recursos.
       Foco-3-minutos activo. Los 4 restantes se habilitan en fases sucesivas.
     -->
-    <section class="section" aria-labelledby="herramientas-heading">
+    <section class="section" aria-labelledby="calmtools-heading">
 
       <div class="section-lead">
-        <h2 id="herramientas-heading">Herramientas breves</h2>
-        <p>Ejercicios cortos para momentos puntuales del día. Entre 3 y 10 minutos cada uno.</p>
+        <h2 id="calmtools-heading">Herramientas de calma y foco</h2>
+        <p>Ejercicios breves para momentos puntuales del día. Cada herramienta tiene un objetivo concreto y un tiempo acotado.</p>
       </div>
 
       <div class="grid-resources">
@@ -288,11 +303,12 @@
             Un ejercicio guiado de atención breve para recuperar el foco
             cuando la mente está dispersa o saturada.
           </p>
+          <span class="calmtools-duration">3 min</span>
           <span class="resource-hint">Para momentos de dispersión</span>
           <div class="resource-cta">
             <a class="btn-primary" href="foco-3-minutos.html" data-spa="0"
-               aria-label="Iniciar ejercicio Foco 3 minutos">
-              Iniciar ejercicio
+               aria-label="Abrir herramienta Foco 3 minutos">
+              Abrir herramienta
             </a>
           </div>
         </article>
@@ -305,6 +321,7 @@
           <p class="resource-desc">
             Técnica de respiración estructurada para bajar la activación rápidamente.
           </p>
+          <span class="calmtools-duration">5 min</span>
           <span class="resource-hint">Para momentos de ansiedad</span>
           <div class="resource-cta">
             <span class="badge-soft">Próximamente</span>
@@ -320,6 +337,7 @@
             Ejercicio de anclaje sensorial para salir del espiral de pensamientos
             y conectar con el aquí y ahora.
           </p>
+          <span class="calmtools-duration">5 min</span>
           <span class="resource-hint">Para ansiedad anticipatoria</span>
           <div class="resource-cta">
             <span class="badge-soft">Próximamente</span>
@@ -335,6 +353,7 @@
             Rutina breve de relajación muscular progresiva para liberar
             tensión acumulada en el cuerpo.
           </p>
+          <span class="calmtools-duration">8 min</span>
           <span class="resource-hint">Para tensión física y mental</span>
           <div class="resource-cta">
             <span class="badge-soft">Próximamente</span>
@@ -350,6 +369,7 @@
             Un ritual breve de finalización del día para soltar lo pendiente
             y prepararse para el descanso.
           </p>
+          <span class="calmtools-duration">10 min</span>
           <span class="resource-hint">Para el final del día</span>
           <div class="resource-cta">
             <span class="badge-soft">Próximamente</span>
