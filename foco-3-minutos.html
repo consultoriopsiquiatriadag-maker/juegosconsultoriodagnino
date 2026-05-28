@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Foco 3 minutos — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <title>Foco de 3 minutos — Consultorio Dr. Pedro Nicolas Dagnino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- PWA -->
@@ -18,11 +18,7 @@
   <link rel="stylesheet" href="assets/css/app.css?v=1">
 
   <style>
-    /* ──────────────────────────────────────────────
-       FOCO 3 MINUTOS — estilos de página
-    ────────────────────────────────────────────── */
-
-    /* Fondo institucional (mismo overlay que emociones.html) */
+    /* ── Fondo institucional ── */
     body.has-bg {
       background: url("bg-avion.jpg") center/cover fixed no-repeat;
     }
@@ -30,231 +26,23 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      background: linear-gradient(180deg,
+        rgba(14,34,57,.70),
+        rgba(14,34,57,.42) 45%,
+        rgba(14,34,57,.26));
       pointer-events: none;
       z-index: -1;
     }
 
-    /* ── Layout de la página ── */
-    .page-meta-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: calc(12px * var(--text-scale));
-      font-weight: 600;
-      color: var(--accent-warm);
-      background: var(--accent-warm-soft);
-      border: 1px solid rgba(196,122,43,.22);
-      border-radius: 8px;
-      padding: 5px 10px;
-      margin-bottom: 14px;
-    }
+    /* ══════════════════════════════════════════════
+       FOCUS3 — componentes con prefijo focus3-
+    ══════════════════════════════════════════════ */
 
-    /* ── Card del ejercicio ── */
-    .exercise-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 36px 28px 28px;
-      gap: 0;
-    }
+    /* Ocultar pantalla */
+    .focus3-hidden { display: none !important; }
 
-    /* ── Indicador de fases (puntos) ── */
-    .phase-dots {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 28px;
-    }
-    .phase-dot {
-      width: 28px;
-      height: 6px;
-      border-radius: 3px;
-      background: rgba(14,34,57,.12);
-      transition: background 0.4s ease, width 0.4s ease;
-    }
-    .phase-dot.active {
-      background: var(--blue, #1a6fa8);
-      width: 40px;
-    }
-    .phase-dot.done {
-      background: rgba(26,111,168,.30);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .phase-dot { transition: none; }
-    }
-
-    /* ── Ícono de fase ── */
-    .phase-icon {
-      font-size: 2.2rem;
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-
-    /* ── Nombre de fase ── */
-    .phase-name {
-      font-size: calc(20px * var(--text-scale));
-      font-weight: 700;
-      letter-spacing: -.02em;
-      color: var(--text);
-      margin: 0 0 20px;
-    }
-
-    /* ── Timer con anillo SVG ── */
-    .timer-wrap {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 148px;
-      height: 148px;
-      margin-bottom: 24px;
-      flex-shrink: 0;
-    }
-    .timer-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-      overflow: visible;
-    }
-    .ring-bg {
-      fill: none;
-      stroke: rgba(14,34,57,.10);
-      stroke-width: 8;
-    }
-    .ring-fill {
-      fill: none;
-      stroke: var(--blue, #1a6fa8);
-      stroke-width: 8;
-      stroke-linecap: round;
-      /* circumference de r=54: 2π×54 ≈ 339.29 */
-      stroke-dasharray: 339.29;
-      stroke-dashoffset: 0;
-      transition: stroke-dashoffset 1s linear, stroke 0.6s ease;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .ring-fill { transition: stroke 0.6s ease; }
-    }
-    .timer-text {
-      font-size: calc(30px * var(--text-scale));
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--text);
-      letter-spacing: -.03em;
-    }
-
-    /* ── Instrucciones de fase ── */
-    .phase-instruction {
-      font-size: calc(15px * var(--text-scale));
-      color: var(--text);
-      line-height: 1.7;
-      white-space: pre-line;
-      margin: 0 0 10px;
-      max-width: 42ch;
-    }
-    .phase-sub {
-      font-size: calc(13px * var(--text-scale));
-      color: var(--muted);
-      font-style: italic;
-      margin: 0 0 28px;
-    }
-
-    /* ── Controles del ejercicio ── */
-    .exercise-controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 4px;
-    }
-
-    /* Botón fantasma para acciones secundarias */
-    .btn-ghost-sm {
-      background: transparent;
-      border: 1px solid rgba(14,34,57,.18);
-      color: var(--muted);
-      font-size: calc(13px * var(--text-scale));
-      font-weight: 500;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .btn-ghost-sm:hover,
-    .btn-ghost-sm:focus-visible {
-      background: rgba(14,34,57,.05);
-      border-color: rgba(14,34,57,.30);
-      outline: 2px solid rgba(14,34,57,.25);
-      outline-offset: 2px;
-    }
-
-    /* ── Pantalla de preparación ── */
-    .prereq-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
-      text-align: left;
-      max-width: 38ch;
-    }
-    .prereq-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: calc(14px * var(--text-scale));
-      color: var(--muted);
-      line-height: 1.55;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(14,34,57,.06);
-    }
-    .prereq-list li:last-child { border-bottom: none; }
-    .prereq-list li::before {
-      content: "✓";
-      font-size: 0.8em;
-      font-weight: 700;
-      color: var(--blue, #1a6fa8);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    /* ── Pantalla de cierre ── */
-    .completion-icon {
-      font-size: 3rem;
-      line-height: 1;
-      margin-bottom: 14px;
-      animation: pop 0.5s cubic-bezier(.22,1,.36,1);
-    }
-    @keyframes pop {
-      0%   { transform: scale(0.5); opacity: 0; }
-      70%  { transform: scale(1.12); }
-      100% { transform: scale(1);   opacity: 1; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .completion-icon { animation: none; }
-    }
-
-    .completion-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 24px;
-    }
-
-    /* ── Nota de seguridad ── */
-    .safety-strip {
-      font-size: calc(12px * var(--text-scale));
-      color: var(--muted);
-      text-align: center;
-      max-width: 56ch;
-      margin: 16px auto 0;
-      line-height: 1.5;
-    }
-
-    /* ── Utilidades ── */
-    .hidden { display: none !important; }
-    .sr-only {
+    /* Accesibilidad: solo lectores de pantalla */
+    .focus3-sr-only {
       position: absolute;
       width: 1px; height: 1px;
       padding: 0; margin: -1px;
@@ -263,8 +51,267 @@
       white-space: nowrap;
       border: 0;
     }
-    .text-center { text-align: center; }
-    .w-full { width: 100%; }
+
+    /* ── Card del ejercicio ── */
+    .focus3-card {
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    @media (min-width: 600px) {
+      .focus3-card { padding: 38px 44px; }
+    }
+
+    /* ── Indicador de progreso (puntos) ── */
+    .focus3-progress {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .focus3-progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(14,34,57,.14);
+      transition: background .3s, transform .3s;
+      flex-shrink: 0;
+    }
+    .focus3-progress-dot.active {
+      background: var(--blue, #1a6fa8);
+      transform: scale(1.4);
+    }
+    .focus3-progress-dot.done {
+      background: rgba(26,111,168,.38);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .focus3-progress-dot { transition: none; }
+    }
+
+    /* ── Etiqueta de paso ── */
+    .focus3-step-label {
+      text-align: center;
+      font-size: calc(11px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin: 0;
+    }
+
+    /* ── Pregunta del paso ── */
+    .focus3-question {
+      font-size: calc(19px * var(--text-scale));
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.022em;
+      line-height: 1.3;
+      text-align: center;
+      margin: 0;
+    }
+
+    /* ── Chips de opción ── */
+    .focus3-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .focus3-chip {
+      background: rgba(255,255,255,.78);
+      border: 1.5px solid rgba(14,34,57,.16);
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.2;
+      transition: background .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .focus3-chip:hover {
+      background: rgba(26,111,168,.09);
+      border-color: rgba(26,111,168,.45);
+    }
+    .focus3-chip[aria-pressed="true"] {
+      background: var(--blue, #1a6fa8);
+      border-color: var(--blue, #1a6fa8);
+      color: #fff;
+      font-weight: 600;
+    }
+    .focus3-chip:focus-visible {
+      outline: 2px solid var(--blue, #1a6fa8);
+      outline-offset: 3px;
+    }
+    .focus3-chip:active { transform: scale(.97); }
+    @media (prefers-reduced-motion: reduce) {
+      .focus3-chip { transition: none; }
+      .focus3-chip:active { transform: none; }
+    }
+
+    /* ── Textarea ── */
+    .focus3-textarea {
+      width: 100%;
+      min-height: 112px;
+      border: 1.5px solid rgba(14,34,57,.18);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      background: rgba(255,255,255,.85);
+      resize: vertical;
+      line-height: 1.65;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .focus3-textarea:focus {
+      outline: none;
+      border-color: var(--blue, #1a6fa8);
+      box-shadow: 0 0 0 3px rgba(26,111,168,.15);
+    }
+    .focus3-textarea::placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Nota de campo opcional ── */
+    .focus3-field-note {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      margin: -10px 0 0;
+    }
+
+    /* ── Disclaimer / aviso clínico ── */
+    .focus3-disclaimer {
+      background: rgba(14,34,57,.05);
+      border-left: 3px solid rgba(14,34,57,.22);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Navegación entre pasos ── */
+    .focus3-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    /* Botón fantasma pequeño (Volver, Reiniciar) */
+    .focus3-btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(14,34,57,.18);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .focus3-btn-ghost:hover,
+    .focus3-btn-ghost:focus-visible {
+      background: rgba(14,34,57,.05);
+      border-color: rgba(14,34,57,.32);
+      outline: 2px solid rgba(14,34,57,.22);
+      outline-offset: 2px;
+    }
+
+    /* Botón primario grande (Siguiente, Finalizar, Iniciar) */
+    .focus3-btn-primary {
+      background: var(--blue, #1a6fa8);
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .15s, opacity .15s;
+      line-height: 1.2;
+    }
+    .focus3-btn-primary:hover,
+    .focus3-btn-primary:focus-visible {
+      background: #155d8a;
+      outline: 2px solid var(--blue, #1a6fa8);
+      outline-offset: 2px;
+    }
+    .focus3-btn-primary:disabled,
+    .focus3-btn-primary[aria-disabled="true"] {
+      opacity: .42;
+      cursor: not-allowed;
+    }
+    .focus3-btn-primary.full-width {
+      width: 100%;
+      padding: 14px 28px;
+      font-size: calc(15px * var(--text-scale));
+      border-radius: 12px;
+    }
+
+    /* ── Resumen final ── */
+    .focus3-summary-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .focus3-summary-item {
+      background: rgba(14,34,57,.05);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .focus3-summary-label {
+      font-size: calc(11px * var(--text-scale));
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+    }
+    .focus3-summary-value {
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .focus3-summary-value.focus3-empty {
+      color: var(--muted);
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* ── Mensaje de cierre ── */
+    .focus3-closing {
+      background: var(--accent-warm-soft, #fdf3e3);
+      border: 1px solid rgba(196,122,43,.24);
+      border-radius: 12px;
+      padding: 22px 24px;
+      font-size: calc(15px * var(--text-scale));
+      color: var(--text);
+      line-height: 1.7;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* ── Acciones del resumen ── */
+    .focus3-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   </style>
 </head>
 
@@ -280,7 +327,7 @@
         </div>
         <div class="brand-text">
           <div class="brand-title">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</div>
-          <div class="brand-sub">Sala de Espera Virtual · Foco 3 minutos</div>
+          <div class="brand-sub">Sala de Espera Virtual · Foco de 3 minutos</div>
         </div>
       </div>
 
@@ -301,149 +348,137 @@
   <!-- ===== Main ===== -->
   <main class="wrap" id="main">
 
-    <!-- Encabezado de página -->
-    <section class="section" aria-labelledby="page-title">
-      <span class="page-meta-tag" aria-label="Tipo de recurso">
-        ⏱ Herramienta breve · 3 minutos
-      </span>
-      <h1 id="page-title" class="hero-title" style="margin-bottom:10px">
-        Foco — 3 minutos
-      </h1>
-      <p class="hero-bridge" style="max-width:55ch">
-        Un ejercicio guiado de atención breve. Cuatro fases cortas para recuperar el foco
-        cuando la mente está dispersa, acelerada o saturada.
-      </p>
-      <p class="note" role="note" style="margin-top:14px">
-        Este recurso no reemplaza una consulta. Si estás en crisis o urgencia,
-        utilizá los canales de emergencia locales.
+    <!-- Encabezado de página (siempre visible) -->
+    <section class="section" aria-labelledby="focus3-page-title">
+      <div class="pill">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Herramienta de calma y foco · 3 min</span>
+      </div>
+      <h1 id="focus3-page-title" class="hero-title">Foco de 3 minutos</h1>
+      <p class="hero-bridge" style="max-width:56ch">
+        Una pausa breve para ordenar la mente, bajar la sobrecarga y elegir el próximo paso posible.
       </p>
     </section>
 
 
-    <!-- ═══════════════════════════════════════════
-         PANTALLA A: Preparación (visible al inicio)
-    ════════════════════════════════════════════ -->
-    <section class="section" id="screen-prereq" aria-labelledby="prereq-title">
-      <div class="section-card exercise-card">
+    <!-- ════════════════════════════════════
+         PANTALLA A — Introducción
+    ════════════════════════════════════ -->
+    <section class="section" id="focus3-intro" aria-labelledby="focus3-intro-h">
+      <div class="section-card focus3-card">
 
-        <p class="phase-icon" aria-hidden="true">🪑</p>
-        <h2 id="prereq-title" class="phase-name">Antes de empezar</h2>
+        <h2 id="focus3-intro-h"
+            style="font-size:calc(17px * var(--text-scale)); font-weight:700;
+                   color:var(--text); letter-spacing:-.015em; margin:0">
+          ¿De qué se trata?
+        </h2>
 
-        <ul class="prereq-list" role="list">
-          <li>Buscá un lugar donde puedas estar sin interrupciones por 3 minutos.</li>
-          <li>Podés estar sentado/a, parado/a o recostado/a.</li>
-          <li>No hace falta cerrar los ojos — bajar la mirada también funciona.</li>
-          <li>Si abriste este ejercicio desde el celular, dejá la pantalla encendida.</li>
-        </ul>
+        <p style="font-size:calc(15px * var(--text-scale)); color:var(--muted);
+                  line-height:1.65; margin:0">
+          Cuando la mente se llena de pensamientos, preocupaciones o tareas pendientes,
+          puede ser útil detenerse unos minutos. Este ejercicio no busca resolver todo,
+          sino ayudarte a <strong>recuperar dirección</strong>.
+        </p>
 
-        <button id="btn-start" class="btn-primary w-full"
-                aria-label="Iniciar ejercicio de foco de 3 minutos"
-                style="max-width:260px">
-          ▶ Comenzar ejercicio
+        <div class="focus3-disclaimer" role="note">
+          <strong>Importante:</strong> Este recurso no reemplaza una consulta profesional
+          ni está destinado a situaciones de urgencia. Si sentís que podés hacerte daño,
+          que no podés esperar o que estás en riesgo, buscá ayuda inmediata en una guardia,
+          servicio de emergencias o persona de confianza.
+        </div>
+
+        <button id="focus3-btn-start"
+                class="focus3-btn-primary full-width"
+                aria-label="Iniciar el ejercicio Foco de 3 minutos">
+          Iniciar ejercicio
         </button>
 
-      </div><!-- /exercise-card -->
+      </div>
     </section>
 
 
-    <!-- ═══════════════════════════════════════════
-         PANTALLA B: Ejercicio en curso
-    ════════════════════════════════════════════ -->
-    <section class="section hidden" id="screen-exercise"
-             aria-labelledby="phase-name-el"
+    <!-- ════════════════════════════════════
+         PANTALLA B — Pasos (1 a 4)
+    ════════════════════════════════════ -->
+    <section class="section focus3-hidden" id="focus3-steps"
+             aria-labelledby="focus3-step-title"
              aria-live="polite" aria-atomic="false">
+      <div class="section-card focus3-card">
 
-      <div class="section-card exercise-card">
-
-        <!-- Indicador de fases -->
-        <div class="phase-dots" role="group" aria-label="Progreso del ejercicio">
-          <div class="phase-dot" id="dot-0" aria-hidden="true"></div>
-          <div class="phase-dot" id="dot-1" aria-hidden="true"></div>
-          <div class="phase-dot" id="dot-2" aria-hidden="true"></div>
-          <div class="phase-dot" id="dot-3" aria-hidden="true"></div>
+        <!-- Indicador de progreso -->
+        <div class="focus3-progress" role="group" aria-label="Progreso del ejercicio" aria-hidden="true">
+          <div class="focus3-progress-dot" id="fdot-0"></div>
+          <div class="focus3-progress-dot" id="fdot-1"></div>
+          <div class="focus3-progress-dot" id="fdot-2"></div>
+          <div class="focus3-progress-dot" id="fdot-3"></div>
         </div>
 
-        <!-- Ícono y nombre de fase -->
-        <p class="phase-icon" id="phase-icon" aria-hidden="true">⚓</p>
-        <h2 class="phase-name" id="phase-name-el">Aterrizar</h2>
+        <p class="focus3-step-label" id="focus3-step-label" aria-live="polite">Paso 1 de 4</p>
 
-        <!-- Timer circular -->
-        <div class="timer-wrap"
-             role="timer"
-             aria-label="Tiempo restante en la fase actual"
-             aria-live="off">
-          <svg class="timer-svg"
-               viewBox="0 0 120 120"
-               xmlns="http://www.w3.org/2000/svg"
-               aria-hidden="true">
-            <circle class="ring-bg"   cx="60" cy="60" r="54"/>
-            <circle class="ring-fill" cx="60" cy="60" r="54" id="ring-fill"/>
-          </svg>
-          <span class="timer-text" id="timer-text">0:30</span>
-        </div>
+        <h2 class="focus3-question" id="focus3-step-title"><!-- JS --></h2>
 
-        <!-- Instrucciones -->
-        <p class="phase-instruction" id="phase-instruction"></p>
-        <p class="phase-sub"         id="phase-sub"></p>
+        <!-- Contenido dinámico (chips o textarea) -->
+        <div id="focus3-step-body"></div>
 
-        <!-- Controles -->
-        <div class="exercise-controls" role="group" aria-label="Controles">
-          <button id="btn-pause" class="btn-secondary"
-                  aria-label="Pausar o continuar el ejercicio">
-            ⏸ Pausar
+        <!-- Navegación -->
+        <div class="focus3-nav">
+          <button id="focus3-btn-back"
+                  class="focus3-btn-ghost"
+                  aria-label="Volver al paso anterior">
+            ← Volver
           </button>
-          <button id="btn-reset" class="btn-ghost-sm"
-                  aria-label="Reiniciar desde el comienzo">
-            ↺ Reiniciar
+          <button id="focus3-btn-next"
+                  class="focus3-btn-primary"
+                  aria-label="Ir al siguiente paso">
+            Siguiente
           </button>
         </div>
 
-        <!-- Anuncio para lectores de pantalla -->
-        <p class="sr-only" id="sr-announce"
+        <!-- Anuncio accesible para lectores de pantalla -->
+        <p class="focus3-sr-only" id="focus3-sr"
            aria-live="polite" aria-atomic="true"></p>
 
-      </div><!-- /exercise-card -->
+      </div>
     </section>
 
 
-    <!-- ═══════════════════════════════════════════
-         PANTALLA C: Ejercicio completado
-    ════════════════════════════════════════════ -->
-    <section class="section hidden" id="screen-completion"
-             aria-labelledby="completion-title">
+    <!-- ════════════════════════════════════
+         PANTALLA C — Resumen final
+    ════════════════════════════════════ -->
+    <section class="section focus3-hidden" id="focus3-summary"
+             aria-labelledby="focus3-summary-h">
+      <div class="section-card focus3-card">
 
-      <div class="section-card exercise-card">
+        <h2 id="focus3-summary-h" class="focus3-question" style="text-align:left">
+          Tu resumen
+        </h2>
 
-        <p class="completion-icon" aria-hidden="true">✨</p>
+        <!-- Items de resumen (generados por JS) -->
+        <div class="focus3-summary-grid" id="focus3-summary-body"></div>
 
-        <h2 id="completion-title" class="phase-name">Ejercicio completo</h2>
+        <!-- Mensaje de cierre -->
+        <div class="focus3-closing" role="note">
+          "No necesitás resolver toda tu vida en este momento.
+          Elegí un paso pequeño, posible y suficiente para ahora."
+        </div>
 
-        <p class="hero-bridge" style="max-width:42ch">
-          Tomaste 3 minutos para vos.<br>Eso siempre vale.
-        </p>
-
-        <p class="phase-sub">
-          ¿Notás alguna diferencia respecto a cómo llegaste?
-        </p>
-
-        <div class="completion-actions">
-          <a href="emociones.html" class="btn-ghost-sm" data-spa="0"
-             aria-label="Volver a recursos emocionales">
-            ← Volver
-          </a>
-          <a href="registro-emocional.html" class="btn-primary" data-spa="0"
-             aria-label="Ir al registro emocional para anotar cómo te sentís">
-            Registrar cómo me siento
+        <!-- Botones finales -->
+        <div class="focus3-actions">
+          <button id="focus3-btn-restart"
+                  class="focus3-btn-ghost"
+                  aria-label="Reiniciar el ejercicio desde el comienzo">
+            ↺ Reiniciar
+          </button>
+          <a href="emociones.html"
+             class="focus3-btn-primary"
+             data-spa="0"
+             style="text-decoration:none; display:inline-flex; align-items:center"
+             aria-label="Volver a la página de recursos emocionales">
+            Volver a Emociones
           </a>
         </div>
 
-      </div><!-- /exercise-card -->
-
-      <p class="safety-strip" role="note">
-        Este recurso es orientativo y no reemplaza una consulta médica.<br>
-        No está destinado a situaciones de urgencia o emergencia psiquiátrica.
-      </p>
-
+      </div>
     </section>
 
   </main>
@@ -454,13 +489,13 @@
     <div class="wrap footer-grid">
       <div>
         <div class="footer-links">
-          <a href="emociones.html"    data-spa="0">← Recursos emocionales</a>
-          <a href="aviso-legal.html"  data-spa="0">Aviso legal / Privacidad</a>
-          <a href="index.html"        data-spa="0">Inicio</a>
+          <a href="emociones.html" data-spa="0">← Recursos emocionales</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
+          <a href="index.html" data-spa="0">Inicio</a>
         </div>
       </div>
       <div>
-        <div class="legal" id="legalBlock">
+        <div class="legal">
           Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
           Desarrollado por PETER-SOFT — Año automático.
         </div>
@@ -469,15 +504,17 @@
   </footer>
 
 
-  <!-- ===== JS ===== -->
+  <!-- ═══════════════════════════════════════════
+       JS — todo en memoria, sin localStorage de ejercicio
+  ════════════════════════════════════════════ -->
   <script>
   (function () {
     'use strict';
 
-    /* ─────────────────────────────────────────────
-       1. PERSISTENCIA + CONFIGURACIÓN DE UI
-    ───────────────────────────────────────────── */
-    const store = {
+    /* ────────────────────────────────────────
+       1. CONFIGURACIÓN DE UI (font scale, etc.)
+    ──────────────────────────────────────── */
+    const uiStore = {
       get (k, d) {
         try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
         catch { return d; }
@@ -485,250 +522,300 @@
       set (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
     };
 
-    let scale        = store.get('ui_text_scale',    100);
-    let hiContrast   = store.get('ui_contrast',      false);
-    let reduceMotion = store.get('ui_reduce_motion', false);
-    let lineSpacing  = store.get('ui_line_spacing',  false);
+    let uiScale = uiStore.get('ui_text_scale', 100);
 
     function applyUI () {
-      document.documentElement.style.setProperty('--text-scale', scale + '%');
-      document.documentElement.classList.toggle('hi-contrast',   !!hiContrast);
-      document.documentElement.classList.toggle('reduce-motion', !!reduceMotion);
-      document.documentElement.classList.toggle('line-spacing',  !!lineSpacing);
+      document.documentElement.style.setProperty('--text-scale', uiScale + '%');
+      document.documentElement.classList.toggle('hi-contrast',   !!uiStore.get('ui_contrast', false));
+      document.documentElement.classList.toggle('reduce-motion', !!uiStore.get('ui_reduce_motion', false));
+      document.documentElement.classList.toggle('line-spacing',  !!uiStore.get('ui_line_spacing', false));
       const y = document.getElementById('yearNow');
       if (y) y.textContent = String(new Date().getFullYear());
     }
 
     document.getElementById('btnAminus')?.addEventListener('click', () => {
-      scale = Math.max(85, scale - 5);
-      store.set('ui_text_scale', scale);
+      uiScale = Math.max(85, uiScale - 5);
+      uiStore.set('ui_text_scale', uiScale);
       applyUI();
     });
     document.getElementById('btnAplus')?.addEventListener('click', () => {
-      scale = Math.min(130, scale + 5);
-      store.set('ui_text_scale', scale);
+      uiScale = Math.min(130, uiScale + 5);
+      uiStore.set('ui_text_scale', uiScale);
       applyUI();
     });
 
     applyUI();
 
 
-    /* ─────────────────────────────────────────────
-       2. DEFINICIÓN DE FASES DEL EJERCICIO
-    ───────────────────────────────────────────── */
-    const PHASES = [
+    /* ────────────────────────────────────────
+       2. DEFINICIÓN DE PASOS
+    ──────────────────────────────────────── */
+    const STEPS = [
       {
-        name:        'Aterrizar',
-        icon:        '⚓',
-        duration:    30,
-        ringColor:   '#1a6fa8',   /* azul institucional */
-        instruction: 'Sentate cómodo/a.\nApoyá los pies en el piso si podés.\nCerrá los ojos o bajá la mirada.\nSentí el peso de tu cuerpo en el asiento.',
-        sub:         'Solo estás llegando. No hay nada que hacer todavía.'
+        key:          'emotion',
+        title:        '¿Qué estoy sintiendo?',
+        type:         'chips',
+        options:      ['Ansiedad','Enojo','Tristeza','Cansancio',
+                       'Confusión','Miedo','Culpa','Sobrecarga','Otra'],
+        summaryLabel: 'Emoción'
       },
       {
-        name:        'Observar',
-        icon:        '👁️',
-        duration:    60,
-        ringColor:   '#2e7d52',   /* verde calmo */
-        instruction: '¿Qué está pasando en tu cuerpo ahora mismo?\nNotá tensión, calor, incomodidad, cansancio.\nSolo observá — no necesitás cambiar nada.',
-        sub:         'Cada cosa que notás, la dejás pasar.'
+        key:          'problem',
+        title:        '¿Qué problema concreto aparece?',
+        type:         'textarea',
+        placeholder:  'Escribí brevemente lo que está presente para vos ahora mismo…',
+        summaryLabel: 'Problema concreto'
       },
       {
-        name:        'Enfocar',
-        icon:        '🎯',
-        duration:    60,
-        ringColor:   '#1a6fa8',   /* azul */
-        instruction: 'Elegí UNA cosa en la que poner la atención.\nPuede ser la respiración, un sonido cercano\no una sensación en el cuerpo.\nCuando la mente se vaya, volvés suavemente.',
-        sub:         'No hay que forzar. Solo volver, cada vez.'
+        key:          'control',
+        title:        '¿Qué depende de mí ahora?',
+        type:         'chips',
+        options:      ['Depende de mí','No depende de mí',
+                       'Puedo pedir ayuda','Puedo postergarlo'],
+        summaryLabel: 'Lo que depende de mí'
       },
       {
-        name:        'Cerrar',
-        icon:        '🌅',
-        duration:    30,
-        ringColor:   '#b87334',   /* ámbar cálido */
-        instruction: 'Respirá profundo una vez.\nSoltá despacio.\nCuando estés listo/a, abrí los ojos.',
-        sub:         'Llevás esta calma con vos.'
+        key:          'nextStep',
+        title:        'Próximo paso mínimo',
+        type:         'chips',
+        options:      ['Tomar agua','Respirar un minuto','Enviar un mensaje breve',
+                       'Anotar una tarea','Pedir ayuda','Pausar y retomar después',
+                       'Ordenar un espacio pequeño','Descansar 10 minutos',
+                       'Otra acción posible'],
+        summaryLabel: 'Próximo paso'
       }
     ];
 
-    const CIRCUMFERENCE = 2 * Math.PI * 54; /* ≈ 339.29 */
+
+    /* ────────────────────────────────────────
+       3. ESTADO (solo en memoria de sesión)
+    ──────────────────────────────────────── */
+    let answers = {
+      emotion:  null,
+      problem:  '',
+      control:  null,
+      nextStep: null
+    };
+
+    let currentStep = 0; /* 0-indexed */
 
 
-    /* ─────────────────────────────────────────────
-       3. ESTADO DEL EJERCICIO
-    ───────────────────────────────────────────── */
-    let currentPhase = 0;
-    let timeLeft     = 0;
-    let isPaused     = false;
-    let isRunning    = false;
-    let intervalId   = null;
+    /* ────────────────────────────────────────
+       4. REFS DOM
+    ──────────────────────────────────────── */
+    const screenIntro   = document.getElementById('focus3-intro');
+    const screenSteps   = document.getElementById('focus3-steps');
+    const screenSummary = document.getElementById('focus3-summary');
 
+    const stepLabel     = document.getElementById('focus3-step-label');
+    const stepTitle     = document.getElementById('focus3-step-title');
+    const stepBody      = document.getElementById('focus3-step-body');
+    const summaryBody   = document.getElementById('focus3-summary-body');
+    const srAnnounce    = document.getElementById('focus3-sr');
 
-    /* ─────────────────────────────────────────────
-       4. REFS A DOM
-    ───────────────────────────────────────────── */
-    const screenPrereq     = document.getElementById('screen-prereq');
-    const screenExercise   = document.getElementById('screen-exercise');
-    const screenCompletion = document.getElementById('screen-completion');
-
-    const phaseIconEl      = document.getElementById('phase-icon');
-    const phaseNameEl      = document.getElementById('phase-name-el');
-    const timerTextEl      = document.getElementById('timer-text');
-    const ringFillEl       = document.getElementById('ring-fill');
-    const phaseInstrEl     = document.getElementById('phase-instruction');
-    const phaseSubEl       = document.getElementById('phase-sub');
-    const srAnnounce       = document.getElementById('sr-announce');
-
-    const btnStart         = document.getElementById('btn-start');
-    const btnPause         = document.getElementById('btn-pause');
-    const btnReset         = document.getElementById('btn-reset');
+    const btnStart      = document.getElementById('focus3-btn-start');
+    const btnBack       = document.getElementById('focus3-btn-back');
+    const btnNext       = document.getElementById('focus3-btn-next');
+    const btnRestart    = document.getElementById('focus3-btn-restart');
 
     const dots = [
-      document.getElementById('dot-0'),
-      document.getElementById('dot-1'),
-      document.getElementById('dot-2'),
-      document.getElementById('dot-3')
+      document.getElementById('fdot-0'),
+      document.getElementById('fdot-1'),
+      document.getElementById('fdot-2'),
+      document.getElementById('fdot-3')
     ];
 
 
-    /* ─────────────────────────────────────────────
+    /* ────────────────────────────────────────
        5. UTILIDADES
-    ───────────────────────────────────────────── */
-    function fmtTime (secs) {
-      const m = Math.floor(secs / 60);
-      const s = secs % 60;
-      return m + ':' + (s < 10 ? '0' : '') + s;
-    }
+    ──────────────────────────────────────── */
+    const show = el => el?.classList.remove('focus3-hidden');
+    const hide = el => el?.classList.add('focus3-hidden');
 
     function announce (msg) {
       srAnnounce.textContent = '';
-      /* pequeño delay para que el lector de pantalla detecte el cambio */
       setTimeout(() => { srAnnounce.textContent = msg; }, 60);
-    }
-
-    function updateRing (secsLeft, total) {
-      const frac   = total > 0 ? secsLeft / total : 0;
-      const offset = CIRCUMFERENCE * (1 - frac);
-      ringFillEl.style.strokeDashoffset = offset;
     }
 
     function updateDots (idx) {
       dots.forEach((d, i) => {
         d.classList.remove('active', 'done');
-        if (i < idx)      d.classList.add('done');
+        if      (i < idx)  d.classList.add('done');
         else if (i === idx) d.classList.add('active');
       });
     }
 
+    function refreshNextBtn () {
+      const step      = STEPS[currentStep];
+      const isLast    = currentStep === STEPS.length - 1;
+      let   canMove   = false;
 
-    /* ─────────────────────────────────────────────
-       6. RENDER DE FASE
-    ───────────────────────────────────────────── */
-    function renderPhase (idx) {
-      const p = PHASES[idx];
+      if (step.type === 'chips')    canMove = answers[step.key] !== null;
+      if (step.type === 'textarea') canMove = true;   /* opcional */
 
-      phaseIconEl.textContent      = p.icon;
-      phaseNameEl.textContent      = p.name;
-      phaseInstrEl.textContent     = p.instruction;
-      phaseSubEl.textContent       = p.sub;
-      timerTextEl.textContent      = fmtTime(p.duration);
-      ringFillEl.style.stroke      = p.ringColor;
-      ringFillEl.style.strokeDashoffset = 0;  /* reinicia visualmente */
+      btnNext.disabled = !canMove;
+      btnNext.setAttribute('aria-disabled', canMove ? 'false' : 'true');
+      btnNext.textContent = isLast ? 'Finalizar' : 'Siguiente';
+      btnNext.setAttribute('aria-label',
+        isLast ? 'Finalizar y ver el resumen' : 'Ir al paso siguiente');
+    }
 
+
+    /* ────────────────────────────────────────
+       6. RENDER DE PASO
+    ──────────────────────────────────────── */
+    function renderStep (idx) {
+      const step = STEPS[idx];
+
+      stepLabel.textContent = `Paso ${idx + 1} de ${STEPS.length}`;
+      stepTitle.textContent = step.title;
       updateDots(idx);
-      updateRing(p.duration, p.duration);
+      stepBody.innerHTML = '';
 
-      announce(p.name + '. ' + p.instruction.replace(/\n/g, ' '));
-    }
+      if (step.type === 'chips') {
+        /* ── Opciones en chips ── */
+        const group = document.createElement('div');
+        group.className = 'focus3-chips';
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', step.title);
 
+        step.options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'focus3-chip';
+          btn.textContent = opt;
+          btn.setAttribute('aria-pressed', answers[step.key] === opt ? 'true' : 'false');
 
-    /* ─────────────────────────────────────────────
-       7. CONTROL DEL TIMER
-    ───────────────────────────────────────────── */
-    function startInterval () {
-      if (intervalId) clearInterval(intervalId);
+          btn.addEventListener('click', () => {
+            group.querySelectorAll('.focus3-chip')
+                 .forEach(c => c.setAttribute('aria-pressed', 'false'));
+            btn.setAttribute('aria-pressed', 'true');
+            answers[step.key] = opt;
+            refreshNextBtn();
+          });
 
-      intervalId = setInterval(() => {
-        if (isPaused || !isRunning) return;
+          group.appendChild(btn);
+        });
 
-        timeLeft--;
-        timerTextEl.textContent = fmtTime(timeLeft);
-        updateRing(timeLeft, PHASES[currentPhase].duration);
+        stepBody.appendChild(group);
 
-        if (timeLeft <= 0) {
-          /* pasar a la siguiente fase */
-          currentPhase++;
+      } else if (step.type === 'textarea') {
+        /* ── Campo de texto libre ── */
+        const ta = document.createElement('textarea');
+        ta.className = 'focus3-textarea';
+        ta.placeholder = step.placeholder || '';
+        ta.setAttribute('aria-label', step.title);
+        ta.rows = 4;
+        ta.value = answers[step.key] || '';
 
-          if (currentPhase >= PHASES.length) {
-            /* ejercicio completado */
-            clearInterval(intervalId);
-            intervalId = null;
-            isRunning  = false;
-            screenExercise.classList.add('hidden');
-            screenCompletion.classList.remove('hidden');
-            announce('Ejercicio completado. Tomaste 3 minutos para vos.');
-            return;
-          }
+        ta.addEventListener('input', () => { answers[step.key] = ta.value; });
+        stepBody.appendChild(ta);
 
-          timeLeft = PHASES[currentPhase].duration;
-          renderPhase(currentPhase);
-        }
-      }, 1000);
-    }
-
-
-    /* ─────────────────────────────────────────────
-       8. ACCIONES DE BOTONES
-    ───────────────────────────────────────────── */
-    function doStart () {
-      screenPrereq.classList.add('hidden');
-      screenExercise.classList.remove('hidden');
-      screenCompletion.classList.add('hidden');
-
-      currentPhase = 0;
-      timeLeft     = PHASES[0].duration;
-      isPaused     = false;
-      isRunning    = true;
-
-      renderPhase(0);
-      btnPause.textContent = '⏸ Pausar';
-      btnPause.setAttribute('aria-label', 'Pausar el ejercicio');
-
-      startInterval();
-    }
-
-    function doTogglePause () {
-      isPaused = !isPaused;
-      if (isPaused) {
-        btnPause.textContent = '▶ Continuar';
-        btnPause.setAttribute('aria-label', 'Continuar el ejercicio');
-        announce('Pausado. Presioná Continuar para seguir.');
-      } else {
-        btnPause.textContent = '⏸ Pausar';
-        btnPause.setAttribute('aria-label', 'Pausar el ejercicio');
-        announce('Continuando — ' + PHASES[currentPhase].name + '.');
+        const note = document.createElement('p');
+        note.className = 'focus3-field-note';
+        note.textContent = 'Campo opcional — podés dejarlo en blanco si preferís.';
+        stepBody.appendChild(note);
       }
+
+      /* Botón Volver: primer paso → vuelve al intro */
+      btnBack.textContent = idx === 0 ? '← Inicio' : '← Volver';
+      btnBack.setAttribute('aria-label',
+        idx === 0 ? 'Volver a la introducción' : 'Volver al paso anterior');
+
+      refreshNextBtn();
+      announce(`Paso ${idx + 1} de ${STEPS.length}: ${step.title}`);
     }
 
-    function doReset () {
-      if (intervalId) clearInterval(intervalId);
-      intervalId   = null;
-      isRunning    = false;
-      isPaused     = false;
 
-      screenExercise.classList.add('hidden');
-      screenCompletion.classList.add('hidden');
-      screenPrereq.classList.remove('hidden');
+    /* ────────────────────────────────────────
+       7. RENDER DE RESUMEN
+    ──────────────────────────────────────── */
+    function renderSummary () {
+      summaryBody.innerHTML = '';
 
-      announce('Ejercicio reiniciado.');
+      STEPS.forEach(step => {
+        const raw   = answers[step.key];
+        const empty = !raw || (typeof raw === 'string' && !raw.trim());
+
+        const item  = document.createElement('div');
+        item.className = 'focus3-summary-item';
+
+        const lbl   = document.createElement('span');
+        lbl.className = 'focus3-summary-label';
+        lbl.textContent = step.summaryLabel;
+
+        const val   = document.createElement('span');
+        val.className = 'focus3-summary-value' + (empty ? ' focus3-empty' : '');
+        val.textContent = empty ? '—' : raw;
+
+        item.append(lbl, val);
+        summaryBody.appendChild(item);
+      });
+
+      const ariaMsg = STEPS.map(s => {
+        const v = answers[s.key];
+        return s.summaryLabel + ': ' + (v && String(v).trim() ? v : 'no completado');
+      }).join('. ');
+      announce('Resumen. ' + ariaMsg);
     }
 
-    btnStart?.addEventListener('click', doStart);
-    btnPause?.addEventListener('click', doTogglePause);
-    btnReset?.addEventListener('click', doReset);
 
-    /* Soporte de teclado explícito para Enter y Espacio */
-    [btnStart, btnPause, btnReset].forEach(btn => {
+    /* ────────────────────────────────────────
+       8. NAVEGACIÓN ENTRE PANTALLAS
+    ──────────────────────────────────────── */
+    function goIntro () {
+      hide(screenSteps);
+      hide(screenSummary);
+      show(screenIntro);
+    }
+
+    function goStep (idx) {
+      hide(screenIntro);
+      hide(screenSummary);
+      show(screenSteps);
+      currentStep = idx;
+      renderStep(idx);
+      /* mover el foco al título del paso */
+      stepTitle.setAttribute('tabindex', '-1');
+      stepTitle.focus();
+    }
+
+    function goSummary () {
+      hide(screenSteps);
+      hide(screenIntro);
+      show(screenSummary);
+      renderSummary();
+      document.getElementById('focus3-summary-h')?.focus?.();
+    }
+
+    function resetAll () {
+      answers = { emotion: null, problem: '', control: null, nextStep: null };
+    }
+
+
+    /* ────────────────────────────────────────
+       9. LISTENERS DE BOTONES
+    ──────────────────────────────────────── */
+    btnStart.addEventListener('click', () => goStep(0));
+
+    btnBack.addEventListener('click', () => {
+      if (currentStep === 0) goIntro();
+      else goStep(currentStep - 1);
+    });
+
+    btnNext.addEventListener('click', () => {
+      if (btnNext.disabled) return;
+      if (currentStep < STEPS.length - 1) goStep(currentStep + 1);
+      else goSummary();
+    });
+
+    btnRestart.addEventListener('click', () => {
+      resetAll();
+      goIntro();
+    });
+
+    /* Soporte Enter / Espacio en botones personalizados */
+    [btnStart, btnBack, btnNext, btnRestart].forEach(btn => {
       btn?.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
       });
