@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cierre del día — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS institucional -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <style>
+    /* ── Fondo ── */
+    body.has-bg {
+      background: url("bg-avion.jpg") center/cover fixed no-repeat;
+    }
+    body.has-bg::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(10,18,40,.78), rgba(10,18,40,.52) 45%, rgba(10,18,40,.34));
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ── Utilidades ── */
+    .dayclose-hidden { display: none !important; }
+    .dayclose-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Card central ── */
+    .dayclose-card {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+    @media (max-width: 480px) {
+      .dayclose-card { padding: 24px 18px; border-radius: 16px; }
+    }
+
+    /* ── INTRO ── */
+    .dayclose-intro-title {
+      font-size: calc(22px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+    .dayclose-intro-sub {
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    /* Vista previa pasos */
+    .dayclose-step-preview {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .dayclose-step-preview li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+    }
+    .dayclose-preview-badge {
+      min-width: 40px; height: 40px;
+      border-radius: 12px;
+      background: rgba(130,100,200,.10);
+      border: 1px solid rgba(130,100,200,.20);
+      display: grid; place-items: center;
+      font-size: 19px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .dayclose-preview-num {
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 18px;
+      padding-top: 2px;
+    }
+
+    .dayclose-disclaimer {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      background: rgba(10,18,40,.28);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    /* ── PASOS ── */
+
+    /* Barra de progreso */
+    .dayclose-progress {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 26px;
+    }
+    .dayclose-progress-dot {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,.14);
+      flex: 1;
+      max-width: 56px;
+      transition: background .3s ease;
+    }
+    .dayclose-progress-dot.done   { background: rgba(130,100,200,.75); }
+    .dayclose-progress-dot.active { background: rgba(130,100,200,.42); outline: 2px solid rgba(130,100,200,.48); outline-offset: 2px; }
+
+    /* Ícono + contador */
+    .dayclose-step-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .dayclose-step-icon {
+      width: 64px; height: 64px;
+      border-radius: 18px;
+      background: rgba(130,100,200,.10);
+      border: 1px solid rgba(130,100,200,.20);
+      display: grid; place-items: center;
+      font-size: 30px;
+    }
+    .dayclose-step-counter {
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* Pregunta */
+    .dayclose-question {
+      font-size: calc(19px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.015em;
+      color: var(--text);
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    .dayclose-question-sub {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-align: center;
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+
+    /* Chips */
+    .dayclose-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+    .dayclose-chip {
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.13);
+      color: var(--text);
+      cursor: pointer;
+      transition: background .18s, border-color .18s, transform .12s;
+      line-height: 1.3;
+    }
+    .dayclose-chip:hover {
+      background: rgba(255,255,255,.12);
+    }
+    .dayclose-chip[aria-pressed="true"] {
+      background: rgba(130,100,200,.22);
+      border-color: rgba(130,100,200,.55);
+      color: var(--text);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .dayclose-chip[aria-pressed="true"] { transform: scale(1.03); }
+    }
+
+    /* Textarea */
+    .dayclose-textarea {
+      width: 100%;
+      min-height: 100px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      line-height: 1.6;
+      padding: 12px 14px;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      transition: border-color .2s;
+    }
+    .dayclose-textarea::placeholder { color: var(--muted); opacity: .55; }
+    .dayclose-textarea:focus { border-color: rgba(130,100,200,.45); }
+
+    .dayclose-field-note {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      margin-bottom: 22px;
+      line-height: 1.45;
+    }
+
+    /* ── CIERRE ── */
+    .dayclose-closing-icon {
+      font-size: 52px;
+      display: block;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .dayclose-closing-msg {
+      font-size: calc(16px * var(--text-scale));
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.7;
+      text-align: center;
+      margin: 0 0 28px;
+    }
+
+    /* Grilla resumen */
+    .dayclose-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .dayclose-summary-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .dayclose-summary-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .dayclose-summary-icon {
+      font-size: 15px;
+    }
+    .dayclose-summary-label {
+      font-size: calc(11px * var(--text-scale));
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .dayclose-summary-value {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--text);
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .dayclose-summary-value.dayclose-empty {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Botones ── */
+    .dayclose-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .dayclose-btn-primary {
+      display: inline-block;
+      background: var(--blue, #3a7bd5);
+      color: #fff;
+      font-family: inherit;
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .dayclose-btn-primary:hover { opacity: .88; }
+    .dayclose-btn-primary.dayclose-full { width: 100%; }
+
+    .dayclose-btn-ghost {
+      display: inline-block;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-family: inherit;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .dayclose-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── Footer mínimo ── */
+    .dayclose-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0 8px;
+    }
+    .dayclose-footer-links a {
+      font-size: calc(13px * var(--text-scale));
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .dayclose-footer-links a:hover { color: var(--text); }
+    .dayclose-legal {
+      text-align: center;
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted);
+      padding-bottom: 24px;
+    }
+  </style>
+</head>
+
+<body class="has-bg">
+
+  <!-- ===== Header institucional ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt=""
+               style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button"
+                  aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus"  type="button"
+                  aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===== Main ===== -->
+  <main class="wrap" style="padding-top:28px;padding-bottom:52px;"
+        aria-label="Herramienta Cierre del día">
+
+    <!-- Volver -->
+    <div style="margin-bottom:20px;">
+      <a class="btn-back" href="emociones.html" data-spa="0"
+         aria-label="Volver a Emociones">← Volver</a>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA A — Intro
+    ══════════════════════════════════════════ -->
+    <div id="dayclose-intro" role="region" aria-labelledby="dayclose-intro-heading">
+      <div class="dayclose-card">
+
+        <h1 class="dayclose-intro-title" id="dayclose-intro-heading">Cierre del día</h1>
+        <p class="dayclose-intro-sub">
+          Un momento breve para revisar cómo estuvo tu día, soltar carga
+          y prepararte para descansar.<br><br>
+          Cinco preguntas simples. No hay respuestas correctas.
+          Podés tomarte el tiempo que necesités.
+        </p>
+
+        <!-- Vista previa -->
+        <ul class="dayclose-step-preview" aria-label="Los cinco pasos">
+          <li>
+            <span class="dayclose-preview-num" aria-hidden="true">1</span>
+            <span class="dayclose-preview-badge" aria-hidden="true">🌡️</span>
+            <span>¿Cómo llegás a este momento?</span>
+          </li>
+          <li>
+            <span class="dayclose-preview-num" aria-hidden="true">2</span>
+            <span class="dayclose-preview-badge" aria-hidden="true">🔦</span>
+            <span>Algo que te preocupó hoy</span>
+          </li>
+          <li>
+            <span class="dayclose-preview-num" aria-hidden="true">3</span>
+            <span class="dayclose-preview-badge" aria-hidden="true">✅</span>
+            <span>Algo que pudiste sostener o resolver</span>
+          </li>
+          <li>
+            <span class="dayclose-preview-num" aria-hidden="true">4</span>
+            <span class="dayclose-preview-badge" aria-hidden="true">🌿</span>
+            <span>Algo que querés dejar por hoy</span>
+          </li>
+          <li>
+            <span class="dayclose-preview-num" aria-hidden="true">5</span>
+            <span class="dayclose-preview-badge" aria-hidden="true">🌙</span>
+            <span>Un gesto de cuidado para esta noche</span>
+          </li>
+        </ul>
+
+        <!-- Disclaimer -->
+        <p class="dayclose-disclaimer" role="note">
+          Este recurso no reemplaza una consulta profesional ni está destinado a situaciones de urgencia.
+          Si estás pasando por un momento muy difícil o sentís que no podés esperar, buscá ayuda inmediata
+          en una guardia o persona de confianza.
+        </p>
+
+        <div class="dayclose-nav">
+          <button id="dayclose-btn-start" class="dayclose-btn-primary dayclose-full" type="button">
+            Iniciar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA B — Pasos
+    ══════════════════════════════════════════ -->
+    <div id="dayclose-steps" class="dayclose-hidden"
+         role="region" aria-labelledby="dayclose-steps-heading">
+      <div class="dayclose-card">
+
+        <span class="dayclose-sr-only" id="dayclose-steps-heading">Cierre del día — paso actual</span>
+
+        <!-- Barra de progreso -->
+        <div class="dayclose-progress" aria-hidden="true">
+          <div class="dayclose-progress-dot active" data-pdot="0"></div>
+          <div class="dayclose-progress-dot"        data-pdot="1"></div>
+          <div class="dayclose-progress-dot"        data-pdot="2"></div>
+          <div class="dayclose-progress-dot"        data-pdot="3"></div>
+          <div class="dayclose-progress-dot"        data-pdot="4"></div>
+        </div>
+
+        <!-- Ícono + contador -->
+        <div class="dayclose-step-header">
+          <div class="dayclose-step-icon" id="dayclose-step-icon" aria-hidden="true">🌡️</div>
+          <span class="dayclose-step-counter" id="dayclose-step-counter"
+                aria-live="polite" aria-atomic="true">Paso 1 de 5</span>
+        </div>
+
+        <!-- Pregunta -->
+        <h2 class="dayclose-question" id="dayclose-question"
+            aria-live="polite" aria-atomic="true" tabindex="-1">
+          ¿Cómo llegás a este momento?
+        </h2>
+        <p class="dayclose-question-sub" id="dayclose-question-sub"></p>
+
+        <!-- Área de respuesta dinámica -->
+        <div id="dayclose-answer-area"></div>
+
+        <!-- Navegación -->
+        <div class="dayclose-nav">
+          <button id="dayclose-btn-back" class="dayclose-btn-ghost dayclose-hidden" type="button">
+            ← Volver
+          </button>
+          <button id="dayclose-btn-next" class="dayclose-btn-primary" type="button">
+            Siguiente
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         PANTALLA C — Cierre
+    ══════════════════════════════════════════ -->
+    <div id="dayclose-closing" class="dayclose-hidden"
+         role="region" aria-labelledby="dayclose-closing-heading">
+      <div class="dayclose-card" style="text-align:center;">
+
+        <span class="dayclose-closing-icon" aria-hidden="true">🌙</span>
+        <h2 class="dayclose-sr-only" id="dayclose-closing-heading">Cierre completado</h2>
+
+        <p class="dayclose-closing-msg">
+          Hoy no tiene que quedar todo resuelto.<br>
+          A veces descansar también es una forma de cuidar la mente.
+        </p>
+
+        <!-- Resumen -->
+        <div class="dayclose-summary" id="dayclose-summary"
+             aria-label="Resumen del cierre" style="text-align:left;">
+        </div>
+
+        <div class="dayclose-nav">
+          <button id="dayclose-btn-restart" class="dayclose-btn-ghost" type="button">
+            ↺ Reiniciar
+          </button>
+          <a href="emociones.html" data-spa="0" class="dayclose-btn-ghost">
+            Volver a Emociones
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ===== Footer mínimo ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="dayclose-footer-links">
+        <a href="emociones.html"   data-spa="0">Emociones</a>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <a href="index.html"       data-spa="0">Inicio</a>
+      </div>
+      <p class="dayclose-legal">
+        Copyright © <span id="yearNow"></span> Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── UI settings compartidos ── */
+      const store = {
+        get(k, d) {
+          try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }
+          catch { return d; }
+        },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+      };
+      let scale = store.get('ui_text_scale', 100);
+      function applyUI() {
+        document.documentElement.style.setProperty('--text-scale', scale + '%');
+        const y = document.getElementById('yearNow');
+        if (y) y.textContent = String(new Date().getFullYear());
+      }
+      document.getElementById('btnAminus')?.addEventListener('click', () => {
+        scale = Math.max(85, scale - 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      document.getElementById('btnAplus')?.addEventListener('click', () => {
+        scale = Math.min(130, scale + 5); store.set('ui_text_scale', scale); applyUI();
+      });
+      applyUI();
+
+
+      /* ══════════════════════════════════════════
+         Definición de pasos
+      ══════════════════════════════════════════ */
+      const STEPS = [
+        {
+          icon:  '🌡️',
+          question: '¿Cómo llegás a este momento?',
+          sub:      'Elegí la opción que mejor describe cómo estás ahora mismo.',
+          type:     'chips',
+          options:  ['Cansado/a', 'Aliviado/a', 'Tenso/a', 'Bien', 'Confuso/a',
+                     'Sobrecargado/a', 'Tranquilo/a', 'Triste', 'Otra'],
+          label:    'Cómo llegué'
+        },
+        {
+          icon:  '🔦',
+          question: 'Algo que te preocupó hoy',
+          sub:      'No tiene que ser un problema grande. Lo que sea que quedó dando vueltas.',
+          type:     'textarea',
+          placeholder: 'Escribí brevemente qué te ocupó o preocupó durante el día…',
+          label:    'Lo que me preocupó'
+        },
+        {
+          icon:  '✅',
+          question: 'Algo que pudiste sostener o resolver',
+          sub:      'Una tarea, una conversación, un momento. Lo que fuera que salió.',
+          type:     'textarea',
+          placeholder: 'Algo que hiciste, soportaste o que simplemente pasó bien…',
+          label:    'Lo que sostuve'
+        },
+        {
+          icon:  '🌿',
+          question: 'Algo que querés dejar por hoy',
+          sub:      'Una preocupación, una tarea pendiente, una conversación. Podés nombrarlo y soltarlo.',
+          type:     'textarea',
+          placeholder: 'Algo que no necesitás seguir cargando esta noche…',
+          label:    'Lo que dejo por hoy'
+        },
+        {
+          icon:  '🌙',
+          question: 'Un gesto de cuidado para esta noche',
+          sub:      'Elegí algo concreto y posible que puedas hacer ahora o antes de dormir.',
+          type:     'chips',
+          options:  ['Respirar', 'Tomar agua', 'Apagar pantallas', 'Escuchar algo tranquilo',
+                     'Acostarme', 'Hablar con alguien', 'Agradecer algo pequeño'],
+          label:    'Mi gesto de esta noche'
+        },
+      ];
+
+      /* ── Estado (solo memoria) ── */
+      let currentStep = 0;
+      const answers   = STEPS.map(() => null); // null | string | string[]
+
+      /* ── DOM fijo ── */
+      const elIntro       = document.getElementById('dayclose-intro');
+      const elStepsScreen = document.getElementById('dayclose-steps');
+      const elClosing     = document.getElementById('dayclose-closing');
+      const elIcon        = document.getElementById('dayclose-step-icon');
+      const elCounter     = document.getElementById('dayclose-step-counter');
+      const elQuestion    = document.getElementById('dayclose-question');
+      const elQuestionSub = document.getElementById('dayclose-question-sub');
+      const elAnswerArea  = document.getElementById('dayclose-answer-area');
+      const elSummary     = document.getElementById('dayclose-summary');
+      const elDots        = document.querySelectorAll('.dayclose-progress-dot');
+
+      const btnStart   = document.getElementById('dayclose-btn-start');
+      const btnBack    = document.getElementById('dayclose-btn-back');
+      const btnNext    = document.getElementById('dayclose-btn-next');
+      const btnRestart = document.getElementById('dayclose-btn-restart');
+
+      /* ── Helpers ── */
+      function show(el) { el?.classList.remove('dayclose-hidden'); }
+      function hide(el) { el?.classList.add('dayclose-hidden'); }
+
+      function updateDots(idx) {
+        elDots.forEach((dot, i) => {
+          dot.classList.remove('done', 'active');
+          if (i < idx)       dot.classList.add('done');
+          else if (i === idx) dot.classList.add('active');
+        });
+      }
+
+      /* ── Leer respuesta del área actual antes de navegar ── */
+      function readCurrentAnswer() {
+        const s = STEPS[currentStep];
+        if (s.type === 'textarea') {
+          const ta = elAnswerArea.querySelector('.dayclose-textarea');
+          answers[currentStep] = ta ? ta.value : '';
+        }
+        // chips: answers[currentStep] se actualiza al hacer clic, no hay que leer nada aquí
+      }
+
+      /* ── Renderizar área de respuesta ── */
+      function renderAnswerArea(step, savedAnswer) {
+        const s = STEPS[step];
+        elAnswerArea.innerHTML = '';
+
+        if (s.type === 'chips') {
+          const group = document.createElement('div');
+          group.className = 'dayclose-chips';
+          group.setAttribute('role', 'group');
+          group.setAttribute('aria-label', 'Opciones');
+
+          s.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'dayclose-chip';
+            btn.textContent = opt;
+            const isSelected = savedAnswer === opt;
+            btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+
+            btn.addEventListener('click', () => {
+              // Toggle: deseleccionar si ya estaba seleccionado
+              const wasSelected = btn.getAttribute('aria-pressed') === 'true';
+              // Limpiar todos
+              group.querySelectorAll('.dayclose-chip').forEach(c => {
+                c.setAttribute('aria-pressed', 'false');
+              });
+              if (!wasSelected) {
+                btn.setAttribute('aria-pressed', 'true');
+                answers[currentStep] = opt;
+              } else {
+                answers[currentStep] = null;
+              }
+            });
+
+            group.appendChild(btn);
+          });
+
+          elAnswerArea.appendChild(group);
+          // Separador inferior
+          const spacer = document.createElement('div');
+          spacer.style.height = '14px';
+          elAnswerArea.appendChild(spacer);
+
+        } else {
+          // textarea
+          const ta = document.createElement('textarea');
+          ta.className     = 'dayclose-textarea';
+          ta.rows          = 4;
+          ta.placeholder   = s.placeholder || '';
+          ta.value         = savedAnswer || '';
+          ta.setAttribute('aria-label', s.question);
+          ta.setAttribute('aria-describedby', 'dayclose-field-note');
+
+          const note = document.createElement('p');
+          note.className   = 'dayclose-field-note';
+          note.id          = 'dayclose-field-note';
+          note.textContent = 'Podés escribir una palabra, una frase o lo que salga. No hay respuesta incorrecta.';
+
+          elAnswerArea.appendChild(ta);
+          elAnswerArea.appendChild(note);
+        }
+      }
+
+      /* ── Ir a un paso ── */
+      function goStep(idx) {
+        currentStep = idx;
+        const s = STEPS[idx];
+
+        elIcon.textContent        = s.icon;
+        elCounter.textContent     = `Paso ${idx + 1} de ${STEPS.length}`;
+        elQuestion.textContent    = s.question;
+        elQuestionSub.textContent = s.sub || '';
+
+        renderAnswerArea(idx, answers[idx]);
+        updateDots(idx);
+
+        idx === 0 ? hide(btnBack) : show(btnBack);
+        btnNext.textContent = idx === STEPS.length - 1 ? 'Finalizar' : 'Siguiente';
+
+        hide(elIntro);
+        show(elStepsScreen);
+        hide(elClosing);
+
+        // Foco accesible en la pregunta
+        requestAnimationFrame(() => {
+          elQuestion.focus();
+          // En textarea, mover foco al campo
+          const ta = elAnswerArea.querySelector('.dayclose-textarea');
+          if (ta) ta.focus();
+        });
+      }
+
+      /* ── Pantalla de cierre ── */
+      function goClosing() {
+        elSummary.innerHTML = '';
+        STEPS.forEach((s, i) => {
+          const raw     = answers[i];
+          const val     = (raw === null || raw === undefined) ? '' : String(raw).trim();
+          const isEmpty = val === '';
+
+          const item = document.createElement('div');
+          item.className = 'dayclose-summary-item';
+
+          const head = document.createElement('div');
+          head.className = 'dayclose-summary-head';
+
+          const icon = document.createElement('span');
+          icon.className   = 'dayclose-summary-icon';
+          icon.textContent  = s.icon;
+          icon.setAttribute('aria-hidden', 'true');
+
+          const label = document.createElement('span');
+          label.className   = 'dayclose-summary-label';
+          label.textContent  = s.label;
+
+          head.appendChild(icon);
+          head.appendChild(label);
+
+          const value = document.createElement('p');
+          value.className   = 'dayclose-summary-value' + (isEmpty ? ' dayclose-empty' : '');
+          value.textContent  = isEmpty ? '(sin respuesta)' : val;
+
+          item.appendChild(head);
+          item.appendChild(value);
+          elSummary.appendChild(item);
+        });
+
+        hide(elIntro);
+        hide(elStepsScreen);
+        show(elClosing);
+      }
+
+      /* ── Botones ── */
+      btnStart?.addEventListener('click', () => goStep(0));
+
+      btnBack?.addEventListener('click', () => {
+        readCurrentAnswer();
+        if (currentStep > 0) goStep(currentStep - 1);
+      });
+
+      btnNext?.addEventListener('click', () => {
+        readCurrentAnswer();
+        if (currentStep < STEPS.length - 1) {
+          goStep(currentStep + 1);
+        } else {
+          goClosing();
+        }
+      });
+
+      btnRestart?.addEventListener('click', () => {
+        answers.fill(null);
+        goStep(0);
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
