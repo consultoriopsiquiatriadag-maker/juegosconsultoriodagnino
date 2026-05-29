@@ -1,0 +1,142 @@
+/*
+  tools-contrast.css
+  Contraste y legibilidad para el módulo "Herramientas de calma y foco"
+  Cargado después de app.css en: foco-3-minutos, respiracion-guiada,
+  volver-al-presente, soltar-tension, cierre-del-dia, emociones.
+*/
+
+:root {
+  --text-main:   #0f172a;
+  --text-muted:  #334155;
+  --text-soft:   #475569;
+  --card-bg:     rgba(255, 255, 255, 0.92);
+  --card-border: rgba(15, 23, 42, 0.12);
+}
+
+/* ── Fondo y borde de todas las cards del módulo ── */
+.card,
+.focus3-card,
+.ground-card,
+.breath-card,
+.relax-card,
+.dayclose-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+}
+
+/* ── Títulos ── */
+.card h1,
+.card h2,
+.card h3,
+.focus3-card h1,
+.focus3-card h2,
+.focus3-card h3,
+.ground-card h1,
+.ground-card h2,
+.ground-card h3,
+.breath-card h1,
+.breath-card h2,
+.breath-card h3,
+.relax-card h1,
+.relax-card h2,
+.relax-card h3,
+.dayclose-card h1,
+.dayclose-card h2,
+.dayclose-card h3 {
+  color: var(--text-main);
+}
+
+/* ── Párrafos ── */
+.card p,
+.focus3-card p,
+.ground-card p,
+.breath-card p,
+.relax-card p,
+.dayclose-card p {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+/* ── Textos secundarios y etiquetas ── */
+.card small,
+.card .muted,
+.focus3-muted,
+.ground-muted,
+.breath-muted,
+.relax-muted,
+.dayclose-muted {
+  color: var(--text-soft);
+  opacity: 1;
+}
+
+/* ── Contenido de pasos (texto principal) ── */
+.ground-step,
+.focus3-step,
+.breath-step,
+.relax-step,
+.dayclose-step {
+  color: var(--text-main);
+}
+
+/* ── Numeración de pasos (visible pero no dominante) ── */
+.ground-step-number,
+.focus3-step-number {
+  color: #475569;
+  font-weight: 700;
+}
+
+/* ── Clases de texto ya existentes: asegurar color oscuro ── */
+.focus3-question,
+.focus3-step-label,
+.focus3-summary-label,
+.focus3-summary-value,
+.focus3-field-note,
+.focus3-closing           { color: var(--text-main); }
+
+.breath-intro-title,
+.breath-phase-label       { color: var(--text-main); }
+.breath-intro-sub,
+.breath-countdown,
+.breath-cycles            { color: var(--text-muted); }
+
+.ground-intro-title,
+.ground-step-title        { color: var(--text-main); }
+.ground-intro-sub,
+.ground-step-prompt,
+.ground-step-counter,
+.ground-sense-num,
+.ground-field-note        { color: var(--text-muted); }
+
+.relax-intro-title,
+.relax-step-title         { color: var(--text-main); }
+.relax-intro-sub,
+.relax-step-counter,
+.relax-zone-num,
+.relax-rhythm-note,
+.relax-instruction-text   { color: var(--text-muted); }
+
+.dayclose-intro-title,
+.dayclose-question        { color: var(--text-main); }
+.dayclose-intro-sub,
+.dayclose-question-sub,
+.dayclose-step-counter,
+.dayclose-preview-num,
+.dayclose-field-note,
+.dayclose-summary-label   { color: var(--text-muted); }
+
+/* ── Garantizar que botones fantasma sean legibles ── */
+.focus3-btn-ghost,
+.breath-btn-ghost,
+.ground-btn-ghost,
+.relax-btn-ghost,
+.dayclose-btn-ghost {
+  color: var(--text-muted);
+  border-color: var(--card-border);
+}
+
+/* ── Resource cards en emociones.html ── */
+.resource-card            { color: var(--text-main); }
+.resource-card .resource-title    { color: var(--text-main); }
+.resource-card .resource-desc     { color: var(--text-muted); }
+.resource-card .calmtools-duration { color: var(--text-soft); }
