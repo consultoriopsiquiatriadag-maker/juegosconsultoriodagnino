@@ -125,6 +125,15 @@
 .dayclose-field-note,
 .dayclose-summary-label   { color: var(--text-muted); }
 
+/* ── Placeholders: color sólido, sin opacity baja ── */
+/*    Aplica a todos los textarea del módulo.          */
+.focus3-textarea::placeholder,
+.ground-textarea::placeholder,
+.dayclose-textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
 /* ── Garantizar que botones fantasma sean legibles ── */
 .focus3-btn-ghost,
 .breath-btn-ghost,
