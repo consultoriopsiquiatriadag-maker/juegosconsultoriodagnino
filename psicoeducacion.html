@@ -306,6 +306,130 @@
       .psico-card-label  { font-size: calc(16px * var(--text-scale)); }
       .psico-card-micro  { font-size: calc(13px * var(--text-scale)); }
     }
+
+    /* ══════════════════════════════════════════════
+       FASE 5 — Pulido móvil, contraste y accesibilidad
+    ══════════════════════════════════════════════ */
+
+    /* 1. Prevenir scroll horizontal en cualquier ancho */
+    body { overflow-x: hidden; }
+
+    /* 2. Mejor contraste: subir opacidad de cards del selector */
+    .psico-selector-card {
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.22);
+    }
+    .psico-selector-card:hover {
+      background: rgba(255,255,255,.20);
+      border-color: rgba(255,255,255,.38);
+    }
+
+    /* 3. Mejor contraste: subir opacidad de zócalos */
+    .psico-zocalo-card {
+      background: rgba(255,255,255,.11);
+      border-color: rgba(255,255,255,.20);
+    }
+    .psico-zocalo-card:hover {
+      background: rgba(255,255,255,.17);
+      border-color: rgba(255,255,255,.34);
+    }
+
+    /* 4. Microtexto mínimo 13px — legible sin esfuerzo */
+    .psico-card-micro {
+      font-size: calc(13px * var(--text-scale));
+      color: rgba(255,255,255,.82);  /* más claro que el .65 original */
+    }
+
+    /* 5. Badges de beneficio: texto más visible */
+    .psico-zocalo-badge {
+      font-size: calc(13px * var(--text-scale));
+      color: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+      padding: 6px 12px;    /* sube padding para mejor legibilidad */
+    }
+
+    /* 6. Chips de zócalos: min-height táctil ~36px */
+    .psico-zocalo-chip {
+      font-size: calc(13px * var(--text-scale));
+      padding: 8px 14px;    /* de 6px→8px para alcanzar ~36px de alto */
+      min-height: 36px;
+    }
+
+    /* 7. focus-visible en chip-link (faltaba) */
+    .chip-link:focus-visible {
+      outline: 2px solid rgba(255,255,255,.75);
+      outline-offset: 2px;
+    }
+
+    /* 8. CTA de zócalos: mínimo 48px de alto (WCAG 2.5.8) */
+    .psico-zocalo-cta a {
+      padding: 15px 16px;   /* 15+15+18 de línea ≈ 48px */
+      font-size: calc(15px * var(--text-scale));
+    }
+
+    /* 9. Botones de acceso del aside: min-height 52px ya estaba; reforzar focus */
+    .psico-access-btn:focus-visible {
+      outline: 2px solid rgba(255,255,255,.80);
+      outline-offset: 2px;
+    }
+
+    /* 10. Ajustes ≤ 640px — rango no cubierto antes */
+    @media (max-width: 640px) {
+      /* Selector: colapsar a 1 col antes de los 420px habitual
+         para evitar chips apretados en 375-420px */
+      .psico-selector-grid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+      }
+      .psico-selector-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        min-height: 64px;
+        padding: 14px 16px;
+      }
+      .psico-card-emoji { font-size: 28px; }
+      .psico-card-label  { font-size: calc(16px * var(--text-scale)); }
+
+      /* Accesos del aside: 1 col en teléfono */
+      .psico-access-grid { grid-template-columns: 1fr; }
+
+      /* Zócalos: padding más holgado en móvil */
+      .psico-zocalo-card { padding: 22px 18px 20px; }
+    }
+
+    /* 11. Ajustes ≤ 480px — teléfonos pequeños */
+    @media (max-width: 480px) {
+      /* Selector rápido: título y subtítulo más grandes */
+      #psico-selector-heading {
+        font-size: calc(19px * var(--text-scale));
+      }
+
+      /* Título de cada zócalo un toque mayor en móvil */
+      .psico-zocalo-title {
+        font-size: calc(17px * var(--text-scale));
+      }
+
+      /* Chips del zócalo de ejercicios: más separados */
+      .psico-zocalo-chips { gap: 8px; }
+
+      /* Badges: no wrappear de forma rara en pantallas estrechas */
+      .psico-zocalo-badges { gap: 8px; }
+      .psico-zocalo-badge  { white-space: nowrap; }
+    }
+
+    /* 12. Interlineado general mínimo para párrafos dentro de cards */
+    .psico-zocalo-desc,
+    .psico-card-micro,
+    .card-sub { line-height: 1.65; }
+
+    /* 13. Focus-visible para el summary del bloque de riesgo */
+    details summary:focus-visible {
+      outline: 2px solid rgba(255,255,255,.75);
+      outline-offset: 4px;
+    }
+
   </style>
 </head>
 
@@ -573,7 +697,11 @@
   <!-- Riesgo -->
   <section class="section" aria-label="Si estás en riesgo">
     <details class="section-card hint-bg">
-      <summary class="card-title" style="cursor:pointer; margin:0">⚠️ Si estás en riesgo, tocá acá</summary>
+      <summary class="card-title"
+               style="cursor:pointer; margin:0; padding:4px 0; border-radius:6px;"
+               aria-label="Expandir información de riesgo">
+        ⚠️ Si estás en riesgo, tocá acá
+      </summary>
       <div class="card-sub" style="margin-top:10px">
         <p style="margin-top:0">
           Si hay ideas de autolesión, violencia, consumo fuera de control o sentís que no podés sostenerte,
