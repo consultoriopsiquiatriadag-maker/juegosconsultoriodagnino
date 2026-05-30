@@ -2,9 +2,9 @@
 <html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
-  <title>Psicoeducación — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <title>Psicoeducacion &#x2014; Consultorio Dr. Pedro Nicolas Dagnino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Hub de psicoeducación: ejercicios breves para ansiedad, pánico, rumiación y sueño; semáforo de impulsividad/ira; rutina en silla con audio guiado." />
+  <meta name="description" content="Hub de psicoeducacion: ejercicios breves para ansiedad, panico, rumiacion y sueno; semaforo de impulsividad/ira; rutina en silla con audio guiado." />
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -20,16 +20,15 @@
 
   <style>
     /*
-    ╔══════════════════════════════════════════════════════════════╗
-    ║  psicoeducacion.html — estilos locales                       ║
-    ║  Requiere: assets/css/app.css · bg-avion.jpg · logo-avion.png║
-    ╚══════════════════════════════════════════════════════════════╝
+    ==================================================================
+      psicoeducacion.html -- estilos locales
+      Requiere: assets/css/app.css  bg-avion.jpg  logo-avion.png
+    ==================================================================
     */
 
-    /* ── 0. Base ── */
+    /* -- 0. Base -------------------------------------------------- */
     body { overflow-x: hidden; }
 
-    /* Fondo institucional con avión + overlay de contraste */
     body.has-bg {
       background: url("bg-avion.jpg") center/cover fixed no-repeat;
     }
@@ -55,9 +54,9 @@
     }
 
 
-    /* ══════════════════════════════════════════════════
-       Psicoeducación: hero — accesos rápidos del aside
-    ══════════════════════════════════════════════════ */
+    /* ==================================================================
+       Psicoeducacion: hero -- accesos rapidos del aside
+    ================================================================== */
 
     .psico-access-grid {
       display: grid;
@@ -87,11 +86,10 @@
     .psico-access-btn:focus-visible { outline: 2px solid rgba(255,255,255,.80); outline-offset: 2px; }
 
 
-    /* ══════════════════════════════════════════════════
-       Psicoeducación: selector rápido
-    ══════════════════════════════════════════════════ */
+    /* ==================================================================
+       Psicoeducacion: selector rapido
+    ================================================================== */
 
-    /* Grid: 3 cols → 2 cols → 1 col (se ajusta en la sección móvil) */
     .psico-selector-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -99,7 +97,6 @@
       margin-top: 20px;
     }
 
-    /* Tarjeta del selector */
     .psico-selector-card {
       display: flex;
       flex-direction: column;
@@ -107,7 +104,7 @@
       gap: 6px;
       padding: 16px 16px 14px;
       border-radius: 14px;
-      background: rgba(255,255,255,.12);     /* contraste mejorado */
+      background: rgba(255,255,255,.12);
       border: 1px solid rgba(255,255,255,.22);
       text-decoration: none;
       color: inherit;
@@ -128,41 +125,41 @@
       letter-spacing: -.01em;
     }
     .psico-card-micro {
-      font-size: calc(13px * var(--text-scale));   /* mínimo 13px */
+      font-size: calc(13px * var(--text-scale));
       color: rgba(255,255,255,.82);
       line-height: 1.65;
       font-weight: 400;
     }
 
 
-    /* ══════════════════════════════════════════════════
-       Psicoeducación: cards de recursos (zócalos)
-    ══════════════════════════════════════════════════ */
+    /* ==================================================================
+       Psicoeducacion: cards de recursos (zocalos)
+    ================================================================== */
 
-    /* Grid de 3 zócalos — colapsa en la sección móvil */
     .psico-zocalo-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
-    /* Card individual */
     .psico-zocalo-card {
       display: flex;
       flex-direction: column;
-      background: rgba(255,255,255,.11);     /* contraste mejorado */
+      background: rgba(255,255,255,.11);
       border: 1px solid rgba(255,255,255,.20);
       border-radius: 20px;
       padding: 26px 22px 22px;
       box-shadow: 0 4px 24px rgba(0,0,0,.18);
       transition: box-shadow .2s, background .2s;
     }
-    .psico-zocalo-card:hover { background: rgba(255,255,255,.17); border-color: rgba(255,255,255,.34); box-shadow: 0 6px 32px rgba(0,0,0,.26); }
+    .psico-zocalo-card:hover {
+      background: rgba(255,255,255,.17);
+      border-color: rgba(255,255,255,.34);
+      box-shadow: 0 6px 32px rgba(0,0,0,.26);
+    }
 
-    /* Ícono */
     .psico-zocalo-icon  { font-size: 36px; line-height: 1; margin-bottom: 14px; }
 
-    /* Título */
     .psico-zocalo-title {
       font-size: calc(18px * var(--text-scale));
       font-weight: 700;
@@ -172,7 +169,6 @@
       margin: 0 0 10px;
     }
 
-    /* Descripción — flex:1 empuja CTA al fondo */
     .psico-zocalo-desc {
       font-size: calc(14px * var(--text-scale));
       color: var(--muted, rgba(255,255,255,.82));
@@ -181,7 +177,6 @@
       flex: 1;
     }
 
-    /* Chips de tema (zócalo ejercicios) */
     .psico-zocalo-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
     .psico-zocalo-chip {
       display: inline-flex;
@@ -202,7 +197,6 @@
     .psico-zocalo-chip:hover         { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.32); }
     .psico-zocalo-chip:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 2px; }
 
-    /* Badges de beneficio (semáforo y silla) */
     .psico-zocalo-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
     .psico-zocalo-badge {
       display: inline-flex;
@@ -218,13 +212,12 @@
       white-space: nowrap;
     }
 
-    /* CTA: botón primario ancho */
     .psico-zocalo-cta { margin-top: auto; }
     .psico-zocalo-cta a {
       display: block;
       width: 100%;
       text-align: center;
-      padding: 15px 16px;      /* ≥ 48px de alto */
+      padding: 15px 16px;
       border-radius: 12px;
       background: var(--blue, #1a6fa8);
       color: #fff;
@@ -239,7 +232,7 @@
     .psico-zocalo-cta a:focus-visible { outline: 2px solid rgba(255,255,255,.80); outline-offset: 3px; }
 
 
-    /* ── Bloque de riesgo (borde ámbar) ── */
+    /* -- Bloque de riesgo (borde ambar) ---------------------------- */
 
     .psico-riesgo-card {
       background: rgba(196,122,43,.10);
@@ -312,21 +305,18 @@
     .psico-riesgo-cta:focus-visible { outline: 2px solid rgba(196,122,43,.85); outline-offset: 3px; }
 
 
-    /* ══════════════════════════════════════════════════
-       Psicoeducación: ajustes móviles
-    ══════════════════════════════════════════════════ */
+    /* ==================================================================
+       Psicoeducacion: ajustes moviles
+    ================================================================== */
 
-    /* Zócalos: 1 col en tablet / móvil */
     @media (max-width: 860px) {
       .psico-zocalo-grid { grid-template-columns: 1fr; gap: 14px; }
     }
 
-    /* Selector: 2 cols en tablet */
     @media (max-width: 720px) {
       .psico-selector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     }
 
-    /* Teléfonos: selector 1 col horizontal, aside 1 col, zócalos con más aire */
     @media (max-width: 640px) {
       .psico-selector-grid       { grid-template-columns: 1fr; gap: 9px; }
       .psico-selector-card       { flex-direction: row; align-items: center; gap: 12px; min-height: 64px; padding: 14px 16px; }
@@ -336,7 +326,6 @@
       .psico-zocalo-card         { padding: 22px 18px 20px; }
     }
 
-    /* Teléfonos pequeños: ajustes tipográficos extra */
     @media (max-width: 480px) {
       #psico-selector-heading    { font-size: calc(19px * var(--text-scale)); }
       .psico-zocalo-title        { font-size: calc(17px * var(--text-scale)); }
@@ -344,7 +333,6 @@
       .psico-zocalo-badges       { gap: 8px; }
     }
 
-    /* Reducción de movimiento — una sola declaración */
     @media (prefers-reduced-motion: reduce) {
       .psico-selector-card,
       .psico-zocalo-card,
@@ -360,7 +348,7 @@
 
 <body class="has-bg">
 
-  <!-- ===== Header institucional (sin idiomas, sin doble ajustes) ===== -->
+  <!-- ===== Header institucional ===== -->
   <header>
     <div class="wrap header-inner">
       <div class="brand" aria-label="Identidad institucional">
@@ -368,15 +356,14 @@
           <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
         </div>
         <div class="brand-text">
-          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
-          <div class="brand-sub">Sala de espera virtual · Psicoeducación</div>
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatria y Medicina Aeronautica</div>
+          <div class="brand-sub">Sala de espera virtual &middot; Psicoeducacion</div>
         </div>
       </div>
-
       <div class="controls" aria-label="Controles">
-        <div class="font-size-controls" aria-label="Tamaño de letra">
-          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
-          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        <div class="font-size-controls" aria-label="Tamano de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamano de letra">A&#x2212;</button>
+          <button class="font-size-btn" id="btnAplus"  type="button" aria-label="Aumentar tamano de letra">A+</button>
         </div>
       </div>
     </div>
@@ -384,273 +371,225 @@
 
 
   <!-- ===== Hero ===== -->
-<section class="hero" aria-label="Psicoeducación">
-  <div class="wrap hero-inner">
+  <section class="hero" aria-label="Psicoeducacion">
+    <div class="wrap hero-inner">
 
-    <!-- Columna principal -->
-    <div>
-      <div class="pill" aria-label="Estado">
-        <span class="dot" aria-hidden="true"></span>
-        <span>Psicoeducación</span>
+      <div>
+        <div class="pill" aria-label="Estado">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Psicoeducacion</span>
+        </div>
+
+        <h1 class="hero-title">Psicoeducacion para momentos dificiles</h1>
+
+        <p class="hero-bridge">
+          Elegi como te sentis ahora y entra a una herramienta breve.
+          No hace falta leer todo: la idea es ayudarte a recuperar
+          calma, foco o pausa en pocos minutos.
+        </p>
+
+        <p class="hero-meta">
+          Material orientativo. No reemplaza una consulta profesional ni una guardia.
+          Si estas en riesgo, pedi ayuda inmediata.
+        </p>
       </div>
 
-      <h1 class="hero-title">Psicoeducación para momentos difíciles</h1>
+      <aside class="hero-side" aria-label="Accesos rapidos">
+        <h3 style="margin:0 0 4px;">Ir a&hellip;</h3>
+        <p style="margin:0 0 2px; font-size:calc(13px * var(--text-scale));">
+          Navegacion rapida
+        </p>
+        <nav class="psico-access-grid" aria-label="Accesos de navegacion">
+          <a class="psico-access-btn" href="index.html" data-spa="0">&#x1F3E0; Inicio</a>
+          <a class="psico-access-btn" href="turnos.html" data-spa="0">&#x1F4C5; Turnos</a>
+          <a class="psico-access-btn" href="emociones.html" data-spa="0">&#x1F49B; Emociones</a>
+          <a class="psico-access-btn" href="aviso-legal.html" data-spa="0">&#x1F4C4; Aviso legal</a>
+        </nav>
+      </aside>
 
-      <p class="hero-bridge">
-        Elegí cómo te sentís ahora y entrá a una herramienta breve.
-        No hace falta leer todo: la idea es ayudarte a recuperar
-        calma, foco o pausa en pocos minutos.
-      </p>
-
-      <p class="hero-meta">
-        Material orientativo. No reemplaza una consulta profesional ni una guardia.
-        Si estás en riesgo, pedí ayuda inmediata.
-      </p>
     </div>
+  </section>
 
-    <!-- Aside: accesos táctiles -->
-    <aside class="hero-side" aria-label="Accesos rápidos">
-      <h3 style="margin:0 0 4px;">Ir a…</h3>
-      <p style="margin:0 0 2px; font-size:calc(13px * var(--text-scale));">
-        Navegación rápida
-      </p>
-
-      <nav class="psico-access-grid" aria-label="Accesos de navegación">
-        <a class="psico-access-btn" href="index.html" data-spa="0">
-          🏠 Inicio
-        </a>
-        <a class="psico-access-btn" href="turnos.html" data-spa="0">
-          📅 Turnos
-        </a>
-        <a class="psico-access-btn" href="emociones.html" data-spa="0">
-          💛 Emociones
-        </a>
-        <a class="psico-access-btn" href="aviso-legal.html" data-spa="0">
-          📄 Aviso legal
-        </a>
-      </nav>
-    </aside>
-
-  </div>
-</section>
 
   <!-- ===== Main ===== -->
-<main class="wrap" aria-label="Selector de recursos de psicoeducación" style="padding-bottom: 48px;">
+  <main class="wrap" aria-label="Selector de recursos de psicoeducacion" style="padding-bottom:48px;">
 
-  <!-- ── Selector rápido ── -->
-  <section class=”section” aria-labelledby=”psico-selector-heading”>
-    <div class=”section-card hint-bg”>
+    <!-- Selector rapido -->
+    <section class="section" aria-labelledby="psico-selector-heading">
+      <div class="section-card hint-bg">
 
-      <h2 class=”card-title” id=”psico-selector-heading” style=”margin:0”>
-        ¿Qué necesitás ahora?
-      </h2>
-      <p class=”card-sub” style=”margin-top:8px; margin-bottom:0”>
-        Tocá una opción. Cada recurso está pensado para usarse en pocos minutos.
-      </p>
+        <h2 class="card-title" id="psico-selector-heading" style="margin:0">
+          &#xBF;Que necesitas ahora?
+        </h2>
+        <p class="card-sub" style="margin-top:8px; margin-bottom:0">
+          Toca una opcion. Cada recurso esta pensado para usarse en pocos minutos.
+        </p>
 
-      <nav class=”psico-selector-grid” aria-label=”Selección por estado o necesidad”>
+        <nav class="psico-selector-grid" aria-label="Seleccion por estado o necesidad">
 
-        <a class=”psico-selector-card”
-           href=”psicoeducacion-ejercicios.html#ansiedad” data-spa=”0”
-           aria-label=”Ansiedad — Bajar activación”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>😰</span>
-          <span class=”psico-card-label”>Ansiedad</span>
-          <span class=”psico-card-micro”>Bajar activación</span>
-        </a>
+          <a class="psico-selector-card"
+             href="psicoeducacion-ejercicios.html#ansiedad"
+             data-spa="0"
+             aria-label="Ansiedad: Bajar activacion">
+            <span class="psico-card-emoji" aria-hidden="true">&#x1F630;</span>
+            <span class="psico-card-label">Ansiedad</span>
+            <span class="psico-card-micro">Bajar activacion</span>
+          </a>
 
-        <a class=”psico-selector-card”
-           href=”psicoeducacion-ejercicios.html#panico” data-spa=”0”
-           aria-label=”Pánico — Orientarte y respirar”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>🚨</span>
-          <span class=”psico-card-label”>Pánico</span>
-          <span class=”psico-card-micro”>Orientarte y respirar</span>
-        </a>
+          <a class="psico-selector-card"
+             href="psicoeducacion-ejercicios.html#panico"
+             data-spa="0"
+             aria-label="Panico: Orientarte y respirar">
+            <span class="psico-card-emoji" aria-hidden="true">&#x1F6A8;</span>
+            <span class="psico-card-label">Panico</span>
+            <span class="psico-card-micro">Orientarte y respirar</span>
+          </a>
 
-        <a class=”psico-selector-card”
-           href=”psicoeducacion-ejercicios.html#rumiacion” data-spa=”0”
-           aria-label=”Rumiación — Salir del bucle mental”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>🧠</span>
-          <span class=”psico-card-label”>Rumiación</span>
-          <span class=”psico-card-micro”>Salir del bucle mental</span>
-        </a>
+          <a class="psico-selector-card"
+             href="psicoeducacion-ejercicios.html#rumiacion"
+             data-spa="0"
+             aria-label="Rumiacion: Salir del bucle mental">
+            <span class="psico-card-emoji" aria-hidden="true">&#x1F9E0;</span>
+            <span class="psico-card-label">Rumiacion</span>
+            <span class="psico-card-micro">Salir del bucle mental</span>
+          </a>
 
-        <a class=”psico-selector-card”
-           href=”psicoeducacion-ejercicios.html#sueno” data-spa=”0”
-           aria-label=”Sueño — Preparar el descanso”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>😴</span>
-          <span class=”psico-card-label”>Sueño</span>
-          <span class=”psico-card-micro”>Preparar el descanso</span>
-        </a>
+          <a class="psico-selector-card"
+             href="psicoeducacion-ejercicios.html#sueno"
+             data-spa="0"
+             aria-label="Sueno: Preparar el descanso">
+            <span class="psico-card-emoji" aria-hidden="true">&#x1F634;</span>
+            <span class="psico-card-label">Sue&#xF1;o</span>
+            <span class="psico-card-micro">Preparar el descanso</span>
+          </a>
 
-        <a class=”psico-selector-card”
-           href=”impulsividad.html” data-spa=”0”
-           aria-label=”Impulsividad e Ira — Frenar antes de actuar”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>⚡</span>
-          <span class=”psico-card-label”>Impulsividad / Ira</span>
-          <span class=”psico-card-micro”>Frenar antes de actuar</span>
-        </a>
+          <a class="psico-selector-card"
+             href="impulsividad.html"
+             data-spa="0"
+             aria-label="Impulsividad e Ira: Frenar antes de actuar">
+            <span class="psico-card-emoji" aria-hidden="true">&#x26A1;</span>
+            <span class="psico-card-label">Impulsividad / Ira</span>
+            <span class="psico-card-micro">Frenar antes de actuar</span>
+          </a>
 
-        <a class=”psico-selector-card”
-           href=”silla-ansiedad.html” data-spa=”0”
-           aria-label=”Rutina en silla — Calmar el cuerpo en 3 minutos”>
-          <span class=”psico-card-emoji” aria-hidden=”true”>🪑</span>
-          <span class=”psico-card-label”>Rutina en silla</span>
-          <span class=”psico-card-micro”>Calmar el cuerpo en 3 minutos</span>
-        </a>
+          <a class="psico-selector-card"
+             href="silla-ansiedad.html"
+             data-spa="0"
+             aria-label="Rutina en silla: Calmar el cuerpo en 3 minutos">
+            <span class="psico-card-emoji" aria-hidden="true">&#x1FA91;</span>
+            <span class="psico-card-label">Rutina en silla</span>
+            <span class="psico-card-micro">Calmar el cuerpo en 3 minutos</span>
+          </a>
 
-      </nav>
+        </nav>
 
-      <div class=”note” style=”margin-top:16px” role=”note”>
-        Si hay riesgo (autolesión / violencia / consumo fuera de control),
-        mirá <strong>«Si estás en riesgo»</strong> al final de esta página.
+        <div class="note" style="margin-top:16px" role="note">
+          Si hay riesgo (autolesion / violencia / consumo fuera de control),
+          mira <strong>&#x00AB;Si estas en riesgo&#x00BB;</strong> al final de esta pagina.
+        </div>
+
       </div>
+    </section>
 
-    </div>
-  </section>
 
-  <!-- ── Zócalos principales ── -->
-  <section class=”section” aria-labelledby=”psico-zocalo-heading”>
-    <h2 id=”psico-zocalo-heading” class=”psico-sr-only”>Herramientas disponibles</h2>
+    <!-- Cards de recursos (zocalos) -->
+    <section class="section" aria-labelledby="psico-zocalo-heading">
+      <h2 id="psico-zocalo-heading" class="psico-sr-only">Herramientas disponibles</h2>
 
-    <div class=”psico-zocalo-grid”>
+      <div class="psico-zocalo-grid">
 
-      <!-- Zócalo 1: Ejercicios breves -->
-      <article class=”psico-zocalo-card”
-               aria-labelledby=”zocalo-ejercicios-title”>
-        <div class=”psico-zocalo-icon” aria-hidden=”true”>🧭</div>
+        <!-- Zocalo 1: Ejercicios breves -->
+        <article class="psico-zocalo-card" aria-labelledby="zocalo-ejercicios-title">
+          <div class="psico-zocalo-icon" aria-hidden="true">&#x1F9ED;</div>
+          <h3 class="psico-zocalo-title" id="zocalo-ejercicios-title">Ejercicios breves</h3>
+          <p class="psico-zocalo-desc">
+            Herramientas simples para momentos de ansiedad, panico,
+            rumiacion o dificultad para dormir.
+          </p>
+          <div class="psico-zocalo-chips" aria-label="Acceso por tema">
+            <a class="psico-zocalo-chip" href="psicoeducacion-ejercicios.html#ansiedad" data-spa="0" aria-label="Ejercicios para ansiedad">&#x1F630; Ansiedad</a>
+            <a class="psico-zocalo-chip" href="psicoeducacion-ejercicios.html#panico"   data-spa="0" aria-label="Ejercicios para panico">&#x1F6A8; Panico</a>
+            <a class="psico-zocalo-chip" href="psicoeducacion-ejercicios.html#rumiacion" data-spa="0" aria-label="Ejercicios para rumiacion">&#x1F9E0; Rumiacion</a>
+            <a class="psico-zocalo-chip" href="psicoeducacion-ejercicios.html#sueno"    data-spa="0" aria-label="Ejercicios para el sueno">&#x1F634; Sue&#xF1;o</a>
+          </div>
+          <div class="psico-zocalo-cta">
+            <a href="psicoeducacion-ejercicios.html" data-spa="0" aria-label="Ver todos los ejercicios breves">Ver ejercicios</a>
+          </div>
+        </article>
 
-        <h3 class=”psico-zocalo-title” id=”zocalo-ejercicios-title”>
-          Ejercicios breves
-        </h3>
+        <!-- Zocalo 2: Semaforo -->
+        <article class="psico-zocalo-card" aria-labelledby="zocalo-semaforo-title">
+          <div class="psico-zocalo-icon" aria-hidden="true">&#x26A1;</div>
+          <h3 class="psico-zocalo-title" id="zocalo-semaforo-title">Semaforo de impulsividad e ira</h3>
+          <p class="psico-zocalo-desc">
+            Una pausa guiada para registrar intensidad, frenar una
+            reaccion y ordenar que hacer despues.
+          </p>
+          <div class="psico-zocalo-badges" aria-label="Funciones incluidas">
+            <span class="psico-zocalo-badge">&#x1F4CA; Medi intensidad 0&#x2013;10</span>
+            <span class="psico-zocalo-badge">&#x1F50D; Identifica senales</span>
+            <span class="psico-zocalo-badge">&#x1F4CB; Copia un resumen</span>
+          </div>
+          <div class="psico-zocalo-cta">
+            <a href="impulsividad.html" data-spa="0" aria-label="Usar el semaforo de impulsividad e ira">Usar semaforo</a>
+          </div>
+        </article>
 
-        <p class=”psico-zocalo-desc”>
-          Herramientas simples para momentos de ansiedad, pánico,
-          rumiación o dificultad para dormir.
-        </p>
+        <!-- Zocalo 3: Rutina en silla -->
+        <article class="psico-zocalo-card" aria-labelledby="zocalo-silla-title">
+          <div class="psico-zocalo-icon" aria-hidden="true">&#x1FA91;</div>
+          <h3 class="psico-zocalo-title" id="zocalo-silla-title">Rutina en silla</h3>
+          <p class="psico-zocalo-desc">
+            Una practica breve, discreta y corporal para bajar
+            activacion sin equipamiento.
+          </p>
+          <div class="psico-zocalo-badges" aria-label="Caracteristicas">
+            <span class="psico-zocalo-badge">&#x23F1; 3 minutos</span>
+            <span class="psico-zocalo-badge">&#x1F50A; Audio guiado</span>
+            <span class="psico-zocalo-badge">&#x1FA91; Puede hacerse sentado</span>
+          </div>
+          <div class="psico-zocalo-cta">
+            <a href="silla-ansiedad.html" data-spa="0" aria-label="Iniciar la rutina en silla">Iniciar rutina</a>
+          </div>
+        </article>
 
-        <!-- Acceso directo por tema -->
-        <div class=”psico-zocalo-chips” aria-label=”Acceso por tema”>
-          <a class=”psico-zocalo-chip”
-             href=”psicoeducacion-ejercicios.html#ansiedad” data-spa=”0”
-             aria-label=”Ejercicios para ansiedad”>
-            😰 Ansiedad
-          </a>
-          <a class=”psico-zocalo-chip”
-             href=”psicoeducacion-ejercicios.html#panico” data-spa=”0”
-             aria-label=”Ejercicios para pánico”>
-            🚨 Pánico
-          </a>
-          <a class=”psico-zocalo-chip”
-             href=”psicoeducacion-ejercicios.html#rumiacion” data-spa=”0”
-             aria-label=”Ejercicios para rumiación”>
-            🧠 Rumiación
-          </a>
-          <a class=”psico-zocalo-chip”
-             href=”psicoeducacion-ejercicios.html#sueno” data-spa=”0”
-             aria-label=”Ejercicios para el sueño”>
-            😴 Sueño
-          </a>
-        </div>
-
-        <div class=”psico-zocalo-cta”>
-          <a href=”psicoeducacion-ejercicios.html” data-spa=”0”
-             aria-label=”Ver todos los ejercicios breves”>
-            Ver ejercicios
-          </a>
-        </div>
-      </article>
-
-      <!-- Zócalo 2: Semáforo de impulsividad -->
-      <article class=”psico-zocalo-card”
-               aria-labelledby=”zocalo-semaforo-title”>
-        <div class=”psico-zocalo-icon” aria-hidden=”true”>⚡</div>
-
-        <h3 class=”psico-zocalo-title” id=”zocalo-semaforo-title”>
-          Semáforo de impulsividad e ira
-        </h3>
-
-        <p class=”psico-zocalo-desc”>
-          Una pausa guiada para registrar intensidad, frenar una
-          reacción y ordenar qué hacer después.
-        </p>
-
-        <div class=”psico-zocalo-badges” aria-label=”Funciones incluidas”>
-          <span class=”psico-zocalo-badge”>📊 Medí intensidad 0–10</span>
-          <span class=”psico-zocalo-badge”>🔍 Identificá señales</span>
-          <span class=”psico-zocalo-badge”>📋 Copiá un resumen</span>
-        </div>
-
-        <div class=”psico-zocalo-cta”>
-          <a href=”impulsividad.html” data-spa=”0”
-             aria-label=”Usar el semáforo de impulsividad e ira”>
-            Usar semáforo
-          </a>
-        </div>
-      </article>
-
-      <!-- Zócalo 3: Rutina en silla -->
-      <article class=”psico-zocalo-card”
-               aria-labelledby=”zocalo-silla-title”>
-        <div class=”psico-zocalo-icon” aria-hidden=”true”>🪑</div>
-
-        <h3 class=”psico-zocalo-title” id=”zocalo-silla-title”>
-          Rutina en silla
-        </h3>
-
-        <p class=”psico-zocalo-desc”>
-          Una práctica breve, discreta y corporal para bajar
-          activación sin equipamiento.
-        </p>
-
-        <div class=”psico-zocalo-badges” aria-label=”Características”>
-          <span class=”psico-zocalo-badge”>⏱ 3 minutos</span>
-          <span class=”psico-zocalo-badge”>🔊 Audio guiado</span>
-          <span class=”psico-zocalo-badge”>🪑 Puede hacerse sentado</span>
-        </div>
-
-        <div class=”psico-zocalo-cta”>
-          <a href=”silla-ansiedad.html” data-spa=”0”
-             aria-label=”Iniciar la rutina en silla”>
-            Iniciar rutina
-          </a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ── Bloque de riesgo ── -->
-  <section class="section" aria-label="Información de riesgo">
-    <details class="psico-riesgo-card">
-
-      <summary class="psico-riesgo-summary"
-               aria-label="Si sentís que podés estar en riesgo — expandir para más información">
-        <span class="psico-riesgo-icon" aria-hidden="true">⚠️</span>
-        Si sentís que podés estar en riesgo
-        <span class="psico-riesgo-chevron" aria-hidden="true">▼</span>
-      </summary>
-
-      <div class="psico-riesgo-body">
-        <p class="psico-riesgo-text">
-          Si aparecen ideas de autolesión, violencia, consumo fuera de control o sentís que no podés
-          sostenerte, no uses esta página como única ayuda. Buscá asistencia inmediata en una guardia,
-          emergencias locales o una persona de confianza.
-        </p>
-        <p class="psico-riesgo-secondary">
-          Para consultas no urgentes o coordinación administrativa, usá Central de Turnos.
-        </p>
-        <a class="psico-riesgo-cta" href="turnos.html" data-spa="0"
-           aria-label="Ir a Central de Turnos para coordinar una consulta">
-          📅 Ir a Central de Turnos
-        </a>
       </div>
+    </section>
 
-    </details>
-  </section>
 
-</main>
+    <!-- Bloque de riesgo -->
+    <section class="section" aria-label="Informacion de riesgo">
+      <details class="psico-riesgo-card">
 
-  <!-- ===== Footer (simple y consistente) ===== -->
+        <summary class="psico-riesgo-summary"
+                 aria-label="Si sentis que podes estar en riesgo: expandir para mas informacion">
+          <span class="psico-riesgo-icon" aria-hidden="true">&#x26A0;&#xFE0F;</span>
+          Si sentis que podes estar en riesgo
+          <span class="psico-riesgo-chevron" aria-hidden="true">&#x25BC;</span>
+        </summary>
+
+        <div class="psico-riesgo-body">
+          <p class="psico-riesgo-text">
+            Si aparecen ideas de autolesion, violencia, consumo fuera de control o sentis que no podes
+            sostenerte, no uses esta pagina como unica ayuda. Busca asistencia inmediata en una guardia,
+            emergencias locales o una persona de confianza.
+          </p>
+          <p class="psico-riesgo-secondary">
+            Para consultas no urgentes o coordinacion administrativa, usa Central de Turnos.
+          </p>
+          <a class="psico-riesgo-cta" href="turnos.html" data-spa="0"
+             aria-label="Ir a Central de Turnos para coordinar una consulta">
+            &#x1F4C5; Ir a Central de Turnos
+          </a>
+        </div>
+
+      </details>
+    </section>
+
+  </main>
+
+
+  <!-- ===== Footer ===== -->
   <footer>
     <div class="wrap footer-grid">
       <div>
@@ -658,23 +597,17 @@
           src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
           loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="Mapa Riobamba 919, Buenos Aires"></iframe>
-
         <div class="footer-links">
           <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
           <a href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
-          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.instagram.com/doctor.dagnino/"        target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino"           target="_blank" rel="noopener noreferrer">TikTok</a>
         </div>
       </div>
-
       <div>
-        <p class="footer-title">Ubicación y contacto</p>
-        <div>
-          Barrio Norte – Recoleta<br>
-          Ciudad Autónoma de Buenos Aires – Argentina
-        </div>
-
+        <p class="footer-title">Ubicacion y contacto</p>
+        <div>Barrio Norte &#x2013; Recoleta<br>Ciudad Autonoma de Buenos Aires &#x2013; Argentina</div>
         <div style="margin-top:12px">
           <div><strong>Email administrativo</strong></div>
           <div style="margin-top:6px">
@@ -682,10 +615,9 @@
             <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
           </div>
         </div>
-
         <div class="legal" id="legalBlock">
-          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
-          Desarrollado por PETER-SOFT — Año automático.
+          Copyright &copy; <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT &#x2014; A&#xF1;o automatico.
         </div>
       </div>
     </div>
@@ -694,133 +626,87 @@
 
   <script>
     (function(){
-      const qs = (s)=>document.querySelector(s);
+      var qs = function(s){ return document.querySelector(s); };
 
-      const sheet = qs("#settingsSheet");
-      const openBtn = qs("#openSettings");
-      const openBtnDesktop = qs("#openSettingsDesktop");
-      const closeBackdrop = qs("#closeSettings");
-      const closeBtn = qs("#closeSettingsBtn");
+      var sheet          = qs("#settingsSheet");
+      var openBtn        = qs("#openSettings");
+      var openBtnDesktop = qs("#openSettingsDesktop");
+      var closeBackdrop  = qs("#closeSettings");
+      var closeBtn       = qs("#closeSettingsBtn");
 
-      const btnAminus = qs("#btnAminus");
-      const btnAplus = qs("#btnAplus");
-      const textScaleRange = qs("#textScaleRange");
-      const toggleContrast = qs("#toggleContrast");
-      const toggleMotion = qs("#toggleMotion");
-      const toggleLine = qs("#toggleLine");
+      var btnAminus      = qs("#btnAminus");
+      var btnAplus       = qs("#btnAplus");
+      var textScaleRange = qs("#textScaleRange");
+      var toggleContrast = qs("#toggleContrast");
+      var toggleMotion   = qs("#toggleMotion");
+      var toggleLine     = qs("#toggleLine");
 
-      const audioToggle = qs("#audioToggle");
-      const audioToggleSheet = qs("#audioToggleSheet");
-      const volumeRange = qs("#volumeRange");
-      const volumeRangeSheet = qs("#volumeRangeSheet");
+      var audioToggle      = qs("#audioToggle");
+      var audioToggleSheet = qs("#audioToggleSheet");
+      var volumeRange      = qs("#volumeRange");
+      var volumeRangeSheet = qs("#volumeRangeSheet");
 
-      // Persistencia simple
-      const store = {
-        get(k, d){ try{ const v = localStorage.getItem(k); return v===null? d : JSON.parse(v);}catch{ return d; } },
-        set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+      var store = {
+        get: function(k,d){ try{ var v=localStorage.getItem(k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+        set: function(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
       };
 
-      // Estado
-      let scale = store.get("ui_text_scale", 100);
-      let hiContrast = store.get("ui_contrast", false);
-      let reduceMotion = store.get("ui_reduce_motion", false);
-      let lineSpacing = store.get("ui_line_spacing", false);
-      let audioEnabled = store.get("ui_audio_enabled", false);
-      let vol = store.get("ui_volume", 0.35);
+      var scale        = store.get("ui_text_scale",    100);
+      var hiContrast   = store.get("ui_contrast",      false);
+      var reduceMotion = store.get("ui_reduce_motion", false);
+      var lineSpacing  = store.get("ui_line_spacing",  false);
+      var audioEnabled = store.get("ui_audio_enabled", false);
+      var vol          = store.get("ui_volume",        0.35);
 
       function apply(){
         document.documentElement.style.setProperty("--text-scale", scale + "%");
-        document.documentElement.classList.toggle("hi-contrast", !!hiContrast);
+        document.documentElement.classList.toggle("hi-contrast",   !!hiContrast);
         document.documentElement.classList.toggle("reduce-motion", !!reduceMotion);
-        document.documentElement.classList.toggle("line-spacing", !!lineSpacing);
+        document.documentElement.classList.toggle("line-spacing",  !!lineSpacing);
 
         if(textScaleRange) textScaleRange.value = String(scale);
         if(toggleContrast) toggleContrast.checked = !!hiContrast;
-        if(toggleMotion) toggleMotion.checked = !!reduceMotion;
-        if(toggleLine) toggleLine.checked = !!lineSpacing;
+        if(toggleMotion)   toggleMotion.checked   = !!reduceMotion;
+        if(toggleLine)     toggleLine.checked     = !!lineSpacing;
 
-        if(volumeRange) volumeRange.value = String(Math.round(vol*100));
+        if(volumeRange)      volumeRange.value      = String(Math.round(vol*100));
         if(volumeRangeSheet) volumeRangeSheet.value = String(Math.round(vol*100));
 
-        const label = audioEnabled ? "Sonidos activados" : "Activar sonidos";
-        if(audioToggle) audioToggle.textContent = label;
-        if(audioToggleSheet) audioToggleSheet.textContent = label;
-        if(audioToggle) audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
-        if(audioToggleSheet) audioToggleSheet.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+        var label = audioEnabled ? "Sonidos activados" : "Activar sonidos";
+        if(audioToggle)      { audioToggle.textContent      = label; audioToggle.setAttribute("aria-pressed",      audioEnabled?"true":"false"); }
+        if(audioToggleSheet) { audioToggleSheet.textContent = label; audioToggleSheet.setAttribute("aria-pressed", audioEnabled?"true":"false"); }
 
-        // Año footer
-        const y = document.getElementById("yearNow");
+        var y = document.getElementById("yearNow");
         if(y) y.textContent = String(new Date().getFullYear());
       }
 
-      function openSheet(){
-        if(!sheet) return;
-        sheet.hidden = false;
-        sheet.setAttribute("aria-hidden","false");
-        (openBtn||openBtnDesktop)?.setAttribute("aria-expanded","true");
-      }
-      function closeSheet(){
-        if(!sheet) return;
-        sheet.hidden = true;
-        sheet.setAttribute("aria-hidden","true");
-        (openBtn||openBtnDesktop)?.setAttribute("aria-expanded","false");
-      }
+      function openSheet(){  if(!sheet) return; sheet.hidden=false; sheet.setAttribute("aria-hidden","false"); if(openBtn||openBtnDesktop)(openBtn||openBtnDesktop).setAttribute("aria-expanded","true"); }
+      function closeSheet(){ if(!sheet) return; sheet.hidden=true;  sheet.setAttribute("aria-hidden","true");  if(openBtn||openBtnDesktop)(openBtn||openBtnDesktop).setAttribute("aria-expanded","false"); }
 
-      openBtn?.addEventListener("click", openSheet);
-      openBtnDesktop?.addEventListener("click", openSheet);
-      closeBackdrop?.addEventListener("click", closeSheet);
-      closeBtn?.addEventListener("click", closeSheet);
+      if(openBtn)        openBtn.addEventListener("click",        openSheet);
+      if(openBtnDesktop) openBtnDesktop.addEventListener("click", openSheet);
+      if(closeBackdrop)  closeBackdrop.addEventListener("click",  closeSheet);
+      if(closeBtn)       closeBtn.addEventListener("click",       closeSheet);
 
-      btnAminus?.addEventListener("click", ()=>{
-        scale = Math.max(85, scale - 5);
-        store.set("ui_text_scale", scale);
-        apply();
-      });
-      btnAplus?.addEventListener("click", ()=>{
-        scale = Math.min(130, scale + 5);
-        store.set("ui_text_scale", scale);
-        apply();
-      });
-      textScaleRange?.addEventListener("input", ()=>{
-        scale = Number(textScaleRange.value || 100);
-        store.set("ui_text_scale", scale);
-        apply();
-      });
+      if(btnAminus) btnAminus.addEventListener("click", function(){ scale=Math.max(85,scale-5); store.set("ui_text_scale",scale); apply(); });
+      if(btnAplus)  btnAplus.addEventListener("click",  function(){ scale=Math.min(130,scale+5); store.set("ui_text_scale",scale); apply(); });
 
-      toggleContrast?.addEventListener("change", ()=>{
-        hiContrast = !!toggleContrast.checked;
-        store.set("ui_contrast", hiContrast);
-        apply();
-      });
-      toggleMotion?.addEventListener("change", ()=>{
-        reduceMotion = !!toggleMotion.checked;
-        store.set("ui_reduce_motion", reduceMotion);
-        apply();
-      });
-      toggleLine?.addEventListener("change", ()=>{
-        lineSpacing = !!toggleLine.checked;
-        store.set("ui_line_spacing", lineSpacing);
-        apply();
-      });
+      if(textScaleRange) textScaleRange.addEventListener("input", function(){ scale=Number(textScaleRange.value||100); store.set("ui_text_scale",scale); apply(); });
+      if(toggleContrast) toggleContrast.addEventListener("change", function(){ hiContrast=!!toggleContrast.checked; store.set("ui_contrast",hiContrast); apply(); });
+      if(toggleMotion)   toggleMotion.addEventListener("change",   function(){ reduceMotion=!!toggleMotion.checked; store.set("ui_reduce_motion",reduceMotion); apply(); });
+      if(toggleLine)     toggleLine.addEventListener("change",     function(){ lineSpacing=!!toggleLine.checked; store.set("ui_line_spacing",lineSpacing); apply(); });
 
-      function setVolFromPct(pct){
-        vol = Math.max(0, Math.min(1, pct/100));
-        store.set("ui_volume", vol);
-        apply();
-      }
-      volumeRange?.addEventListener("input", ()=> setVolFromPct(Number(volumeRange.value||35)));
-      volumeRangeSheet?.addEventListener("input", ()=> setVolFromPct(Number(volumeRangeSheet.value||35)));
+      function setVolFromPct(pct){ vol=Math.max(0,Math.min(1,pct/100)); store.set("ui_volume",vol); apply(); }
+      if(volumeRange)      volumeRange.addEventListener("input",      function(){ setVolFromPct(Number(volumeRange.value||35)); });
+      if(volumeRangeSheet) volumeRangeSheet.addEventListener("input", function(){ setVolFromPct(Number(volumeRangeSheet.value||35)); });
 
-      function toggleAudio(){
-        audioEnabled = !audioEnabled;
-        store.set("ui_audio_enabled", audioEnabled);
-        apply();
-      }
-      audioToggle?.addEventListener("click", toggleAudio);
-      audioToggleSheet?.addEventListener("click", toggleAudio);
+      function toggleAudio(){ audioEnabled=!audioEnabled; store.set("ui_audio_enabled",audioEnabled); apply(); }
+      if(audioToggle)      audioToggle.addEventListener("click",      toggleAudio);
+      if(audioToggleSheet) audioToggleSheet.addEventListener("click", toggleAudio);
 
       apply();
     })();
   </script>
+
 </body>
 </html>
