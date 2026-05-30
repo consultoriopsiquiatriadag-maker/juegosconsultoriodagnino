@@ -40,6 +40,12 @@
     .list-tight li{ margin: 6px 0; }
 
     .cta-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    /* Hero: botones táctiles cómodos en celular */
+    .hero-card .cta-row .btn{ min-height: 46px; }
+    @media (max-width: 600px){
+      .hero-card .cta-row{ flex-direction: column; align-items: stretch; }
+      .hero-card .cta-row .btn{ text-align: center; width: 100%; }
+    }
 
     .kbd{
       display:inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -245,20 +251,38 @@
             <h1 class="hero-title" style="margin-top:14px">Evaluación Psiquiátrica Situacional</h1>
 
             <p class="hero-bridge">
-              Ordenamos tu situación actual y te entrego una <strong>devolución escrita</strong> clara, con <strong>próximos pasos</strong>.
+              Una evaluación profesional para ordenar tu situación actual, integrar
+              información clínica relevante y recibir una
+              <strong>devolución escrita clara</strong>, con <strong>próximos pasos posibles</strong>.
             </p>
 
             <div class="trust-chips" aria-label="Características principales">
-              <span class="chip">⏱️ 45–60 min</span>
+              <span class="chip">🩺 Entrevista clínica</span>
+              <span class="chip">🖥️ Presencial o a distancia</span>
               <span class="chip">📄 Devolución escrita</span>
               <span class="chip">🔒 Confidencial</span>
               <span class="chip">🧭 Hoja de ruta</span>
             </div>
 
-            <div class="cta-row" style="margin-top:16px">
-              <a class="btn btn-blue pulse-once" href="https://wa.me/5491124769361?text=Hola%2C%20quiero%20coordinar%20una%20Evaluaci%C3%B3n%20Psiqui%C3%A1trica%20Situacional." target="_blank" rel="noopener">Coordinar por WhatsApp</a>
-              <a class="btn btn-outline-blue" href="#como-funciona">Cómo funciona</a>
-              <a class="btn btn-ghost" href="index.html" data-spa="1">Volver al inicio</a>
+            <div class="cta-row" style="margin-top:16px; flex-wrap:wrap; gap:10px;">
+              <a class="btn btn-blue pulse-once"
+                 href="https://wa.me/5491124769361?text=Hola%2C%20quiero%20coordinar%20una%20Evaluaci%C3%B3n%20Psiqui%C3%A1trica%20Situacional."
+                 target="_blank" rel="noopener"
+                 aria-label="Coordinar una Evaluación Psiquiátrica Situacional por WhatsApp">
+                Coordinar por WhatsApp
+              </a>
+              <a class="btn btn-outline-blue" href="#contenido"
+                 aria-label="Escuchar la explicación del dispositivo">
+                Escuchar explicación
+              </a>
+              <a class="btn btn-outline-blue" href="#como-funciona"
+                 aria-label="Ver cómo funciona el dispositivo">
+                Cómo funciona
+              </a>
+              <a class="btn btn-ghost" href="index.html" data-spa="1"
+                 aria-label="Volver al inicio de la Sala de espera virtual">
+                Volver al inicio
+              </a>
             </div>
 
           </div>
