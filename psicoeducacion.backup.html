@@ -19,82 +19,51 @@
   <link rel="stylesheet" href="assets/css/app.css?v=1">
 
   <style>
-    /* ── Fondo (avión) + overlay ── */
+    /* Fondo (avión) + overlay para contraste */
     body.has-bg {
       background: url("bg-avion.jpg") center/cover fixed no-repeat;
     }
-    body.has-bg::before {
-      content: "";
+    body.has-bg::before{
+      content:"";
       position: fixed;
       inset: 0;
       background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
-      pointer-events: none;
+      pointer-events:none;
       z-index: -1;
     }
 
-    /* ── Grid 3 columnas para los zócalos ── */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+    /* Grid simple para 2 cards */
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
     }
-    /* Colapsa a 1 col en móvil/tablet */
-    @media (max-width: 720px) { .grid-3 { grid-template-columns: 1fr; } }
-
-    /* ── Chips de acceso por tema ── */
-    .chip-row  { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .chip-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(148,163,184,.30);
-      font-weight: 600;
-      font-size: calc(13px * var(--text-scale));
-      white-space: nowrap;
-      text-decoration: none;
-      color: inherit;
-      transition: background .15s, border-color .15s;
-    }
-    .chip-link:hover { background: rgba(255,255,255,.18); border-color: rgba(148,163,184,.55); }
-
-    /* ── Accesos del aside: botones táctiles ── */
-    .psico-access-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .psico-access-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      padding: 13px 10px;
-      border-radius: 12px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      font-size: calc(13px * var(--text-scale));
-      font-weight: 600;
-      text-decoration: none;
-      color: inherit;
-      text-align: center;
-      line-height: 1.3;
-      transition: background .15s, border-color .15s;
-      min-height: 52px;
-    }
-    .psico-access-btn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
-    .psico-access-btn:focus-visible {
-      outline: 2px solid rgba(255,255,255,.70);
-      outline-offset: 2px;
-    }
-    /* En móvil: 1 col para que sean bien grandes */
-    @media (max-width: 480px) {
-      .psico-access-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 820px){ .grid-2{ grid-template-columns:1fr; } }
   </style>
+<style>
+  /* Extra mínimo para grid 3 en este hub */
+  .grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+  }
+  @media (max-width: 980px){ .grid-3{ grid-template-columns:1fr; } }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+  .chip-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(148,163,184,.25);
+    font-weight: 700;
+    font-size: .92rem;
+    white-space: nowrap;
+    text-decoration:none;
+  }
+  .chip-link:hover{ filter: brightness(1.08); }
+</style>
 </head>
 
 <body class="has-bg">
@@ -125,51 +94,33 @@
   <!-- ===== Hero ===== -->
 <section class="hero" aria-label="Psicoeducación">
   <div class="wrap hero-inner">
-
-    <!-- Columna principal -->
     <div>
       <div class="pill" aria-label="Estado">
         <span class="dot" aria-hidden="true"></span>
         <span>Psicoeducación</span>
       </div>
 
-      <h1 class="hero-title">Psicoeducación para momentos difíciles</h1>
+      <h1 class="hero-title">Psicoeducación</h1>
 
       <p class="hero-bridge">
-        Elegí cómo te sentís ahora y entrá a una herramienta breve.
-        No hace falta leer todo: la idea es ayudarte a recuperar
-        calma, foco o pausa en pocos minutos.
+        Elegí 1 recurso. Objetivo: bajar 1 punto la intensidad en 1–4 minutos.
       </p>
 
       <p class="hero-meta">
-        Material orientativo. No reemplaza una consulta profesional ni una guardia.
-        Si estás en riesgo, pedí ayuda inmediata.
+        Orientativo. No reemplaza consulta ni urgencias. Si estás en riesgo, pedí ayuda local inmediata.
       </p>
     </div>
 
-    <!-- Aside: accesos táctiles -->
     <aside class="hero-side" aria-label="Accesos rápidos">
-      <h3 style="margin:0 0 4px;">Ir a…</h3>
-      <p style="margin:0 0 2px; font-size:calc(13px * var(--text-scale));">
-        Navegación rápida
-      </p>
-
-      <nav class="psico-access-grid" aria-label="Accesos de navegación">
-        <a class="psico-access-btn" href="index.html" data-spa="0">
-          🏠 Inicio
-        </a>
-        <a class="psico-access-btn" href="turnos.html" data-spa="0">
-          📅 Turnos
-        </a>
-        <a class="psico-access-btn" href="emociones.html" data-spa="0">
-          💛 Emociones
-        </a>
-        <a class="psico-access-btn" href="aviso-legal.html" data-spa="0">
-          📄 Aviso legal
-        </a>
-      </nav>
+      <h3>Accesos</h3>
+      <p>Volver o coordinar.</p>
+      <div class="row">
+        <a href="index.html" data-spa="0">Inicio</a>
+        <a href="turnos.html" data-spa="0">Central de Turnos</a>
+        <a href="emociones.html" data-spa="0">Emociones</a>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+      </div>
     </aside>
-
   </div>
 </section>
 
@@ -200,7 +151,7 @@
       </div>
 
       <div class="note" style="margin-top:12px">
-        Si hay riesgo (autolesión/violencia/consumo fuera de control), mirá “Si estás en riesgo” al final.
+        Si hay riesgo (autolesión/violencia/consumo fuera de control), mirá "Si estás en riesgo" al final.
       </div>
     </div>
   </section>
@@ -259,7 +210,7 @@
         </div>
 
         <div class="note" style="margin-top:12px">
-          Para bajar el cuerpo “ya”, sin equipamiento.
+          Para bajar el cuerpo "ya", sin equipamiento.
         </div>
       </article>
 
