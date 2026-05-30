@@ -95,6 +95,140 @@
       .psico-access-grid { grid-template-columns: 1fr; }
     }
 
+    /* ── Zócalos principales ── */
+    .psico-zocalo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 860px) {
+      .psico-zocalo-grid { grid-template-columns: 1fr; gap: 14px; }
+    }
+
+    .psico-zocalo-card {
+      display: flex;
+      flex-direction: column;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 20px;
+      padding: 26px 22px 22px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.18);
+      transition: box-shadow .2s, background .2s;
+    }
+    .psico-zocalo-card:hover {
+      background: rgba(255,255,255,.13);
+      box-shadow: 0 6px 32px rgba(0,0,0,.26);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .psico-zocalo-card { transition: none; }
+    }
+
+    /* Ícono grande */
+    .psico-zocalo-icon {
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    /* Título */
+    .psico-zocalo-title {
+      font-size: calc(18px * var(--text-scale));
+      font-weight: 700;
+      color: var(--text, #fff);
+      letter-spacing: -.018em;
+      margin: 0 0 10px;
+      line-height: 1.25;
+    }
+
+    /* Descripción */
+    .psico-zocalo-desc {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--muted, rgba(255,255,255,.72));
+      line-height: 1.6;
+      margin: 0 0 16px;
+      flex: 1; /* empuja badges y CTA hacia abajo */
+    }
+
+    /* Chips de acceso rápido por tema (zócalo ejercicios) */
+    .psico-zocalo-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+    .psico-zocalo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 600;
+      color: inherit;
+      text-decoration: none;
+      transition: background .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .psico-zocalo-chip:hover {
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.32);
+    }
+    .psico-zocalo-chip:focus-visible {
+      outline: 2px solid rgba(255,255,255,.75);
+      outline-offset: 2px;
+    }
+
+    /* Badges de beneficio (zócalos semáforo y silla) */
+    .psico-zocalo-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+    .psico-zocalo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      font-size: calc(12px * var(--text-scale));
+      font-weight: 500;
+      color: var(--muted, rgba(255,255,255,.78));
+    }
+
+    /* CTA: botón ancho siempre */
+    .psico-zocalo-cta {
+      margin-top: auto;
+    }
+    .psico-zocalo-cta a {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: var(--blue, #1a6fa8);
+      color: #fff;
+      font-size: calc(14px * var(--text-scale));
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: -.01em;
+      transition: opacity .15s, transform .1s;
+    }
+    .psico-zocalo-cta a:hover    { opacity: .88; }
+    .psico-zocalo-cta a:active   { transform: scale(.98); }
+    .psico-zocalo-cta a:focus-visible {
+      outline: 2px solid rgba(255,255,255,.80);
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .psico-zocalo-cta a { transition: none; }
+      .psico-zocalo-cta a:active { transform: none; }
+    }
+
     /* ── Selector rápido: grid de tarjetas de estado emocional ── */
     .psico-selector-grid {
       display: grid;
@@ -325,61 +459,111 @@
     </div>
   </section>
 
-  <!-- 3 zócalos principales -->
-  <section class="section" aria-label="Zócalos principales">
-    <div class="grid-3">
+  <!-- ── Zócalos principales ── -->
+  <section class=”section” aria-labelledby=”psico-zocalo-heading”>
+    <h2 id=”psico-zocalo-heading” class=”sr-only”>Herramientas disponibles</h2>
 
-      <article class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h3 class="card-title" style="margin:0">🧭 Ejercicios breves</h3>
-            <p class="card-sub" style="margin-top:8px">Ansiedad · Pánico · Rumiación · Sueño</p>
-          </div>
+    <div class=”psico-zocalo-grid”>
+
+      <!-- Zócalo 1: Ejercicios breves -->
+      <article class=”psico-zocalo-card”
+               aria-labelledby=”zocalo-ejercicios-title”>
+        <div class=”psico-zocalo-icon” aria-hidden=”true”>🧭</div>
+
+        <h3 class=”psico-zocalo-title” id=”zocalo-ejercicios-title”>
+          Ejercicios breves
+        </h3>
+
+        <p class=”psico-zocalo-desc”>
+          Herramientas simples para momentos de ansiedad, pánico,
+          rumiación o dificultad para dormir.
+        </p>
+
+        <!-- Acceso directo por tema -->
+        <div class=”psico-zocalo-chips” aria-label=”Acceso por tema”>
+          <a class=”psico-zocalo-chip”
+             href=”psicoeducacion-ejercicios.html#ansiedad” data-spa=”0”
+             aria-label=”Ejercicios para ansiedad”>
+            😰 Ansiedad
+          </a>
+          <a class=”psico-zocalo-chip”
+             href=”psicoeducacion-ejercicios.html#panico” data-spa=”0”
+             aria-label=”Ejercicios para pánico”>
+            🚨 Pánico
+          </a>
+          <a class=”psico-zocalo-chip”
+             href=”psicoeducacion-ejercicios.html#rumiacion” data-spa=”0”
+             aria-label=”Ejercicios para rumiación”>
+            🧠 Rumiación
+          </a>
+          <a class=”psico-zocalo-chip”
+             href=”psicoeducacion-ejercicios.html#sueno” data-spa=”0”
+             aria-label=”Ejercicios para el sueño”>
+            😴 Sueño
+          </a>
         </div>
 
-        <div class="chip-row" aria-label="Accesos por tema">
-          <a class="chip-link" href="psicoeducacion-ejercicios.html#ansiedad" data-spa="0">😰 Ansiedad</a>
-          <a class="chip-link" href="psicoeducacion-ejercicios.html#panico" data-spa="0">🚨 Pánico</a>
-          <a class="chip-link" href="psicoeducacion-ejercicios.html#rumiacion" data-spa="0">🧠 Rumiación</a>
-          <a class="chip-link" href="psicoeducacion-ejercicios.html#sueno" data-spa="0">😴 Sueño</a>
-        </div>
-
-        <div class="btn-row" style="margin-top:14px">
-          <a class="btn-primary" href="psicoeducacion-ejercicios.html" data-spa="0">Ingresar</a>
+        <div class=”psico-zocalo-cta”>
+          <a href=”psicoeducacion-ejercicios.html” data-spa=”0”
+             aria-label=”Ver todos los ejercicios breves”>
+            Ver ejercicios
+          </a>
         </div>
       </article>
 
-      <article class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h3 class="card-title" style="margin:0">⚡ Semáforo</h3>
-            <p class="card-sub" style="margin-top:8px">Frenar impulsividad / ira</p>
-          </div>
+      <!-- Zócalo 2: Semáforo de impulsividad -->
+      <article class=”psico-zocalo-card”
+               aria-labelledby=”zocalo-semaforo-title”>
+        <div class=”psico-zocalo-icon” aria-hidden=”true”>⚡</div>
+
+        <h3 class=”psico-zocalo-title” id=”zocalo-semaforo-title”>
+          Semáforo de impulsividad e ira
+        </h3>
+
+        <p class=”psico-zocalo-desc”>
+          Una pausa guiada para registrar intensidad, frenar una
+          reacción y ordenar qué hacer después.
+        </p>
+
+        <div class=”psico-zocalo-badges” aria-label=”Funciones incluidas”>
+          <span class=”psico-zocalo-badge”>📊 Medí intensidad 0–10</span>
+          <span class=”psico-zocalo-badge”>🔍 Identificá señales</span>
+          <span class=”psico-zocalo-badge”>📋 Copiá un resumen</span>
         </div>
 
-        <div class="btn-row" style="margin-top:14px">
-          <a class="btn-primary" href="impulsividad.html" data-spa="0">Ingresar</a>
-        </div>
-
-        <div class="note" style="margin-top:12px">
-          Checklist + intensidad (0–10) + resumen para copiar.
+        <div class=”psico-zocalo-cta”>
+          <a href=”impulsividad.html” data-spa=”0”
+             aria-label=”Usar el semáforo de impulsividad e ira”>
+            Usar semáforo
+          </a>
         </div>
       </article>
 
-      <article class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h3 class="card-title" style="margin:0">🪑 Rutina en silla</h3>
-            <p class="card-sub" style="margin-top:8px">3 minutos · Audio guiado · Discreto</p>
-          </div>
+      <!-- Zócalo 3: Rutina en silla -->
+      <article class=”psico-zocalo-card”
+               aria-labelledby=”zocalo-silla-title”>
+        <div class=”psico-zocalo-icon” aria-hidden=”true”>🪑</div>
+
+        <h3 class=”psico-zocalo-title” id=”zocalo-silla-title”>
+          Rutina en silla
+        </h3>
+
+        <p class=”psico-zocalo-desc”>
+          Una práctica breve, discreta y corporal para bajar
+          activación sin equipamiento.
+        </p>
+
+        <div class=”psico-zocalo-badges” aria-label=”Características”>
+          <span class=”psico-zocalo-badge”>⏱ 3 minutos</span>
+          <span class=”psico-zocalo-badge”>🔊 Audio guiado</span>
+          <span class=”psico-zocalo-badge”>🪑 Puede hacerse sentado</span>
         </div>
 
-        <div class="btn-row" style="margin-top:14px">
-          <a class="btn-primary" href="silla-ansiedad.html" data-spa="0">Ingresar</a>
-        </div>
-
-        <div class="note" style="margin-top:12px">
-          Para bajar el cuerpo “ya”, sin equipamiento.
+        <div class=”psico-zocalo-cta”>
+          <a href=”silla-ansiedad.html” data-spa=”0”
+             aria-label=”Iniciar la rutina en silla”>
+            Iniciar rutina
+          </a>
         </div>
       </article>
 
