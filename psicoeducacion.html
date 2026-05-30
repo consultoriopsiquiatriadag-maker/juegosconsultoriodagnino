@@ -19,7 +19,17 @@
   <link rel="stylesheet" href="assets/css/app.css?v=1">
 
   <style>
-    /* ── Fondo (avión) + overlay ── */
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  psicoeducacion.html — estilos locales                       ║
+    ║  Requiere: assets/css/app.css · bg-avion.jpg · logo-avion.png║
+    ╚══════════════════════════════════════════════════════════════╝
+    */
+
+    /* ── 0. Base ── */
+    body { overflow-x: hidden; }
+
+    /* Fondo institucional con avión + overlay de contraste */
     body.has-bg {
       background: url("bg-avion.jpg") center/cover fixed no-repeat;
     }
@@ -27,40 +37,28 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: linear-gradient(180deg, rgba(14,34,57,.70), rgba(14,34,57,.42) 45%, rgba(14,34,57,.26));
+      background: linear-gradient(
+        180deg,
+        rgba(14,34,57,.70),
+        rgba(14,34,57,.42) 45%,
+        rgba(14,34,57,.26)
+      );
       pointer-events: none;
       z-index: -1;
     }
 
-    /* ── Grid 3 columnas para los zócalos ── */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+    /* Solo para lectores de pantalla */
+    .psico-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
-    /* Colapsa a 1 col en móvil/tablet */
-    @media (max-width: 720px) { .grid-3 { grid-template-columns: 1fr; } }
 
-    /* ── Chips de acceso por tema ── */
-    .chip-row  { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .chip-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(148,163,184,.30);
-      font-weight: 600;
-      font-size: calc(13px * var(--text-scale));
-      white-space: nowrap;
-      text-decoration: none;
-      color: inherit;
-      transition: background .15s, border-color .15s;
-    }
-    .chip-link:hover { background: rgba(255,255,255,.18); border-color: rgba(148,163,184,.55); }
 
-    /* ── Accesos del aside: botones táctiles ── */
+    /* ══════════════════════════════════════════════════
+       Psicoeducación: hero — accesos rápidos del aside
+    ══════════════════════════════════════════════════ */
+
     .psico-access-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -82,167 +80,26 @@
       color: inherit;
       text-align: center;
       line-height: 1.3;
-      transition: background .15s, border-color .15s;
       min-height: 52px;
-    }
-    .psico-access-btn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
-    .psico-access-btn:focus-visible {
-      outline: 2px solid rgba(255,255,255,.70);
-      outline-offset: 2px;
-    }
-    /* En móvil: 1 col para que sean bien grandes */
-    @media (max-width: 480px) {
-      .psico-access-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── Zócalos principales ── */
-    .psico-zocalo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-    @media (max-width: 860px) {
-      .psico-zocalo-grid { grid-template-columns: 1fr; gap: 14px; }
-    }
-
-    .psico-zocalo-card {
-      display: flex;
-      flex-direction: column;
-      background: rgba(255,255,255,.09);
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 20px;
-      padding: 26px 22px 22px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.18);
-      transition: box-shadow .2s, background .2s;
-    }
-    .psico-zocalo-card:hover {
-      background: rgba(255,255,255,.13);
-      box-shadow: 0 6px 32px rgba(0,0,0,.26);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .psico-zocalo-card { transition: none; }
-    }
-
-    /* Ícono grande */
-    .psico-zocalo-icon {
-      font-size: 36px;
-      line-height: 1;
-      margin-bottom: 14px;
-    }
-
-    /* Título */
-    .psico-zocalo-title {
-      font-size: calc(18px * var(--text-scale));
-      font-weight: 700;
-      color: var(--text, #fff);
-      letter-spacing: -.018em;
-      margin: 0 0 10px;
-      line-height: 1.25;
-    }
-
-    /* Descripción */
-    .psico-zocalo-desc {
-      font-size: calc(14px * var(--text-scale));
-      color: var(--muted, rgba(255,255,255,.72));
-      line-height: 1.6;
-      margin: 0 0 16px;
-      flex: 1; /* empuja badges y CTA hacia abajo */
-    }
-
-    /* Chips de acceso rápido por tema (zócalo ejercicios) */
-    .psico-zocalo-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 18px;
-    }
-    .psico-zocalo-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.16);
-      font-size: calc(12px * var(--text-scale));
-      font-weight: 600;
-      color: inherit;
-      text-decoration: none;
       transition: background .15s, border-color .15s;
-      white-space: nowrap;
     }
-    .psico-zocalo-chip:hover {
-      background: rgba(255,255,255,.16);
-      border-color: rgba(255,255,255,.32);
-    }
-    .psico-zocalo-chip:focus-visible {
-      outline: 2px solid rgba(255,255,255,.75);
-      outline-offset: 2px;
-    }
+    .psico-access-btn:hover         { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+    .psico-access-btn:focus-visible { outline: 2px solid rgba(255,255,255,.80); outline-offset: 2px; }
 
-    /* Badges de beneficio (zócalos semáforo y silla) */
-    .psico-zocalo-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 18px;
-    }
-    .psico-zocalo-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 11px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.13);
-      font-size: calc(12px * var(--text-scale));
-      font-weight: 500;
-      color: var(--muted, rgba(255,255,255,.78));
-    }
 
-    /* CTA: botón ancho siempre */
-    .psico-zocalo-cta {
-      margin-top: auto;
-    }
-    .psico-zocalo-cta a {
-      display: block;
-      width: 100%;
-      text-align: center;
-      padding: 13px 16px;
-      border-radius: 12px;
-      background: var(--blue, #1a6fa8);
-      color: #fff;
-      font-size: calc(14px * var(--text-scale));
-      font-weight: 700;
-      text-decoration: none;
-      letter-spacing: -.01em;
-      transition: opacity .15s, transform .1s;
-    }
-    .psico-zocalo-cta a:hover    { opacity: .88; }
-    .psico-zocalo-cta a:active   { transform: scale(.98); }
-    .psico-zocalo-cta a:focus-visible {
-      outline: 2px solid rgba(255,255,255,.80);
-      outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .psico-zocalo-cta a { transition: none; }
-      .psico-zocalo-cta a:active { transform: none; }
-    }
+    /* ══════════════════════════════════════════════════
+       Psicoeducación: selector rápido
+    ══════════════════════════════════════════════════ */
 
-    /* ── Selector rápido: grid de tarjetas de estado emocional ── */
+    /* Grid: 3 cols → 2 cols → 1 col (se ajusta en la sección móvil) */
     .psico-selector-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-top: 20px;
     }
-    @media (max-width: 720px) {
-      .psico-selector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    }
-    @media (max-width: 420px) {
-      .psico-selector-grid { grid-template-columns: 1fr; gap: 9px; }
-    }
 
+    /* Tarjeta del selector */
     .psico-selector-card {
       display: flex;
       flex-direction: column;
@@ -250,35 +107,19 @@
       gap: 6px;
       padding: 16px 16px 14px;
       border-radius: 14px;
-      background: rgba(255,255,255,.09);
-      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.12);     /* contraste mejorado */
+      border: 1px solid rgba(255,255,255,.22);
       text-decoration: none;
       color: inherit;
       min-height: 80px;
-      transition: background .18s, border-color .18s, transform .12s;
       cursor: pointer;
+      transition: background .18s, border-color .18s, transform .12s;
     }
-    .psico-selector-card:hover {
-      background: rgba(255,255,255,.16);
-      border-color: rgba(255,255,255,.32);
-    }
-    .psico-selector-card:active {
-      transform: scale(.98);
-    }
-    .psico-selector-card:focus-visible {
-      outline: 2px solid rgba(255,255,255,.75);
-      outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .psico-selector-card { transition: none; }
-      .psico-selector-card:active { transform: none; }
-    }
+    .psico-selector-card:hover         { background: rgba(255,255,255,.20); border-color: rgba(255,255,255,.38); }
+    .psico-selector-card:active        { transform: scale(.98); }
+    .psico-selector-card:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 3px; }
 
-    .psico-card-emoji {
-      font-size: 26px;
-      line-height: 1;
-      flex-shrink: 0;
-    }
+    .psico-card-emoji { font-size: 26px; line-height: 1; flex-shrink: 0; }
     .psico-card-label {
       font-size: calc(15px * var(--text-scale));
       font-weight: 700;
@@ -287,150 +128,119 @@
       letter-spacing: -.01em;
     }
     .psico-card-micro {
-      font-size: calc(12px * var(--text-scale));
-      color: var(--muted, rgba(255,255,255,.65));
-      line-height: 1.4;
+      font-size: calc(13px * var(--text-scale));   /* mínimo 13px */
+      color: rgba(255,255,255,.82);
+      line-height: 1.65;
       font-weight: 400;
     }
 
-    /* En móvil (1 col) las tarjetas se ven horizontales: más bajas y anchas */
-    @media (max-width: 420px) {
-      .psico-selector-card {
-        flex-direction: row;
-        align-items: center;
-        gap: 12px;
-        min-height: 64px;
-        padding: 14px 16px;
-      }
-      .psico-card-emoji { font-size: 28px; }
-      .psico-card-label  { font-size: calc(16px * var(--text-scale)); }
-      .psico-card-micro  { font-size: calc(13px * var(--text-scale)); }
+
+    /* ══════════════════════════════════════════════════
+       Psicoeducación: cards de recursos (zócalos)
+    ══════════════════════════════════════════════════ */
+
+    /* Grid de 3 zócalos — colapsa en la sección móvil */
+    .psico-zocalo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
     }
 
-    /* ══════════════════════════════════════════════
-       FASE 5 — Pulido móvil, contraste y accesibilidad
-    ══════════════════════════════════════════════ */
-
-    /* 1. Prevenir scroll horizontal en cualquier ancho */
-    body { overflow-x: hidden; }
-
-    /* 2. Mejor contraste: subir opacidad de cards del selector */
-    .psico-selector-card {
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.22);
-    }
-    .psico-selector-card:hover {
-      background: rgba(255,255,255,.20);
-      border-color: rgba(255,255,255,.38);
-    }
-
-    /* 3. Mejor contraste: subir opacidad de zócalos */
+    /* Card individual */
     .psico-zocalo-card {
-      background: rgba(255,255,255,.11);
-      border-color: rgba(255,255,255,.20);
+      display: flex;
+      flex-direction: column;
+      background: rgba(255,255,255,.11);     /* contraste mejorado */
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 20px;
+      padding: 26px 22px 22px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.18);
+      transition: box-shadow .2s, background .2s;
     }
-    .psico-zocalo-card:hover {
-      background: rgba(255,255,255,.17);
-      border-color: rgba(255,255,255,.34);
+    .psico-zocalo-card:hover { background: rgba(255,255,255,.17); border-color: rgba(255,255,255,.34); box-shadow: 0 6px 32px rgba(0,0,0,.26); }
+
+    /* Ícono */
+    .psico-zocalo-icon  { font-size: 36px; line-height: 1; margin-bottom: 14px; }
+
+    /* Título */
+    .psico-zocalo-title {
+      font-size: calc(18px * var(--text-scale));
+      font-weight: 700;
+      color: var(--text, #fff);
+      letter-spacing: -.018em;
+      line-height: 1.25;
+      margin: 0 0 10px;
     }
 
-    /* 4. Microtexto mínimo 13px — legible sin esfuerzo */
-    .psico-card-micro {
-      font-size: calc(13px * var(--text-scale));
-      color: rgba(255,255,255,.82);  /* más claro que el .65 original */
+    /* Descripción — flex:1 empuja CTA al fondo */
+    .psico-zocalo-desc {
+      font-size: calc(14px * var(--text-scale));
+      color: var(--muted, rgba(255,255,255,.82));
+      line-height: 1.65;
+      margin: 0 0 16px;
+      flex: 1;
     }
 
-    /* 5. Badges de beneficio: texto más visible */
-    .psico-zocalo-badge {
-      font-size: calc(13px * var(--text-scale));
-      color: rgba(255,255,255,.88);
-      background: rgba(255,255,255,.10);
-      border-color: rgba(255,255,255,.18);
-      padding: 6px 12px;    /* sube padding para mejor legibilidad */
-    }
-
-    /* 6. Chips de zócalos: min-height táctil ~36px */
+    /* Chips de tema (zócalo ejercicios) */
+    .psico-zocalo-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
     .psico-zocalo-chip {
-      font-size: calc(13px * var(--text-scale));
-      padding: 8px 14px;    /* de 6px→8px para alcanzar ~36px de alto */
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
       min-height: 36px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 600;
+      color: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .15s, border-color .15s;
+    }
+    .psico-zocalo-chip:hover         { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.32); }
+    .psico-zocalo-chip:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 2px; }
+
+    /* Badges de beneficio (semáforo y silla) */
+    .psico-zocalo-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .psico-zocalo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: calc(13px * var(--text-scale));
+      font-weight: 500;
+      color: rgba(255,255,255,.88);
+      white-space: nowrap;
     }
 
-    /* 7. focus-visible en chip-link (faltaba) */
-    .chip-link:focus-visible {
-      outline: 2px solid rgba(255,255,255,.75);
-      outline-offset: 2px;
-    }
-
-    /* 8. CTA de zócalos: mínimo 48px de alto (WCAG 2.5.8) */
+    /* CTA: botón primario ancho */
+    .psico-zocalo-cta { margin-top: auto; }
     .psico-zocalo-cta a {
-      padding: 15px 16px;   /* 15+15+18 de línea ≈ 48px */
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 15px 16px;      /* ≥ 48px de alto */
+      border-radius: 12px;
+      background: var(--blue, #1a6fa8);
+      color: #fff;
       font-size: calc(15px * var(--text-scale));
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: -.01em;
+      transition: opacity .15s, transform .1s;
     }
+    .psico-zocalo-cta a:hover         { opacity: .88; }
+    .psico-zocalo-cta a:active        { transform: scale(.98); }
+    .psico-zocalo-cta a:focus-visible { outline: 2px solid rgba(255,255,255,.80); outline-offset: 3px; }
 
-    /* 9. Botones de acceso del aside: min-height 52px ya estaba; reforzar focus */
-    .psico-access-btn:focus-visible {
-      outline: 2px solid rgba(255,255,255,.80);
-      outline-offset: 2px;
-    }
 
-    /* 10. Ajustes ≤ 640px — rango no cubierto antes */
-    @media (max-width: 640px) {
-      /* Selector: colapsar a 1 col antes de los 420px habitual
-         para evitar chips apretados en 375-420px */
-      .psico-selector-grid {
-        grid-template-columns: 1fr;
-        gap: 9px;
-      }
-      .psico-selector-card {
-        flex-direction: row;
-        align-items: center;
-        gap: 12px;
-        min-height: 64px;
-        padding: 14px 16px;
-      }
-      .psico-card-emoji { font-size: 28px; }
-      .psico-card-label  { font-size: calc(16px * var(--text-scale)); }
+    /* ── Bloque de riesgo (borde ámbar) ── */
 
-      /* Accesos del aside: 1 col en teléfono */
-      .psico-access-grid { grid-template-columns: 1fr; }
-
-      /* Zócalos: padding más holgado en móvil */
-      .psico-zocalo-card { padding: 22px 18px 20px; }
-    }
-
-    /* 11. Ajustes ≤ 480px — teléfonos pequeños */
-    @media (max-width: 480px) {
-      /* Selector rápido: título y subtítulo más grandes */
-      #psico-selector-heading {
-        font-size: calc(19px * var(--text-scale));
-      }
-
-      /* Título de cada zócalo un toque mayor en móvil */
-      .psico-zocalo-title {
-        font-size: calc(17px * var(--text-scale));
-      }
-
-      /* Chips del zócalo de ejercicios: más separados */
-      .psico-zocalo-chips { gap: 8px; }
-
-      /* Badges: no wrappear de forma rara en pantallas estrechas */
-      .psico-zocalo-badges { gap: 8px; }
-      .psico-zocalo-badge  { white-space: nowrap; }
-    }
-
-    /* 12. Interlineado general mínimo para párrafos dentro de cards */
-    .psico-zocalo-desc,
-    .psico-card-micro,
-    .card-sub { line-height: 1.65; }
-
-    /* 13. Focus-visible para el summary del bloque de riesgo */
-    details summary:focus-visible {
-      outline: 2px solid rgba(255,255,255,.75);
-      outline-offset: 4px;
-    }
-
-    /* ── Bloque de riesgo: borde ámbar, fondo cálido suave ── */
     .psico-riesgo-card {
       background: rgba(196,122,43,.10);
       border: 1.5px solid rgba(196,122,43,.45);
@@ -438,7 +248,6 @@
       padding: 22px 22px 18px;
       box-shadow: 0 2px 16px rgba(196,122,43,.10);
     }
-
     .psico-riesgo-summary {
       display: flex;
       align-items: center;
@@ -453,35 +262,20 @@
       letter-spacing: -.015em;
       line-height: 1.3;
     }
-    /* quitar el triángulo nativo en todos los navegadores */
-    .psico-riesgo-summary::-webkit-details-marker { display: none; }
-    .psico-riesgo-summary::marker              { display: none; }
+    .psico-riesgo-summary::-webkit-details-marker,
+    .psico-riesgo-summary::marker        { display: none; }
+    .psico-riesgo-summary:focus-visible  { outline: 2px solid rgba(196,122,43,.80); outline-offset: 4px; }
 
-    .psico-riesgo-summary:focus-visible {
-      outline: 2px solid rgba(196,122,43,.80);
-      outline-offset: 4px;
-    }
-
-    .psico-riesgo-icon {
-      font-size: 22px;
-      flex-shrink: 0;
-      line-height: 1;
-    }
-
-    /* Flecha giratoria: abre/cierra */
+    .psico-riesgo-icon    { font-size: 22px; flex-shrink: 0; line-height: 1; }
     .psico-riesgo-chevron {
       margin-left: auto;
       font-size: 14px;
       opacity: .70;
-      transition: transform .2s ease;
       flex-shrink: 0;
+      transition: transform .2s ease;
     }
     details[open] .psico-riesgo-chevron { transform: rotate(180deg); }
-    @media (prefers-reduced-motion: reduce) {
-      .psico-riesgo-chevron { transition: none; }
-    }
 
-    /* Cuerpo desplegable */
     .psico-riesgo-body {
       margin-top: 16px;
       padding-top: 16px;
@@ -495,7 +289,7 @@
     }
     .psico-riesgo-secondary {
       font-size: calc(13px * var(--text-scale));
-      color: var(--muted, rgba(255,255,255,.75));
+      color: var(--muted, rgba(255,255,255,.80));
       line-height: 1.55;
       margin: 0 0 16px;
     }
@@ -504,6 +298,7 @@
       align-items: center;
       gap: 6px;
       padding: 12px 20px;
+      min-height: 48px;
       border-radius: 10px;
       background: rgba(196,122,43,.22);
       border: 1px solid rgba(196,122,43,.50);
@@ -512,15 +307,52 @@
       font-weight: 700;
       text-decoration: none;
       transition: background .15s, border-color .15s;
-      min-height: 48px;
     }
-    .psico-riesgo-cta:hover {
-      background: rgba(196,122,43,.32);
-      border-color: rgba(196,122,43,.70);
+    .psico-riesgo-cta:hover         { background: rgba(196,122,43,.32); border-color: rgba(196,122,43,.70); }
+    .psico-riesgo-cta:focus-visible { outline: 2px solid rgba(196,122,43,.85); outline-offset: 3px; }
+
+
+    /* ══════════════════════════════════════════════════
+       Psicoeducación: ajustes móviles
+    ══════════════════════════════════════════════════ */
+
+    /* Zócalos: 1 col en tablet / móvil */
+    @media (max-width: 860px) {
+      .psico-zocalo-grid { grid-template-columns: 1fr; gap: 14px; }
     }
-    .psico-riesgo-cta:focus-visible {
-      outline: 2px solid rgba(196,122,43,.85);
-      outline-offset: 3px;
+
+    /* Selector: 2 cols en tablet */
+    @media (max-width: 720px) {
+      .psico-selector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    }
+
+    /* Teléfonos: selector 1 col horizontal, aside 1 col, zócalos con más aire */
+    @media (max-width: 640px) {
+      .psico-selector-grid       { grid-template-columns: 1fr; gap: 9px; }
+      .psico-selector-card       { flex-direction: row; align-items: center; gap: 12px; min-height: 64px; padding: 14px 16px; }
+      .psico-card-emoji          { font-size: 28px; }
+      .psico-card-label          { font-size: calc(16px * var(--text-scale)); }
+      .psico-access-grid         { grid-template-columns: 1fr; }
+      .psico-zocalo-card         { padding: 22px 18px 20px; }
+    }
+
+    /* Teléfonos pequeños: ajustes tipográficos extra */
+    @media (max-width: 480px) {
+      #psico-selector-heading    { font-size: calc(19px * var(--text-scale)); }
+      .psico-zocalo-title        { font-size: calc(17px * var(--text-scale)); }
+      .psico-zocalo-chips,
+      .psico-zocalo-badges       { gap: 8px; }
+    }
+
+    /* Reducción de movimiento — una sola declaración */
+    @media (prefers-reduced-motion: reduce) {
+      .psico-selector-card,
+      .psico-zocalo-card,
+      .psico-zocalo-cta a,
+      .psico-access-btn,
+      .psico-riesgo-chevron      { transition: none; }
+      .psico-selector-card:active,
+      .psico-zocalo-cta a:active { transform: none; }
     }
 
   </style>
@@ -603,7 +435,7 @@
 </section>
 
   <!-- ===== Main ===== -->
-<main class="wrap" aria-label="Selector de recursos de psicoeducación">
+<main class="wrap" aria-label="Selector de recursos de psicoeducación" style="padding-bottom: 48px;">
 
   <!-- ── Selector rápido ── -->
   <section class=”section” aria-labelledby=”psico-selector-heading”>
@@ -678,7 +510,7 @@
 
   <!-- ── Zócalos principales ── -->
   <section class=”section” aria-labelledby=”psico-zocalo-heading”>
-    <h2 id=”psico-zocalo-heading” class=”sr-only”>Herramientas disponibles</h2>
+    <h2 id=”psico-zocalo-heading” class=”psico-sr-only”>Herramientas disponibles</h2>
 
     <div class=”psico-zocalo-grid”>
 
