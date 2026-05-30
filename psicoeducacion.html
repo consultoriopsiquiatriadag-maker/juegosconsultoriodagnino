@@ -94,6 +94,84 @@
     @media (max-width: 480px) {
       .psico-access-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Selector rápido: grid de tarjetas de estado emocional ── */
+    .psico-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    @media (max-width: 720px) {
+      .psico-selector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    }
+    @media (max-width: 420px) {
+      .psico-selector-grid { grid-template-columns: 1fr; gap: 9px; }
+    }
+
+    .psico-selector-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 16px 16px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.16);
+      text-decoration: none;
+      color: inherit;
+      min-height: 80px;
+      transition: background .18s, border-color .18s, transform .12s;
+      cursor: pointer;
+    }
+    .psico-selector-card:hover {
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.32);
+    }
+    .psico-selector-card:active {
+      transform: scale(.98);
+    }
+    .psico-selector-card:focus-visible {
+      outline: 2px solid rgba(255,255,255,.75);
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .psico-selector-card { transition: none; }
+      .psico-selector-card:active { transform: none; }
+    }
+
+    .psico-card-emoji {
+      font-size: 26px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .psico-card-label {
+      font-size: calc(15px * var(--text-scale));
+      font-weight: 700;
+      color: var(--text, #fff);
+      line-height: 1.25;
+      letter-spacing: -.01em;
+    }
+    .psico-card-micro {
+      font-size: calc(12px * var(--text-scale));
+      color: var(--muted, rgba(255,255,255,.65));
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    /* En móvil (1 col) las tarjetas se ven horizontales: más bajas y anchas */
+    @media (max-width: 420px) {
+      .psico-selector-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        min-height: 64px;
+        padding: 14px 16px;
+      }
+      .psico-card-emoji { font-size: 28px; }
+      .psico-card-label  { font-size: calc(16px * var(--text-scale)); }
+      .psico-card-micro  { font-size: calc(13px * var(--text-scale)); }
+    }
   </style>
 </head>
 
@@ -176,32 +254,74 @@
   <!-- ===== Main ===== -->
 <main class="wrap" aria-label="Selector de recursos de psicoeducación">
 
-  <!-- Selector rápido -->
-  <section class="section">
-    <div class="section-card hint-bg">
-      <div class="card-head">
-        <div>
-          <h2 class="card-title" style="margin:0">¿Qué necesitás ahora?</h2>
-          <p class="card-sub" style="margin-top:8px">
-            Elegí una opción. No hace falta leer todo.
-          </p>
-        </div>
+  <!-- ── Selector rápido ── -->
+  <section class=”section” aria-labelledby=”psico-selector-heading”>
+    <div class=”section-card hint-bg”>
+
+      <h2 class=”card-title” id=”psico-selector-heading” style=”margin:0”>
+        ¿Qué necesitás ahora?
+      </h2>
+      <p class=”card-sub” style=”margin-top:8px; margin-bottom:0”>
+        Tocá una opción. Cada recurso está pensado para usarse en pocos minutos.
+      </p>
+
+      <nav class=”psico-selector-grid” aria-label=”Selección por estado o necesidad”>
+
+        <a class=”psico-selector-card”
+           href=”psicoeducacion-ejercicios.html#ansiedad” data-spa=”0”
+           aria-label=”Ansiedad — Bajar activación”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>😰</span>
+          <span class=”psico-card-label”>Ansiedad</span>
+          <span class=”psico-card-micro”>Bajar activación</span>
+        </a>
+
+        <a class=”psico-selector-card”
+           href=”psicoeducacion-ejercicios.html#panico” data-spa=”0”
+           aria-label=”Pánico — Orientarte y respirar”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>🚨</span>
+          <span class=”psico-card-label”>Pánico</span>
+          <span class=”psico-card-micro”>Orientarte y respirar</span>
+        </a>
+
+        <a class=”psico-selector-card”
+           href=”psicoeducacion-ejercicios.html#rumiacion” data-spa=”0”
+           aria-label=”Rumiación — Salir del bucle mental”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>🧠</span>
+          <span class=”psico-card-label”>Rumiación</span>
+          <span class=”psico-card-micro”>Salir del bucle mental</span>
+        </a>
+
+        <a class=”psico-selector-card”
+           href=”psicoeducacion-ejercicios.html#sueno” data-spa=”0”
+           aria-label=”Sueño — Preparar el descanso”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>😴</span>
+          <span class=”psico-card-label”>Sueño</span>
+          <span class=”psico-card-micro”>Preparar el descanso</span>
+        </a>
+
+        <a class=”psico-selector-card”
+           href=”impulsividad.html” data-spa=”0”
+           aria-label=”Impulsividad e Ira — Frenar antes de actuar”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>⚡</span>
+          <span class=”psico-card-label”>Impulsividad / Ira</span>
+          <span class=”psico-card-micro”>Frenar antes de actuar</span>
+        </a>
+
+        <a class=”psico-selector-card”
+           href=”silla-ansiedad.html” data-spa=”0”
+           aria-label=”Rutina en silla — Calmar el cuerpo en 3 minutos”>
+          <span class=”psico-card-emoji” aria-hidden=”true”>🪑</span>
+          <span class=”psico-card-label”>Rutina en silla</span>
+          <span class=”psico-card-micro”>Calmar el cuerpo en 3 minutos</span>
+        </a>
+
+      </nav>
+
+      <div class=”note” style=”margin-top:16px” role=”note”>
+        Si hay riesgo (autolesión / violencia / consumo fuera de control),
+        mirá <strong>«Si estás en riesgo»</strong> al final de esta página.
       </div>
 
-      <div class="divider" aria-hidden="true"></div>
-
-      <div class="btn-row" style="flex-wrap:wrap">
-        <a class="btn-primary" href="psicoeducacion-ejercicios.html#ansiedad" data-spa="0">😰 Ansiedad</a>
-        <a class="btn-secondary" href="psicoeducacion-ejercicios.html#panico" data-spa="0">🚨 Pánico</a>
-        <a class="btn-secondary" href="psicoeducacion-ejercicios.html#rumiacion" data-spa="0">🧠 Rumiación</a>
-        <a class="btn-secondary" href="psicoeducacion-ejercicios.html#sueno" data-spa="0">😴 Sueño</a>
-        <a class="btn-secondary" href="impulsividad.html" data-spa="0">⚡ Impulsividad / Ira</a>
-        <a class="btn-secondary" href="silla-ansiedad.html" data-spa="0">🪑 Rutina en silla</a>
-      </div>
-
-      <div class="note" style="margin-top:12px">
-        Si hay riesgo (autolesión/violencia/consumo fuera de control), mirá “Si estás en riesgo” al final.
-      </div>
     </div>
   </section>
 
