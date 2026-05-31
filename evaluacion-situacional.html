@@ -146,8 +146,8 @@
       font-size: .92rem;
     }
 
-    /* === Bloque "Cómo funciona" === */
-    .how-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top: 14px; }
+    /* === Bloque "Cómo funciona" (4 pasos en 2x2) === */
+    .how-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top: 14px; }
     .how-step{
       display:flex; gap:12px; align-items:flex-start;
       padding: 14px 14px; border-radius: 18px;
@@ -289,6 +289,64 @@
       height: 100%;
       object-fit: cover;
       border-radius: 16px;
+    }
+
+    /* === Secciones Incluye / No incluye === */
+    .evs-inout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+    @media (max-width: 640px) {
+      .evs-inout-grid { grid-template-columns: 1fr; }
+    }
+    .evs-inout-card {
+      border-radius: 14px;
+      padding: 18px 18px;
+    }
+    .evs-inout-card.evs-includes {
+      background: rgba(34,197,94,.06);
+      border: 1px solid rgba(34,197,94,.18);
+    }
+    .evs-inout-card.evs-excludes {
+      background: rgba(239,68,68,.05);
+      border: 1px solid rgba(239,68,68,.16);
+    }
+    .evs-inout-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .evs-inout-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .evs-inout-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--inst-navy);
+      margin: 0;
+    }
+    .evs-inout-list {
+      margin: 0;
+      padding-left: 16px;
+    }
+    .evs-inout-list li {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 6px 0;
+    }
+
+    /* === ¿Qué es? — bloque introductorio === */
+    .evs-que-es {
+      font-size: 1.04rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 74ch;
+      margin: 0;
     }
 
     /* === Idioma/TTS: más discreto y en columna === */
@@ -448,86 +506,143 @@
   </section>
 
   <!-- ===== Main ===== -->
-  <main id="spaMain" class="wrap" aria-label="Contenido principal">
+  <main id="spaMain" class="wrap" aria-label="Contenido principal" style="padding-bottom:52px;">
 
-    <!-- ===== Cómo funciona (resumen rápido) ===== -->
-    <section class="section" id="como-funciona">
+
+    <!-- ── ¿Qué es? ── -->
+    <section class="section" id="que-es" aria-labelledby="que-es-heading">
       <div class="section-card">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">Cómo funciona</h2>
-            <p class="card-sub" style="margin-top:8px">Tres pasos simples, sin vueltas.</p>
-          </div>
-        </div>
+        <h2 class="card-title" id="que-es-heading" style="margin:0 0 14px;">¿Qué es?</h2>
+        <p class="evs-que-es">
+          La Evaluación Psiquiátrica Situacional es un dispositivo de entrevista, análisis clínico
+          e integración profesional. Está pensado para personas que necesitan una mirada psiquiátrica
+          puntual sobre una situación determinada, sin que eso implique necesariamente iniciar
+          un tratamiento continuo.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ── ¿Cómo funciona? ── -->
+    <section class="section" id="como-funciona" aria-labelledby="como-funciona-heading">
+      <div class="section-card">
+        <h2 class="card-title" id="como-funciona-heading" style="margin:0 0 6px;">¿Cómo funciona?</h2>
+        <p class="card-sub" style="margin:0 0 14px;">Cuatro pasos, del primer contacto a la devolución.</p>
 
         <div class="how-grid">
+
           <div class="how-step">
             <div class="how-n">1</div>
             <div>
-              <div class="how-t">Coordinación</div>
-              <div class="how-d">La secretaría coordina por WhatsApp fecha, consentimiento y modalidad.</div>
+              <div class="how-t">Coordinación administrativa</div>
+              <div class="how-d">
+                La Secretaría coordina por WhatsApp la modalidad, fecha,
+                consentimiento informado y documentación necesaria.
+              </div>
             </div>
           </div>
 
           <div class="how-step">
             <div class="how-n">2</div>
             <div>
-              <div class="how-t">Entrevista + test (si corresponde)</div>
-              <div class="how-d">Una o más entrevistas. Se indican test sólo si aportan claridad clínica.</div>
+              <div class="how-t">Entrevista clínica</div>
+              <div class="how-d">
+                Se realiza una o más entrevistas psiquiátricas, según el
+                motivo de consulta y la complejidad del caso.
+              </div>
             </div>
           </div>
 
           <div class="how-step">
             <div class="how-n">3</div>
             <div>
-              <div class="how-t">Devolución escrita</div>
-              <div class="how-d">Recibís un documento claro con síntesis, hipótesis y próximos pasos.</div>
+              <div class="how-t">Integración profesional</div>
+              <div class="how-d">
+                Se organiza la información clínica, funcional, laboral
+                o institucional disponible.
+              </div>
             </div>
           </div>
-        </div>
 
-        <details class="details" style="margin-top:14px">
-          <summary>Qué incluye y qué no incluye</summary>
-          <div class="details-body">
-            <div class="two-col">
-              <div>
-                <h3 class="mini-h">Incluye</h3>
-                <ul class="list-tight">
-                  <li>Entrevista clínica (una o más).</li>
-                  <li>Test cuando corresponde.</li>
-                  <li>Integración clínica.</li>
-                  <li>Devolución escrita.</li>
-                  <li>Opción de informe técnico para profesional tratante.</li>
-                </ul>
-              </div>
-              <div>
-                <h3 class="mini-h">No incluye</h3>
-                <ul class="list-tight">
-                  <li>Urgencias.</li>
-                  <li>Seguimiento.</li>
-                  <li>Recetas/indicaciones farmacológicas por este canal.</li>
-                </ul>
+          <div class="how-step">
+            <div class="how-n">4</div>
+            <div>
+              <div class="how-t">Devolución escrita</div>
+              <div class="how-d">
+                Se entrega una devolución clara, con síntesis de la
+                situación evaluada, orientación profesional y próximos
+                pasos sugeridos.
               </div>
             </div>
           </div>
-        </details>
+
+        </div>
       </div>
     </section>
 
-    <!-- Idioma + objetivo -->
-    <section class="section" id="contenido">
+
+    <!-- ── ¿Qué incluye y qué no incluye? ── -->
+    <section class="section" id="alcance" aria-labelledby="alcance-heading">
+      <div class="section-card">
+        <h2 class="card-title" id="alcance-heading" style="margin:0 0 16px;">Alcance del dispositivo</h2>
+
+        <div class="evs-inout-grid">
+
+          <!-- Incluye -->
+          <div class="evs-inout-card evs-includes">
+            <div class="evs-inout-head">
+              <span class="evs-inout-icon" aria-hidden="true">✅</span>
+              <h3 class="evs-inout-title">¿Qué incluye?</h3>
+            </div>
+            <ul class="evs-inout-list" aria-label="Lo que incluye la evaluación">
+              <li>Una o más entrevistas clínicas.</li>
+              <li>Revisión de antecedentes o documentación, si corresponde.</li>
+              <li>Test o instrumentos complementarios cuando aporten claridad.</li>
+              <li>Integración clínica y funcional.</li>
+              <li>Devolución escrita.</li>
+              <li>Opción de informe técnico para profesional tratante o institución solicitante.</li>
+            </ul>
+          </div>
+
+          <!-- No incluye -->
+          <div class="evs-inout-card evs-excludes">
+            <div class="evs-inout-head">
+              <span class="evs-inout-icon" aria-hidden="true">🚫</span>
+              <h3 class="evs-inout-title">¿Qué no incluye?</h3>
+            </div>
+            <ul class="evs-inout-list" aria-label="Lo que no incluye la evaluación">
+              <li>No reemplaza una guardia.</li>
+              <li>No está destinado a urgencias.</li>
+              <li>No implica seguimiento clínico continuo.</li>
+              <li>No funciona como canal aislado para recetas.</li>
+              <li>No reemplaza el tratamiento con el profesional tratante.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── Objetivo + módulo TTS (conservado intacto) ── -->
+    <section class="section" id="contenido" aria-labelledby="contenido-heading">
       <div class="section-card hint-bg">
         <div class="card-head">
           <div>
-            <h2 class="card-title" style="margin:0">¿Cuál es el objetivo de este dispositivo?</h2>
+            <h2 class="card-title" id="contenido-heading" style="margin:0">
+              ¿Cuál es el objetivo de este dispositivo?
+            </h2>
             <p class="card-sub" style="margin-top:8px">
-              Este dispositivo ha sido creado para evaluar el momento actual y entregar una devolución escrita, útil para vos y/o para tu profesional tratante.
-              Es similar a lo que clásicamente se conocía como segunda opinión; en este caso tiene un plus: permite que una persona, en donde se encuentre,
-              pueda tener una segunda mirada con un informe que permita trazar una hoja de ruta para su salud mental.
+              Este dispositivo ha sido creado para evaluar el momento actual y entregar
+              una devolución escrita, útil para vos y/o para tu profesional tratante.
+              Es similar a lo que clásicamente se conocía como segunda opinión; en este
+              caso tiene un plus: permite que una persona, en donde se encuentre, pueda
+              tener una segunda mirada con un informe que permita trazar una hoja de ruta
+              para su salud mental.
             </p>
           </div>
 
-          <!-- Idiomas / TTS -->
+          <!-- Módulo TTS / idiomas — conservado tal cual -->
           <div class="langbar" aria-label="Lectura por voz e idiomas" style="margin-left:auto">
             <button class="btn-chip" id="btnReadCurrent" type="button">Leer idioma actual</button>
             <button class="btn-chip" id="btnES" type="button" aria-pressed="true">Reproducir en español</button>
@@ -538,14 +653,12 @@
         </div>
 
         <p class="tts-note" style="margin-top:10px">
-          Tip: si estás en un lugar tranquilo, podés usar lectura por voz para entender el contenido sin esfuerzo.
+          Tip: si estás en un lugar tranquilo, podés usar lectura por voz para entender
+          el contenido sin esfuerzo.
         </p>
       </div>
     </section>
 
-    <!-- (El resto del contenido original se mantiene) -->
-    <!-- NOTA: Desde aquí en adelante queda igual a tu archivo original,
-         solo cambió el hero + bloque "Cómo funciona" + estilos de idioma. -->
 
   </main>
 
