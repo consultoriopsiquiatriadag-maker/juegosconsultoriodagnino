@@ -185,6 +185,112 @@
       .two-col{ grid-template-columns: 1fr; }
     }
 
+    /* === Bloque de video institucional === */
+    .evs-video-section {
+      background: linear-gradient(135deg, rgba(14,34,57,.97) 0%, rgba(10,24,44,.99) 100%);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      padding: 52px 0 48px;
+    }
+    .evs-video-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 760px) {
+      .evs-video-inner { grid-template-columns: 1fr; gap: 28px; }
+    }
+
+    /* Columna de texto */
+    .evs-video-copy {}
+    .evs-video-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 14px;
+    }
+    .evs-video-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+      margin: 0 0 14px;
+    }
+    .evs-video-desc {
+      font-size: .98rem;
+      color: rgba(255,255,255,.72);
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    /* Columna del video */
+    .evs-video-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 12px 48px rgba(0,0,0,.45);
+      /* aspect-ratio mantiene 16:9 sin JS */
+      aspect-ratio: 16 / 9;
+    }
+
+    /* --- PLACEHOLDER (visible cuando no hay <video>) --- */
+    .evs-video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: linear-gradient(160deg, rgba(14,34,57,.85), rgba(8,18,36,.95));
+      text-align: center;
+      padding: 24px;
+    }
+    .evs-play-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(37,99,235,.22);
+      border: 2px solid rgba(37,99,235,.45);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 26px;
+    }
+    .evs-placeholder-text {
+      font-size: .95rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.82);
+    }
+    .evs-placeholder-sub {
+      font-size: .83rem;
+      color: rgba(255,255,255,.45);
+      margin-top: -8px;
+    }
+
+    /* --- ELEMENTO <video> real (oculto mientras no exista el archivo) --- */
+    /* Para activar: quitar la clase .evs-video-placeholder
+       y agregar el elemento <video> directamente en .evs-video-wrap */
+    .evs-video-wrap video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
     /* === Idioma/TTS: más discreto y en columna === */
     .langbar{
       display:flex;
@@ -287,6 +393,56 @@
 
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Bloque de video institucional ===== -->
+  <!--
+    INSTRUCCIONES PARA ACTIVAR EL VIDEO:
+    1. Subir el archivo a:  assets/video/evaluacion-situacional-dr-dagnino.mp4
+    2. Subir el poster a:   assets/img/evaluacion-situacional-poster.jpg
+    3. Eliminar el div.evs-video-placeholder completo.
+    4. Agregar dentro de .evs-video-wrap, en su lugar:
+         <video controls preload="metadata"
+                poster="assets/img/evaluacion-situacional-poster.jpg"
+                aria-label="El Dr. Dagnino explica la Evaluación Psiquiátrica Situacional">
+           <source src="assets/video/evaluacion-situacional-dr-dagnino.mp4" type="video/mp4">
+           Tu navegador no soporta la reproducción de video.
+         </video>
+  -->
+  <section class="evs-video-section" aria-labelledby="evs-video-heading">
+    <div class="wrap evs-video-inner">
+
+      <!-- Texto explicativo -->
+      <div class="evs-video-copy">
+        <p class="evs-video-label" aria-hidden="true">
+          <span>&#9654;</span> Video institucional
+        </p>
+        <h2 class="evs-video-title" id="evs-video-heading">
+          El Dr. Dagnino te explica el dispositivo
+        </h2>
+        <p class="evs-video-desc">
+          En este video se explica para qué sirve la Evaluación Psiquiátrica
+          Situacional, cómo se coordina, qué incluye y cuáles son sus límites.
+        </p>
+        <a class="btn btn-outline-blue" href="#como-funciona"
+           aria-label="Ver la explicación escrita de cómo funciona el dispositivo">
+          Ver explicación escrita
+        </a>
+      </div>
+
+      <!-- Área del video -->
+      <div class="evs-video-wrap" role="region" aria-label="Reproductor de video">
+
+        <!-- Placeholder: reemplazar por <video> cuando el archivo esté disponible -->
+        <div class="evs-video-placeholder" role="img"
+             aria-label="Video explicativo próximamente disponible">
+          <div class="evs-play-icon" aria-hidden="true">&#9654;</div>
+          <p class="evs-placeholder-text">Video explicativo</p>
+          <p class="evs-placeholder-sub">Próximamente</p>
+        </div>
+
       </div>
     </div>
   </section>
