@@ -417,20 +417,181 @@
       margin-top: 1px;
     }
 
-    /* === Idioma/TTS: más discreto y en columna === */
-    .langbar{
-      display:flex;
-      flex-direction: column;
-      align-items: flex-start;
+    /* === Módulo de audio / lectura por voz === */
+
+    /* Sección contenedora */
+    .evs-audio-section {
+      background: linear-gradient(135deg, rgba(14,34,57,.96) 0%, rgba(10,24,44,.98) 100%);
+      border-top: 1px solid rgba(255,255,255,.07);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .evs-audio-section .section-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* Encabezado de la sección */
+    .evs-audio-heading {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.02em;
+      margin: 0 0 10px;
+    }
+    .evs-audio-desc {
+      font-size: .97rem;
+      color: rgba(255,255,255,.72);
+      line-height: 1.6;
+      max-width: 60ch;
+      margin: 0 0 6px;
+    }
+    .evs-audio-micro {
+      font-size: .87rem;
+      color: rgba(255,255,255,.48);
+      margin: 0 0 22px;
+    }
+
+    /* Grilla de botones de idioma */
+    .evs-lang-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
+      margin-bottom: 12px;
     }
-    .langbar .btn-chip{
-      width: 100%;
-      max-width: 260px;
-      padding: 10px 12px;
-      font-size: .95rem;
+    @media (max-width: 540px) {
+      .evs-lang-grid { grid-template-columns: 1fr; gap: 8px; }
+    }
+
+    /* Botón de idioma */
+    .evs-lang-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 12px;
+      min-height: 52px;
       border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.90);
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+      text-align: center;
     }
+    .evs-lang-btn:hover {
+      background: rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.32);
+    }
+    .evs-lang-btn:focus-visible {
+      outline: 2px solid rgba(255,255,255,.70);
+      outline-offset: 3px;
+    }
+    /* Estado activo: reproduciendo */
+    .evs-lang-btn.evs-playing {
+      background: rgba(37,99,235,.28);
+      border-color: rgba(37,99,235,.65);
+      color: #fff;
+    }
+    .evs-lang-btn.evs-playing .evs-btn-flag {
+      animation: evsPulseFlag .9s ease-in-out infinite;
+    }
+    @keyframes evsPulseFlag {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .5; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .evs-lang-btn.evs-playing .evs-btn-flag { animation: none; }
+    }
+
+    /* Fila inferior: Leer actual + Detener */
+    .evs-audio-row2 {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .evs-stop-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 18px;
+      min-height: 46px;
+      border-radius: 12px;
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.30);
+      color: rgba(255,255,255,.88);
+      font-family: inherit;
+      font-size: .93rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .evs-stop-btn:hover    { background: rgba(239,68,68,.22); border-color: rgba(239,68,68,.55); }
+    .evs-stop-btn:focus-visible { outline: 2px solid rgba(239,68,68,.65); outline-offset: 3px; }
+
+    .evs-read-current-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 18px;
+      min-height: 46px;
+      border-radius: 12px;
+      background: rgba(34,197,94,.10);
+      border: 1px solid rgba(34,197,94,.25);
+      color: rgba(255,255,255,.88);
+      font-family: inherit;
+      font-size: .93rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .evs-read-current-btn:hover    { background: rgba(34,197,94,.20); border-color: rgba(34,197,94,.50); }
+    .evs-read-current-btn:focus-visible { outline: 2px solid rgba(34,197,94,.65); outline-offset: 3px; }
+
+    /* Status: "Reproduciendo en español…" */
+    .evs-status {
+      font-size: .87rem;
+      color: rgba(255,255,255,.48);
+      margin-top: 8px;
+      min-height: 1.4em;
+      font-style: italic;
+    }
+    .evs-status.evs-status-active { color: rgba(100,180,255,.80); }
+
+    /* Placeholder para audio grabado */
+    .evs-audio-player-wrap {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .evs-audio-player-wrap .evs-audio-player-label {
+      font-size: .83rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.50);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    /* El elemento <audio> nativo cuando esté disponible */
+    .evs-audio-player-wrap audio {
+      width: 100%;
+      border-radius: 8px;
+    }
+    /* Placeholder si el audio aún no existe */
+    .evs-audio-coming-soon {
+      font-size: .9rem;
+      color: rgba(255,255,255,.42);
+      font-style: italic;
+    }
+
+    /* Ocultar la langbar vieja (reemplazada por los nuevos controles) */
+    .langbar { display: none !important; }
+    .tts-note { display: none !important; }
   </style>
 
 </head>
@@ -771,38 +932,85 @@
     </section>
 
 
-    <!-- ── Objetivo + módulo TTS (conservado intacto) ── -->
-    <section class="section" id="contenido" aria-labelledby="contenido-heading">
-      <div class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" id="contenido-heading" style="margin:0">
-              ¿Cuál es el objetivo de este dispositivo?
-            </h2>
-            <p class="card-sub" style="margin-top:8px">
-              Este dispositivo ha sido creado para evaluar el momento actual y entregar
-              una devolución escrita, útil para vos y/o para tu profesional tratante.
-              Es similar a lo que clásicamente se conocía como segunda opinión; en este
-              caso tiene un plus: permite que una persona, en donde se encuentre, pueda
-              tener una segunda mirada con un informe que permita trazar una hoja de ruta
-              para su salud mental.
-            </p>
-          </div>
+    <!-- ── Módulo de audio / lectura por voz ── -->
+    <section class="section evs-audio-section" id="contenido" aria-labelledby="contenido-heading">
+      <div class="section-card">
 
-          <!-- Módulo TTS / idiomas — conservado tal cual -->
-          <div class="langbar" aria-label="Lectura por voz e idiomas" style="margin-left:auto">
-            <button class="btn-chip" id="btnReadCurrent" type="button">Leer idioma actual</button>
-            <button class="btn-chip" id="btnES" type="button" aria-pressed="true">Reproducir en español</button>
-            <button class="btn-chip" id="btnEN" type="button" aria-pressed="false">Reproducir en inglés</button>
-            <button class="btn-chip" id="btnPT" type="button" aria-pressed="false">Reproducir en portugués</button>
-            <button class="btn-chip" id="btnStop" type="button">Detener</button>
-          </div>
+        <h2 class="evs-audio-heading" id="contenido-heading">
+          Escuchar explicación del dispositivo
+        </h2>
+        <p class="evs-audio-desc">
+          Si preferís, podés escuchar una explicación breve sobre cómo funciona la
+          Evaluación Psiquiátrica Situacional, para qué sirve y cuáles son sus límites.
+        </p>
+        <p class="evs-audio-micro">
+          Ideal para escuchar desde el celular o compartir la explicación con otra persona.
+        </p>
+
+        <!-- Botones de idioma: ES / EN / PT -->
+        <div class="evs-lang-grid" role="group" aria-label="Seleccionar idioma de reproducción">
+          <button class="evs-lang-btn" id="btnES" type="button"
+                  aria-pressed="false" data-lang="es"
+                  aria-label="Reproducir explicación en español">
+            <span class="evs-btn-flag" aria-hidden="true">🇦🇷</span>
+            Español
+          </button>
+          <button class="evs-lang-btn" id="btnEN" type="button"
+                  aria-pressed="false" data-lang="en"
+                  aria-label="Play explanation in English">
+            <span class="evs-btn-flag" aria-hidden="true">🇺🇸</span>
+            English
+          </button>
+          <button class="evs-lang-btn" id="btnPT" type="button"
+                  aria-pressed="false" data-lang="pt"
+                  aria-label="Reproduzir explicação em português">
+            <span class="evs-btn-flag" aria-hidden="true">🇧🇷</span>
+            Português
+          </button>
         </div>
 
-        <p class="tts-note" style="margin-top:10px">
-          Tip: si estás en un lugar tranquilo, podés usar lectura por voz para entender
-          el contenido sin esfuerzo.
-        </p>
+        <!-- Fila secundaria: leer actual + detener -->
+        <div class="evs-audio-row2">
+          <button class="evs-read-current-btn" id="btnReadCurrent" type="button"
+                  aria-label="Leer en el idioma actualmente seleccionado">
+            ▶ Leer idioma actual
+          </button>
+          <button class="evs-stop-btn" id="btnStop" type="button"
+                  aria-label="Detener la reproducción de voz">
+            ■ Detener
+          </button>
+        </div>
+
+        <!-- Estado de reproducción (actualizado por JS) -->
+        <p class="evs-status" id="evsTtsStatus" aria-live="polite" aria-atomic="true"></p>
+
+        <!--
+          AUDIO GRABADO — para activar cuando el archivo esté disponible:
+          1. Subir el archivo a: assets/audio/evaluacion-situacional-explicacion.mp3
+          2. Eliminar el párrafo .evs-audio-coming-soon
+          3. Descomentar el elemento <audio> de abajo
+
+        <div class="evs-audio-player-wrap">
+          <p class="evs-audio-player-label">Audio institucional</p>
+          <audio controls preload="metadata"
+                 aria-label="Explicación grabada de la Evaluación Psiquiátrica Situacional">
+            <source src="assets/audio/evaluacion-situacional-explicacion.mp3" type="audio/mpeg">
+            Tu navegador no soporta reproducción de audio.
+          </audio>
+        </div>
+        -->
+
+        <!-- Placeholder visible mientras no haya audio grabado -->
+        <div class="evs-audio-player-wrap" id="evsAudioPlaceholder">
+          <p class="evs-audio-player-label">Audio institucional</p>
+          <p class="evs-audio-coming-soon">Audio grabado próximamente disponible.</p>
+        </div>
+
+        <!-- Langbar oculta — IDs conservados por compatibilidad -->
+        <div class="langbar" aria-hidden="true" style="display:none;">
+          <button id="btnReadCurrentLegacy" type="button">Leer idioma actual</button>
+        </div>
+
       </div>
     </section>
 
@@ -825,22 +1033,153 @@
   <!-- ===== JS base del ecosistema (si aplica) ===== -->
   <script src="assets/js/app.js"></script>
 
-  <!-- ===== TTS / Idiomas (mantengo tu lógica original si existía) ===== -->
+  <!-- ===== TTS — SpeechSynthesis real (ES / EN / PT) ===== -->
   <script>
-    // Si tu archivo original ya tenía lógica de TTS / idiomas,
-    // dejá esos scripts exactamente como estaban.
-    // Acá dejo un stub mínimo para evitar errores si faltan ids:
+    (function () {
+      'use strict';
 
-    const safe = (id) => document.getElementById(id);
+      /* ── Textos por idioma ─────────────────────────────────────────── */
+      var TEXTS = {
+        es: 'La Evaluación Psiquiátrica Situacional es un dispositivo de entrevista, ' +
+            'análisis clínico e integración profesional. ' +
+            'Está pensado para personas que necesitan una mirada psiquiátrica puntual ' +
+            'sobre su situación actual, sin que eso implique necesariamente iniciar ' +
+            'un tratamiento continuo. ' +
+            'Se realiza una o más entrevistas, se integra la información disponible ' +
+            'y se entrega una devolución escrita con orientación profesional ' +
+            'y próximos pasos sugeridos.',
 
-    const btnReadCurrent = safe("btnReadCurrent");
-    const btnES = safe("btnES");
-    const btnEN = safe("btnEN");
-    const btnPT = safe("btnPT");
-    const btnStop = safe("btnStop");
+        en: 'The Situational Psychiatric Evaluation is an interview, clinical analysis ' +
+            'and professional integration tool. ' +
+            'It is designed for people who need a specific psychiatric perspective ' +
+            'on their current situation, without necessarily initiating ongoing treatment. ' +
+            'One or more interviews are conducted, available information is integrated, ' +
+            'and a written feedback report is delivered with professional guidance ' +
+            'and suggested next steps.',
 
-    // Si ya tenías SpeechSynthesis o tu lógica propia, pegala aquí tal cual.
-    // (No la reescribo para no romperte lo que ya funciona.)
+        pt: 'A Avaliação Psiquiátrica Situacional é um dispositivo de entrevista, ' +
+            'análise clínica e integração profissional. ' +
+            'Foi criado para pessoas que precisam de uma perspectiva psiquiátrica pontual ' +
+            'sobre sua situação atual, sem que isso implique necessariamente iniciar ' +
+            'um tratamento contínuo. ' +
+            'Realiza-se uma ou mais entrevistas, integra-se a informação disponível ' +
+            'e entrega-se um relatório escrito com orientação profissional ' +
+            'e próximos passos sugeridos.'
+      };
+
+      /* Mapas de idioma para SpeechSynthesis */
+      var LANG_CODES = { es: 'es-AR', en: 'en-US', pt: 'pt-BR' };
+      var LANG_NAMES = { es: 'español', en: 'English', pt: 'português' };
+
+      /* ── Estado ───────────────────────────────────────────────────── */
+      var currentLang   = 'es';
+      var isSupported   = typeof window.speechSynthesis !== 'undefined';
+      var statusEl      = document.getElementById('evsTtsStatus');
+
+      /* ── Botones ─────────────────────────────────────────────────── */
+      var btnES          = document.getElementById('btnES');
+      var btnEN          = document.getElementById('btnEN');
+      var btnPT          = document.getElementById('btnPT');
+      var btnReadCurrent = document.getElementById('btnReadCurrent');
+      var btnStop        = document.getElementById('btnStop');
+
+      var langBtns = [btnES, btnEN, btnPT];
+
+      /* ── Helpers ─────────────────────────────────────────────────── */
+      function setStatus(msg, active) {
+        if (!statusEl) return;
+        statusEl.textContent = msg || '';
+        if (active) {
+          statusEl.classList.add('evs-status-active');
+        } else {
+          statusEl.classList.remove('evs-status-active');
+        }
+      }
+
+      function setActiveLangBtn(lang) {
+        langBtns.forEach(function (btn) {
+          if (!btn) return;
+          var isActive = (btn.dataset.lang === lang);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          if (isActive) {
+            btn.classList.add('evs-playing');
+          } else {
+            btn.classList.remove('evs-playing');
+          }
+        });
+      }
+
+      function clearActiveBtns() {
+        langBtns.forEach(function (btn) {
+          if (!btn) return;
+          btn.setAttribute('aria-pressed', 'false');
+          btn.classList.remove('evs-playing');
+        });
+      }
+
+      /* ── SpeechSynthesis ─────────────────────────────────────────── */
+      function speak(lang) {
+        if (!isSupported) {
+          setStatus('Tu navegador no soporta lectura por voz.', false);
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+        clearActiveBtns();
+
+        var text   = TEXTS[lang] || TEXTS.es;
+        var code   = LANG_CODES[lang] || 'es-AR';
+        var name   = LANG_NAMES[lang] || lang;
+        var utter  = new SpeechSynthesisUtterance(text);
+
+        /* Buscar voz en el idioma solicitado */
+        var voices = window.speechSynthesis.getVoices();
+        var match  = voices.find(function (v) { return v.lang.startsWith(code.split('-')[0]); });
+        if (match) utter.voice = match;
+        utter.lang  = code;
+        utter.rate  = 0.92;
+        utter.pitch = 1;
+
+        utter.onstart = function () {
+          currentLang = lang;
+          setActiveLangBtn(lang);
+          setStatus('Reproduciendo en ' + name + '…', true);
+        };
+        utter.onend   = function () { clearActiveBtns(); setStatus('', false); };
+        utter.onerror = function () { clearActiveBtns(); setStatus('Error al reproducir. Intentá de nuevo.', false); };
+
+        window.speechSynthesis.speak(utter);
+      }
+
+      function stopSpeech() {
+        if (isSupported) window.speechSynthesis.cancel();
+        clearActiveBtns();
+        setStatus('', false);
+      }
+
+      /* ── Eventos ─────────────────────────────────────────────────── */
+      if (btnES) btnES.addEventListener('click', function () { speak('es'); });
+      if (btnEN) btnEN.addEventListener('click', function () { speak('en'); });
+      if (btnPT) btnPT.addEventListener('click', function () { speak('pt'); });
+
+      if (btnReadCurrent) {
+        btnReadCurrent.addEventListener('click', function () { speak(currentLang); });
+      }
+      if (btnStop) {
+        btnStop.addEventListener('click', stopSpeech);
+      }
+
+      /* Cargar voces cuando el navegador las tenga disponibles */
+      if (isSupported && window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = function () {};
+      }
+
+      /* Mensaje si el navegador no soporta TTS */
+      if (!isSupported && statusEl) {
+        setStatus('Lectura por voz no disponible en este navegador.', false);
+      }
+
+    })();
   </script>
 
 </body>
