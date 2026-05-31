@@ -349,6 +349,74 @@
       margin: 0;
     }
 
+    /* === Sección "Casos en los que puede ser útil" === */
+    .evs-casos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      .evs-casos-grid { grid-template-columns: 1fr; gap: 11px; }
+    }
+
+    .evs-caso-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      background: rgba(15,30,51,.04);
+      border: 1px solid var(--border);
+      transition: border-color .18s, background .18s;
+    }
+    .evs-caso-card:hover {
+      background: rgba(37,99,235,.04);
+      border-color: rgba(37,99,235,.22);
+    }
+    .evs-caso-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .evs-caso-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+    .evs-caso-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--inst-navy);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .evs-caso-desc {
+      font-size: .93rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Nota prudente bajo las tarjetas */
+    .evs-casos-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(245,158,11,.06);
+      border: 1px solid rgba(245,158,11,.22);
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .evs-casos-note-icon {
+      font-size: 17px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
     /* === Idioma/TTS: más discreto y en columna === */
     .langbar{
       display:flex;
@@ -620,6 +688,85 @@
           </div>
 
         </div>
+      </div>
+    </section>
+
+
+    <!-- ── Casos en los que puede ser útil ── -->
+    <section class="section" id="casos" aria-labelledby="casos-heading">
+      <div class="section-card">
+
+        <h2 class="card-title" id="casos-heading" style="margin:0 0 6px;">
+          Casos en los que puede ser útil
+        </h2>
+        <p class="card-sub" style="margin:0 0 18px;">
+          Situaciones concretas donde este dispositivo se ha aplicado en el consultorio.
+        </p>
+
+        <div class="evs-casos-grid">
+
+          <!-- 1 -->
+          <div class="evs-caso-card">
+            <div class="evs-caso-head">
+              <span class="evs-caso-icon" aria-hidden="true">🏢</span>
+              <h3 class="evs-caso-title">Incorporación institucional</h3>
+            </div>
+            <p class="evs-caso-desc">
+              Entrevistas psiquiátricas a distancia para procesos de incorporación de personal
+              específico a una institución, cuando se requiere una mirada clínica profesional.
+            </p>
+          </div>
+
+          <!-- 2 -->
+          <div class="evs-caso-card">
+            <div class="evs-caso-head">
+              <span class="evs-caso-icon" aria-hidden="true">✈️</span>
+              <h3 class="evs-caso-title">Certificación Médica Aeronáutica</h3>
+            </div>
+            <p class="evs-caso-desc">
+              Entrevistas psiquiátricas orientadas a Certificación Médica Aeronáutica para
+              aviación civil y comercial, según requerimientos del proceso evaluativo
+              correspondiente.
+            </p>
+          </div>
+
+          <!-- 3 -->
+          <div class="evs-caso-card">
+            <div class="evs-caso-head">
+              <span class="evs-caso-icon" aria-hidden="true">🔍</span>
+              <h3 class="evs-caso-title">Segunda opinión clínica</h3>
+            </div>
+            <p class="evs-caso-desc">
+              Evaluación de segunda opinión para pacientes bajo tratamiento por otros
+              especialistas o en seguimiento por psicología, cuando se necesita ordenar
+              hipótesis, evolución y próximos pasos.
+            </p>
+          </div>
+
+          <!-- 4 -->
+          <div class="evs-caso-card">
+            <div class="evs-caso-head">
+              <span class="evs-caso-icon" aria-hidden="true">🧭</span>
+              <h3 class="evs-caso-title">Orientación clínica puntual</h3>
+            </div>
+            <p class="evs-caso-desc">
+              Una consulta evaluativa para personas que necesitan comprender mejor su
+              situación actual antes de decidir cómo continuar.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Nota prudente -->
+        <div class="evs-casos-note" role="note">
+          <span class="evs-casos-note-icon" aria-hidden="true">⚠️</span>
+          <span>
+            La evaluación aporta una mirada profesional y una devolución escrita.
+            No garantiza resultados administrativos, certificaciones automáticas
+            ni reemplaza instancias oficiales cuando correspondan.
+          </span>
+        </div>
+
       </div>
     </section>
 
