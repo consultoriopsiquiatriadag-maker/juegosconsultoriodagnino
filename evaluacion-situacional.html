@@ -592,6 +592,117 @@
     /* Ocultar la langbar vieja (reemplazada por los nuevos controles) */
     .langbar { display: none !important; }
     .tts-note { display: none !important; }
+
+    /* ================================================================
+       FASE 7 — Pulido móvil, accesibilidad y legibilidad
+    ================================================================ */
+
+    /* 1. Prevenir scroll horizontal */
+    body { overflow-x: hidden; }
+
+    /* 2. Legibilidad general de párrafos y descripciones */
+    .how-d              { line-height: 1.60; }
+    .evs-que-es         { line-height: 1.70; }
+    .evs-inout-list li  { line-height: 1.60; }
+    .evs-caso-desc      { line-height: 1.65; }
+
+    /* Hero: bridge más cómodo de leer */
+    .hero.hero-sala .hero-bridge { line-height: 1.60; }
+
+    /* 3. focus-visible en elementos interactivos clave */
+    .btn:focus-visible {
+      outline: 2px solid rgba(37,99,235,.75);
+      outline-offset: 3px;
+    }
+    .btn.btn-blue:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+    .btn.btn-outline-blue:focus-visible {
+      outline: 2px solid var(--inst-blue, #2563eb);
+      outline-offset: 3px;
+    }
+    .how-step:focus-within {
+      outline: 2px solid rgba(37,99,235,.30);
+      outline-offset: 2px;
+      border-radius: 18px;
+    }
+    .evs-caso-card:focus-within {
+      outline: 2px solid rgba(37,99,235,.30);
+      outline-offset: 2px;
+      border-radius: 16px;
+    }
+
+    /* 4. Tamaño mínimo de texto en el cuerpo principal (15px efectivos) */
+    .how-d,
+    .evs-caso-desc,
+    .evs-inout-list li,
+    .evs-que-es,
+    .evs-audio-desc,
+    .card-sub           { font-size: max(.93rem, 15px); }
+
+    /* 5. Trust-chips: altura mínima táctil */
+    .trust-chips .chip  { min-height: 36px; }
+
+    /* 6. Botones del header (A−/A+): altura cómoda en móvil */
+    .topbar-actions .btn-chip { min-height: 40px; padding: 8px 14px; }
+
+    /* 7. Reduce motion: desactivar todas las animaciones del archivo */
+    @media (prefers-reduced-motion: reduce) {
+      .pill-lite .dot     { animation: none !important; }
+      .btn.btn-blue.pulse-once { animation: none !important; }
+      .evs-lang-btn.evs-playing .evs-btn-flag { animation: none !important; }
+    }
+
+    /* 8. Ajustes ≤ 640px — teléfonos estándar */
+    @media (max-width: 640px) {
+      /* Hero: card con menos padding, sin overlap agresivo */
+      .hero-photo { height: 38vh; }
+      .hero-copy-inner { margin-top: -80px; }
+      .hero-card { padding: 18px 16px; border-radius: 16px; }
+      .hero.hero-sala .hero-title { font-size: 1.55rem; }
+      .hero.hero-sala .hero-bridge { font-size: 1rem; }
+
+      /* Pasos: 1 col en móvil */
+      .how-grid { grid-template-columns: 1fr; gap: 10px; }
+
+      /* Sección de video: padding menor */
+      .evs-video-section { padding: 32px 0 28px; }
+      .evs-video-title   { font-size: 1.15rem; }
+
+      /* Botones hero: ya en 1 col desde Fase 2 */
+
+      /* Sección audio: lang buttons en 1 col */
+      .evs-lang-grid { grid-template-columns: 1fr; }
+      .evs-audio-row2 { flex-direction: column; }
+      .evs-stop-btn,
+      .evs-read-current-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Padding inferior del main */
+      #spaMain { padding-bottom: 40px; }
+    }
+
+    /* 9. Ajustes ≤ 430px — teléfonos pequeños/medianos */
+    @media (max-width: 430px) {
+      .hero-photo { height: 30vh; }
+      .hero-copy-inner { margin-top: -60px; }
+      .hero.hero-sala .hero-title { font-size: 1.35rem; }
+      .trust-chips .chip { font-size: .85rem; padding: 7px 10px; }
+      .evs-inout-grid { gap: 10px; }
+      .evs-casos-grid { gap: 10px; }
+      .evs-caso-card  { padding: 14px 14px 12px; }
+      .evs-inout-card { padding: 14px 14px; }
+    }
+
+    /* 10. Ajustes ≤ 390px — teléfonos más estrechos (iPhone SE, etc.) */
+    @media (max-width: 390px) {
+      .hero.hero-sala .hero-title { font-size: 1.2rem; }
+      .how-step { padding: 12px 12px; }
+      .evs-audio-heading { font-size: 1.1rem; }
+    }
   </style>
 
 </head>
