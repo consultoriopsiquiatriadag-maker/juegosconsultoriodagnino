@@ -696,11 +696,11 @@ a.btn-primary[href*="whatsapp"]{
   align-items: flex-end;
 }
 
-.side-nav-toggle{
+.page-side-nav__toggle{
   display: none;
 }
 
-.side-nav-list{
+.page-side-nav__panel{
   list-style: none;
   margin: 0;
   padding: 10px 6px;
@@ -718,7 +718,7 @@ a.btn-primary[href*="whatsapp"]{
   gap: 1px;
 }
 
-.side-nav-link{
+.page-side-nav__link{
   display: block;
   padding: 5px 10px;
   font-size: 11px;
@@ -731,17 +731,17 @@ a.btn-primary[href*="whatsapp"]{
   transition: background 0.14s ease, color 0.14s ease;
 }
 
-.side-nav-link:hover{
+.page-side-nav__link:hover{
   background: rgba(14,34,57,0.08);
   color: #0a1f36;
 }
 
-.side-nav-link:focus-visible{
+.page-side-nav__link:focus-visible{
   outline: 2px solid #0e7ab7;
   outline-offset: 2px;
 }
 
-.side-nav-link.is-active{
+.page-side-nav__link.is-active{
   background: rgba(14,34,57,0.11);
   color: #0a1f36;
   font-weight: 700;
@@ -757,7 +757,7 @@ a.btn-primary[href*="whatsapp"]{
     align-items: flex-end;
   }
 
-  .side-nav-toggle{
+  .page-side-nav__toggle{
     display: flex;
     align-items: center;
     gap: 5px;
@@ -775,12 +775,12 @@ a.btn-primary[href*="whatsapp"]{
     font-family: inherit;
   }
 
-  .side-nav-toggle:focus-visible{
+  .page-side-nav__toggle:focus-visible{
     outline: 2px solid #0e7ab7;
     outline-offset: 2px;
   }
 
-  .side-nav-list{
+  .page-side-nav__panel{
     display: none;
     position: absolute;
     bottom: calc(100% + 8px);
@@ -791,18 +791,18 @@ a.btn-primary[href*="whatsapp"]{
     overscroll-behavior: contain;
   }
 
-  .page-side-nav[data-open="true"] .side-nav-list{
+  .page-side-nav[data-open="true"] .page-side-nav__panel{
     display: flex;
   }
 
-  .side-nav-link{
+  .page-side-nav__link{
     font-size: 13px;
     padding: 8px 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .side-nav-link{ transition: none !important; }
+  .page-side-nav__link{ transition: none !important; }
 }
 
 /* ===== FASE 8 — Botón flotante WhatsApp Turnos ===== */
@@ -912,7 +912,7 @@ a.btn-primary[href*="whatsapp"]{
   <!-- Menú lateral de navegación interna -->
   <nav class="page-side-nav" id="pageSideNav" aria-label="Navegación de secciones">
 
-    <button class="side-nav-toggle" id="sideNavToggle"
+    <button class="page-side-nav__toggle" id="sideNavToggle"
             aria-expanded="false"
             aria-controls="sideNavList"
             aria-label="Abrir menú de secciones"
@@ -921,18 +921,18 @@ a.btn-primary[href*="whatsapp"]{
       <span>Menú</span>
     </button>
 
-    <ul class="side-nav-list" id="sideNavList" role="list">
-      <li><a class="side-nav-link" href="#inicio">Inicio</a></li>
-      <li><a class="side-nav-link" href="#que-es-la-sala">¿Qué es?</a></li>
-      <li><a class="side-nav-link" href="#recursos-principales">Recursos</a></li>
-      <li><a class="side-nav-link" href="#salud-mental">Salud mental</a></li>
-      <li><a class="side-nav-link" href="#herramientas-pacientes">Herramientas</a></li>
-      <li><a class="side-nav-link" href="#videos">Videos</a></li>
-      <li><a class="side-nav-link" href="#evaluacion-situacional-home">EPS</a></li>
-      <li><a class="side-nav-link" href="#equipo-profesional">Equipo</a></li>
-      <li><a class="side-nav-link" href="#central-turnos">Turnos</a></li>
-      <li><a class="side-nav-link" href="#instalar-app">App</a></li>
-      <li><a class="side-nav-link" href="#noticias-salud-mental">Noticias</a></li>
+    <ul class="page-side-nav__panel" id="sideNavList" role="list">
+      <li><a class="page-side-nav__link" href="#inicio">Inicio</a></li>
+      <li><a class="page-side-nav__link" href="#que-es-la-sala">¿Qué es?</a></li>
+      <li><a class="page-side-nav__link" href="#recursos-principales">Recursos</a></li>
+      <li><a class="page-side-nav__link" href="#salud-mental">Salud mental</a></li>
+      <li><a class="page-side-nav__link" href="#herramientas-pacientes">Herramientas</a></li>
+      <li><a class="page-side-nav__link" href="#videos">Videos</a></li>
+      <li><a class="page-side-nav__link" href="#evaluacion-situacional-home">EPS</a></li>
+      <li><a class="page-side-nav__link" href="#equipo-profesional">Equipo</a></li>
+      <li><a class="page-side-nav__link" href="#central-turnos">Turnos</a></li>
+      <li><a class="page-side-nav__link" href="#instalar-app">App</a></li>
+      <li><a class="page-side-nav__link" href="#noticias-salud-mental">Noticias</a></li>
     </ul>
 
   </nav>
@@ -1492,7 +1492,7 @@ a.btn-primary[href*="whatsapp"]{
   });
 
   /* Cerrar al hacer clic en un enlace */
-  list.querySelectorAll('.side-nav-link').forEach(function (a) {
+  list.querySelectorAll('.page-side-nav__link').forEach(function (a) {
     a.addEventListener('click', function () { setOpen(false); });
   });
 
