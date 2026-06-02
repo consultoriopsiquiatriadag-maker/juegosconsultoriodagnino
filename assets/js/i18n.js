@@ -29,7 +29,7 @@
         sheet_note: "Tip: estos ajustes se guardan automáticamente para próximas visitas.",
 
         hero_pill: "Espacio virtual disponible",
-        hero_title: "Sala de espera virtual",
+        hero_title: "Bienvenidos a la SALA DE ESPERA VIRTUAL",
         hero_bridge: "Un espacio previo a la atención médica, con recursos psicológicos cuidadosamente diseñados.",
         hero_subline: "Consultorio de Psiquiatría – Dr. Pedro Nicolas Dagnino",
         hero_meta: "Médico especialista en Psiquiatría y Medicina Aeronáutica",
@@ -40,8 +40,8 @@
         quick_emotions: "Emociones",
         quick_turns: "Central de Turnos",
 
-        welcome_title: "Bienvenidos/as",
-        welcome_text: "La sala de espera virtual del Consultorio de Psiquiatría del Dr. Dagnino no es solamente un espacio con juegos mnésicos, es un lugar pensado para que puedan sentirse contemplados, incluso antes de una atención en cualquiera de nuestros dispositivos de atención. Un espacio con recursos psicológicos cuidados, accesibles y coherentes con la práctica en salud mental.",
+        welcome_title: "¿Qué es esta sala de espera virtual?",
+        welcome_text: "Este sitio reúne recursos digitales pensados para acompañar la espera, orientar al paciente y ofrecer herramientas breves de psicoeducación, registro emocional, higiene del sueño y acceso a contenidos clínicos del consultorio. No reemplaza una consulta médica, pero puede ayudar a ordenar información, conocer recursos y acceder a materiales preparados para pacientes.",
         legal_btn: "Aviso legal / Privacidad",
 
         r1_games_title: "Juegos cognitivos",
@@ -117,7 +117,7 @@
         sheet_note: "Tip: these settings are saved automatically for future visits.",
 
         hero_pill: "Virtual space available",
-        hero_title: "Virtual waiting room",
+        hero_title: "Welcome to the VIRTUAL WAITING ROOM",
         hero_bridge: "A pre-appointment space with carefully designed psychological resources.",
         hero_subline: "Psychiatry Clinic – Dr. Pedro Nicolas Dagnino",
         hero_meta: "Board-certified Psychiatrist & Aeromedical Medicine Specialist",
@@ -128,8 +128,8 @@
         quick_emotions: "Emotions",
         quick_turns: "Scheduling Desk",
 
-        welcome_title: "Welcome",
-        welcome_text: "This virtual waiting room is more than memory games. It is a space designed to help you feel supported—even before your appointment in any of our care pathways. Carefully curated psychological resources, accessible and consistent with mental health practice.",
+        welcome_title: "What is this virtual waiting room?",
+        welcome_text: "This site brings together digital resources designed to support the waiting period, guide patients, and offer brief tools in psychoeducation, emotional logging, sleep hygiene, and access to clinical content from the clinic. It does not replace a medical consultation, but it can help organize information, discover resources, and access materials prepared for patients.",
         legal_btn: "Legal / Privacy",
 
         r1_games_title: "Cognitive games",
@@ -205,7 +205,7 @@
         sheet_note: "Dica: estas configurações ficam salvas automaticamente para próximas visitas.",
 
         hero_pill: "Espaço virtual disponível",
-        hero_title: "Sala de espera virtual",
+        hero_title: "Bem-vindos à SALA DE ESPERA VIRTUAL",
         hero_bridge: "Um espaço pré-consulta com recursos psicológicos cuidadosamente elaborados.",
         hero_subline: "Consultório de Psiquiatria – Dr. Pedro Nicolas Dagnino",
         hero_meta: "Médico especialista em Psiquiatria e Medicina Aeronáutica",
@@ -216,8 +216,8 @@
         quick_emotions: "Emoções",
         quick_turns: "Central de Agendamento",
 
-        welcome_title: "Bem-vindo/a",
-        welcome_text: "Esta sala de espera virtual é mais do que jogos de memória. É um espaço pensado para que você se sinta acolhido/a—mesmo antes do atendimento em qualquer um de nossos dispositivos. Recursos psicológicos cuidadosos, acessíveis e coerentes com a prática em saúde mental.",
+        welcome_title: "O que é esta sala de espera virtual?",
+        welcome_text: "Este site reúne recursos digitais pensados para acompanhar a espera, orientar o paciente e oferecer ferramentas breves de psicoeducação, registro emocional, higiene do sono e acesso a conteúdos clínicos do consultório. Não substitui uma consulta médica, mas pode ajudar a organizar informações, conhecer recursos e acessar materiais preparados para pacientes.",
         legal_btn: "Aviso legal / Privacidade",
 
         r1_games_title: "Jogos cognitivos",
