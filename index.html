@@ -553,6 +553,48 @@ a.btn-primary[href*="whatsapp"]{
   .hero-wave svg{ height: 40px; }
 }
 
+/* ===== BIENVENIDA HERO — animación sobria ===== */
+/* Fade + deslizamiento horizontal suave desde la izquierda.
+   No toca .hero-title original: solo se activa si se agrega
+   la clase .hero-title-welcome-motion al elemento. */
+.hero-title-welcome-motion{
+  animation: heroTitleIn 0.90s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@keyframes heroTitleIn{
+  from{
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* En mobile pequeño: "SALA DE ESPERA VIRTUAL" pasa a bloque
+   para evitar corte de texto y mejorar lectura. */
+.sala-label{
+  display: inline;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 480px){
+  .sala-label{
+    display: block;
+    margin-top: 2px;
+  }
+}
+
+/* Sin movimiento: texto fijo, totalmente legible */
+@media (prefers-reduced-motion: reduce){
+  .hero-title-welcome-motion{
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 </style>
 </head>
 
@@ -607,7 +649,7 @@ a.btn-primary[href*="whatsapp"]{
           <span class="dot" aria-hidden="true"></span>
           <span data-i18n="hero_pill">Espacio virtual disponible</span>
         </div>
-        <h1 class="hero-title" data-i18n="hero_title">Sala de espera virtual</h1>
+        <h1 class="hero-title hero-title-welcome-motion" data-i18n="hero_title">Bienvenidos a la <span class="sala-label">SALA DE ESPERA VIRTUAL</span></h1>
       </div>
     </div>
   </section>
@@ -618,7 +660,7 @@ a.btn-primary[href*="whatsapp"]{
 <!-- Fragmento de inicio: zócalos del index (NO incluir <html>/<head>/<body>) -->
 
 <!-- Bienvenidos/as -->
-<section class="section">
+<section class="section" id="bienvenidos">
   <div class="section-card hint-bg">
     <div class="card-head">
       <div>
@@ -638,7 +680,7 @@ a.btn-primary[href*="whatsapp"]{
 <div class="divider" aria-hidden="true"></div>
 
 <!-- Fila 1 – Recursos principales -->
-<section class="section">
+<section class="section" id="recursos">
   <div class="grid-4">
 
     <article class="section-card card-hover hint-bg hint-cog">
@@ -693,7 +735,7 @@ a.btn-primary[href*="whatsapp"]{
 </section>
 
 <!-- ✅ Temas de Salud mental (debajo de Psicoeducación) -->
-<section class="section">
+<section class="section" id="temas-salud-mental">
   <div class="section-card card-hover hint-bg hint-psycho">
     <div class="card-head">
       <div>
@@ -711,7 +753,7 @@ a.btn-primary[href*="whatsapp"]{
   </div>
 </section>
 <!-- ✅ Desmitificando tratamientos psiquiátricos (debajo de Temas de Salud mental) -->
-<section class="section">
+<section class="section" id="desmitificando">
   <div class="section-card card-hover hint-bg hint-psycho">
     <div class="card-head">
       <div>
@@ -752,7 +794,7 @@ a.btn-primary[href*="whatsapp"]{
 </section>
 
 <!-- Próximamente / En construcción -->
-<section class="section">
+<section class="section" id="herramientas">
   <div class="grid-3">
 
     <!-- Psicofármacos (ya disponible) -->
@@ -807,7 +849,7 @@ a.btn-primary[href*="whatsapp"]{
 <div class="divider" aria-hidden="true"></div>
 
 <!-- Recomendaciones en video -->
-<section class="section">
+<section class="section" id="videos">
   <div class="section-card card-hover hint-bg">
     <div class="card-head">
       <div>
@@ -820,7 +862,7 @@ a.btn-primary[href*="whatsapp"]{
 </section>
 
 <!-- EPS -->
-<section class="section">
+<section class="section" id="evaluacion-situacional">
   <div class="section-card card-hover hint-bg">
     <div class="card-head">
       <div>
@@ -840,7 +882,7 @@ a.btn-primary[href*="whatsapp"]{
 <div class="divider" aria-hidden="true"></div>
 
 <!-- Equipo profesional asociado -->
-<section class="section">
+<section class="section" id="equipo">
   <div class="section-card hint-bg">
     <div class="card-head">
       <div>
@@ -914,7 +956,7 @@ a.btn-primary[href*="whatsapp"]{
 <div class="divider" aria-hidden="true"></div>
 
 <!-- Instalar como app (preview icono) -->
-<section class="section">
+<section class="section" id="instalar-app">
   <div class="section-card hint-bg">
     <div class="card-head">
       <div>
@@ -937,7 +979,7 @@ a.btn-primary[href*="whatsapp"]{
 </section>
 
 <!-- Noticias de salud mental -->
-<section class="section">
+<section class="section" id="noticias">
   <div class="section-card card-hover hint-bg hint-psycho">
     <div class="card-head">
       <div>
