@@ -117,6 +117,17 @@
 
       function onPop(e){
         const st = e.state;
+
+        // Si es un cambio de hash dentro de la misma página
+        // (ej: clic en ancla #seccion), dejar que el browser lo maneje.
+        if (window.location.hash) {
+          const current = new URL(window.location.href);
+          const target  = st && st.url ? new URL(st.url, window.location.href) : null;
+          const sameDoc = !target ||
+            (target.pathname === current.pathname && target.search === current.search);
+          if (sameDoc) return;
+        }
+
         if (st && st.url) navigate(st.url, false);
         else navigate(window.location.href, false);
       }
