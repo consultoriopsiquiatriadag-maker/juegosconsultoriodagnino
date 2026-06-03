@@ -153,6 +153,87 @@
       a.card-link:hover{ transform: none !important; }
     }
 
+    /* ── Sistema de categorías cognitivas ───────────────── */
+    :root{
+      --cat-at:   #0284c7; --cat-at-bg:  rgba(2,132,199,0.07);
+      --cat-mem:  #7c3aed; --cat-mem-bg: rgba(124,58,237,0.07);
+      --cat-inh:  #b45309; --cat-inh-bg: rgba(180,83,9,0.07);
+      --cat-lng:  #0f766e; --cat-lng-bg: rgba(15,118,110,0.07);
+      --cat-raz:  #1d4ed8; --cat-raz-bg: rgba(29,78,216,0.07);
+    }
+
+    /* Borde izquierdo + fondo tintado por categoría */
+    .cat-at  { border-left: 3px solid var(--cat-at);  background: var(--cat-at-bg);  }
+    .cat-mem { border-left: 3px solid var(--cat-mem); background: var(--cat-mem-bg); }
+    .cat-inh { border-left: 3px solid var(--cat-inh); background: var(--cat-inh-bg); }
+    .cat-lng { border-left: 3px solid var(--cat-lng); background: var(--cat-lng-bg); }
+    .cat-raz { border-left: 3px solid var(--cat-raz); background: var(--cat-raz-bg); }
+
+    /* Ícono con color de categoría */
+    .cat-at  .game-icon { background: rgba(2,132,199,0.10);  border-color: rgba(2,132,199,0.22);  }
+    .cat-mem .game-icon { background: rgba(124,58,237,0.10); border-color: rgba(124,58,237,0.22); }
+    .cat-inh .game-icon { background: rgba(180,83,9,0.10);   border-color: rgba(180,83,9,0.22);   }
+    .cat-lng .game-icon { background: rgba(15,118,110,0.10); border-color: rgba(15,118,110,0.22); }
+    .cat-raz .game-icon { background: rgba(29,78,216,0.10);  border-color: rgba(29,78,216,0.22);  }
+
+    .cat-at  .game-icon svg { stroke: var(--cat-at);  }
+    .cat-mem .game-icon svg { stroke: var(--cat-mem); }
+    .cat-inh .game-icon svg { stroke: var(--cat-inh); }
+    .cat-lng .game-icon svg { stroke: var(--cat-lng); }
+    .cat-raz .game-icon svg { stroke: var(--cat-raz); }
+
+    /* Badge de categoría */
+    .game-cat-badge{
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 2px 9px;
+      border-radius: 999px;
+    }
+    .cat-at  .game-cat-badge { color: var(--cat-at);  background: rgba(2,132,199,0.12);  }
+    .cat-mem .game-cat-badge { color: var(--cat-mem); background: rgba(124,58,237,0.12); }
+    .cat-inh .game-cat-badge { color: var(--cat-inh); background: rgba(180,83,9,0.12);   }
+    .cat-lng .game-cat-badge { color: var(--cat-lng); background: rgba(15,118,110,0.12); }
+    .cat-raz .game-cat-badge { color: var(--cat-raz); background: rgba(29,78,216,0.12);  }
+
+    /* Layout interno de tarjeta */
+    .game-card-inner{
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .game-card-top{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    /* CTA "Ingresar →" al pie */
+    .game-cta{
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      opacity: 0.55;
+      transition: opacity 0.14s ease;
+    }
+    .cat-at  .game-cta { color: var(--cat-at);  }
+    .cat-mem .game-cta { color: var(--cat-mem); }
+    .cat-inh .game-cta { color: var(--cat-inh); }
+    .cat-lng .game-cta { color: var(--cat-lng); }
+    .cat-raz .game-cta { color: var(--cat-raz); }
+    a.card-link:hover .game-cta{ opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce){
+      .game-cta{ transition: none !important; }
+    }
+
     /* ── Barra de vuelta ─────────────────────────────────── */
     .topbar-back{
       display: flex;
@@ -299,426 +380,476 @@
     <section class="section" aria-label="Listado de juegos">
       <div class="games-grid">
 
-        <!-- ENF · Foco 90 -->
-        <a class="section-card card-hover hint-bg card-link" href="enf-foco90.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
-              </svg>
+        <!-- ENF · Foco 90 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="enf-foco90.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">ENF · Foco 90</h3>
-              <p class="game-desc">Atención sostenida + comprensión en 90 segundos.<br>
-              <strong>Entrenamiento Neurocognitivo Funcional</strong></p>
-            </div>
+            <h3 class="game-title">ENF · Foco 90</h3>
+            <p class="game-desc">Atención sostenida + comprensión en 90 segundos. <em>Entrenamiento Neurocognitivo Funcional</em></p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- ENF · Cambiá la Regla -->
-        <a class="section-card card-hover hint-bg card-link" href="enf-cambia-la-regla.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 4 23 10 17 10"></polyline>
-                <path d="M20.49 15A9 9 0 1 1 23 10"></path>
-              </svg>
+        <!-- ENF · Cambiá la Regla — Inhibición -->
+        <a class="section-card card-hover card-link cat-inh" href="enf-cambia-la-regla.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15A9 9 0 1 1 23 10"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Inhibición</span>
             </div>
-            <div>
-              <h3 class="game-title">ENF · Cambiá la Regla</h3>
-              <p class="game-desc">Flexibilidad cognitiva (switching) y control inhibitorio.<br>
-              <strong>Entrenamiento Neurocognitivo Funcional</strong></p>
-            </div>
+            <h3 class="game-title">ENF · Cambiá la Regla</h3>
+            <p class="game-desc">Flexibilidad cognitiva (switching) y control inhibitorio. <em>Entrenamiento Neurocognitivo Funcional</em></p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- ENF · Stop Rumiación -->
-        <a class="section-card card-hover hint-bg card-link" href="enf-stop-rumiacion.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
-              </svg>
+        <!-- ENF · Stop Rumiación — Inhibición -->
+        <a class="section-card card-hover card-link cat-inh" href="enf-stop-rumiacion.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Inhibición</span>
             </div>
-            <div>
-              <h3 class="game-title">ENF · Stop Rumiación</h3>
-              <p class="game-desc">Go/No-Go con palabras: entrená freno al impulso y foco.<br>
-              <strong>Entrenamiento Neurocognitivo Funcional</strong></p>
-            </div>
+            <h3 class="game-title">ENF · Stop Rumiación</h3>
+            <p class="game-desc">Go/No-Go con palabras: entrená freno al impulso y foco. <em>Entrenamiento Neurocognitivo Funcional</em></p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- ENF · Plan en 3 Pasos -->
-        <a class="section-card card-hover hint-bg card-link" href="enf-plan-3-pasos.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 11l3 3L22 4"></path>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2"></path>
-              </svg>
+        <!-- ENF · Plan en 3 Pasos — Razonamiento -->
+        <a class="section-card card-hover card-link cat-raz" href="enf-plan-3-pasos.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11l3 3L22 4"></path>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Razonamiento</span>
             </div>
-            <div>
-              <h3 class="game-title">ENF · Plan en 3 Pasos</h3>
-              <p class="game-desc">Función ejecutiva aplicada: dividí una tarea en 3 pasos concretos.<br>
-              <strong>Entrenamiento Neurocognitivo Funcional</strong></p>
-            </div>
+            <h3 class="game-title">ENF · Plan en 3 Pasos</h3>
+            <p class="game-desc">Función ejecutiva aplicada: dividí una tarea en 3 pasos concretos. <em>Entrenamiento Neurocognitivo Funcional</em></p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 1 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego1.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
-              </svg>
+        <!-- Juego 1 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="juego1.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 1</h3>
-              <p class="game-desc">Atención sostenida con estímulos simples.</p>
-            </div>
+            <h3 class="game-title">Juego 1</h3>
+            <p class="game-desc">Atención sostenida con estímulos simples.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 2 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego2.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
-              </svg>
+        <!-- Juego 2 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="juego2.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 2</h3>
-              <p class="game-desc">Velocidad de procesamiento en rondas cortas.</p>
-            </div>
+            <h3 class="game-title">Juego 2</h3>
+            <p class="game-desc">Velocidad de procesamiento en rondas cortas.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 3 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego3.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20V4"></path><path d="M5 12h14"></path>
-              </svg>
+        <!-- Juego 3 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego3.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20V4"></path><path d="M5 12h14"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 3</h3>
-              <p class="game-desc">Memoria de trabajo y foco.</p>
-            </div>
+            <h3 class="game-title">Juego 3</h3>
+            <p class="game-desc">Memoria de trabajo y foco.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 4 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego4.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="4" width="7" height="7"></rect>
-                <rect x="13" y="4" width="7" height="7"></rect>
-                <rect x="4" y="13" width="7" height="7"></rect>
-                <rect x="13" y="13" width="7" height="7"></rect>
-              </svg>
+        <!-- Juego 4 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego4.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="7" height="7"></rect>
+                  <rect x="13" y="4" width="7" height="7"></rect>
+                  <rect x="4" y="13" width="7" height="7"></rect>
+                  <rect x="13" y="13" width="7" height="7"></rect>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 4 · Memory aeronáutico</h3>
-              <p class="game-desc">Memoria visual con símbolos/íconos aeronáuticos.</p>
-            </div>
+            <h3 class="game-title">Juego 4 · Memory aeronáutico</h3>
+            <p class="game-desc">Memoria visual con símbolos/íconos aeronáuticos.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 5 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego5.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="12" r="3"></circle><circle cx="16" cy="12" r="3"></circle>
-              </svg>
+        <!-- Juego 5 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="juego5.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8" cy="12" r="3"></circle><circle cx="16" cy="12" r="3"></circle>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 5 · Colores y atención</h3>
-              <p class="game-desc">Atención selectiva y control de interferencia.</p>
-            </div>
+            <h3 class="game-title">Juego 5 · Colores y atención</h3>
+            <p class="game-desc">Atención selectiva y control de interferencia.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 6 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego6.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 21l-4.35-4.35"></path><circle cx="11" cy="11" r="7"></circle>
-              </svg>
+        <!-- Juego 6 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="juego6.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 21l-4.35-4.35"></path><circle cx="11" cy="11" r="7"></circle>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 6 · Búsqueda visual</h3>
-              <p class="game-desc">Atención sostenida y rastreo visual.</p>
-            </div>
+            <h3 class="game-title">Juego 6 · Búsqueda visual</h3>
+            <p class="game-desc">Atención sostenida y rastreo visual.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 7 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego7.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
-              </svg>
+        <!-- Juego 7 — Inhibición -->
+        <a class="section-card card-hover card-link cat-inh" href="juego7.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Inhibición</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 7 · Semáforo (Go / No-Go)</h3>
-              <p class="game-desc">Inhibición y control de impulsos.</p>
-            </div>
+            <h3 class="game-title">Juego 7 · Semáforo (Go / No-Go)</h3>
+            <p class="game-desc">Inhibición y control de impulsos.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 8 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego8.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 11l3 3L22 4"></path>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2"></path>
-              </svg>
+        <!-- Juego 8 — Razonamiento -->
+        <a class="section-card card-hover card-link cat-raz" href="juego8.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11l3 3L22 4"></path>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Razonamiento</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 8 · Checklist pre-flight</h3>
-              <p class="game-desc">Rutina de chequeo y enfoque previo (adaptable a hábitos).</p>
-            </div>
+            <h3 class="game-title">Juego 8 · Checklist pre-flight</h3>
+            <p class="game-desc">Rutina de chequeo y enfoque previo (adaptable a hábitos).</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 9 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego9-categorias-semanticas.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 6h16"></path><path d="M4 12h10"></path><path d="M4 18h16"></path>
-              </svg>
+        <!-- Juego 9 — Lenguaje -->
+        <a class="section-card card-hover card-link cat-lng" href="juego9-categorias-semanticas.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 6h16"></path><path d="M4 12h10"></path><path d="M4 18h16"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Lenguaje</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 9 · Categorías semánticas</h3>
-              <p class="game-desc">Fluidez verbal y flexibilidad mental.</p>
-            </div>
+            <h3 class="game-title">Juego 9 · Categorías semánticas</h3>
+            <p class="game-desc">Fluidez verbal y flexibilidad mental.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 10 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego10-refranes.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 19c3 0 6-3 8-3s5 3 8 3"></path>
-                <path d="M4 5c3 0 6 3 8 3s5-3 8-3"></path>
-              </svg>
+        <!-- Juego 10 — Lenguaje -->
+        <a class="section-card card-hover card-link cat-lng" href="juego10-refranes.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19c3 0 6-3 8-3s5 3 8 3"></path>
+                  <path d="M4 5c3 0 6 3 8 3s5-3 8-3"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Lenguaje</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 10 · Refranes</h3>
-              <p class="game-desc">Lenguaje, inferencias y memoria semántica.</p>
-            </div>
+            <h3 class="game-title">Juego 10 · Refranes</h3>
+            <p class="game-desc">Lenguaje, inferencias y memoria semántica.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 11 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego11-digitos.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8 7h8"></path><path d="M8 12h8"></path><path d="M8 17h8"></path>
-              </svg>
+        <!-- Juego 11 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego11-digitos.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 7h8"></path><path d="M8 12h8"></path><path d="M8 17h8"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 11 · Dígitos</h3>
-              <p class="game-desc">Memoria de trabajo: repetir dígitos (directo o inverso).</p>
-            </div>
+            <h3 class="game-title">Juego 11 · Dígitos</h3>
+            <p class="game-desc">Memoria de trabajo: repetir dígitos (directo o inverso).</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 12 (externo) -->
-        <a class="section-card card-hover hint-bg card-link external-link"
+        <!-- Juego 12 — Atención (externo) -->
+        <a class="section-card card-hover card-link cat-at external-link"
            id="game12-aerocalma"
            href="https://aerocalma.netlify.app/"
            target="_blank" rel="noopener noreferrer">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 16l20-5"></path>
-                <path d="M7 19l-1-4"></path><path d="M11 18l-1-4"></path>
-                <path d="M15 17l-1-4"></path><path d="M19 16l-1-4"></path>
-              </svg>
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 16l20-5"></path>
+                  <path d="M7 19l-1-4"></path><path d="M11 18l-1-4"></path>
+                  <path d="M15 17l-1-4"></path><path d="M19 16l-1-4"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 12 · Aventura 3D — Aeropuerto y Calma</h3>
-              <p class="game-desc">Acceso externo al entorno 3D "AeroCalma". ↗</p>
-            </div>
+            <h3 class="game-title">Juego 12 · Aventura 3D — AeroCalma</h3>
+            <p class="game-desc">Entorno 3D de calma y atención focalizada. ↗</p>
+            <span class="game-cta">Abrir →</span>
           </div>
         </a>
 
-        <!-- Juego 13 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego13-aeropuertos.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path>
-              </svg>
+        <!-- Juego 13 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego13-aeropuertos.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 13 · Aeropuertos (¿de qué país?)</h3>
-              <p class="game-desc">Memoria semántica + geografía aeronáutica.</p>
-            </div>
+            <h3 class="game-title">Juego 13 · Aeropuertos</h3>
+            <p class="game-desc">Memoria semántica + geografía aeronáutica.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 14 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego14-alfabeto-aeronautico.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 19h16"></path><path d="M7 16l5-12 5 12"></path>
-              </svg>
+        <!-- Juego 14 — Lenguaje -->
+        <a class="section-card card-hover card-link cat-lng" href="juego14-alfabeto-aeronautico.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19h16"></path><path d="M7 16l5-12 5 12"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Lenguaje</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 14 · Alfabeto aeronáutico (ICAO)</h3>
-              <p class="game-desc">Aprendizaje y automatización.</p>
-            </div>
+            <h3 class="game-title">Juego 14 · Alfabeto aeronáutico (ICAO)</h3>
+            <p class="game-desc">Aprendizaje y automatización del código ICAO.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 15 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego15-palabras-pseudopalabras.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path>
-              </svg>
+        <!-- Juego 15 — Lenguaje -->
+        <a class="section-card card-hover card-link cat-lng" href="juego15-palabras-pseudopalabras.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Lenguaje</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 15 · Palabras / pseudopalabras</h3>
-              <p class="game-desc">Lectura y discriminación fonológica.</p>
-            </div>
+            <h3 class="game-title">Juego 15 · Palabras / pseudopalabras</h3>
+            <p class="game-desc">Lectura y discriminación fonológica.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 16 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego16-ruta-de-vuelo.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20V4"></path><path d="M5 12h14"></path>
-              </svg>
+        <!-- Juego 16 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego16-ruta-de-vuelo.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20V4"></path><path d="M5 12h14"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 16 · Ruta de vuelo</h3>
-              <p class="game-desc">Memoria visuoespacial.</p>
-            </div>
+            <h3 class="game-title">Juego 16 · Ruta de vuelo</h3>
+            <p class="game-desc">Memoria visuoespacial.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 17 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego17-secuencias-logicas.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a4 4 0 0 1-4 4H7a4 4 0 0 1 0-8h10a4 4 0 0 1 4 4z"></path>
-              </svg>
+        <!-- Juego 17 — Razonamiento -->
+        <a class="section-card card-hover card-link cat-raz" href="juego17-secuencias-logicas.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a4 4 0 0 1-4 4H7a4 4 0 0 1 0-8h10a4 4 0 0 1 4 4z"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Razonamiento</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 17 · Secuencias lógicas</h3>
-              <p class="game-desc">Razonamiento: completá secuencias numéricas, de letras o patrones simples.</p>
-            </div>
+            <h3 class="game-title">Juego 17 · Secuencias lógicas</h3>
+            <p class="game-desc">Completá secuencias numéricas, de letras o patrones simples.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 18 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego18-geofs.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"></circle><path d="M12 7v10"></path>
-              </svg>
+        <!-- Juego 18 — Atención (externo) -->
+        <a class="section-card card-hover card-link cat-at" href="juego18-geofs.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M12 7v10"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 18 · Simulador de vuelo (GeoFS)</h3>
-              <p class="game-desc">Simulador online de vuelo (acceso externo). ↗</p>
-            </div>
+            <h3 class="game-title">Juego 18 · Simulador de vuelo (GeoFS)</h3>
+            <p class="game-desc">Simulador online de vuelo. ↗</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 19 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego19-respiracion-secuencia.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 19c3 0 6-3 8-3s5 3 8 3"></path>
-              </svg>
+        <!-- Juego 19 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego19-respiracion-secuencia.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19c3 0 6-3 8-3s5 3 8 3"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 19 · Respiración y memoria</h3>
-              <p class="game-desc">Memoria de trabajo + anclaje atencional.</p>
-            </div>
+            <h3 class="game-title">Juego 19 · Respiración y memoria</h3>
+            <p class="game-desc">Memoria de trabajo + anclaje atencional.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 20 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego20-historia-de-vuelo.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12h18"></path><path d="M12 3v18"></path>
-              </svg>
+        <!-- Juego 20 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego20-historia-de-vuelo.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12h18"></path><path d="M12 3v18"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 20 · Historia de vuelo</h3>
-              <p class="game-desc">Memoria episódica narrativa.</p>
-            </div>
+            <h3 class="game-title">Juego 20 · Historia de vuelo</h3>
+            <p class="game-desc">Memoria episódica narrativa.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 21 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego21-pasajeros.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 21l-4.35-4.35"></path><circle cx="11" cy="11" r="7"></circle>
-              </svg>
+        <!-- Juego 21 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego21-pasajeros.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 21l-4.35-4.35"></path><circle cx="11" cy="11" r="7"></circle>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 21 · Pasajeros</h3>
-              <p class="game-desc">Memoria asociativa.</p>
-            </div>
+            <h3 class="game-title">Juego 21 · Pasajeros</h3>
+            <p class="game-desc">Memoria asociativa.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 22 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego22-cabina-diferencias.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="4" width="16" height="16" rx="3"></rect>
-                <path d="M8 12h8"></path>
-              </svg>
+        <!-- Juego 22 — Atención -->
+        <a class="section-card card-hover card-link cat-at" href="juego22-cabina-diferencias.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+                  <path d="M8 12h8"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Atención</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 22 · Cabina: encontrá las diferencias</h3>
-              <p class="game-desc">Atención sostenida + memoria visual.</p>
-            </div>
+            <h3 class="game-title">Juego 22 · Cabina: diferencias</h3>
+            <p class="game-desc">Atención sostenida + memoria visual.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
-        <!-- Juego 23 -->
-        <a class="section-card card-hover hint-bg card-link" href="juego23-palabras-inversas.html">
-          <div class="card-head">
-            <div class="game-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 18h6"></path><path d="M10 22h4"></path>
-                <path d="M12 2a7 7 0 0 0-4 12c.5.5 1 1.5 1 2h6c0-.5.5-1.5 1-2a7 7 0 0 0-4-12z"></path>
-              </svg>
+        <!-- Juego 23 — Memoria -->
+        <a class="section-card card-hover card-link cat-mem" href="juego23-palabras-inversas.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18h6"></path><path d="M10 22h4"></path>
+                  <path d="M12 2a7 7 0 0 0-4 12c.5.5 1 1.5 1 2h6c0-.5.5-1.5 1-2a7 7 0 0 0-4-12z"></path>
+                </svg>
+              </div>
+              <span class="game-cat-badge">Memoria</span>
             </div>
-            <div>
-              <h3 class="game-title">Juego 23 · Palabras inversas</h3>
-              <p class="game-desc">Memoria de trabajo fonológica.</p>
-            </div>
+            <h3 class="game-title">Juego 23 · Palabras inversas</h3>
+            <p class="game-desc">Memoria de trabajo fonológica.</p>
+            <span class="game-cta">Ingresar →</span>
           </div>
         </a>
 
