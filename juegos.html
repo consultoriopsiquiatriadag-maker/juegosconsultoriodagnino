@@ -329,6 +329,67 @@
       .gfn-pill{ transition: none !important; }
     }
 
+    /* ── Bloque "Cómo usar estos juegos" ────────────────── */
+    .uso-block{
+      background: #ffffff;
+      border: 1px solid rgba(14,34,57,0.09);
+      border-radius: 20px;
+      padding: 24px 22px 20px;
+      box-shadow: 0 4px 18px rgba(14,34,57,0.06);
+      margin-top: 4px;
+    }
+    .uso-block-title{
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .uso-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .uso-item{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid rgba(14,34,57,0.07);
+      border-radius: 14px;
+      padding: 14px 14px 13px;
+    }
+    .uso-item-icon{
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .uso-item-text{
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .uso-disclaimer{
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(14,34,57,0.07);
+    }
+    @media (max-width: 480px){
+      .uso-block{ padding: 18px 16px 16px; border-radius: 16px; }
+      .uso-grid { grid-template-columns: 1fr; gap: 8px; }
+      .uso-item { padding: 12px 12px 11px; }
+      .uso-item-text{ font-size: 13.5px; }
+    }
+
     /* ── Barra de vuelta ─────────────────────────────────── */
     .topbar-back{
       display: flex;
@@ -1327,6 +1388,36 @@
           </div>
         </a>
 
+      </div>
+    </section>
+
+    <!-- ── Cómo usar estos juegos ───────────────────────── -->
+    <section class="section" aria-label="Cómo usar estos juegos">
+      <div class="uso-block">
+        <h2 class="uso-block-title">
+          <span aria-hidden="true">💡</span> Cómo usar estos juegos
+        </h2>
+        <div class="uso-grid">
+          <div class="uso-item">
+            <span class="uso-item-icon" aria-hidden="true">🌿</span>
+            <p class="uso-item-text">Elegí un momento de calma, sin apuros ni interrupciones.</p>
+          </div>
+          <div class="uso-item">
+            <span class="uso-item-icon" aria-hidden="true">🎯</span>
+            <p class="uso-item-text">No lo tomes como un examen. Es entrenamiento, no evaluación.</p>
+          </div>
+          <div class="uso-item">
+            <span class="uso-item-icon" aria-hidden="true">🔁</span>
+            <p class="uso-item-text">Repetí 2 a 3 veces por semana para ver progreso gradual.</p>
+          </div>
+          <div class="uso-item">
+            <span class="uso-item-icon" aria-hidden="true">🛑</span>
+            <p class="uso-item-text">Pausá si aparece frustración. Retomá más tarde o elegí otro juego.</p>
+          </div>
+        </div>
+        <p class="uso-disclaimer">
+          Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica ni el criterio de tu médico tratante.
+        </p>
       </div>
     </section>
 
