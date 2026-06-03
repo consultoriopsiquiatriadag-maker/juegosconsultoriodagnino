@@ -1,4 +1,4 @@
-const CACHE_NAME = "dagnino-pwa-v3"; // <- subí versión cuando cambies iconos/manifest
+const CACHE_NAME = "dagnino-pwa-v4"; // <- actualizado para limpiar caché de páginas viejas
 
 // Archivos base para offline (EVITÁ precachear íconos/manifest para que no queden viejos)
 const CORE_ASSETS = [
