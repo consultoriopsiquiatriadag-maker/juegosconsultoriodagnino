@@ -53,17 +53,44 @@
       -webkit-tap-highlight-color: transparent;
       cursor: pointer;
       position: relative;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      /* Sin transition por defecto — se define según capacidad del dispositivo */
     }
-    a.card-link:hover{
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(14,34,57,0.14);
-    }
-    a.card-link:active{ transform: translateY(-1px); }
     a.card-link:focus-visible{
       outline: 3px solid var(--ring);
       outline-offset: 3px;
       border-radius: 18px;
+    }
+
+    /* ── Desktop con cursor real: elevación + borde luminoso ── */
+    @media (hover: hover) and (pointer: fine){
+      a.card-link{
+        transition:
+          transform 0.20s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.20s ease,
+          outline-color 0.14s ease;
+      }
+      a.card-link:hover{
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 24px rgba(14,34,57,0.11),
+          0 2px 6px  rgba(14,34,57,0.06),
+          inset 0 0 0 1.5px rgba(14,34,57,0.09);
+      }
+      a.card-link:active{
+        transform: translateY(0px);
+        transition-duration: 0.08s;
+        box-shadow: 0 2px 8px rgba(14,34,57,0.08);
+      }
+    }
+
+    /* ── Touch: feedback por opacidad, sin desplazamiento ── */
+    @media (hover: none){
+      a.card-link{
+        transition: opacity 0.10s ease;
+      }
+      a.card-link:active{
+        opacity: 0.80;
+      }
     }
     a.section-card.card-link{
       padding: 16px;
@@ -149,8 +176,20 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      a.card-link{ transition: none !important; }
-      a.card-link:hover{ transform: none !important; }
+      a.card-link,
+      .uso-item,
+      .gfn-pill,
+      .game-cta,
+      .games-hero{
+        transition: none !important;
+        animation: none !important;
+      }
+      a.card-link:hover,
+      a.card-link:active{
+        transform: none !important;
+        box-shadow: none !important;
+        opacity: 1 !important;
+      }
     }
 
     /* ── Sistema de categorías cognitivas ───────────────── */
@@ -383,6 +422,17 @@
       padding-top: 14px;
       border-top: 1px solid rgba(14,34,57,0.07);
     }
+    @media (hover: hover) and (pointer: fine){
+      .uso-item{
+        transition: background 0.14s ease, border-color 0.14s ease;
+        cursor: default;
+      }
+      .uso-item:hover{
+        background: #f1f5f9;
+        border-color: rgba(14,34,57,0.13);
+      }
+    }
+
     @media (max-width: 480px){
       .uso-block{ padding: 18px 16px 16px; border-radius: 16px; }
       .uso-grid { grid-template-columns: 1fr; gap: 8px; }
