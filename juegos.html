@@ -160,6 +160,95 @@
       gap: 10px;
       margin: 12px 0 18px;
     }
+
+    /* ── Hero interno de juegos ──────────────────────────── */
+    .games-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #163554 55%, #0e2239 100%);
+      border-radius: 20px;
+      padding: 28px 24px 24px;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Brillo sutil en esquina superior derecha */
+    .games-hero::before{
+      content: "";
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(110,180,255,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .games-hero-eyebrow{
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin: 0 0 10px;
+    }
+
+    .games-hero-title{
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 10px;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+    }
+
+    .games-hero-sub{
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.68);
+      margin: 0 0 18px;
+      line-height: 1.55;
+      font-weight: 400;
+      max-width: 520px;
+    }
+
+    .games-hero-chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .games-chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 13px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.84);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 480px){
+      .games-hero{
+        padding: 20px 18px 18px;
+        border-radius: 16px;
+      }
+      .games-hero-title{
+        font-size: 21px;
+      }
+      .games-hero-sub{
+        font-size: 13.5px;
+        margin-bottom: 14px;
+      }
+      .games-chip{
+        font-size: 11.5px;
+        padding: 4px 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .games-hero{ background: #0e2239; }
+    }
   </style>
 </head>
 
@@ -194,10 +283,16 @@
       <a class="btn-secondary" href="index.html">← Volver al inicio</a>
     </nav>
 
-    <!-- Título de sección -->
-    <div class="page-intro">
-      <h1>🧠 Juegos cognitivos</h1>
-      <p>Elegí un juego. Si alguno te resulta difícil, hacelo en rondas cortas y retomá más tarde.</p>
+    <!-- Hero interno -->
+    <div class="games-hero">
+      <p class="games-hero-eyebrow">Sala de espera virtual · Consultorio Dr. Dagnino</p>
+      <h1 class="games-hero-title">🧠 Juegos cognitivos</h1>
+      <p class="games-hero-sub">Actividades breves para entrenar memoria, atención, velocidad de respuesta y flexibilidad mental.</p>
+      <div class="games-hero-chips" aria-label="Indicaciones de uso">
+        <span class="games-chip">⏱ 3 a 7 minutos</span>
+        <span class="games-chip">🎯 Uso recreativo</span>
+        <span class="games-chip">💙 Pausá si genera frustración</span>
+      </div>
     </div>
 
     <!-- ── GRID DE JUEGOS ─────────────────────────────── -->
