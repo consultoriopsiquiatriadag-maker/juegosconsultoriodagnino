@@ -270,6 +270,65 @@
       font-style: italic;
     }
 
+    /* ── Filtro horizontal de categorías ────────────────── */
+    .games-filter-nav{
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 0 10px;
+      margin-bottom: 2px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      position: sticky;
+      top: 58px;
+      z-index: 99;
+      background: var(--bg);
+    }
+    .games-filter-nav::-webkit-scrollbar{ display: none; }
+
+    .gfn-pill{
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      text-decoration: none;
+      border: 1.5px solid rgba(14,34,57,0.13);
+      color: var(--muted);
+      background: #ffffff;
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s, border-color 0.14s;
+      flex-shrink: 0;
+    }
+    .gfn-pill:hover{
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+    .gfn-pill.is-active                   { background: var(--ink);    color: #fff; border-color: var(--ink);    }
+    .gfn-pill[data-filter="at"].is-active  { background: var(--cat-at);  color: #fff; border-color: var(--cat-at);  }
+    .gfn-pill[data-filter="mem"].is-active { background: var(--cat-mem); color: #fff; border-color: var(--cat-mem); }
+    .gfn-pill[data-filter="lng"].is-active { background: var(--cat-lng); color: #fff; border-color: var(--cat-lng); }
+
+    /* ── Mobile: tarjetas más cómodas ───────────────────── */
+    @media (max-width: 640px){
+      .section-card.card-link{
+        padding: 14px 14px 12px;
+        min-height: 0;
+      }
+      .game-title{ font-size: 15px; }
+      .game-desc { font-size: 13px; }
+      .game-cta  { font-size: 12px; opacity: 0.85; margin-top: 8px; }
+      .games-grid{ gap: 10px; }
+      .cat-section-header{ margin-top: 22px; }
+      .games-filter-nav{ top: 52px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .gfn-pill{ transition: none !important; }
+    }
+
     /* ── Barra de vuelta ─────────────────────────────────── */
     .topbar-back{
       display: flex;
@@ -412,9 +471,19 @@
       </div>
     </div>
 
-    <!-- ── GRID DE JUEGOS ─────────────────────────────── -->
-    <section class="section" aria-label="Listado de juegos">
+    <!-- ── Filtro de categorías ──────────────────────── -->
+    <nav class="games-filter-nav" aria-label="Filtrar juegos por categoría" id="gamesFilterNav">
+      <button class="gfn-pill is-active" data-filter="all"  type="button">Todos</button>
+      <button class="gfn-pill"           data-filter="enf"  type="button">Serie ENF</button>
+      <button class="gfn-pill"           data-filter="at"   type="button">Atención</button>
+      <button class="gfn-pill"           data-filter="mem"  type="button">Memoria</button>
+      <button class="gfn-pill"           data-filter="lng"  type="button">Lenguaje</button>
+    </nav>
 
+    <!-- ── GRID DE JUEGOS ─────────────────────────────── -->
+    <section class="section" aria-label="Listado de juegos" id="sec-todos">
+
+      <div class="cat-group" data-cat="enf" id="sec-enf">
       <!-- ══ SERIE ENF ══ -->
       <div class="cat-section-header">
         <span class="cat-section-title t-enf">Serie ENF</span>
@@ -472,6 +541,9 @@
 
       </div>
 
+      </div><!-- /cat-group enf -->
+
+      <div class="cat-group" data-cat="at" id="sec-atencion">
       <!-- ══ ATENCIÓN Y VELOCIDAD ══ -->
       <div class="cat-section-header">
         <span class="cat-section-title t-at">Atención y velocidad</span>
@@ -576,6 +648,9 @@
 
       </div>
 
+      </div><!-- /cat-group at -->
+
+      <div class="cat-group" data-cat="mem" id="sec-memoria">
       <!-- ══ MEMORIA ══ -->
       <div class="cat-section-header">
         <span class="cat-section-title t-mem">Memoria</span>
@@ -704,6 +779,9 @@
 
       </div>
 
+      </div><!-- /cat-group mem -->
+
+      <div class="cat-group" data-cat="lng" id="sec-lenguaje">
       <!-- ══ LENGUAJE Y RAZONAMIENTO ══ -->
       <div class="cat-section-header">
         <span class="cat-section-title t-lng">Lenguaje y razonamiento</span>
@@ -770,8 +848,10 @@
           </div>
         </a>
 
-      </div>
+      </div><!-- /games-grid lenguaje -->
+      </div><!-- /cat-group lng -->
 
+      <!-- ANTIGUAS TARJETAS ELIMINADAS — ver grupos de arriba -->
       <div class="games-grid" style="display:none">
 
         <!-- ENF · Foco 90 — Atención -->
@@ -1357,6 +1437,32 @@
   <script>
     /* Año automático */
     document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    /* ── Filtro de categorías ── */
+    (function(){
+      const nav    = document.getElementById('gamesFilterNav');
+      if (!nav) return;
+      const pills  = nav.querySelectorAll('.gfn-pill');
+      const groups = document.querySelectorAll('.cat-group');
+
+      function filter(cat){
+        pills.forEach(p => p.classList.toggle('is-active', p.dataset.filter === cat));
+        groups.forEach(g => {
+          const show = cat === 'all' || g.dataset.cat === cat;
+          g.hidden = !show;
+          g.style.display = show ? '' : 'none';
+        });
+        /* Scroll al inicio de la sección si se filtró */
+        if (cat !== 'all'){
+          const target = document.getElementById('sec-todos');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => filter(pill.dataset.filter));
+      });
+    })();
 
     /* Fix PWA: links externos en modo standalone */
     (function(){
