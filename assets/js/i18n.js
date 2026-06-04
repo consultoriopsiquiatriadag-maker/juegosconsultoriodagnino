@@ -40,7 +40,7 @@
         quick_emotions: "Emociones",
         quick_turns: "Central de Turnos",
 
-        welcome_title: "¿Qué es esta sala de espera virtual?",
+        welcome_title: "¿De qué se trata este espacio?",
         welcome_text: "Este sitio reúne recursos digitales pensados para acompañar la espera, orientar al paciente y ofrecer herramientas breves de psicoeducación, registro emocional, higiene del sueño y acceso a contenidos clínicos del consultorio. No reemplaza una consulta médica, pero puede ayudar a ordenar información, conocer recursos y acceder a materiales preparados para pacientes.",
         legal_btn: "Aviso legal / Privacidad",
 
@@ -128,7 +128,7 @@
         quick_emotions: "Emotions",
         quick_turns: "Scheduling Desk",
 
-        welcome_title: "What is this virtual waiting room?",
+        welcome_title: "What is this space about?",
         welcome_text: "This site brings together digital resources designed to support the waiting period, guide patients, and offer brief tools in psychoeducation, emotional logging, sleep hygiene, and access to clinical content from the clinic. It does not replace a medical consultation, but it can help organize information, discover resources, and access materials prepared for patients.",
         legal_btn: "Legal / Privacy",
 
@@ -216,7 +216,7 @@
         quick_emotions: "Emoções",
         quick_turns: "Central de Agendamento",
 
-        welcome_title: "O que é esta sala de espera virtual?",
+        welcome_title: "Do que se trata este espaço?",
         welcome_text: "Este site reúne recursos digitais pensados para acompanhar a espera, orientar o paciente e oferecer ferramentas breves de psicoeducação, registro emocional, higiene do sono e acesso a conteúdos clínicos do consultório. Não substitui uma consulta médica, mas pode ajudar a organizar informações, conhecer recursos e acessar materiais preparados para pacientes.",
         legal_btn: "Aviso legal / Privacidade",
 

@@ -514,14 +514,23 @@ a.btn-primary[href*="whatsapp"]{
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-card--inline .hero-title{
   color: #0a1f36 !important;
-  font-size: clamp(18px, 3vw, 24px);
+  font-size: clamp(16px, 2.6vw, 22px);
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   text-shadow: none !important;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.25;
+  text-align: left;
 }
 
 .hero-card--inline .pill{
@@ -1004,7 +1013,7 @@ a.btn-primary[href*="whatsapp"]{
 
       <!-- Columna izquierda: texto + botón -->
       <div>
-        <h2 class="card-title" style="margin:0 0 10px" data-i18n="welcome_title">¿Qué es esta sala de espera virtual?</h2>
+        <h2 class="card-title" style="margin:0 0 10px" data-i18n="welcome_title">¿De qué se trata este espacio?</h2>
         <p class="card-sub" data-i18n="welcome_text">
           Este sitio reúne recursos digitales pensados para acompañar la espera, orientar al paciente y ofrecer herramientas breves de psicoeducación, registro emocional, higiene del sueño y acceso a contenidos clínicos del consultorio. No reemplaza una consulta médica, pero puede ayudar a ordenar información, conocer recursos y acceder a materiales preparados para pacientes.
         </p>
