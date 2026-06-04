@@ -61,22 +61,27 @@
 
     .team-grid .card-head{ align-items:center !important; }
 
-    /* ── Zoom suave en foto profesional ── */
-    .team-img .avatar-img{
-      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), filter 0.35s ease;
+    /* ── Zoom del círculo completo al hacer hover ── */
+    .team-img{
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.35s ease;
       will-change: transform;
+      transform-origin: center center;
+      position: relative;
+      z-index: 1;
     }
     @media (hover: hover) and (pointer: fine){
-      article.section-card:hover .avatar-img{
-        transform: scale(1.07);
-        filter: brightness(1.04);
+      article.section-card:hover .team-img{
+        transform: scale(1.18);
+        box-shadow: 0 14px 32px rgba(0,0,0,0.26);
+        z-index: 2;
       }
     }
-    article.section-card:active .avatar-img{
-      transform: scale(1.04);
+    article.section-card:active .team-img{
+      transform: scale(1.12);
     }
     @media (prefers-reduced-motion: reduce){
-      .team-img .avatar-img{ transition: none !important; transform: none !important; }
+      .team-img{ transition: none !important; transform: none !important; }
     }
     </style>
 </head>

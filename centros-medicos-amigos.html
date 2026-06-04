@@ -45,22 +45,27 @@
     /* Alineación prolija del card-head cuando hay logo + texto + botones */
     .section-card .card-head{ align-items:flex-start; }
 
-    /* ── Zoom suave en logo de centro médico ── */
-    .center-logo{
-      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), filter 0.35s ease;
+    /* ── Zoom del contenedor completo al hacer hover ── */
+    .center-avatar{
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.35s ease;
       will-change: transform;
+      transform-origin: center center;
+      position: relative;
+      z-index: 1;
     }
     @media (hover: hover) and (pointer: fine){
-      article.section-card:hover .center-logo{
-        transform: scale(1.06);
-        filter: brightness(1.03);
+      article.section-card:hover .center-avatar{
+        transform: scale(1.18);
+        box-shadow: 0 14px 32px rgba(0,0,0,0.22);
+        z-index: 2;
       }
     }
-    article.section-card:active .center-logo{
-      transform: scale(1.03);
+    article.section-card:active .center-avatar{
+      transform: scale(1.12);
     }
     @media (prefers-reduced-motion: reduce){
-      .center-logo{ transition: none !important; transform: none !important; }
+      .center-avatar{ transition: none !important; transform: none !important; }
     }
   </style>
 </head>
