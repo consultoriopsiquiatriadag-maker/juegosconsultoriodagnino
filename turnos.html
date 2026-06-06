@@ -27,23 +27,68 @@
 
 
   <style>
-    .turnos-hero-logo{
-      width: 170px;
-      height: 170px;
-      margin: 18px 0 10px;
-      border-radius: 28px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(15,23,42,.10);
-      box-shadow: 0 14px 40px rgba(2,6,23,.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    .turnos-hero-logo img{ width: 82%; height: 82%; object-fit: contain; }
     .subsection{ scroll-margin-top: 110px; }
     .list-clean{ margin: 10px 0 0; padding-left: 18px; }
-    .list-clean li{ margin: 6px 0; }
+    .list-clean li{ margin: 6px 0; line-height: 1.5; }
+
+    /* Grid de tarjetas de gestiones / modalidades */
+    .turnos-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .turnos-card{
+      background: #ffffff;
+      border: 1px solid rgba(14,34,57,0.08);
+      border-radius: 16px;
+      padding: 18px 16px 16px;
+    }
+    .turnos-card h3{
+      font-size: 15px;
+      font-weight: 700;
+      color: #0a1f36;
+      margin: 0 0 6px;
+      line-height: 1.3;
+    }
+    .turnos-card p{
+      font-size: 13.5px;
+      color: #4a6080;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .turnos-card .btn-row{ margin-top: 12px; }
+
+    /* Botón WhatsApp con pulso */
+    .btn-wa-pulse{
+      animation: waPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes waPulse{
+      0%, 100%{ box-shadow: 0 0 0 0 rgba(34,197,94,0.50); }
+      60%{      box-shadow: 0 0 0 12px rgba(34,197,94,0);  }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .btn-wa-pulse{ animation: none !important; }
+    }
+
+    /* Aviso no urgencias */
+    .turnos-urgencias-note{
+      background: rgba(14,34,57,0.04);
+      border: 1px solid rgba(14,34,57,0.12);
+      border-left: 4px solid rgba(14,34,57,0.28);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #2d3748;
+      line-height: 1.55;
+    }
+
+    /* Mobile: tarjetas a una columna */
+    @media (max-width: 640px){
+      .turnos-grid{ gap: 10px; }
+      .turnos-card{ padding: 16px 14px 14px; }
+      .turnos-card h3{ font-size: 15px; }
+    }
   </style>
 
 </head>
@@ -164,26 +209,28 @@
 
       <h1 class="hero-title">Central de Turnos</h1>
 
-      <div class="turnos-hero-logo" aria-label="Logo Central de Turnos">
-        <img src="logo-central-turnos.png" alt="Logo Central de Turnos">
-      </div>
-
       <p class="hero-bridge">
-        Aquí se puede solicitar, modificar o realizar consultas vinculadas a turnos del Consultorio de Psiquiatría Dagnino.
+        Te ayudamos a coordinar la modalidad adecuada según tu necesidad.
       </p>
 
-      <p class="hero-meta">
-        Escribinos y te asesoramos según tu necesidad (consultorio virtual o dispositivo de evaluación).
-      </p>
+      <div class="btn-row" style="margin-top:18px; flex-wrap:wrap; gap:10px">
+        <a class="btn-primary btn-wa-pulse"
+           href="https://wa.me/5491124769361?text=Hola%2C%20quisiera%20consultar%20por%20turnos%20en%20el%20Consultorio%20del%20Dr.%20Dagnino."
+           target="_blank" rel="noopener noreferrer">
+          Escribir a Central de Turnos
+        </a>
+        <a class="btn-secondary" href="#modalidad">Ver modalidades</a>
+        <a class="btn-secondary" href="index.html" data-spa="1">Volver a Sala de Espera</a>
+      </div>
     </div>
 
     <aside class="hero-side" aria-label="Accesos rápidos">
       <h3>Accesos rápidos</h3>
       <p>Contactá por WhatsApp o consultá modalidades.</p>
       <div class="row">
-        <a href="#contacto">WhatsApp</a>
-        <a href="#modalidad">Modalidad</a>
-        <a href="index.html" data-spa="1">Volver</a>
+        <a href="#contacto">Contacto</a>
+        <a href="#modalidad">Modalidades</a>
+        <a href="index.html" data-spa="1">Inicio</a>
       </div>
     </aside>
   </div>
@@ -192,89 +239,128 @@
 
 <main id="spaMain" class="wrap" aria-label="Contenido principal">
 
-  <section class="section" id="contacto">
+  <!-- 1. Qué podés gestionar -->
+  <section class="section" id="gestiones">
     <div class="section-card hint-bg">
       <div class="card-head">
         <div>
-          <h2 class="card-title" style="margin:0">Contacto</h2>
-          <p class="card-sub">
-            Canal administrativo general para asesoramiento, dudas y coordinación de turnos.
-          </p>
+          <h2 class="card-title" style="margin:0">Qué podés gestionar desde acá</h2>
         </div>
-        <a class="btn-primary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer">Contactar por WhatsApp</a>
       </div>
+      <div class="turnos-grid">
 
-      <div class="note" style="margin-top:14px">
-        Este canal no está destinado a urgencias. Si se encuentra en una situación de emergencia, comuníquese con el sistema local de emergencias.
+        <article class="turnos-card">
+          <h3>Solicitar un primer turno</h3>
+          <p>Para iniciar una consulta o recibir orientación administrativa sobre la modalidad más adecuada.</p>
+        </article>
+
+        <article class="turnos-card">
+          <h3>Modificar un turno</h3>
+          <p>Para consultar disponibilidad, reprogramar o ajustar un horario previamente coordinado.</p>
+        </article>
+
+        <article class="turnos-card">
+          <h3>Enviar documentación</h3>
+          <p>Para compartir estudios, informes, antecedentes o documentación requerida, cuando corresponda.</p>
+        </article>
+
+        <article class="turnos-card">
+          <h3>Coordinar una evaluación</h3>
+          <p>Para solicitar información sobre evaluación situacional, segunda opinión o requerimientos institucionales.</p>
+        </article>
+
       </div>
     </div>
   </section>
 
   <div class="divider" aria-hidden="true"></div>
 
+  <!-- 2. Modalidad de atención -->
   <section class="section" id="modalidad">
     <div class="section-card hint-bg">
       <div class="card-head">
         <div>
           <h2 class="card-title" style="margin:0">Modalidad de atención</h2>
-          <p class="card-sub">
-            Actualmente contamos con dos modalidades. Elegí una para ver los detalles.
-          </p>
         </div>
       </div>
+      <div class="turnos-grid">
 
-      <div class="btn-row">
-        <a class="btn-primary" href="#asistencial">Consultorio asistencial virtual</a>
-        <a class="btn-primary" href="#eps">Evaluación Psiquiátrica Situacional</a>
+        <article class="turnos-card">
+          <h3>Consulta psiquiátrica virtual</h3>
+          <p>Seguimiento, controles, admisión y tratamiento psiquiátrico, según corresponda a cada caso.</p>
+          <div class="btn-row">
+            <a class="btn-secondary" href="https://wa.me/5491124769361?text=Hola%2C%20quisiera%20consultar%20por%20turnos%20en%20el%20Consultorio%20del%20Dr.%20Dagnino." target="_blank" rel="noopener noreferrer">Escribir a Central de Turnos</a>
+          </div>
+        </article>
+
+        <article class="turnos-card">
+          <h3>Evaluación Psiquiátrica Situacional</h3>
+          <p>Evaluación puntual, segunda opinión, incorporación institucional, certificación médica aeronáutica u orientación clínica específica.</p>
+          <div class="btn-row">
+            <a class="btn-secondary" href="evaluacion-situacional.html" data-spa="1">Conocer el dispositivo</a>
+          </div>
+        </article>
+
+        <article class="turnos-card">
+          <h3>Coordinación administrativa</h3>
+          <p>Canal de orientación inicial para ordenar la consulta, modalidad, documentación y tiempos administrativos.</p>
+          <div class="btn-row">
+            <a class="btn-secondary" href="https://wa.me/5491124769361?text=Hola%2C%20quisiera%20consultar%20por%20turnos%20en%20el%20Consultorio%20del%20Dr.%20Dagnino." target="_blank" rel="noopener noreferrer">Escribir a Central de Turnos</a>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <section class="section subsection" id="asistencial">
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- 3. Antes de escribirnos -->
+  <section class="section" id="antes">
     <div class="section-card hint-bg">
       <div class="card-head">
         <div>
-          <h3 class="card-title" style="margin:0">Consultorio asistencial virtual</h3>
-          <p class="card-sub">Atención psiquiátrica a través de videollamadas por distintas plataformas.</p>
+          <h2 class="card-title" style="margin:0">Antes de escribirnos</h2>
+          <p class="card-sub" style="margin-top:6px">
+            Para poder orientarte mejor, al comunicarte con la Central de Turnos sugerimos indicar:
+          </p>
         </div>
-        <a class="btn-secondary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer">Escribir a Central de Turnos</a>
       </div>
-
       <ul class="list-clean">
-        <li>Se atienden pacientes dentro y fuera de Argentina. La <strong>prescripción de psicofármacos</strong> depende de la normativa del país del paciente.</li>
-        <li>Se utilizan plataformas como <strong>WhatsApp</strong>, <strong>Google Meet</strong>, <strong>Skype</strong> y <strong>Zoom</strong>, emulando la experiencia presencial.</li>
-        <li>La duración de las consultas es similar a la presencial: <strong>45 a 60 minutos</strong>. La primera consulta (admisión) puede extenderse hasta <strong>90 minutos</strong>.</li>
-        <li>Se recomienda preparar <strong>documentación clínica previa</strong> para optimizar el tratamiento.</li>
+        <li>Nombre y apellido.</li>
+        <li>Motivo de la consulta.</li>
+        <li>Si buscás primera consulta, control, evaluación situacional o segunda opinión.</li>
+        <li>Si contás con informes, estudios o documentación previa.</li>
+        <li>Disponibilidad horaria aproximada.</li>
       </ul>
+    </div>
+  </section>
 
-      <div class="note" style="margin-top:14px">
-        Escribinos a nuestra <strong>Central de Turnos</strong> y te asesoramos.
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- 4. Contacto -->
+  <section class="section" id="contacto">
+    <div class="section-card hint-bg">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" style="margin:0">Contacto</h2>
+          <p class="card-sub" style="margin-top:6px">
+            La Central de Turnos es el canal administrativo general para coordinar consultas, modalidades de atención, documentación y orientación inicial.
+          </p>
+        </div>
+        <a class="btn-primary btn-wa-pulse"
+           href="https://wa.me/5491124769361?text=Hola%2C%20quisiera%20consultar%20por%20turnos%20en%20el%20Consultorio%20del%20Dr.%20Dagnino."
+           target="_blank" rel="noopener noreferrer">
+          Escribir a Central de Turnos
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="section subsection" id="eps">
-    <div class="section-card hint-bg">
-      <div class="card-head">
-        <div>
-          <h3 class="card-title" style="margin:0">Dispositivo de Evaluación Psiquiátrica Situacional</h3>
-          <p class="card-sub">
-            Segunda opinión virtual y orientación clínica puntual para comprender tu situación actual, ordenar dudas y evaluar opciones.
-          </p>
-        </div>
-        <a class="btn-secondary" href="evaluacion-situacional.html" data-spa="1">Conocer el dispositivo</a>
-      </div>
-
-      <ul class="list-clean">
-        <li>Incluye entrevista clínica (una o más) y, cuando corresponde, instrumentos psicométricos.</li>
-        <li>Se integra la información y se entrega una devolución clara (con opción de informe técnico para profesional tratante).</li>
-        <li>Requiere coordinación previa por Central de Turnos.</li>
-      </ul>
-
-      <div class="btn-row" style="margin-top:14px">
-        <a class="btn-primary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer">Coordinar por WhatsApp</a>
-        <a class="btn-secondary" href="index.html" data-spa="1">Volver a Sala de Espera</a>
-      </div>
+  <!-- 5. Aviso no urgencias -->
+  <section class="section" id="urgencias">
+    <div class="turnos-urgencias-note" role="note" aria-label="Aviso de no urgencias">
+      Este canal no está destinado a urgencias. Ante una emergencia, comunicate con el sistema local de emergencias o concurrí a una guardia.
     </div>
   </section>
 
@@ -318,10 +404,10 @@
 </div>
 </footer>
 
-  <script src="assets/js/i18n.js?v=1"></script>
-  <script src="assets/js/audio.js?v=1"></script>
-  <script src="assets/js/spa.js?v=1"></script>
-  <script src="assets/js/app.js?v=1"></script>
+  <script src="assets/js/i18n.js?v=3"></script>
+  <script src="assets/js/audio.js?v=2"></script>
+  <script src="assets/js/spa.js?v=3"></script>
+  <script src="assets/js/app.js?v=2"></script>
 
 </body>
 </html>
