@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chat guiado | Consultorio Dr. Dagnino</title>
+  <title>Chat de Apoyo Guiado | Consultorio Dr. Dagnino</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
           <p class="text-sm text-inst-gray font-medium">
             Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino
           </p>
-          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Chat guiado</p>
+          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Chat de Apoyo Guiado</p>
         </div>
       </div>
 
@@ -76,22 +76,28 @@
 
   <!-- HERO -->
   <section class="bg-inst-navy text-white">
-    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+    <div class="max-w-7xl mx-auto px-6 py-10 md:py-12">
       <div class="max-w-3xl">
-        <h1 class="text-3xl md:text-4xl font-light mb-3">Chat guiado</h1>
-        <p class="text-white/80 leading-relaxed">
-          Escribí lo que te pasa. Este chat propone ejercicios breves de regulación emocional.
-          No guarda datos personales, no realiza diagnósticos y no reemplaza una consulta.
+        <h1 class="text-3xl md:text-4xl font-light mb-1">Chat de Apoyo Guiado</h1>
+        <p class="text-white/60 text-sm font-medium tracking-wide mb-4">Orientación automática, breve y psicoeducativa</p>
+        <p class="text-white/80 leading-relaxed mb-5">
+          Podés usar este espacio para ordenar una emoción, buscar una herramienta breve o elegir un recurso de la sala de espera virtual.
         </p>
 
-        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <!-- Aviso de alcance -->
+        <div class="flex items-start gap-3 bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-sm text-white/80 mb-6" role="note">
+          <span class="text-white/60 mt-0.5 flex-shrink-0" aria-hidden="true">—</span>
+          <span>Este chat no reemplaza una consulta profesional, no realiza diagnóstico, no indica medicación y no atiende urgencias.</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
           <a href="#chat"
              class="inline-flex justify-center items-center rounded-xl bg-inst-blue text-white font-semibold px-5 py-3 hover:opacity-95 soft-ring">
-            💬 Ir al chat
+            Ir al chat
           </a>
           <a href="#musica"
-             class="inline-flex justify-center items-center rounded-xl bg-white/10 border border-white/15 text-white font-semibold px-5 py-3 hover:bg-white/10 soft-ring">
-            🎧 Música (opcional)
+             class="inline-flex justify-center items-center rounded-xl bg-white/10 border border-white/15 text-white font-semibold px-5 py-3 hover:bg-white/15 soft-ring">
+            Música de fondo
           </a>
         </div>
       </div>
@@ -187,12 +193,12 @@
         <div id="chat" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
           <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div>
-              <h2 class="text-xl font-semibold mb-1">Chat guiado de regulación emocional</h2>
+              <h2 class="text-xl font-semibold mb-1">Chat de Apoyo Guiado</h2>
               <p class="text-inst-gray text-sm leading-relaxed">
-                Escribí libremente lo que te pasa. Este chat propone ejercicios breves de respiración, mindfulness y foco atencional.
+                Escribí lo que te pasa o elegí una opción. Este chat propone ejercicios breves de respiración, mindfulness y orientación a recursos del sitio.
               </p>
               <p class="text-xs text-inst-gray mt-2">
-                No guarda datos personales, no realiza diagnósticos y no reemplaza una consulta. Supervisado por el <strong>Dr. Pedro Nicolás Dagnino</strong>.
+                No guarda datos personales, no realiza diagnósticos y no reemplaza la consulta médica. Supervisado por el <strong>Dr. Pedro Nicolas Dagnino</strong>.
               </p>
             </div>
 
@@ -241,24 +247,24 @@
               </div>
 
               <div class="rounded-2xl border border-gray-100 bg-white p-4">
-                <p class="text-sm font-semibold mb-2">Atajos</p>
+                <p class="text-sm font-semibold mb-2">Atajos rápidos</p>
                 <div class="grid grid-cols-1 gap-2">
                   <button data-quick="calmar"
-                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
-                    🌬️ Necesito calmarme
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-3 text-sm hover:bg-white soft-ring text-left px-3">
+                    Necesito calmarme
                   </button>
-                  <button data-quick="pensamientos"
-                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
-                    🧠 Mi cabeza no para
+                  <button data-quick="ordenar"
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-3 text-sm hover:bg-white soft-ring text-left px-3">
+                    Quiero ordenar lo que siento
                   </button>
-                  <button data-quick="apagado"
-                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
-                    😮‍💨 Me siento apagado
+                  <button data-quick="recurso"
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-3 text-sm hover:bg-white soft-ring text-left px-3">
+                    Busco un recurso del sitio
                   </button>
-                  <a href="juegos.html"
-                    class="w-full text-center rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
-                    🎮 Ir a juegos
-                  </a>
+                  <button data-quick="riesgo"
+                    class="w-full rounded-xl bg-red-50 border border-red-200 text-red-700 font-semibold py-3 text-sm hover:bg-red-100 soft-ring text-left px-3">
+                    Estoy en riesgo
+                  </button>
                 </div>
 
                 <div class="mt-3 pt-3 border-t border-gray-100">
@@ -302,26 +308,26 @@
           </div>
         </div>
 
-        <!-- MODO SEGURIDAD -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
-          <h2 class="text-xl font-semibold mb-1">Modo seguridad (si estás en riesgo)</h2>
-          <p class="text-inst-gray text-sm leading-relaxed">
-            Si tenés ideas de autolesión o sentís que podés actuar impulsivamente, priorizá pedir ayuda humana ahora.
+        <!-- SEGURIDAD -->
+        <div id="bloque-seguridad" class="bg-red-50 rounded-2xl border border-red-200 shadow-sm p-6 md:p-7" role="note" aria-label="Recursos de seguridad">
+          <h2 class="text-lg font-semibold text-red-800 mb-2">Si estás en riesgo</h2>
+          <p class="text-red-700 text-sm leading-relaxed mb-4">
+            Si estás en riesgo o necesitás ayuda inmediata, no uses este chat como único recurso. Comunicate con emergencias locales, una guardia o una persona de confianza.
           </p>
 
-          <div class="mt-4 grid sm:grid-cols-2 gap-3">
+          <div class="grid sm:grid-cols-2 gap-3">
             <a href="tel:911"
-              class="rounded-xl bg-inst-blue text-white font-semibold px-4 py-3 text-center hover:opacity-95 soft-ring">
-              📞 Llamar a emergencias (911)
+              class="rounded-xl bg-red-600 text-white font-semibold px-4 py-3 text-center hover:bg-red-700 soft-ring">
+              Llamar a emergencias (911)
             </a>
-            <a href="https://wa.me/"
-              class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-3 text-center hover:bg-inst-light soft-ring">
-              💬 Abrir WhatsApp (contacto de confianza)
+            <a href="https://wa.me/5491124769361?text=Necesito%20ayuda%20urgente"
+              class="rounded-xl bg-white border border-red-200 text-red-700 font-semibold px-4 py-3 text-center hover:bg-red-50 soft-ring">
+              Escribir a la Central de Turnos
             </a>
           </div>
 
-          <p class="mt-3 text-xs text-inst-gray">
-            Podés editar estos accesos a tus números de confianza cuando quieras.
+          <p class="mt-4 text-xs text-red-600">
+            Si tenés ideas de autolesión o sentís que podés actuar impulsivamente, priorizá pedir ayuda humana ahora. Este chat no reemplaza la atención de urgencias.
           </p>
         </div>
 
@@ -524,29 +530,46 @@
 
     function actionsFor(text){
       const t = (text||"").toLowerCase();
-
       const items = [];
-      if (t.match(/ansie|nerv|agob|taqu|miedo/)) {
-        items.push({ label:"🌬️ Respiración 4-6 (60s)", voice:"respiracion" });
-        items.push({ label:"🧩 Anclaje al presente (5-4-3-2-1)", voice:"grounding" });
-      } else if (t.match(/trist|vac[ií]o|llor|sin ganas/)) {
-        items.push({ label:"🧘 Mindfulness 1 min", voice:"mind" });
-        items.push({ label:"📝 Escribí 1 cosa pequeña que sí podés hacer hoy", quick:"pequeno" });
-      } else if (t.match(/enojo|bronca|irrit/)) {
-        items.push({ label:"💪 Soltar tensión (mandíbula y hombros)", voice:"relax" });
-        items.push({ label:"✍️ Poné en palabras qué límite necesitás", quick:"limite" });
-      } else if (t.match(/no duermo|insom|dormir/)) {
-        items.push({ label:"🌧️ Ir al ejercicio de sueño (15 min)", link:"sueno.html" });
-        items.push({ label:"🌬️ Respiración en cuadro (1:30)", voice:"box" });
+
+      if (t.match(/ansie|nerv|agob|taqu|miedo|calmar/)) {
+        items.push({ label:"Respiración (1 min)", voice:"respiracion" });
+        items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
+        items.push({ label:"Psicoeducación sobre ansiedad", link:"psicoeducacion.html" });
+        items.push({ label:"Técnica en silla", link:"silla-ansiedad-3d.html" });
+      } else if (t.match(/p[áa]nico|ataque/)) {
+        items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
+        items.push({ label:"Psicoeducación", link:"psicoeducacion.html" });
+      } else if (t.match(/rumia|pensamiento|cabeza no para|ordenar|no puedo frenar/)) {
+        items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
+        items.push({ label:"Mindfulness (1 min)", voice:"mind" });
+        items.push({ label:"Registro emocional", link:"emociones.html" });
+      } else if (t.match(/trist|vac[ií]o|llor|sin ganas|apagado/)) {
+        items.push({ label:"Mindfulness (1 min)", voice:"mind" });
+        items.push({ label:"Registro emocional", link:"emociones.html" });
+        items.push({ label:"Psicoeducación", link:"psicoeducacion.html" });
+      } else if (t.match(/enojo|bronca|irrit|impuls|ira/)) {
+        items.push({ label:"Soltar tensión (mandíbula y hombros)", voice:"relax" });
+        items.push({ label:"Semáforo de impulsividad", link:"juego7.html" });
+      } else if (t.match(/no duermo|insom|dormir|sue[ñn]o/)) {
+        items.push({ label:"Higiene del sueño", link:"higienedelsueno.html" });
+        items.push({ label:"Respiración en cuadro (1:30)", voice:"box" });
+      } else if (t.match(/turno|consulta|m[eé]dic[oa]|doctor/)) {
+        items.push({ label:"Central de Turnos", link:"turnos.html" });
+      } else if (t.match(/emoci[oó]n|sentir|recurso|sitio|qu[eé] hay/)) {
+        items.push({ label:"Registro emocional", link:"emociones.html" });
+        items.push({ label:"Juegos cognitivos", link:"juegos.html" });
+        items.push({ label:"Higiene del sueño", link:"higienedelsueno.html" });
+        items.push({ label:"Psicoeducación", link:"psicoeducacion.html" });
       } else {
-        items.push({ label:"🌬️ Respiración 4-6 (60s)", voice:"respiracion" });
-        items.push({ label:"🧩 Anclaje al presente (1:30)", voice:"grounding" });
+        items.push({ label:"Respiración (1 min)", voice:"respiracion" });
+        items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
       }
 
       if (mode === "wait"){
-        items.push({ label:"🪑 En sala de espera: mirada suave + exhalación larga", quick:"wait" });
+        items.push({ label:"En sala de espera: exhalación larga", quick:"wait" });
       } else {
-        items.push({ label:"🏠 En casa: bajá luces + agua + cuerpo cómodo", quick:"home" });
+        items.push({ label:"En casa: postura cómoda + agua", quick:"home" });
       }
       return items;
     }
@@ -582,23 +605,49 @@
     function assistantReply(userText){
       const t = (userText||"").toLowerCase();
 
-      if (t.match(/suicid|matarme|autoles|no quiero vivir/)){
-        bubble("assistant",
-          "Gracias por decirlo. Si estás en riesgo ahora, pedí ayuda humana inmediata: llamá a emergencias o a alguien de confianza. " +
-          "Si querés, escribí: ¿estás solo/a ahora mismo?"
-        );
-        renderActions([{ label:"📞 Llamar a emergencias (911)", link:"tel:911" }]);
+      // Seguridad
+      if (t.match(/suicid|matarme|autoles|no quiero vivir|riesgo/)){
+        mostrarSeguridad();
         return;
       }
 
+      // Busca recurso del sitio
+      if (t.match(/recurso|sitio|qu[eé] hay|qu[eé] tiene/)){
+        bubble("assistant",
+          "El sitio tiene varios recursos. Aquí algunas opciones según lo que necesitás:"
+        );
+        renderActions(actionsFor("recurso"));
+        return;
+      }
+
+      // Quiere ordenar emociones
+      if (t.match(/ordenar|no s[eé] qu[eé] siento|confundi|no entiendo/)){
+        bubble("assistant",
+          "Ordenar lo que sentís es un buen punto de partida. " +
+          "Podés empezar por nombrar qué emoción tenés más fuerte ahora mismo (ansiedad, tristeza, enojo, cansancio) y de ahí elegimos una herramienta."
+        );
+        renderActions(actionsFor("ordenar"));
+        return;
+      }
+
+      // Turno
+      if (t.match(/turno|consulta|m[eé]dic[oa]|doctor/)){
+        bubble("assistant",
+          "Para coordinar un turno o una consulta, el canal indicado es la Central de Turnos."
+        );
+        renderActions([{ label:"Central de Turnos", link:"turnos.html" }]);
+        return;
+      }
+
+      // Respuesta contextual según modo
       if (mode === "wait"){
         bubble("assistant",
           "Entiendo. Estás en sala de espera. Hagamos algo simple: exhalá más largo que la inhalación (4-6) por 60 segundos. " +
-          "Después decime: ¿la ansiedad subió, bajó o quedó igual?"
+          "Después contame: ¿la tensión subió, bajó o quedó igual?"
         );
       } else {
         bubble("assistant",
-          "Te leo. En casa podemos bajar un cambio: agua, postura cómoda y una respiración lenta. " +
+          "Te leo. Podemos bajar un cambio: agua, postura cómoda y una respiración lenta. " +
           "Contame: ¿qué es lo más molesto de esto ahora mismo (1 frase)?"
         );
       }
@@ -616,19 +665,39 @@
 
     function reset(){
       chatLog.innerHTML = "";
-      bubble("assistant", "Hola. Estoy acá con vos. ¿Qué te está pasando ahora mismo, en una frase?");
+      bubble("assistant",
+        "Hola. Podés usar este espacio para ordenar una emoción, buscar una herramienta breve o encontrar un recurso del sitio. " +
+        "¿Qué te está pasando ahora mismo?"
+      );
       renderActions(actionsFor(""));
     }
 
+    function mostrarSeguridad(){
+      bubble("user", "Estoy en riesgo.");
+      bubble("assistant",
+        "Gracias por decirlo. Si estás en riesgo o necesitás ayuda inmediata, " +
+        "este chat no alcanza como único recurso. " +
+        "El bloque de seguridad al final de la página tiene acceso directo a emergencias y a la Central de Turnos."
+      );
+      renderActions([{ label:"Ver bloque de seguridad", link:"#bloque-seguridad" }]);
+      // Scroll suave al bloque
+      setTimeout(() => {
+        const el = document.getElementById("bloque-seguridad");
+        if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+      }, 400);
+    }
+
     function quickReply(key){
+      if (key === "riesgo") { mostrarSeguridad(); return; }
+
       const map = {
-        calmar: "Necesito calmarme.",
-        pensamientos: "Mi cabeza no para y me cuesta frenar.",
-        apagado: "Estoy apagado y sin energía.",
-        pequeno: "Me cuesta hacer cosas, pero quiero intentar algo pequeño.",
-        limite: "Estoy con bronca y necesito un límite claro.",
-        wait: "Estoy esperando turno y me pongo nervioso.",
-        home: "Estoy en casa y quiero bajar un cambio."
+        calmar:   "Necesito calmarme.",
+        ordenar:  "Quiero ordenar lo que siento.",
+        recurso:  "Busco un recurso del sitio.",
+        pequeno:  "Me cuesta hacer cosas, pero quiero intentar algo pequeño.",
+        limite:   "Estoy con bronca y necesito un límite claro.",
+        wait:     "Estoy esperando turno y me pongo nervioso.",
+        home:     "Estoy en casa y quiero bajar un cambio."
       };
       const txt = map[key] || "Necesito ayuda para bajar un cambio.";
       bubble("user", txt);
