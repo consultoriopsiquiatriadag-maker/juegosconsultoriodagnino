@@ -899,6 +899,36 @@ a.btn-primary[href*="whatsapp"]{
   }
 }
 
+/* Zócalo Chat de Apoyo Guiado */
+.turnos-apoyo-grid{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+@media (max-width: 768px){
+  .turnos-apoyo-grid{ grid-template-columns: 1fr; }
+}
+
+.support-chat-card{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Botón táctil mínimo 44px */
+.support-chat-card .btn-primary{
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Aclaración compacta */
+.support-chat-card .note{
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
 </style>
 </head>
 
@@ -1260,54 +1290,52 @@ a.btn-primary[href*="whatsapp"]{
 
 <div class="divider" aria-hidden="true"></div>
 
-<!-- Central de Turnos -->
-<section class="section" id="central-turnos">
-  <div class="section-card hint-bg">
-    <div class="turnos-head">
-      <div class="turnos-logo" aria-hidden="true">
-        <img src="logo-central-turnos.png" alt="">
+<!-- Central de Turnos + Chat de Apoyo Guiado -->
+<section class="section" id="central-turnos" aria-label="Central de Turnos y Chat de Apoyo">
+  <div class="turnos-apoyo-grid">
+
+    <!-- Central de Turnos -->
+    <div class="section-card hint-bg">
+      <div class="turnos-head">
+        <div class="turnos-logo" aria-hidden="true">
+          <img src="logo-central-turnos.png" alt="">
+        </div>
+        <div>
+          <h3 class="card-title" style="margin:0" data-i18n="turnos_title">Central de Turnos</h3>
+          <p class="card-sub" data-i18n="turnos_desc">Canal administrativo general para asesoramiento, dudas y coordinación de turnos.</p>
+        </div>
       </div>
-      <div>
-        <h3 class="card-title" style="margin:0" data-i18n="turnos_title">Central de Turnos</h3>
-        <p class="card-sub" data-i18n="turnos_desc">Canal administrativo general para asesoramiento, dudas y coordinación de turnos.</p>
+
+      <div class="btn-row">
+        <a class="btn-primary" href="turnos.html" data-spa="1" data-i18n="cta_how">¿Cómo funciona?</a>
+        <a class="btn-secondary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer" data-i18n="cta_whatsapp">Contactar por WhatsApp</a>
+      </div>
+
+      <div class="note" data-i18n="turnos_note">
+        Este canal no está destinado a urgencias. Si se encuentra en una situación de emergencia, comuníquese con el sistema local de emergencias.
       </div>
     </div>
 
-    <div class="btn-row">
-      <a class="btn-primary" href="turnos.html" data-spa="1" data-i18n="cta_how">¿Cómo funciona?</a>
-      <a class="btn-secondary" href="https://wa.me/5491124769361" target="_blank" rel="noopener noreferrer" data-i18n="cta_whatsapp">Contactar por WhatsApp</a>
-    </div>
+    <!-- Chat de Apoyo Guiado -->
+    <article class="section-card hint-bg support-chat-card" id="chat-apoyo-guiado" aria-label="Chat de Apoyo Guiado">
+      <p class="card-sub" style="margin:0 0 4px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; opacity:0.6">Recurso psicoeducativo</p>
+      <h2 class="card-title" style="margin:0 0 4px">Chat de Apoyo Guiado</h2>
+      <p class="card-sub" style="margin:0 0 14px">Orientación automática, breve y psicoeducativa.</p>
 
-    <div class="note" data-i18n="turnos_note">
-      Este canal no está destinado a urgencias. Si se encuentra en una situación de emergencia, comuníquese con el sistema local de emergencias.
-    </div>
+      <p class="card-sub" style="margin:0 0 16px; line-height:1.5">
+        Un recurso para ordenar lo que sentís, elegir una herramienta breve o encontrar un contenido de la sala de espera virtual.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn-primary" href="chat-guiado.html" data-spa="0">Abrir Chat de Apoyo</a>
+      </div>
+
+      <div class="note" style="margin-top:12px">
+        No reemplaza consulta profesional. No realiza diagnóstico, no indica medicación y no atiende urgencias.
+      </div>
+    </article>
+
   </div>
-</section>
-
-<div class="divider" aria-hidden="true"></div>
-
-<!-- Chat de Apoyo Guiado — zócalo institucional -->
-<section class="section" id="chat-apoyo-guiado" aria-label="Chat de Apoyo Guiado">
-  <article class="section-card hint-bg">
-    <div class="card-head">
-      <div>
-        <p class="card-sub" style="margin:0 0 4px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; opacity:0.6">Recurso psicoeducativo</p>
-        <h2 class="card-title" style="margin:0">Chat de Apoyo Guiado</h2>
-        <p class="card-sub" style="margin-top:4px">Orientación automática, breve y psicoeducativa.</p>
-      </div>
-      <a class="btn-primary" href="chat-guiado.html" data-spa="0">Abrir Chat de Apoyo</a>
-    </div>
-
-    <div class="divider" aria-hidden="true" style="margin:14px 0"></div>
-
-    <p class="card-sub" style="margin:0 0 0">
-      Un recurso para ordenar lo que sentís, elegir una herramienta breve o encontrar un contenido de la sala de espera virtual.
-    </p>
-
-    <div class="note" style="margin-top:12px">
-      Este recurso no reemplaza una consulta profesional, no realiza diagnóstico, no indica medicación y no atiende urgencias.
-    </div>
-  </article>
 </section>
 
 <div class="divider" aria-hidden="true"></div>
