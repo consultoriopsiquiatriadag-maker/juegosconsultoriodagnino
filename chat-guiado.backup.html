@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat guiado | Consultorio Dr. Dagnino</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'inst-navy': '#0f1e33',
+            'inst-blue': '#2563eb',
+            'inst-sky':  '#e0f2fe',
+            'inst-light':'#f8fafc',
+            'inst-gray': '#64748b'
+          },
+          fontFamily: { 'sans': ['Inter','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
+    .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+    @media (prefers-reduced-motion: reduce){
+      .card-hover { transition: none; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-inst-light font-sans text-inst-navy antialiased">
+
+  <!-- HEADER -->
+  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
+          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+        </div>
+        <div class="leading-tight">
+          <p class="text-sm text-inst-gray font-medium">
+            Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino
+          </p>
+          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Chat guiado</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="emociones.html"
+           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
+          ← Volver
+        </a>
+
+        <button id="audioToggle"
+          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
+          aria-pressed="false">
+          🔇 Audio silenciado
+        </button>
+
+        <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
+          <span class="text-xs text-inst-gray">Vol</span>
+          <input id="audioVolume" type="range" min="0" max="100" value="18" class="w-28">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-4xl font-light mb-3">Chat guiado</h1>
+        <p class="text-white/80 leading-relaxed">
+          Escribí lo que te pasa. Este chat propone ejercicios breves de regulación emocional.
+          No guarda datos personales, no realiza diagnósticos y no reemplaza una consulta.
+        </p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href="#chat"
+             class="inline-flex justify-center items-center rounded-xl bg-inst-blue text-white font-semibold px-5 py-3 hover:opacity-95 soft-ring">
+            💬 Ir al chat
+          </a>
+          <a href="#musica"
+             class="inline-flex justify-center items-center rounded-xl bg-white/10 border border-white/15 text-white font-semibold px-5 py-3 hover:bg-white/10 soft-ring">
+            🎧 Música (opcional)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+    <div class="grid gap-6">
+
+      <section class="space-y-6">
+
+        <!-- MÚSICA -->
+        <div id="musica" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Música de fondo (opcional)</h2>
+              <p class="text-inst-gray text-sm leading-relaxed">
+                Elegí una música suave para acompañar. Podés pausar cuando quieras.
+              </p>
+            </div>
+
+            <div class="flex gap-2">
+              <button id="btnPlay"
+                class="rounded-xl bg-inst-blue text-white font-semibold px-4 py-2.5 hover:opacity-95 soft-ring">
+                ▶️ Reproducir
+              </button>
+              <button id="btnStop"
+                class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-2.5 hover:bg-inst-light soft-ring">
+                ⏹️ Detener
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 grid gap-3">
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-inst-light/60 hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="none" class="mt-1" checked>
+              <div>
+                <div class="font-semibold">Sin música</div>
+                <div class="text-sm text-inst-gray">Continuar en silencio.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m1" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 1 · Respiración lenta</div>
+                <div class="text-sm text-inst-gray">Ambiente spa, ritmo estable y suave.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m2" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 2 · Ambiente calmo</div>
+                <div class="text-sm text-inst-gray">Lofi relajante, sin sobresaltos.</div>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white hover:bg-inst-light cursor-pointer">
+              <input type="radio" name="track" value="m3" class="mt-1">
+              <div>
+                <div class="font-semibold">Música 3 · Piano suave</div>
+                <div class="text-sm text-inst-gray">Piano lento, ideal para introspección.</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="mt-4 text-xs text-inst-gray">
+            Tip: si estás en un lugar público, bajá el volumen o usá auriculares.
+          </div>
+
+          <div class="mt-4 text-xs text-inst-gray leading-relaxed">
+            <div class="font-semibold text-inst-navy mb-1">Créditos de música</div>
+            <div id="creditsBox" class="space-y-1">
+              <div id="creditsNone">Sin música seleccionada.</div>
+              <div id="creditsM1" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/rockot-1947599/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=253179" target="_blank" rel="noopener">Rockot</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=253179" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+              <div id="creditsM2" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/ambientaudiovision-25188255/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=269654" target="_blank" rel="noopener">Amir Firouzfard</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=269654" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+              <div id="creditsM3" class="hidden">
+                Music by <a class="underline hover:text-inst-navy" href="https://pixabay.com/es/users/original_soundtrack-50153119/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431679" target="_blank" rel="noopener">Viacheslav Starostin</a>
+                from <a class="underline hover:text-inst-navy" href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431679" target="_blank" rel="noopener">Pixabay</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAT -->
+        <div id="chat" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Chat guiado de regulación emocional</h2>
+              <p class="text-inst-gray text-sm leading-relaxed">
+                Escribí libremente lo que te pasa. Este chat propone ejercicios breves de respiración, mindfulness y foco atencional.
+              </p>
+              <p class="text-xs text-inst-gray mt-2">
+                No guarda datos personales, no realiza diagnósticos y no reemplaza una consulta. Supervisado por el <strong>Dr. Pedro Nicolás Dagnino</strong>.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button id="chatModeWait"
+                class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-inst-light border border-gray-200 hover:bg-white soft-ring"
+                aria-pressed="true">
+                🪑 Estoy esperando turno
+              </button>
+              <button id="chatModeHome"
+                class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-inst-light border border-gray-200 hover:bg-white soft-ring"
+                aria-pressed="false">
+                🏠 Estoy en casa
+              </button>
+              <button id="chatReset"
+                class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-white border border-gray-200 hover:bg-inst-light soft-ring">
+                🔄 Reiniciar
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 grid lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-8 rounded-2xl border border-gray-100 bg-inst-light p-4">
+              <div id="chatLog" class="space-y-3 max-h-[420px] overflow-auto pr-1"></div>
+
+              <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                <input id="chatInput" type="text"
+                  class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm soft-ring"
+                  placeholder="Escribí acá (ej: “me siento ansioso” / “no puedo parar de pensar”)">
+                <button id="chatSend"
+                  class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95 soft-ring">
+                  Enviar
+                </button>
+              </div>
+
+              <p class="mt-3 text-xs text-inst-gray">
+                Tip: probá empezar con una frase simple (“Estoy muy activado”, “Estoy triste”, “Estoy cansado”, “Estoy esperando turno”).
+              </p>
+            </div>
+
+            <div class="lg:col-span-4 space-y-3">
+              <div class="rounded-2xl border border-gray-100 bg-white p-4">
+                <p class="text-sm font-semibold mb-1">Acciones sugeridas</p>
+                <p class="text-xs text-inst-gray mb-3">Van cambiando según lo que escribas.</p>
+                <div id="chatActions" class="flex flex-col gap-2"></div>
+              </div>
+
+              <div class="rounded-2xl border border-gray-100 bg-white p-4">
+                <p class="text-sm font-semibold mb-2">Atajos</p>
+                <div class="grid grid-cols-1 gap-2">
+                  <button data-quick="calmar"
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
+                    🌬️ Necesito calmarme
+                  </button>
+                  <button data-quick="pensamientos"
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
+                    🧠 Mi cabeza no para
+                  </button>
+                  <button data-quick="apagado"
+                    class="w-full rounded-xl bg-inst-light border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-white soft-ring">
+                    😮‍💨 Me siento apagado
+                  </button>
+                  <a href="juegos.html"
+                    class="w-full text-center rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                    🎮 Ir a juegos
+                  </a>
+                </div>
+
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                  <p class="text-sm font-semibold mb-2">Ejercicios con audio (guía en voz)</p>
+                  <div class="grid grid-cols-1 gap-2">
+                    <button data-voice="respiracion"
+                      class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 soft-ring">
+                      ▶️ Respiración (1 min)
+                    </button>
+                    <button data-voice="box"
+                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      ▶️ Respiración en cuadro (1:30)
+                    </button>
+                    <button data-voice="grounding"
+                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      ▶️ Anclaje al presente (1:30)
+                    </button>
+                    <button data-voice="relax"
+                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      ▶️ Soltar mandíbula y hombros (1 min)
+                    </button>
+                    <button data-voice="mind"
+                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      ▶️ Mindfulness (1 min)
+                    </button>
+                  </div>
+                  <p class="mt-2 text-xs text-inst-gray leading-relaxed">
+                    Nota: el audio se reproduce solo al tocar el botón. Si el audio está silenciado arriba, al iniciar un ejercicio se activará.
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-gray-100 bg-white p-4">
+                <p class="text-sm font-semibold mb-2">Privacidad</p>
+                <p class="text-xs text-inst-gray leading-relaxed">
+                  Este chat está pensado como apoyo breve. No guarda tus mensajes, no pide datos personales y no reemplaza la consulta médica.
+                  Si estás en una situación de emergencia, buscá ayuda presencial en tu sistema local.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODO SEGURIDAD -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <h2 class="text-xl font-semibold mb-1">Modo seguridad (si estás en riesgo)</h2>
+          <p class="text-inst-gray text-sm leading-relaxed">
+            Si tenés ideas de autolesión o sentís que podés actuar impulsivamente, priorizá pedir ayuda humana ahora.
+          </p>
+
+          <div class="mt-4 grid sm:grid-cols-2 gap-3">
+            <a href="tel:911"
+              class="rounded-xl bg-inst-blue text-white font-semibold px-4 py-3 text-center hover:opacity-95 soft-ring">
+              📞 Llamar a emergencias (911)
+            </a>
+            <a href="https://wa.me/"
+              class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-3 text-center hover:bg-inst-light soft-ring">
+              💬 Abrir WhatsApp (contacto de confianza)
+            </a>
+          </div>
+
+          <p class="mt-3 text-xs text-inst-gray">
+            Podés editar estos accesos a tus números de confianza cuando quieras.
+          </p>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-inst-navy text-white">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="border-t border-white/10 pt-4 text-center text-xs text-white/60">
+        Copyright © <span id="year"></span> · Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <audio id="bgMusic" preload="auto" loop></audio>
+  <audio id="voiceGuide" preload="none"></audio>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+  (() => {
+    // ===== Audio background =====
+    const audioToggle = document.getElementById("audioToggle");
+    const audioVolume = document.getElementById("audioVolume");
+    const bgMusic = document.getElementById("bgMusic");
+    const voiceGuide = document.getElementById("voiceGuide");
+    const btnPlay = document.getElementById("btnPlay");
+    const btnStop = document.getElementById("btnStop");
+    const trackRadios = [...document.querySelectorAll('input[name="track"]')];
+
+    const creditsNone = document.getElementById("creditsNone");
+    const creditsM1 = document.getElementById("creditsM1");
+    const creditsM2 = document.getElementById("creditsM2");
+    const creditsM3 = document.getElementById("creditsM3");
+
+    let audioEnabled = false;
+    let currentTrack = "none";
+
+    const TRACKS = {
+      none: { label: "Sin música", src: "" },
+      m1: { label: "Música 1 · Respiración lenta", src: "audio/spa-ambient-10min-253179.mp3" },
+      m2: { label: "Música 2 · Ambiente calmo", src: "audio/frosted-cafe-de-lofi-269654.mp3" },
+      m3: { label: "Música 3 · Piano suave", src: "audio/relaxing-soft-piano-music-431679.mp3" },
+    };
+
+    const VOICE_EXERCISES = {
+      respiracion: { title:"Respiración guiada (1 minuto)", src:"audio/voz/respiracion_60s.m4a" },
+      box: { title:"Respiración en cuadro (1:30)", src:"audio/voz/box_90s.m4a" },
+      grounding: { title:"Anclaje al presente (1:30)", src:"audio/voz/grounding_90s.m4a" },
+      relax: { title:"Soltar mandíbula y hombros (1 min)", src:"audio/voz/relax_60s.m4a" },
+      mind: { title:"Mindfulness (1 min)", src:"audio/voz/mind_60s.m4a" }
+    };
+
+    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+    function getVol(){
+      const v = Number(audioVolume?.value ?? 18);
+      return clamp01((isFinite(v) ? v : 18) / 100);
+    }
+
+    function setAudioUI(){
+      audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
+      audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+    }
+
+    function showCredits(key){
+      creditsNone?.classList.toggle("hidden", key !== "none");
+      creditsM1?.classList.toggle("hidden", key !== "m1");
+      creditsM2?.classList.toggle("hidden", key !== "m2");
+      creditsM3?.classList.toggle("hidden", key !== "m3");
+    }
+
+    async function fadeTo(target, ms=1200){
+      target = clamp01(target);
+      const start = bgMusic.volume;
+      const startTime = performance.now();
+      const dur = Math.max(120, ms);
+      return new Promise(resolve => {
+        function step(now){
+          const t = Math.min(1, (now - startTime) / dur);
+          bgMusic.volume = start + (target - start) * t;
+          if (t < 1) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    async function stopMusic(){
+      if (!bgMusic || bgMusic.paused) return;
+      await fadeTo(0, 800);
+      try { bgMusic.pause(); } catch {}
+    }
+
+    async function playMusic(){
+      if (!audioEnabled) return;
+      const track = TRACKS[currentTrack];
+      if (!track || currentTrack === "none") return;
+
+      if (bgMusic.src && !bgMusic.src.endsWith(track.src)) {
+        await stopMusic();
+        bgMusic.src = track.src;
+      } else if (!bgMusic.src) {
+        bgMusic.src = track.src;
+      }
+
+      bgMusic.volume = 0;
+      try { await bgMusic.play(); } catch { return; }
+      await fadeTo(getVol(), 1200);
+    }
+
+    async function playVoice(key){
+      const ex = VOICE_EXERCISES[key];
+      if (!ex || !voiceGuide) return false;
+
+      await stopMusic(); // voz clara
+      if (!audioEnabled){ audioEnabled = true; setAudioUI(); }
+
+      if (!voiceGuide.src || !voiceGuide.src.endsWith(ex.src)) voiceGuide.src = ex.src;
+      voiceGuide.volume = getVol();
+
+      try { voiceGuide.currentTime = 0; } catch {}
+      try { await voiceGuide.play(); return true; }
+      catch { return false; }
+    }
+
+    audioToggle.addEventListener("click", async () => {
+      audioEnabled = !audioEnabled;
+      setAudioUI();
+      if (!audioEnabled) {
+        await stopMusic();
+        try { voiceGuide.pause(); voiceGuide.currentTime = 0; } catch {}
+      }
+    });
+
+    audioVolume?.addEventListener("input", () => {
+      const v = getVol();
+      if (!bgMusic.paused) bgMusic.volume = v;
+      if (voiceGuide && !voiceGuide.paused) voiceGuide.volume = v;
+    });
+
+    trackRadios.forEach(r => {
+      r.addEventListener("change", async () => {
+        currentTrack = r.value;
+        showCredits(currentTrack);
+        if (currentTrack === "none") { await stopMusic(); return; }
+        if (audioEnabled && !bgMusic.paused) await playMusic();
+      });
+    });
+
+    btnPlay.addEventListener("click", async () => {
+      if (currentTrack === "none") return;
+      if (!audioEnabled) { audioEnabled = true; setAudioUI(); }
+      await playMusic();
+    });
+
+    btnStop.addEventListener("click", async () => { await stopMusic(); });
+
+    setAudioUI();
+    showCredits("none");
+
+    // ===== Chat logic =====
+    const chatLog = document.getElementById("chatLog");
+    const chatInput = document.getElementById("chatInput");
+    const chatSend = document.getElementById("chatSend");
+    const chatActions = document.getElementById("chatActions");
+    const modeWait = document.getElementById("chatModeWait");
+    const modeHome = document.getElementById("chatModeHome");
+    const resetBtn = document.getElementById("chatReset");
+
+    let mode = "wait";
+
+    function bubble(role, text){
+      const wrap = document.createElement("div");
+      const isUser = role === "user";
+      wrap.className = isUser ? "flex justify-end" : "flex justify-start";
+      wrap.innerHTML = `
+        <div class="${isUser ? "bg-inst-blue text-white" : "bg-white border border-gray-200 text-inst-navy"} max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed">
+          ${text.replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+        </div>
+      `;
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function setMode(next){
+      mode = next;
+      modeWait.setAttribute("aria-pressed", mode==="wait" ? "true" : "false");
+      modeHome.setAttribute("aria-pressed", mode==="home" ? "true" : "false");
+      modeWait.classList.toggle("bg-inst-blue", mode==="wait");
+      modeWait.classList.toggle("text-white", mode==="wait");
+      modeWait.classList.toggle("border-inst-blue", mode==="wait");
+
+      modeHome.classList.toggle("bg-inst-blue", mode==="home");
+      modeHome.classList.toggle("text-white", mode==="home");
+      modeHome.classList.toggle("border-inst-blue", mode==="home");
+    }
+
+    function actionsFor(text){
+      const t = (text||"").toLowerCase();
+
+      const items = [];
+      if (t.match(/ansie|nerv|agob|taqu|miedo/)) {
+        items.push({ label:"🌬️ Respiración 4-6 (60s)", voice:"respiracion" });
+        items.push({ label:"🧩 Anclaje al presente (5-4-3-2-1)", voice:"grounding" });
+      } else if (t.match(/trist|vac[ií]o|llor|sin ganas/)) {
+        items.push({ label:"🧘 Mindfulness 1 min", voice:"mind" });
+        items.push({ label:"📝 Escribí 1 cosa pequeña que sí podés hacer hoy", quick:"pequeno" });
+      } else if (t.match(/enojo|bronca|irrit/)) {
+        items.push({ label:"💪 Soltar tensión (mandíbula y hombros)", voice:"relax" });
+        items.push({ label:"✍️ Poné en palabras qué límite necesitás", quick:"limite" });
+      } else if (t.match(/no duermo|insom|dormir/)) {
+        items.push({ label:"🌧️ Ir al ejercicio de sueño (15 min)", link:"sueno.html" });
+        items.push({ label:"🌬️ Respiración en cuadro (1:30)", voice:"box" });
+      } else {
+        items.push({ label:"🌬️ Respiración 4-6 (60s)", voice:"respiracion" });
+        items.push({ label:"🧩 Anclaje al presente (1:30)", voice:"grounding" });
+      }
+
+      if (mode === "wait"){
+        items.push({ label:"🪑 En sala de espera: mirada suave + exhalación larga", quick:"wait" });
+      } else {
+        items.push({ label:"🏠 En casa: bajá luces + agua + cuerpo cómodo", quick:"home" });
+      }
+      return items;
+    }
+
+    function renderActions(items){
+      chatActions.innerHTML = "";
+      items.forEach(it => {
+        let el;
+        if (it.link){
+          el = document.createElement("a");
+          el.href = it.link;
+          el.className = "rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-3 py-2.5 text-sm hover:bg-inst-light soft-ring text-center";
+          el.textContent = it.label;
+        } else {
+          el = document.createElement("button");
+          el.type = "button";
+          el.className = "rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-3 py-2.5 text-sm hover:bg-inst-light soft-ring";
+          el.textContent = it.label;
+          el.addEventListener("click", async () => {
+            if (it.voice){
+              const ok = await playVoice(it.voice);
+              if (!ok) bubble("assistant", "No pude reproducir el audio (todavía no está subido o el navegador lo bloqueó).");
+            }
+            if (it.quick){
+              quickReply(it.quick);
+            }
+          });
+        }
+        chatActions.appendChild(el);
+      });
+    }
+
+    function assistantReply(userText){
+      const t = (userText||"").toLowerCase();
+
+      if (t.match(/suicid|matarme|autoles|no quiero vivir/)){
+        bubble("assistant",
+          "Gracias por decirlo. Si estás en riesgo ahora, pedí ayuda humana inmediata: llamá a emergencias o a alguien de confianza. " +
+          "Si querés, escribí: ¿estás solo/a ahora mismo?"
+        );
+        renderActions([{ label:"📞 Llamar a emergencias (911)", link:"tel:911" }]);
+        return;
+      }
+
+      if (mode === "wait"){
+        bubble("assistant",
+          "Entiendo. Estás en sala de espera. Hagamos algo simple: exhalá más largo que la inhalación (4-6) por 60 segundos. " +
+          "Después decime: ¿la ansiedad subió, bajó o quedó igual?"
+        );
+      } else {
+        bubble("assistant",
+          "Te leo. En casa podemos bajar un cambio: agua, postura cómoda y una respiración lenta. " +
+          "Contame: ¿qué es lo más molesto de esto ahora mismo (1 frase)?"
+        );
+      }
+
+      renderActions(actionsFor(userText));
+    }
+
+    function send(){
+      const txt = chatInput.value.trim();
+      if (!txt) return;
+      bubble("user", txt);
+      chatInput.value = "";
+      assistantReply(txt);
+    }
+
+    function reset(){
+      chatLog.innerHTML = "";
+      bubble("assistant", "Hola. Estoy acá con vos. ¿Qué te está pasando ahora mismo, en una frase?");
+      renderActions(actionsFor(""));
+    }
+
+    function quickReply(key){
+      const map = {
+        calmar: "Necesito calmarme.",
+        pensamientos: "Mi cabeza no para y me cuesta frenar.",
+        apagado: "Estoy apagado y sin energía.",
+        pequeno: "Me cuesta hacer cosas, pero quiero intentar algo pequeño.",
+        limite: "Estoy con bronca y necesito un límite claro.",
+        wait: "Estoy esperando turno y me pongo nervioso.",
+        home: "Estoy en casa y quiero bajar un cambio."
+      };
+      const txt = map[key] || "Necesito ayuda para bajar un cambio.";
+      bubble("user", txt);
+      assistantReply(txt);
+    }
+
+    // Events
+    chatSend.addEventListener("click", send);
+    chatInput.addEventListener("keydown", (e) => { if(e.key === "Enter") send(); });
+
+    modeWait.addEventListener("click", () => setMode("wait"));
+    modeHome.addEventListener("click", () => setMode("home"));
+    resetBtn.addEventListener("click", reset);
+
+    document.querySelectorAll("[data-quick]").forEach(btn => {
+      btn.addEventListener("click", () => quickReply(btn.getAttribute("data-quick")));
+    });
+
+    document.querySelectorAll("[data-voice]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const key = btn.getAttribute("data-voice");
+        const ok = await playVoice(key);
+        if (!ok) bubble("assistant", "No pude reproducir el audio (todavía no está subido o el navegador lo bloqueó).");
+      });
+    });
+
+    // Init
+    setMode("wait");
+    reset();
+  })();
+  </script>
+
+</body>
+</html>
