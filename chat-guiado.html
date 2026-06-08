@@ -30,6 +30,8 @@
     .card-hover { transition: all .25s ease; }
     .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
     .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+    .icon-inline{ display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .icon-inline svg{ display:block; }
     @media (prefers-reduced-motion: reduce){
       .card-hover { transition: none; }
       .card-hover:hover { transform: none; box-shadow: none; }
@@ -57,13 +59,19 @@
       <div class="flex items-center gap-2">
         <a href="emociones.html"
            class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          ← Volver
+          <span class="icon-inline" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+          Volver
         </a>
 
         <button id="audioToggle"
           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
           aria-pressed="false">
-          🔇 Audio silenciado
+          <span id="audioToggleIcon" class="icon-inline" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          </span>
+          <span id="audioToggleLabel">Audio silenciado</span>
         </button>
 
         <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
@@ -85,9 +93,15 @@
         </p>
 
         <!-- Aviso de alcance -->
-        <div class="flex items-start gap-3 bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-sm text-white/80 mb-6" role="note">
+        <div class="flex items-start gap-3 bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-sm text-white/80 mb-3" role="note">
           <span class="text-white/60 mt-0.5 flex-shrink-0" aria-hidden="true">—</span>
           <span>Este chat no reemplaza una consulta profesional, no realiza diagnóstico, no indica medicación y no atiende urgencias.</span>
+        </div>
+
+        <!-- Aviso de estadísticas anónimas -->
+        <div class="flex items-start gap-3 bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-sm text-white/80 mb-6" role="note">
+          <span class="text-white/60 mt-0.5 flex-shrink-0" aria-hidden="true">—</span>
+          <span>Este recurso puede registrar estadísticas anónimas de uso para mejorar la sala de espera virtual. No se guardan conversaciones completas ni datos personales.</span>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
@@ -121,12 +135,18 @@
 
             <div class="flex gap-2">
               <button id="btnPlay"
-                class="rounded-xl bg-inst-blue text-white font-semibold px-4 py-2.5 hover:opacity-95 soft-ring">
-                ▶️ Reproducir
+                class="inline-flex items-center gap-2 rounded-xl bg-inst-blue text-white font-semibold px-4 py-2.5 hover:opacity-95 soft-ring">
+                <span class="icon-inline" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+                Reproducir
               </button>
               <button id="btnStop"
-                class="rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-2.5 hover:bg-inst-light soft-ring">
-                ⏹️ Detener
+                class="inline-flex items-center gap-2 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-4 py-2.5 hover:bg-inst-light soft-ring">
+                <span class="icon-inline" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+                </span>
+                Detener
               </button>
             </div>
           </div>
@@ -206,16 +226,25 @@
               <button id="chatModeWait"
                 class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-inst-light border border-gray-200 hover:bg-white soft-ring"
                 aria-pressed="true">
-                🪑 Estoy esperando turno
+                <span class="icon-inline" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14M9 21v-6h6v6"/></svg>
+                </span>
+                Estoy esperando turno
               </button>
               <button id="chatModeHome"
                 class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-inst-light border border-gray-200 hover:bg-white soft-ring"
                 aria-pressed="false">
-                🏠 Estoy en casa
+                <span class="icon-inline" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>
+                </span>
+                Estoy en casa
               </button>
               <button id="chatReset"
                 class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-white border border-gray-200 hover:bg-inst-light soft-ring">
-                🔄 Reiniciar
+                <span class="icon-inline" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 1 2.6 6.4M3 12V7m0 5h5"/></svg>
+                </span>
+                Reiniciar
               </button>
             </div>
           </div>
@@ -271,24 +300,29 @@
                   <p class="text-sm font-semibold mb-2">Ejercicios con audio (guía en voz)</p>
                   <div class="grid grid-cols-1 gap-2">
                     <button data-voice="respiracion"
-                      class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 soft-ring">
-                      ▶️ Respiración (1 min)
+                      class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 soft-ring">
+                      <span class="icon-inline" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                      Respiración (1 min)
                     </button>
                     <button data-voice="box"
-                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
-                      ▶️ Respiración en cuadro (1:30)
+                      class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      <span class="icon-inline" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                      Respiración en cuadro (1:30)
                     </button>
                     <button data-voice="grounding"
-                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
-                      ▶️ Anclaje al presente (1:30)
+                      class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      <span class="icon-inline" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                      Anclaje al presente (1:30)
                     </button>
                     <button data-voice="relax"
-                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
-                      ▶️ Soltar mandíbula y hombros (1 min)
+                      class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      <span class="icon-inline" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                      Soltar mandíbula y hombros (1 min)
                     </button>
                     <button data-voice="mind"
-                      class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
-                      ▶️ Mindfulness (1 min)
+                      class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light soft-ring">
+                      <span class="icon-inline" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                      Mindfulness (1 min)
                     </button>
                   </div>
                   <p class="mt-2 text-xs text-inst-gray leading-relaxed">
@@ -302,6 +336,9 @@
                 <p class="text-xs text-inst-gray leading-relaxed">
                   Este chat está pensado como apoyo breve. No guarda tus mensajes, no pide datos personales y no reemplaza la consulta médica.
                   Si estás en una situación de emergencia, buscá ayuda presencial en tu sistema local.
+                </p>
+                <p class="text-xs text-inst-gray leading-relaxed mt-2">
+                  Este recurso puede registrar estadísticas anónimas de uso (por ejemplo, qué herramientas se eligen) para mejorar la sala de espera virtual. No se guardan conversaciones completas ni datos personales.
                 </p>
               </div>
             </div>
@@ -376,9 +413,145 @@
   </script>
 
   <script>
+  /* =========================================================================
+     Etapa A — Analítica anónima de uso (sin backend, sin envío a servidor)
+     -------------------------------------------------------------------------
+     Objetivo: dejar preparada la estructura para conocer, de forma agregada
+     y anónima, qué necesitan quienes usan el Chat de Apoyo Guiado, para
+     mejorar progresivamente los recursos del sitio — sin comprometer la
+     privacidad ni guardar información clínica identificable.
+
+     Principios:
+       - No se guardan conversaciones completas ni texto libre del usuario.
+       - No se guardan datos personales ni identificadores persistentes.
+       - Solo se registran eventos anónimos y agregados (categoría general,
+         atajo usado, recurso sugerido/abierto, fecha sin hora).
+       - En esta etapa los eventos solo se imprimen en la consola local
+         (console.log). No se envían datos a ningún servidor.
+     ========================================================================= */
   (() => {
+    // Lista blanca de claves permitidas en el payload de un evento.
+    // Cualquier otra clave se descarta para evitar guardar datos sensibles.
+    const ALLOWED_PAYLOAD_KEYS = ["event_category", "quick_action", "resource", "mode"];
+
+    // Categorías generales reconocidas (ver "Categorías posibles" del criterio
+    // de aprendizaje seguro). El texto original del usuario nunca se guarda:
+    // solo se clasifica en una de estas categorías.
+    const CHAT_CATEGORIES = [
+      "ansiedad",
+      "sueno",
+      "rumiacion",
+      "impulsividad_ira",
+      "orientacion_general",
+      "busqueda_turno",
+      "evaluacion_situacional",
+      "riesgo"
+    ];
+
+    function sanitizeChatPayload(payload = {}) {
+      const safePayload = {};
+      ALLOWED_PAYLOAD_KEYS.forEach((key) => {
+        if (payload[key] === undefined || payload[key] === null) return;
+        // Se recortan los valores y se limita su largo: nunca debería viajar
+        // una frase completa del usuario, solo identificadores cortos
+        // (nombre de categoría, de atajo o de recurso).
+        const value = String(payload[key]).slice(0, 60);
+        safePayload[key] = value;
+      });
+      // Solo fecha (sin hora ni zona horaria), sin ningún identificador de persona.
+      safePayload.date = new Date().toISOString().slice(0, 10);
+      return safePayload;
+    }
+
+    function trackChatEvent(eventName, payload = {}) {
+      const safePayload = sanitizeChatPayload(payload);
+      // Etapa A: registro local únicamente. Sin backend, sin cookies,
+      // sin almacenamiento persistente ni envío de datos a terceros.
+      console.log("[chat-event]", eventName, safePayload);
+    }
+
+    // Clasifica un mensaje libre en una categoría general y descarta el texto.
+    // Ejemplo: el usuario escribe algo sobre insomnio → se registra
+    // únicamente { event_category: "sueno" }, nunca el mensaje original.
+    function categorizeMessage(text) {
+      const t = (text || "").toLowerCase();
+      if (t.match(/suicid|matarme|autoles|no quiero vivir|riesgo/)) return "riesgo";
+      if (t.match(/ansie|nerv|agob|taqu|miedo|p[áa]nico|ataque/)) return "ansiedad";
+      if (t.match(/no duermo|insom|dormir|sue[ñn]o/)) return "sueno";
+      if (t.match(/rumia|pensamiento|cabeza no para|no puedo frenar/)) return "rumiacion";
+      if (t.match(/enojo|bronca|irrit|impuls|ira/)) return "impulsividad_ira";
+      if (t.match(/turno|consulta|m[eé]dic[oa]|doctor/)) return "busqueda_turno";
+      if (t.match(/evaluaci[oó]n situacional|segunda opini[oó]n/)) return "evaluacion_situacional";
+      return "orientacion_general";
+    }
+
+    /* -----------------------------------------------------------------------
+       Etapa B — Registro local agregado y no clínico (localStorage)
+       -------------------------------------------------------------------------
+       Guarda únicamente CONTADORES agregados por categoría general, por
+       ejemplo: { "ansiedad": 12, "sueno": 7, "turnos": 4, "riesgo": 1 }.
+
+       Reglas:
+         - Nunca se guarda texto libre, mensajes completos ni nada que
+           identifique a una persona (ni siquiera de forma indirecta).
+         - Solo se incrementan números enteros asociados a una categoría
+           general ya clasificada (ver categorizeMessage / categorías
+           permitidas).
+         - Esto NO es una historia clínica ni un seguimiento individual:
+           es un panel agregado para entender, en conjunto y con el tiempo,
+           qué tipo de necesidades aparecen más para mejorar los recursos
+           del sitio.
+         - Si localStorage no está disponible (modo privado, cuotas, etc.)
+           se ignora silenciosamente: el chat sigue funcionando igual.
+       ----------------------------------------------------------------------- */
+    const LOCAL_STATS_KEY = "chatGuiadoStatsAgregadosV1";
+
+    function getLocalChatStats() {
+      try {
+        const raw = localStorage.getItem(LOCAL_STATS_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return (parsed && typeof parsed === "object" && !Array.isArray(parsed)) ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function recordLocalChatStat(category) {
+      if (!category || typeof category !== "string") return;
+      // Se reutiliza la misma lista de categorías generales (más "turnos",
+      // que agrupa los accesos a Central de Turnos). Cualquier otro valor
+      // se descarta para no abrir la puerta a guardar texto libre.
+      const allowed = CHAT_CATEGORIES.concat(["turnos"]);
+      if (!allowed.includes(category)) return;
+      try {
+        const stats = getLocalChatStats();
+        const current = Number(stats[category]) || 0;
+        stats[category] = current + 1;
+        localStorage.setItem(LOCAL_STATS_KEY, JSON.stringify(stats));
+      } catch {
+        // No se pudo persistir (modo privado, cuota llena, etc.): se ignora.
+      }
+    }
+
+    // Expuesto para el resto del script de esta página.
+    window.chatTelemetry = {
+      trackChatEvent,
+      categorizeMessage,
+      sanitizeChatPayload,
+      getLocalChatStats,
+      recordLocalChatStat
+    };
+  })();
+  </script>
+
+  <script>
+  (() => {
+    const { trackChatEvent, categorizeMessage, recordLocalChatStat } = window.chatTelemetry;
+
     // ===== Audio background =====
     const audioToggle = document.getElementById("audioToggle");
+    const audioToggleLabel = document.getElementById("audioToggleLabel");
+    const audioToggleIcon = document.getElementById("audioToggleIcon");
     const audioVolume = document.getElementById("audioVolume");
     const bgMusic = document.getElementById("bgMusic");
     const voiceGuide = document.getElementById("voiceGuide");
@@ -393,6 +566,9 @@
 
     let audioEnabled = false;
     let currentTrack = "none";
+
+    const ICON_SPEAKER_ON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+    const ICON_SPEAKER_OFF = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
 
     const TRACKS = {
       none: { label: "Sin música", src: "" },
@@ -417,7 +593,8 @@
 
     function setAudioUI(){
       audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
-      audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+      if (audioToggleIcon) audioToggleIcon.innerHTML = audioEnabled ? ICON_SPEAKER_ON : ICON_SPEAKER_OFF;
+      if (audioToggleLabel) audioToggleLabel.textContent = audioEnabled ? "Audio activo" : "Audio silenciado";
     }
 
     function showCredits(key){
@@ -527,6 +704,13 @@
 
     let mode = "wait";
 
+    // Estado mínimo para medir, de forma anónima, si la persona llegó a
+    // elegir un recurso o abandonó el flujo antes de hacerlo.
+    const sessionStats = {
+      chatOpened: false,
+      resourceChosen: false
+    };
+
     function bubble(role, text){
       const wrap = document.createElement("div");
       const isUser = role === "user";
@@ -551,6 +735,8 @@
       modeHome.classList.toggle("bg-inst-blue", mode==="home");
       modeHome.classList.toggle("text-white", mode==="home");
       modeHome.classList.toggle("border-inst-blue", mode==="home");
+
+      trackChatEvent("mode_change", { mode });
     }
 
     function actionsFor(text){
@@ -601,6 +787,16 @@
 
     function renderActions(items){
       chatActions.innerHTML = "";
+
+      if (items.length) {
+        // Se registra (de forma anónima y agregada) qué tipo de recurso se
+        // sugiere, sin asociarlo a ningún dato identificable de la persona.
+        const firstResource = items.find(it => it.link || it.voice);
+        if (firstResource) {
+          trackChatEvent("resource_suggested", { resource: firstResource.link || firstResource.voice });
+        }
+      }
+
       items.forEach(it => {
         let el;
         if (it.link){
@@ -608,6 +804,10 @@
           el.href = it.link;
           el.className = "rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-3 py-2.5 text-sm hover:bg-inst-light soft-ring text-center";
           el.textContent = it.label;
+          el.addEventListener("click", () => {
+            sessionStats.resourceChosen = true;
+            trackChatEvent("resource_open", { resource: it.link });
+          });
         } else {
           el = document.createElement("button");
           el.type = "button";
@@ -615,6 +815,8 @@
           el.textContent = it.label;
           el.addEventListener("click", async () => {
             if (it.voice){
+              sessionStats.resourceChosen = true;
+              trackChatEvent("resource_open", { resource: it.voice });
               const ok = await playVoice(it.voice);
               if (!ok) bubble("assistant", "No pude reproducir el audio (todavía no está subido o el navegador lo bloqueó).");
             }
@@ -629,6 +831,14 @@
 
     function assistantReply(userText){
       const t = (userText||"").toLowerCase();
+
+      // Se clasifica el mensaje en una categoría general y se descarta el
+      // texto original: nunca se guarda la frase completa de la persona.
+      const messageCategory = categorizeMessage(t);
+      trackChatEvent("message_category", { event_category: messageCategory });
+      // Etapa B: solo suma +1 al contador agregado de esa categoría en
+      // localStorage (ver bloque de analítica). No guarda el mensaje.
+      recordLocalChatStat(messageCategory);
 
       // Seguridad
       if (t.match(/suicid|matarme|autoles|no quiero vivir|riesgo/)){
@@ -689,6 +899,11 @@
     }
 
     function reset(){
+      const isFirstOpen = !sessionStats.chatOpened;
+      sessionStats.chatOpened = true;
+      sessionStats.resourceChosen = false;
+      if (isFirstOpen) trackChatEvent("chat_open", {});
+
       chatLog.innerHTML = "";
       bubble("assistant",
         "Hola. Podés usar este espacio para ordenar una emoción, buscar una herramienta breve o encontrar un recurso del sitio. " +
@@ -704,6 +919,9 @@
         "este chat no alcanza como único recurso. " +
         "El bloque de seguridad al final de la página tiene acceso directo a emergencias y a la Central de Turnos."
       );
+      sessionStats.resourceChosen = true;
+      trackChatEvent("risk_flag", { event_category: "riesgo" });
+      recordLocalChatStat("riesgo"); // Etapa B: contador agregado, sin texto ni datos personales
       renderActions([{ label:"Ver bloque de seguridad", link:"#bloque-seguridad" }]);
       // Scroll suave al bloque
       setTimeout(() => {
@@ -713,6 +931,8 @@
     }
 
     function quickReply(key){
+      trackChatEvent("quick_action", { quick_action: key });
+
       if (key === "riesgo") { mostrarSeguridad(); return; }
 
       const map = {
@@ -744,9 +964,28 @@
     document.querySelectorAll("[data-voice]").forEach(btn => {
       btn.addEventListener("click", async () => {
         const key = btn.getAttribute("data-voice");
+        sessionStats.resourceChosen = true;
+        trackChatEvent("resource_open", { resource: key });
         const ok = await playVoice(key);
         if (!ok) bubble("assistant", "No pude reproducir el audio (todavía no está subido o el navegador lo bloqueó).");
       });
+    });
+
+    // Central de Turnos / contacto administrativo: registrar el interés,
+    // sin guardar ningún dato de quién hizo clic.
+    document.querySelectorAll('a[href="turnos.html"], a[href*="wa.me"]').forEach(a => {
+      a.addEventListener("click", () => {
+        trackChatEvent("turnos_click", { event_category: "busqueda_turno" });
+        recordLocalChatStat("turnos"); // Etapa B: contador agregado de interés en turnos
+      });
+    });
+
+    // Abandono del flujo: si la persona llegó a usar el chat pero se va de
+    // la página sin haber elegido ningún recurso ni ejercicio.
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden" && sessionStats.chatOpened && !sessionStats.resourceChosen) {
+        trackChatEvent("chat_abandon", {});
+      }
     });
 
     // Init
