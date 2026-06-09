@@ -514,6 +514,34 @@
 
     /* Ocultar divisores de grupo cuando no hay ítems visibles */
     .psy-group-div.hide{ display:none; }
+
+    /* ===== Tarjetas de cuidados ===== */
+    .psy-safety-grid{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:14px;
+    }
+    .psy-safety-card{
+      border:1px solid var(--psy-border);
+      border-left:4px solid var(--psy-blue);
+      border-radius:12px;
+      padding:14px 16px;
+      background:#fff;
+    }
+    .psy-safety-card h3{
+      margin:0 0 5px;
+      font-size:15px;
+      font-weight:700;
+      color:var(--psy-navy);
+      letter-spacing:-0.01em;
+    }
+    .psy-safety-card p{
+      margin:0;
+      font-size:14px;
+      color:var(--psy-text);
+      line-height:1.6;
+    }
   </style>
 </head>
 
@@ -1960,21 +1988,28 @@
     <section class="psy-card" id="cuidados" style="margin-top:16px;" aria-label="Cuidados importantes">
       <p class="psy-section-tag">Para tener en cuenta</p>
       <h2>Cuidados importantes</h2>
-      <p class="sub">
-        Medidas simples que aumentan la seguridad y mejoran la respuesta al tratamiento.
-      </p>
-      <ul style="margin:12px 0 0; padding-left:18px; color:#475569; line-height:1.7;">
-        <li>No modificar ni interrumpir medicación sin consultar.</li>
-        <li>Crear una rutina de toma (horarios fijos).</li>
-        <li>Evitar alcohol y drogas.</li>
-        <li>Informar todos los medicamentos, suplementos y plantas medicinales.</li>
-        <li>Alimentación equilibrada e hidratación (cuidar el hígado).</li>
-        <li>Actividad física baja a moderada.</li>
-        <li>Rutina de sueño regular.</li>
-        <li>Ante efectos adversos: consultar antes de suspender.</li>
-      </ul>
-      <div class="tagline" style="margin-top:12px;">
-        Si algo te preocupa, es mejor consultar que suspender por cuenta propia.
+      <p class="sub">Medidas que aumentan la seguridad y mejoran la respuesta al tratamiento.</p>
+      <div class="psy-safety-grid">
+        <div class="psy-safety-card">
+          <h3>No modificar por cuenta propia</h3>
+          <p>No suspendas, aumentes, reduzcas o combines medicamentos sin consultar previamente.</p>
+        </div>
+        <div class="psy-safety-card">
+          <h3>Informar todo lo que tomás</h3>
+          <p>Incluí medicamentos indicados por otros profesionales, venta libre, suplementos, vitaminas y productos naturales.</p>
+        </div>
+        <div class="psy-safety-card">
+          <h3>Alcohol y otras sustancias</h3>
+          <p>El alcohol y otras sustancias pueden aumentar somnolencia, efectos adversos o interferir con el tratamiento.</p>
+        </div>
+        <div class="psy-safety-card">
+          <h3>Conducción y tareas de riesgo</h3>
+          <p>Si un medicamento te produce sueño, mareo o lentitud, consultá antes de conducir o realizar tareas que requieran plena atención.</p>
+        </div>
+        <div class="psy-safety-card">
+          <h3>Embarazo, lactancia o enfermedades clínicas</h3>
+          <p>Informá si cursás embarazo, lactancia, enfermedades hepáticas, renales, cardíacas, metabólicas o antecedentes relevantes.</p>
+        </div>
       </div>
     </section>
 
