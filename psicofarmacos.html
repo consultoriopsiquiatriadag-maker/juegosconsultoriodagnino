@@ -543,6 +543,37 @@
       line-height:1.6;
     }
 
+    /* ===== Botón Copiar resumen ===== */
+    .psy-copy-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      padding:7px 14px;
+      border-radius:999px;
+      border:1px solid var(--psy-border);
+      background:#fff;
+      color:var(--psy-navy);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .15s,border-color .15s,color .15s;
+      min-height:36px;
+    }
+    .psy-copy-btn:hover{
+      border-color:var(--psy-blue);
+      color:var(--psy-blue);
+    }
+    .psy-copy-btn:focus-visible{
+      outline:3px solid rgba(37,99,235,.35);
+      outline-offset:2px;
+    }
+    .psy-copy-btn.copied{
+      background:rgba(22,163,74,.08);
+      border-color:rgba(22,163,74,.45);
+      color:#15803d;
+    }
+
     /* ===== RESPONSIVE ===== */
 
     /* Prevenir scroll horizontal global */
@@ -907,6 +938,7 @@
               <li><strong>Cuándo consultar:</strong> si los síntomas no mejoran en las primeras semanas o si aparecen efectos no esperados.</li>
             </ul>
             <p class=”tagline”>No modifiques dosis ni suspendas sin indicación médica.</p>
+            <button class=”psy-copy-btn” type=”button” data-copy-for=”panel-m-sertralina” aria-label=”Copiar resumen de Sertralina”>Copiar resumen</button>
           </div>
         </article>
 
@@ -1050,6 +1082,7 @@
               <li><strong>Cuándo consultar:</strong> ante movimientos involuntarios, aumento de peso marcado o somnolencia que interfiera con el funcionamiento.</li>
             </ul>
             <p class=”tagline”>No modifiques dosis ni suspendas sin indicación médica.</p>
+            <button class=”psy-copy-btn” type=”button” data-copy-for=”panel-m-quetiapina” aria-label=”Copiar resumen de Quetiapina”>Copiar resumen</button>
           </div>
         </article>
 
@@ -1270,6 +1303,7 @@
               <li><strong>Cuándo informar al psiquiatra:</strong> Si el dolor se vuelve frecuente o crónico, o si lo estás tomando de forma regular.</li>
             </ul>
             <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+            <button class="psy-copy-btn" type="button" data-copy-for="panel-c-paracetamol" aria-label="Copiar resumen de Paracetamol">Copiar resumen</button>
           </div>
         </article>
 
@@ -1387,6 +1421,7 @@
               <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas alérgicos no mejoran o si aparecen nuevas reacciones.</li>
             </ul>
             <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+            <button class="psy-copy-btn" type="button" data-copy-for="panel-c-loratadina" aria-label="Copiar resumen de Loratadina">Copiar resumen</button>
           </div>
         </article>
 
@@ -1542,6 +1577,7 @@
               <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas persisten, hay dificultad para tragar o sangrado digestivo.</li>
             </ul>
             <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+            <button class="psy-copy-btn" type="button" data-copy-for="panel-c-omeprazol" aria-label="Copiar resumen de Omeprazol">Copiar resumen</button>
           </div>
         </article>
 
@@ -2679,6 +2715,97 @@
             input.value = '';
           }
           applyFilters();
+        });
+      });
+    })();
+
+    /* ===== FASE 11A — Copiar resumen ===== */
+    (function(){
+      var RECORDATORIO = '\n\nRecordatorio: Esta información es orientativa y no reemplaza la indicación médica. No modificar dosis, suspender ni combinar medicamentos sin consultar.';
+
+      var copyData = {
+        'panel-m-sertralina': {
+          nombre:   'Sertralina',
+          grupo:    'Antidepresivo / ansiedad',
+          uso:      'Depresión, ansiedad, ataques de pánico, TOC y estrés postraumático.',
+          cuidados: 'Constancia en la toma; los primeros días puede haber náuseas leves que suelen ceder; evitar alcohol.',
+          consultar:'Si los síntomas no mejoran en las primeras semanas o si aparecen efectos no esperados.'
+        },
+        'panel-m-quetiapina': {
+          nombre:   'Quetiapina',
+          grupo:    'Antipsicótico / estabilización del ánimo',
+          uso:      'Trastornos del ánimo y psicosis; puede utilizarse en regulación emocional, sueño e irritabilidad según criterio médico.',
+          cuidados: 'Seguimiento médico con controles clínicos cuando corresponda; evitar conducción si hay sedación.',
+          consultar:'Ante movimientos involuntarios, aumento de peso marcado o somnolencia que interfiera con el funcionamiento.'
+        },
+        'panel-c-paracetamol': {
+          nombre:   'Paracetamol',
+          grupo:    'Analgésico / antipirético',
+          uso:      'Alivio del dolor leve a moderado y fiebre.',
+          cuidados: 'Respetar la dosis máxima diaria; evitar el alcohol; tener cuidado con productos combinados que también lo contengan.',
+          consultar:'Si el dolor se vuelve frecuente o crónico, o si se está tomando de forma regular.'
+        },
+        'panel-c-loratadina': {
+          nombre:   'Loratadina',
+          grupo:    'Antihistamínico',
+          uso:      'Rinitis alérgica y urticaria.',
+          cuidados: 'Generalmente bien tolerado; puede tomarse de día; poca interacción con psicofármacos.',
+          consultar:'Si los síntomas alérgicos no mejoran o si aparecen nuevas reacciones.'
+        },
+        'panel-c-omeprazol': {
+          nombre:   'Omeprazol',
+          grupo:    'Inhibidor de bomba de protones',
+          uso:      'Reflujo gastroesofágico, gastritis y protección gástrica.',
+          cuidados: 'Tomar antes de comer; usar por el tiempo indicado; no suspender bruscamente dosis altas.',
+          consultar:'Si los síntomas persisten, hay dificultad para tragar o sangrado digestivo.'
+        }
+      };
+
+      function buildText(d){
+        return 'Medicamento: ' + d.nombre +
+               '\nGrupo: ' + d.grupo +
+               '\nUso habitual: ' + d.uso +
+               '\nCuidados generales: ' + d.cuidados +
+               '\nCuándo consultar: ' + d.consultar +
+               RECORDATORIO;
+      }
+
+      function copyToClipboard(text, btn){
+        var label = btn.textContent;
+        function onSuccess(){
+          btn.textContent = 'Resumen copiado';
+          btn.classList.add('copied');
+          setTimeout(function(){
+            btn.textContent = label;
+            btn.classList.remove('copied');
+          }, 2200);
+        }
+        if(navigator.clipboard && window.isSecureContext){
+          navigator.clipboard.writeText(text).then(onSuccess).catch(function(){
+            fallback(text, onSuccess);
+          });
+        } else {
+          fallback(text, onSuccess);
+        }
+      }
+
+      function fallback(text, cb){
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try{ document.execCommand('copy'); cb(); } catch(e){}
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('.psy-copy-btn[data-copy-for]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('data-copy-for');
+          var d  = copyData[id];
+          if(!d) return;
+          copyToClipboard(buildText(d), btn);
         });
       });
     })();
