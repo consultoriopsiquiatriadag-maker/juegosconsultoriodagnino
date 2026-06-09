@@ -996,171 +996,880 @@
       <p class="psy-section-tag">Módulo 2</p>
       <h2>Fármacos frecuentes en pacientes de salud mental</h2>
       <p class="sub">
-        Algunos medicamentos no son psicofármacos, pero pueden aparecer durante un tratamiento en salud mental
+        Estos medicamentos no necesariamente son psicofármacos. Se incluyen porque muchos pacientes los utilizan
         por dolor, alergias, sueño, síntomas digestivos, inflamación, metabolismo, vitaminas o enfermedades clínicas asociadas.
+        Informarlos en consulta ayuda a evitar duplicaciones, interacciones y efectos no deseados.
       </p>
       <div class="psy-note" role="note" style="margin-top:12px;">
         Siempre informá a tu psiquiatra todos los medicamentos que estás tomando, incluyendo los de venta libre, suplementos y plantas medicinales.
       </div>
 
-      <div class="acc" id="accClinicos" style="margin-top:14px;" aria-label="Grupos de fármacos frecuentes en salud mental">
+      <div class="psy-pills" style="margin-top:14px;" aria-label="Ir a grupo de medicamentos">
+        <button class="psy-pill" data-jump="c-paracetamol">Dolor e inflamación</button>
+        <button class="psy-pill" data-jump="c-loratadina">Alergia y respiratorio</button>
+        <button class="psy-pill" data-jump="c-omeprazol">Digestivo</button>
+        <button class="psy-pill" data-jump="c-semaglutida">Metabolismo y peso</button>
+        <button class="psy-pill" data-jump="c-dexametasona">Corticoides</button>
+        <button class="psy-pill" data-jump="c-vitamina-d">Vitaminas y suplementos</button>
+        <button class="psy-pill" data-jump="c-propranolol">Otros relevantes</button>
+      </div>
 
-        <!-- G1: Dolor e inflamación -->
-        <article class="acc-item" id="g-dolor" data-search="dolor inflamación AINE ibuprofeno naproxeno diclofenac paracetamol tramadol celecoxib analgésico antiinflamatorio reumatología fibromialgia migraña">
-          <button class="acc-btn" id="btn-g-dolor" type="button" aria-expanded="false" aria-controls="panel-g-dolor">
+      <div class="acc" id="accClinicos" style="margin-top:14px;" aria-label="Fichas de medicamentos frecuentes en salud mental">
+
+        <!-- ── Dolor e inflamación ── -->
+        <div class="psy-group-div" id="c-paracetamol" aria-hidden="true">Dolor e inflamación</div>
+
+        <article class="acc-item" id="c-paracetamol-item" data-search="paracetamol acetaminofén analgésico fiebre cefalea dolor muscular">
+          <button class="acc-btn" id="btn-c-paracetamol" type="button" aria-expanded="false" aria-controls="panel-c-paracetamol">
             <span class="acc-title">
-              <strong>Dolor e inflamación</strong>
-              <span>Analgésicos y antiinflamatorios frecuentes</span>
+              <strong>Paracetamol</strong>
+              <span>Analgésico</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-dolor" role="region" aria-labelledby="btn-g-dolor" hidden>
-            <p>
-              Algunos pacientes en tratamiento psiquiátrico conviven con dolor crónico, fibromialgia, migrañas o cuadros inflamatorios que requieren analgésicos de forma regular.
-            </p>
+          <div class="acc-panel" id="panel-c-paracetamol" role="region" aria-labelledby="btn-c-paracetamol" hidden>
             <ul>
-              <li><strong>AINEs frecuentes:</strong> ibuprofeno, naproxeno, diclofenac, celecoxib. Pueden irritar la mucosa gástrica; combinar con un protector si se indica.</li>
-              <li><strong>Paracetamol:</strong> primera línea analgésica; evitar alcohol y respetar dosis máxima diaria.</li>
-              <li><strong>Tramadol:</strong> opioide de uso controlado; puede afectar el sueño y producir interacciones con antidepresivos. Informar siempre al médico.</li>
+              <li><strong>Uso habitual:</strong> Alivio del dolor leve a moderado y fiebre.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Es el analgésico de primera línea ante cefaleas tensionales o dolores musculares, frecuentes en personas con ansiedad o tensión crónica.</li>
+              <li><strong>Cuidados generales:</strong> Respetar la dosis máxima diaria; evitar el alcohol; tener cuidado con productos combinados que también lo contengan.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si el dolor se vuelve frecuente o crónico, o si lo estás tomando de forma regular.</li>
             </ul>
-            <p class="tagline">Algunos AINEs pueden interactuar con estabilizadores del ánimo como el litio. Siempre informar.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G2: Alergia y respiratorio -->
-        <article class="acc-item" id="g-alergia" data-search="alergia respiratorio antihistamínico cetirizina loratadina desloratadina difenhidramina prometazina rinitis asma broncodilatador montelukast sedación">
-          <button class="acc-btn" id="btn-g-alergia" type="button" aria-expanded="false" aria-controls="panel-g-alergia">
+        <article class="acc-item" id="c-ibuprofeno-item" data-search="ibuprofeno AINE antiinflamatorio dolor inflamación articular muscular">
+          <button class="acc-btn" id="btn-c-ibuprofeno" type="button" aria-expanded="false" aria-controls="panel-c-ibuprofeno">
             <span class="acc-title">
-              <strong>Alergia y respiratorio</strong>
-              <span>Antihistamínicos y broncodilatadores</span>
+              <strong>Ibuprofeno</strong>
+              <span>AINE</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-alergia" role="region" aria-labelledby="btn-g-alergia" hidden>
-            <p>
-              Las alergias estacionales, la rinitis y el asma son frecuentes en la población general, incluidas las personas en tratamiento en salud mental.
-            </p>
+          <div class="acc-panel" id="panel-c-ibuprofeno" role="region" aria-labelledby="btn-c-ibuprofeno" hidden>
             <ul>
-              <li><strong>Antihistamínicos no sedantes:</strong> cetirizina, loratadina, desloratadina. Generalmente bien tolerados junto a psicofármacos.</li>
-              <li><strong>Antihistamínicos sedantes:</strong> difenhidramina, prometazina. Pueden potenciar la sedación de psicofármacos; informar al médico.</li>
-              <li><strong>Broncodilatadores (inhaladores):</strong> salbutamol, formoterol. Pueden aumentar la activación y la ansiedad; avisar si hay cambios.</li>
-              <li><strong>Montelukast:</strong> en algunos casos se han reportado cambios de ánimo; comunicar si aparecen.</li>
+              <li><strong>Uso habitual:</strong> Dolor, inflamación y fiebre.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Frecuente ante dolores musculares, articulares o cefaleas.</li>
+              <li><strong>Cuidados generales:</strong> Tomarlo con alimentos; puede irritar el estómago; usar con protector gástrico si el médico lo indica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si tomás litio u otros medicamentos, ya que puede modificar sus niveles en sangre.</li>
             </ul>
-            <p class="tagline">Si usás antihistamínicos sedantes, evitá conducción y avisá a tu médico.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G3: Digestivo -->
-        <article class="acc-item" id="g-digestivo" data-search="digestivo omeprazol pantoprazol bomba de protones domperidona metoclopramida loperamida gastritis reflujo náuseas colon irritable">
-          <button class="acc-btn" id="btn-g-digestivo" type="button" aria-expanded="false" aria-controls="panel-g-digestivo">
+        <article class="acc-item" id="c-naproxeno-item" data-search="naproxeno AINE antiinflamatorio dolor articular musculoesquelético">
+          <button class="acc-btn" id="btn-c-naproxeno" type="button" aria-expanded="false" aria-controls="panel-c-naproxeno">
             <span class="acc-title">
-              <strong>Digestivo</strong>
-              <span>Protectores gástricos y reguladores del tránsito</span>
+              <strong>Naproxeno</strong>
+              <span>AINE</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-digestivo" role="region" aria-labelledby="btn-g-digestivo" hidden>
-            <p>
-              Los síntomas digestivos son frecuentes en personas con ansiedad o estrés crónico. Algunos psicofármacos también pueden causar náuseas al inicio.
-            </p>
+          <div class="acc-panel" id="panel-c-naproxeno" role="region" aria-labelledby="btn-c-naproxeno" hidden>
             <ul>
-              <li><strong>Inhibidores de bomba de protones (IBP):</strong> omeprazol, pantoprazol, esomeprazol. Generalmente seguros; usar el tiempo indicado.</li>
-              <li><strong>Procinéticos:</strong> domperidona, metoclopramida. Pueden interactuar con antipsicóticos y producir movimientos involuntarios; informar si ocurre.</li>
-              <li><strong>Loperamida:</strong> para diarrea sintomática; uso puntual.</li>
-              <li><strong>Antiespasmódicos:</strong> butil-hioscina y similares; generalmente sin interacciones importantes con psicofármacos.</li>
+              <li><strong>Uso habitual:</strong> Dolor e inflamación moderados.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Indicado para dolor musculoesquelético y articular.</li>
+              <li><strong>Cuidados generales:</strong> Tomarlo con alimentos; evitar si hay úlceras gástricas; informar al médico si tomás litio o anticoagulantes.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante molestias gástricas, retención de líquidos o si tomás litio.</li>
             </ul>
-            <p class="tagline">Si tomás antipsicóticos, avisá antes de iniciar metoclopramida o domperidona.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G4: Metabolismo y peso corporal -->
-        <article class="acc-item" id="g-metabolismo" data-search="metabolismo peso corporal metformina orlistat glucosa insulina diabetes liraglutida semaglutida GLP-1 obesidad síndrome metabólico colesterol triglicéridos estatinas">
-          <button class="acc-btn" id="btn-g-metabolismo" type="button" aria-expanded="false" aria-controls="panel-g-metabolismo">
+        <article class="acc-item" id="c-diclofenac-item" data-search="diclofenac AINE antiinflamatorio dolor articular contractura artritis">
+          <button class="acc-btn" id="btn-c-diclofenac" type="button" aria-expanded="false" aria-controls="panel-c-diclofenac">
             <span class="acc-title">
-              <strong>Metabolismo y peso corporal</strong>
-              <span>Glucosa, insulina y control de peso</span>
+              <strong>Diclofenac</strong>
+              <span>AINE</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-metabolismo" role="region" aria-labelledby="btn-g-metabolismo" hidden>
-            <p>
-              Algunos antipsicóticos y estabilizadores del ánimo pueden afectar el peso corporal, la glucosa en sangre o el perfil lipídico. El seguimiento metabólico puede ser parte del tratamiento.
-            </p>
+          <div class="acc-panel" id="panel-c-diclofenac" role="region" aria-labelledby="btn-c-diclofenac" hidden>
             <ul>
-              <li><strong>Metformina:</strong> puede indicarse en pacientes con riesgo metabólico asociado al tratamiento con antipsicóticos.</li>
-              <li><strong>Orlistat:</strong> para manejo de peso con supervisión médica.</li>
-              <li><strong>Agonistas GLP-1 (liraglutida, semaglutida):</strong> cada vez más usados para diabetes tipo 2 y obesidad; pueden producir náuseas al inicio.</li>
-              <li><strong>Estatinas:</strong> para colesterol elevado; sin interacciones habituales importantes con psicofármacos.</li>
+              <li><strong>Uso habitual:</strong> Dolor e inflamación aguda o crónica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Indicado para dolores musculoesqueléticos, artritis y contracturas.</li>
+              <li><strong>Cuidados generales:</strong> Tomarlo con alimentos; evitar en presencia de úlcera gástrica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si tomás litio, ya que puede modificar sus niveles en sangre.</li>
             </ul>
-            <p class="tagline">Si tu médico indica controles de peso, glucosa o laboratorio, son parte del seguimiento del tratamiento.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G5: Corticoides -->
-        <article class="acc-item" id="g-corticoides" data-search="corticoides prednisona dexametasona betametasona hidrocortisona inflamación autoinmune reumatológica asma ánimo insomnio manía agitación">
-          <button class="acc-btn" id="btn-g-corticoides" type="button" aria-expanded="false" aria-controls="panel-g-corticoides">
+        <article class="acc-item" id="c-etoricoxib-item" data-search="etoricoxib coxib AINE dolor articular artritis riesgo gástrico">
+          <button class="acc-btn" id="btn-c-etoricoxib" type="button" aria-expanded="false" aria-controls="panel-c-etoricoxib">
             <span class="acc-title">
-              <strong>Corticoides</strong>
-              <span>Efecto potencial sobre ánimo y sueño</span>
+              <strong>Etoricoxib</strong>
+              <span>AINE / Coxib</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-corticoides" role="region" aria-labelledby="btn-g-corticoides" hidden>
-            <p>
-              Los corticoides orales pueden indicarse por cuadros inflamatorios, reumatológicos o autoinmunes. Es importante conocer su efecto potencial sobre el estado mental.
-            </p>
+          <div class="acc-panel" id="panel-c-etoricoxib" role="region" aria-labelledby="btn-c-etoricoxib" hidden>
             <ul>
-              <li><strong>Prednisona, dexametasona, betametasona:</strong> pueden producir insomnio, agitación, cambios de ánimo y, en dosis altas o en personas predispuestas, síntomas maníacos.</li>
-              <li><strong>Hidrocortisona:</strong> igual vigilancia según dosis y duración del tratamiento.</li>
-              <li><strong>Corticoides inhalados o tópicos:</strong> menor riesgo de efectos sistémicos sobre el ánimo.</li>
+              <li><strong>Uso habitual:</strong> Dolor e inflamación en artritis y cuadros musculoesqueléticos.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse cuando hay riesgo gástrico con otros AINEs.</li>
+              <li><strong>Cuidados generales:</strong> Uso con supervisión médica; informar antecedentes cardiovasculares o renales.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante retención de líquidos, aumento de presión o molestias digestivas.</li>
             </ul>
-            <p class="tagline">Si te indican un corticoide oral, avisá a tu psiquiatra antes o durante el tratamiento.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G6: Vitaminas y suplementos -->
-        <article class="acc-item" id="g-vitaminas" data-search="vitaminas suplementos vitamina D magnesio B12 ácido fólico omega-3 melatonina plantas medicinales hipérico Saint John wort hierba de San Juan natural">
-          <button class="acc-btn" id="btn-g-vitaminas" type="button" aria-expanded="false" aria-controls="panel-g-vitaminas">
+        <article class="acc-item" id="c-ketorolac-item" data-search="ketorolac AINE analgésico dolor agudo intenso">
+          <button class="acc-btn" id="btn-c-ketorolac" type="button" aria-expanded="false" aria-controls="panel-c-ketorolac">
             <span class="acc-title">
-              <strong>Vitaminas y suplementos</strong>
-              <span>Nutrientes, suplementos y fitoterapia</span>
+              <strong>Ketorolac</strong>
+              <span>AINE / Analgésico</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-vitaminas" role="region" aria-labelledby="btn-g-vitaminas" hidden>
-            <p>
-              Muchas personas toman suplementos o productos naturales junto a la medicación. Algunos son seguros; otros pueden producir interacciones importantes.
-            </p>
+          <div class="acc-panel" id="panel-c-ketorolac" role="region" aria-labelledby="btn-c-ketorolac" hidden>
             <ul>
-              <li><strong>Vitamina D, magnesio, B12, ácido fólico:</strong> frecuentes, sin interacciones habituales relevantes. Informar igual al médico.</li>
-              <li><strong>Omega-3:</strong> puede tener efecto leve sobre el ánimo; generalmente seguro con psicofármacos.</li>
-              <li><strong>Melatonina:</strong> útil para sueño en algunos casos; puede complementar el tratamiento; informar siempre.</li>
-              <li><strong>Hipérico (hierba de San Juan):</strong> puede reducir la efectividad de antidepresivos y otros fármacos. No combinar sin consultar.</li>
+              <li><strong>Uso habitual:</strong> Dolor agudo moderado a intenso; generalmente de uso corto.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse para episodios agudos de dolor según criterio médico.</li>
+              <li><strong>Cuidados generales:</strong> Uso por períodos cortos solamente; no prolongar sin indicación médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante molestias gástricas, cambios en la orina o si el dolor persiste.</li>
             </ul>
-            <p class="tagline">Lo "natural" no siempre es inocuo. Informá todos los suplementos que tomás.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
-        <!-- G7: Otros medicamentos clínicamente relevantes -->
-        <article class="acc-item" id="g-otros-clinicos" data-search="betabloqueantes propranolol atenolol ansiedad situacional gabapentina pregabalina dolor neuropático carbamazepina anticonvulsivante interacciones opioides morfina codéína tramadol">
-          <button class="acc-btn" id="btn-g-otros" type="button" aria-expanded="false" aria-controls="panel-g-otros">
+        <!-- ── Alergia y respiratorio ── -->
+        <div class="psy-group-div" id="c-loratadina" aria-hidden="true">Alergia y respiratorio</div>
+
+        <article class="acc-item" id="c-loratadina-item" data-search="loratadina antihistamínico alergia rinitis urticaria">
+          <button class="acc-btn" id="btn-c-loratadina" type="button" aria-expanded="false" aria-controls="panel-c-loratadina">
             <span class="acc-title">
-              <strong>Otros medicamentos clínicamente relevantes</strong>
-              <span>Betabloqueantes, anticonvulsivantes y más</span>
+              <strong>Loratadina</strong>
+              <span>Antihistamínico</span>
             </span>
             <span class="acc-chev" aria-hidden="true">▾</span>
           </button>
-          <div class="acc-panel" id="panel-g-otros" role="region" aria-labelledby="btn-g-otros" hidden>
-            <p>
-              Algunos medicamentos de otras especialidades tienen aplicaciones clínicas en psiquiatría o interacciones importantes con los psicofármacos.
-            </p>
+          <div class="acc-panel" id="panel-c-loratadina" role="region" aria-labelledby="btn-c-loratadina" hidden>
             <ul>
-              <li><strong>Betabloqueantes (propranolol, atenolol):</strong> a veces indicados para ansiedad situacional. Pueden bajar la presión y producir cansancio.</li>
-              <li><strong>Gabapentina / pregabalina:</strong> indicados en dolor neuropático o ansiedad refractaria en ciertos contextos; pueden producir sedación.</li>
-              <li><strong>Carbamazepina:</strong> anticonvulsivante con uso psiquiátrico; produce interacciones importantes con varios psicofármacos. Informar siempre.</li>
-              <li><strong>Opioides:</strong> la combinación con benzodiacepinas o sedantes aumenta el riesgo. Siempre informar si te indicaron un opioide.</li>
+              <li><strong>Uso habitual:</strong> Rinitis alérgica y urticaria.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Frecuente ante alergias estacionales o crónicas en pacientes de cualquier tratamiento.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; puede tomarse de día; poca interacción con psicofármacos.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas alérgicos no mejoran o si aparecen nuevas reacciones.</li>
             </ul>
-            <p class="tagline">Siempre informá al psiquiatra cualquier medicamento nuevo, aunque lo haya indicado otro médico.</p>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-cetirizina-item" data-search="cetirizina antihistamínico alergia rinitis urticaria picazón somnolencia">
+          <button class="acc-btn" id="btn-c-cetirizina" type="button" aria-expanded="false" aria-controls="panel-c-cetirizina">
+            <span class="acc-title">
+              <strong>Cetirizina</strong>
+              <span>Antihistamínico</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-cetirizina" role="region" aria-labelledby="btn-c-cetirizina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Rinitis alérgica, urticaria y picazón.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Eficaz para síntomas alérgicos estacionales o crónicos.</li>
+              <li><strong>Cuidados generales:</strong> Puede producir algo de somnolencia; evitar conducción si ocurre.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si se combina con otros sedantes o si la somnolencia es marcada.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-desloratadina-item" data-search="desloratadina antihistamínico alergia rinitis urticaria crónica sin somnolencia">
+          <button class="acc-btn" id="btn-c-desloratadina" type="button" aria-expanded="false" aria-controls="panel-c-desloratadina">
+            <span class="acc-title">
+              <strong>Desloratadina</strong>
+              <span>Antihistamínico</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-desloratadina" role="region" aria-labelledby="btn-c-desloratadina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Rinitis alérgica y urticaria crónica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Opción con menos somnolencia que otros antihistamínicos.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; mínima sedación.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si aparecen efectos no esperados o cambios en el ánimo.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-difenhidramina-item" data-search="difenhidramina antihistamínico sedante alergia insomnio venta libre sedación">
+          <button class="acc-btn" id="btn-c-difenhidramina" type="button" aria-expanded="false" aria-controls="panel-c-difenhidramina">
+            <span class="acc-title">
+              <strong>Difenhidramina</strong>
+              <span>Antihistamínico sedante</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-difenhidramina" role="region" aria-labelledby="btn-c-difenhidramina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Alergia aguda y, en algunos casos, insomnio ocasional.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Presente en varios productos de venta libre para la alergia y el sueño.</li>
+              <li><strong>Cuidados generales:</strong> Produce sedación marcada; evitar conducción; puede potenciar los efectos de otros sedantes.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Siempre si se combina con benzodiacepinas, antipsicóticos u otros sedantes.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-hidroxicina-item" data-search="hidroxicina antihistamínico sedante alergia prurito ansiedad situacional">
+          <button class="acc-btn" id="btn-c-hidroxicina" type="button" aria-expanded="false" aria-controls="panel-c-hidroxicina">
+            <span class="acc-title">
+              <strong>Hidroxicina</strong>
+              <span>Antihistamínico sedante</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-hidroxicina" role="region" aria-labelledby="btn-c-hidroxicina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Prurito, alergia y, en algunos contextos, ansiedad situacional.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> En algunos pacientes se indica como ansiolítico de bajo perfil o para alergia con componente ansioso.</li>
+              <li><strong>Cuidados generales:</strong> Produce sedación; evitar conducción; no combinar con otros sedantes sin indicación médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante somnolencia excesiva o si se combina con otra medicación.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-fluticasona-item" data-search="fluticasona corticoide inhalado nasal rinitis alérgica asma">
+          <button class="acc-btn" id="btn-c-fluticasona" type="button" aria-expanded="false" aria-controls="panel-c-fluticasona">
+            <span class="acc-title">
+              <strong>Fluticasona</strong>
+              <span>Corticoide nasal / inhalado</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-fluticasona" role="region" aria-labelledby="btn-c-fluticasona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Rinitis alérgica y asma, por vía nasal o inhalatoria.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Control de síntomas nasales o respiratorios crónicos en pacientes de cualquier tratamiento.</li>
+              <li><strong>Cuidados generales:</strong> Baja absorción sistémica; enjuagar la boca si se usa inhalada; uso regular según indicación.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas respiratorios empeoran o si aparece irritación local persistente.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-budesonida-item" data-search="budesonida corticoide inhalado asma rinitis alérgica bronquial">
+          <button class="acc-btn" id="btn-c-budesonida" type="button" aria-expanded="false" aria-controls="panel-c-budesonida">
+            <span class="acc-title">
+              <strong>Budesonida</strong>
+              <span>Corticoide inhalado</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-budesonida" role="region" aria-labelledby="btn-c-budesonida" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Asma y rinitis alérgica, por vía inhalatoria o nasal.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Control preventivo de síntomas respiratorios en tratamiento crónico.</li>
+              <li><strong>Cuidados generales:</strong> Enjuagar la boca tras el uso inhalado; no suspender bruscamente.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si hay ronquera persistente, candidiasis oral o los síntomas no mejoran.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-salbutamol-item" data-search="salbutamol broncodilatador asma EPOC rescate taquicardia temblor ansiedad">
+          <button class="acc-btn" id="btn-c-salbutamol" type="button" aria-expanded="false" aria-controls="panel-c-salbutamol">
+            <span class="acc-title">
+              <strong>Salbutamol</strong>
+              <span>Broncodilatador</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-salbutamol" role="region" aria-labelledby="btn-c-salbutamol" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Alivio rápido del broncoespasmo en asma o EPOC.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Frecuente en pacientes con asma que también están en tratamiento psiquiátrico.</li>
+              <li><strong>Cuidados generales:</strong> Uso de rescate, no preventivo; puede producir taquicardia y temblor transitorio.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la taquicardia o el temblor generan angustia, o si el uso se vuelve frecuente.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <!-- ── Digestivo ── -->
+        <div class="psy-group-div" id="c-omeprazol" aria-hidden="true">Digestivo</div>
+
+        <article class="acc-item" id="c-omeprazol-item" data-search="omeprazol IBP bomba de protones reflujo gastritis protección gástrica">
+          <button class="acc-btn" id="btn-c-omeprazol" type="button" aria-expanded="false" aria-controls="panel-c-omeprazol">
+            <span class="acc-title">
+              <strong>Omeprazol</strong>
+              <span>Inhibidor de bomba de protones</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-omeprazol" role="region" aria-labelledby="btn-c-omeprazol" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Reflujo gastroesofágico, gastritis y protección gástrica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Muchos psicofármacos y AINEs requieren protección gástrica durante el tratamiento.</li>
+              <li><strong>Cuidados generales:</strong> Tomar antes de comer; usar por el tiempo indicado; no suspender bruscamente dosis altas.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas persisten, hay dificultad para tragar o sangrado digestivo.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-pantoprazol-item" data-search="pantoprazol IBP bomba de protones reflujo úlcera protección gástrica">
+          <button class="acc-btn" id="btn-c-pantoprazol" type="button" aria-expanded="false" aria-controls="panel-c-pantoprazol">
+            <span class="acc-title">
+              <strong>Pantoprazol</strong>
+              <span>Inhibidor de bomba de protones</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-pantoprazol" role="region" aria-labelledby="btn-c-pantoprazol" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Reflujo gastroesofágico, úlceras y protección gástrica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Alternativa frecuente al omeprazol con menor interacción metabólica.</li>
+              <li><strong>Cuidados generales:</strong> Tomar antes de comer; uso por el tiempo indicado médicamente.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas no mejoran o hay sangrado digestivo.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-famotidina-item" data-search="famotidina antiácido H2 acidez reflujo gástrico">
+          <button class="acc-btn" id="btn-c-famotidina" type="button" aria-expanded="false" aria-controls="panel-c-famotidina">
+            <span class="acc-title">
+              <strong>Famotidina</strong>
+              <span>Antiácido H2</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-famotidina" role="region" aria-labelledby="btn-c-famotidina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Acidez gástrica y reflujo.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Alternativa para protección gástrica en algunos cuadros o intolerancia a IBP.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; uso según indicación médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas no mejoran en 2 semanas o empeoran.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-trimebutina-item" data-search="trimebutina regulador digestivo colon irritable distensión tránsito">
+          <button class="acc-btn" id="btn-c-trimebutina" type="button" aria-expanded="false" aria-controls="panel-c-trimebutina">
+            <span class="acc-title">
+              <strong>Trimebutina</strong>
+              <span>Regulador digestivo</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-trimebutina" role="region" aria-labelledby="btn-c-trimebutina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Colon irritable y trastornos funcionales digestivos.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Los trastornos funcionales digestivos son frecuentes en personas con ansiedad o estrés crónico.</li>
+              <li><strong>Cuidados generales:</strong> Uso según indicación; sin interacciones habituales significativas con psicofármacos.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si los síntomas digestivos se intensifican o no mejoran.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-simeticona-item" data-search="simeticona antiflatulento gases distensión abdominal flatulencias">
+          <button class="acc-btn" id="btn-c-simeticona" type="button" aria-expanded="false" aria-controls="panel-c-simeticona">
+            <span class="acc-title">
+              <strong>Simeticona</strong>
+              <span>Antiflatulento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-simeticona" role="region" aria-labelledby="btn-c-simeticona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Distensión abdominal y flatulencias.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Las molestias por gases son frecuentes en contextos de estrés o ansiedad.</li>
+              <li><strong>Cuidados generales:</strong> Uso sintomático puntual; generalmente bien tolerado.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la distensión es persistente o se acompaña de dolor intenso.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-metoclopramida-item" data-search="metoclopramida procinético náuseas vómitos reflujo antipsicóticos movimientos involuntarios">
+          <button class="acc-btn" id="btn-c-metoclopramida" type="button" aria-expanded="false" aria-controls="panel-c-metoclopramida">
+            <span class="acc-title">
+              <strong>Metoclopramida</strong>
+              <span>Procinético</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-metoclopramida" role="region" aria-labelledby="btn-c-metoclopramida" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Náuseas, vómitos y reflujo.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Las náuseas al inicio de algunos psicofármacos pueden requerir tratamiento.</li>
+              <li><strong>Cuidados generales:</strong> Puede interactuar con antipsicóticos y producir movimientos involuntarios; informar al psiquiatra antes de iniciarla.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante movimientos involuntarios, rigidez, inquietud motriz o somnolencia excesiva.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-domperidona-item" data-search="domperidona procinético náuseas vaciamiento gástrico antipsicóticos">
+          <button class="acc-btn" id="btn-c-domperidona" type="button" aria-expanded="false" aria-controls="panel-c-domperidona">
+            <span class="acc-title">
+              <strong>Domperidona</strong>
+              <span>Procinético</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-domperidona" role="region" aria-labelledby="btn-c-domperidona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Náuseas y enlentecimiento del vaciamiento gástrico.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Alternativa procinética con menor efecto central que la metoclopramida.</li>
+              <li><strong>Cuidados generales:</strong> Informar al psiquiatra si tomás antipsicóticos; uso por períodos cortos.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante palpitaciones, movimientos involuntarios o náuseas persistentes.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-loperamida-item" data-search="loperamida antidiarreico diarrea aguda">
+          <button class="acc-btn" id="btn-c-loperamida" type="button" aria-expanded="false" aria-controls="panel-c-loperamida">
+            <span class="acc-title">
+              <strong>Loperamida</strong>
+              <span>Antidiarreico</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-loperamida" role="region" aria-labelledby="btn-c-loperamida" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Diarrea aguda.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Útil ante episodios diarreicos ocasionales o relacionados con el inicio de medicación.</li>
+              <li><strong>Cuidados generales:</strong> Uso puntual; mantenerse bien hidratado; no usar si hay fiebre alta.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la diarrea dura más de 2 días, hay fiebre o se sospecha causa infecciosa.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-picosulfato-item" data-search="picosulfato sódico laxante constipación tránsito intestinal">
+          <button class="acc-btn" id="btn-c-picosulfato" type="button" aria-expanded="false" aria-controls="panel-c-picosulfato">
+            <span class="acc-title">
+              <strong>Picosulfato sódico</strong>
+              <span>Laxante</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-picosulfato" role="region" aria-labelledby="btn-c-picosulfato" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Constipación ocasional.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Algunos psicofármacos pueden enlentacer el tránsito intestinal.</li>
+              <li><strong>Cuidados generales:</strong> Uso esporádico; hidratación adecuada; no usar de forma crónica sin supervisión.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la constipación es frecuente o persistente.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-bisacodilo-item" data-search="bisacodilo laxante constipación evacuación tránsito intestinal">
+          <button class="acc-btn" id="btn-c-bisacodilo" type="button" aria-expanded="false" aria-controls="panel-c-bisacodilo">
+            <span class="acc-title">
+              <strong>Bisacodilo</strong>
+              <span>Laxante</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-bisacodilo" role="region" aria-labelledby="btn-c-bisacodilo" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Constipación ocasional.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Alternativa de acción local para facilitar el tránsito intestinal.</li>
+              <li><strong>Cuidados generales:</strong> Uso esporádico; no como solución crónica sin indicación médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si hay dolor abdominal intenso o cambios persistentes en el tránsito.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-lactulosa-item" data-search="lactulosa laxante osmótico constipación crónica tránsito">
+          <button class="acc-btn" id="btn-c-lactulosa" type="button" aria-expanded="false" aria-controls="panel-c-lactulosa">
+            <span class="acc-title">
+              <strong>Lactulosa</strong>
+              <span>Laxante osmótico</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-lactulosa" role="region" aria-labelledby="btn-c-lactulosa" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Constipación crónica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Opción más suave para regularizar el tránsito con menor riesgo de dependencia.</li>
+              <li><strong>Cuidados generales:</strong> Puede producir gases al inicio; ajustar la dosis según respuesta; hidratación adecuada.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la respuesta es excesiva o hay distensión marcada persistente.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-polietilenglicol-item" data-search="polietilenglicol PEG laxante osmótico constipación crónica antipsicóticos">
+          <button class="acc-btn" id="btn-c-polietilenglicol" type="button" aria-expanded="false" aria-controls="panel-c-polietilenglicol">
+            <span class="acc-title">
+              <strong>Polietilenglicol</strong>
+              <span>Laxante osmótico</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-polietilenglicol" role="region" aria-labelledby="btn-c-polietilenglicol" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Constipación crónica.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Útil ante constipación asociada al tratamiento con algunos psicofármacos.</li>
+              <li><strong>Cuidados generales:</strong> Hidratación adecuada; uso según indicación médica; bien tolerado en uso regular.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si la constipación persiste o se acompaña de dolor abdominal.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <!-- ── Metabolismo y peso corporal ── -->
+        <div class="psy-group-div" id="c-semaglutida" aria-hidden="true">Metabolismo y peso corporal</div>
+
+        <article class="acc-item" id="c-semaglutida-item" data-search="semaglutida GLP-1 diabetes peso corporal obesidad náuseas">
+          <button class="acc-btn" id="btn-c-semaglutida" type="button" aria-expanded="false" aria-controls="panel-c-semaglutida">
+            <span class="acc-title">
+              <strong>Semaglutida</strong>
+              <span>Agonista GLP-1</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-semaglutida" role="region" aria-labelledby="btn-c-semaglutida" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Diabetes tipo 2 y, en algunos casos, manejo del peso corporal.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Algunos antipsicóticos y estabilizadores del ánimo pueden afectar el peso y el metabolismo.</li>
+              <li><strong>Cuidados generales:</strong> Puede producir náuseas al inicio; el ajuste es gradual; seguimiento médico regular.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante náuseas persistentes, vómitos o cambios digestivos importantes.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-metformina-item" data-search="metformina antidiabético diabetes tipo 2 glucosa insulina resistencia metabólica antipsicóticos">
+          <button class="acc-btn" id="btn-c-metformina" type="button" aria-expanded="false" aria-controls="panel-c-metformina">
+            <span class="acc-title">
+              <strong>Metformina</strong>
+              <span>Antidiabético oral</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-metformina" role="region" aria-labelledby="btn-c-metformina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Diabetes tipo 2 y resistencia a la insulina.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse en pacientes con riesgo metabólico asociado al tratamiento con antipsicóticos.</li>
+              <li><strong>Cuidados generales:</strong> Tomar con las comidas; evitar el alcohol; informar al médico si hay procedimientos con contraste.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante molestias digestivas persistentes o síntomas que podrían indicar glucemia baja.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-levotiroxina-item" data-search="levotiroxina tiroides hipotiroidismo TSH metabolismo ánimo fatiga">
+          <button class="acc-btn" id="btn-c-levotiroxina" type="button" aria-expanded="false" aria-controls="panel-c-levotiroxina">
+            <span class="acc-title">
+              <strong>Levotiroxina</strong>
+              <span>Hormona tiroidea</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-levotiroxina" role="region" aria-labelledby="btn-c-levotiroxina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Hipotiroidismo.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> El hipotiroidismo no tratado puede causar síntomas similares a la depresión o el agotamiento.</li>
+              <li><strong>Cuidados generales:</strong> Tomar en ayunas; separar de otros medicamentos al menos 30 minutos; controles periódicos de TSH.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante palpitaciones, pérdida de peso marcada, cambios de ánimo inusuales o insomnio.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <!-- ── Corticoides ── -->
+        <div class="psy-group-div" id="c-dexametasona" aria-hidden="true">Corticoides</div>
+
+        <article class="acc-item" id="c-dexametasona-item" data-search="dexametasona corticoide inflamación autoinmune ánimo insomnio agitación">
+          <button class="acc-btn" id="btn-c-dexametasona" type="button" aria-expanded="false" aria-controls="panel-c-dexametasona">
+            <span class="acc-title">
+              <strong>Dexametasona</strong>
+              <span>Corticoide</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-dexametasona" role="region" aria-labelledby="btn-c-dexametasona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Inflamación, procesos autoinmunes y algunas situaciones clínicas agudas.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Los corticoides pueden producir cambios de ánimo, insomnio o agitación.</li>
+              <li><strong>Cuidados generales:</strong> Informar al psiquiatra si se inicia; puede producir aumento del apetito e insomnio.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante agitación, insomnio intenso o cambios bruscos de ánimo durante el tratamiento.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-prednisona-item" data-search="prednisona corticoide inflamación autoinmunidad alergia ánimo sueño">
+          <button class="acc-btn" id="btn-c-prednisona" type="button" aria-expanded="false" aria-controls="panel-c-prednisona">
+            <span class="acc-title">
+              <strong>Prednisona</strong>
+              <span>Corticoide</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-prednisona" role="region" aria-labelledby="btn-c-prednisona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Inflamación crónica, autoinmunidad y alergias severas.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> El tratamiento prolongado puede producir cambios en el ánimo y en la percepción.</li>
+              <li><strong>Cuidados generales:</strong> No suspender bruscamente; puede afectar el ánimo y el sueño; informar al psiquiatra.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante cambios de ánimo marcados, insomnio severo o aumento brusco de peso.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-meprednisona-item" data-search="meprednisona corticoide inflamación autoinmune ánimo insomnio">
+          <button class="acc-btn" id="btn-c-meprednisona" type="button" aria-expanded="false" aria-controls="panel-c-meprednisona">
+            <span class="acc-title">
+              <strong>Meprednisona</strong>
+              <span>Corticoide</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-meprednisona" role="region" aria-labelledby="btn-c-meprednisona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Inflamación y procesos autoinmunes.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Efecto similar a prednisona; puede producir cambios en el estado mental.</li>
+              <li><strong>Cuidados generales:</strong> No suspender sin indicación médica; informar al psiquiatra de su uso.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante cambios de ánimo, insomnio persistente o efectos no esperados.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <!-- ── Vitaminas y suplementos ── -->
+        <div class="psy-group-div" id="c-vitamina-d" aria-hidden="true">Vitaminas y suplementos</div>
+
+        <article class="acc-item" id="c-vitamina-d-item" data-search="vitamina D déficit osteoporosis ánimo suplemento">
+          <button class="acc-btn" id="btn-c-vitamina-d" type="button" aria-expanded="false" aria-controls="panel-c-vitamina-d">
+            <span class="acc-title">
+              <strong>Vitamina D</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-vitamina-d" role="region" aria-labelledby="btn-c-vitamina-d" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Déficit de vitamina D o prevención de osteoporosis.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Los déficit de vitamina D se asocian, en algunos estudios, a cambios en el ánimo.</li>
+              <li><strong>Cuidados generales:</strong> Uso según niveles en sangre; dosis altas requieren supervisión médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante síntomas de dosis excesiva: náuseas, debilidad o confusión.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-vitamina-b12-item" data-search="vitamina B12 cobalamina déficit neurológico fatiga ánimo depresión">
+          <button class="acc-btn" id="btn-c-vitamina-b12" type="button" aria-expanded="false" aria-controls="panel-c-vitamina-b12">
+            <span class="acc-title">
+              <strong>Vitamina B12</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-vitamina-b12" role="region" aria-labelledby="btn-c-vitamina-b12" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Déficit de vitamina B12, frecuente en personas mayores o con algunos tratamientos.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> El déficit puede producir síntomas parecidos a la depresión, cansancio y dificultades cognitivas.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; uso según indicación y controles periódicos.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante hormigueos, cansancio persistente o cambios neurológicos.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-acido-folico-item" data-search="ácido fólico folato déficit embarazo antidepresivos neurológico">
+          <button class="acc-btn" id="btn-c-acido-folico" type="button" aria-expanded="false" aria-controls="panel-c-acido-folico">
+            <span class="acc-title">
+              <strong>Ácido fólico</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-acido-folico" role="region" aria-labelledby="btn-c-acido-folico" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Déficit de folato, prevención en embarazo o complemento de ciertos tratamientos.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede complementar el efecto de algunos antidepresivos según indicación médica.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; uso según indicación.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si se inicia junto a nuevos medicamentos.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-vitamina-c-item" data-search="vitamina C ácido ascórbico déficit inmunológico suplemento">
+          <button class="acc-btn" id="btn-c-vitamina-c" type="button" aria-expanded="false" aria-controls="panel-c-vitamina-c">
+            <span class="acc-title">
+              <strong>Vitamina C</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-vitamina-c" role="region" aria-labelledby="btn-c-vitamina-c" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Déficit de vitamina C o apoyo inmunológico.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Suplemento de uso frecuente en la población general.</li>
+              <li><strong>Cuidados generales:</strong> Generalmente bien tolerado; dosis muy altas pueden producir molestias digestivas.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si querés iniciar en dosis altas junto a otros medicamentos.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-hierro-item" data-search="hierro ferritina anemia ferropénica fatiga concentración ánimo">
+          <button class="acc-btn" id="btn-c-hierro" type="button" aria-expanded="false" aria-controls="panel-c-hierro">
+            <span class="acc-title">
+              <strong>Hierro</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-hierro" role="region" aria-labelledby="btn-c-hierro" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Anemia ferropénica o déficit de hierro.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> El déficit puede producir cansancio, dificultad de concentración y cambios de ánimo.</li>
+              <li><strong>Cuidados generales:</strong> Tomarlo alejado de comidas o con vitamina C; puede oscurecer las heces; puede producir constipación.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante molestias digestivas persistentes o constipación significativa.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-magnesio-item" data-search="magnesio suplemento calambres sueño tensión muscular">
+          <button class="acc-btn" id="btn-c-magnesio" type="button" aria-expanded="false" aria-controls="panel-c-magnesio">
+            <span class="acc-title">
+              <strong>Magnesio</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-magnesio" role="region" aria-labelledby="btn-c-magnesio" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Déficit de magnesio, calambres o complemento nutricional.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede complementar el tratamiento en algunos cuadros de tensión muscular o trastornos del sueño.</li>
+              <li><strong>Cuidados generales:</strong> Bien tolerado; dosis muy altas pueden producir diarrea; uso según indicación médica.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si hay cambios en la frecuencia cardíaca o se combina con medicación cardíaca.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-omega-3-item" data-search="omega-3 ácidos grasos suplemento cardiovascular ánimo anticoagulante">
+          <button class="acc-btn" id="btn-c-omega-3" type="button" aria-expanded="false" aria-controls="panel-c-omega-3">
+            <span class="acc-title">
+              <strong>Omega-3</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-omega-3" role="region" aria-labelledby="btn-c-omega-3" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Complemento nutricional y salud cardiovascular.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Algunos estudios sugieren un efecto complementario leve sobre el ánimo.</li>
+              <li><strong>Cuidados generales:</strong> Bien tolerado; puede producir sabor a pescado; informar al médico si tomás anticoagulantes.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si tomás anticoagulantes, antes de iniciar en dosis altas.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-melatonina-item" data-search="melatonina sueño insomnio ritmo circadiano suplemento sedantes">
+          <button class="acc-btn" id="btn-c-melatonina" type="button" aria-expanded="false" aria-controls="panel-c-melatonina">
+            <span class="acc-title">
+              <strong>Melatonina</strong>
+              <span>Suplemento</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-melatonina" role="region" aria-labelledby="btn-c-melatonina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Alteraciones del ritmo de sueño y dificultad para conciliar.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Los trastornos del sueño son frecuentes en salud mental; puede complementar el tratamiento.</li>
+              <li><strong>Cuidados generales:</strong> Tomar cerca del horario de dormir; dosis bajas suelen ser suficientes; informar al médico.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Si hay somnolencia diurna excesiva, el sueño no mejora o se combina con otros sedantes.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <!-- ── Otros clínicamente relevantes ── -->
+        <div class="psy-group-div" id="c-propranolol" aria-hidden="true">Otros clínicamente relevantes</div>
+
+        <article class="acc-item" id="c-propranolol-item" data-search="propranolol betabloqueante hipertensión ansiedad temblor taquicardia">
+          <button class="acc-btn" id="btn-c-propranolol" type="button" aria-expanded="false" aria-controls="panel-c-propranolol">
+            <span class="acc-title">
+              <strong>Propranolol</strong>
+              <span>Betabloqueante</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-propranolol" role="region" aria-labelledby="btn-c-propranolol" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Hipertensión, arritmias y, en algunos casos, síntomas físicos de la ansiedad.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse para controlar el temblor o la taquicardia en contextos de ansiedad o por efecto de algunos psicofármacos.</li>
+              <li><strong>Cuidados generales:</strong> No suspender bruscamente; puede producir cansancio y frialdad en extremidades.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante bradicardia, dificultad respiratoria o bajones de presión.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-pregabalina-item" data-search="pregabalina anticonvulsivante dolor neuropático fibromialgia ansiedad sedación">
+          <button class="acc-btn" id="btn-c-pregabalina" type="button" aria-expanded="false" aria-controls="panel-c-pregabalina">
+            <span class="acc-title">
+              <strong>Pregabalina</strong>
+              <span>Anticonvulsivante / Dolor neuropático</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-pregabalina" role="region" aria-labelledby="btn-c-pregabalina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Dolor neuropático, fibromialgia y, en algunos casos, ansiedad generalizada.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse por dolor crónico o como complemento en ansiedad refractaria.</li>
+              <li><strong>Cuidados generales:</strong> Puede producir sedación y mareos; no suspender bruscamente; evitar alcohol.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante sedación excesiva, confusión o dificultad para caminar.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-gabapentina-item" data-search="gabapentina anticonvulsivante dolor neuropático epilepsia sedación mareos">
+          <button class="acc-btn" id="btn-c-gabapentina" type="button" aria-expanded="false" aria-controls="panel-c-gabapentina">
+            <span class="acc-title">
+              <strong>Gabapentina</strong>
+              <span>Anticonvulsivante / Dolor neuropático</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-gabapentina" role="region" aria-labelledby="btn-c-gabapentina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Dolor neuropático y epilepsia.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse para dolor persistente según criterio médico; tiene potencial de sedación.</li>
+              <li><strong>Cuidados generales:</strong> Puede producir mareos y somnolencia; no suspender sin indicación; evitar alcohol.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante mareos intensos, inestabilidad al caminar o sedación marcada.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
+          </div>
+        </article>
+
+        <article class="acc-item" id="c-naltrexona-item" data-search="naltrexona antagonista opioide dependencia alcohol abstinencia">
+          <button class="acc-btn" id="btn-c-naltrexona" type="button" aria-expanded="false" aria-controls="panel-c-naltrexona">
+            <span class="acc-title">
+              <strong>Naltrexona</strong>
+              <span>Antagonista opioide</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-c-naltrexona" role="region" aria-labelledby="btn-c-naltrexona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> Dependencia de alcohol u opioides; en algunos contextos, tratamientos específicos.</li>
+              <li><strong>Por qué puede aparecer en consulta:</strong> Puede indicarse como parte del tratamiento de dependencias en el contexto del tratamiento psiquiátrico.</li>
+              <li><strong>Cuidados generales:</strong> No usar si se tomaron opioides recientemente; seguimiento médico regular; informar todos los medicamentos.</li>
+              <li><strong>Cuándo informar al psiquiatra:</strong> Ante síntomas de abstinencia, malestar intenso o cualquier cambio inesperado.</li>
+            </ul>
+            <p class="tagline">No modifiques dosis ni suspendas sin indicación médica.</p>
           </div>
         </article>
 
