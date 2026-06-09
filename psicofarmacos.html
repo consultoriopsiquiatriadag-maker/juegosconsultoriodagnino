@@ -572,6 +572,31 @@
       line-height:1.6;
     }
 
+    /* ===== Introducción en zócalos ===== */
+    .intro-section{
+      text-align: center;
+    }
+    .intro-section h2{
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .intro-section .sub{
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .intro-zocalos-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+      text-align: left;
+    }
+    @media (max-width: 900px){
+      .intro-zocalos-grid{ grid-template-columns: 1fr; gap: 10px; }
+    }
+
     /* ===== Origen del fármaco (details/summary) ===== */
     .psy-history{
       margin-top:12px;
@@ -880,26 +905,26 @@
   <main class=”wrap psy-main” aria-label=”Contenido principal”>
 
     <!-- ===== 1. Antes de buscar un medicamento ===== -->
-    <section class=”psy-card” id=”intro” aria-label=”Antes de buscar un medicamento”>
+    <section class=”psy-card intro-section” id=”intro” aria-label=”Antes de buscar un medicamento”>
       <p class=”psy-section-tag”>Introducción</p>
       <h2>Antes de buscar un medicamento</h2>
       <p class=”sub”>
         Entender por qué se indica un medicamento ayuda a usarlo con más seguridad y menos incertidumbre.
       </p>
 
-      <div class=”psy-safety-grid” style=”margin-top:16px;”>
-        <div class=”psy-safety-card”>
+      <div class=”intro-zocalos-grid”>
+        <article class=”psy-safety-card”>
           <h3>Medicamentos de uso general</h3>
           <p>Algunos medicamentos no son psicofármacos, pero pueden aparecer durante un tratamiento en salud mental por dolor, alergias, sueño, síntomas digestivos, inflamación o metabolismo.</p>
-        </div>
-        <div class=”psy-safety-card”>
+        </article>
+        <article class=”psy-safety-card”>
           <h3>Combinaciones y cuidados</h3>
           <p>A veces un psicofármaco convive con otros tratamientos. Por eso es importante informar todo lo que se toma, incluso suplementos, vitaminas o medicamentos de venta libre.</p>
-        </div>
-        <div class=”psy-safety-card”>
+        </article>
+        <article class=”psy-safety-card”>
           <h3>Más de un uso clínico</h3>
-          <p>Un mismo fármaco puede utilizarse en distintos cuadros según dosis, objetivo clínico, mecanismo de acción y criterio profesional. Esta guía es orientativa y no reemplaza la consulta.</p>
-        </div>
+          <p>Un mismo fármaco puede utilizarse en distintos cuadros según objetivo clínico, mecanismo de acción y criterio profesional. Esta guía es orientativa y no reemplaza la consulta.</p>
+        </article>
       </div>
     </section>
 
