@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Psicofármacos — Guía para pacientes | Dr. Pedro Nicolas Dagnino</title>
+  <title>Medicamentos y salud mental — Guía para pacientes | Dr. Pedro Nicolas Dagnino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- PWA (opcional mantener) -->
@@ -296,6 +296,40 @@
     .more-body{ padding: 0 12px 12px 12px; }
     .hide{ display:none !important; }
 
+    /* Group dividers */
+    .psy-group-div{
+      padding: 10px 4px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--psy-blue);
+      opacity: .8;
+      margin-top: 6px;
+    }
+    .psy-group-div:first-child{ margin-top: 0; }
+
+    /* Section eyebrow (módulo/sección label) */
+    .psy-section-tag{
+      display: inline-block;
+      margin: 0 0 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--psy-text);
+      opacity: .6;
+    }
+
+    /* CTA de Central de Turnos */
+    .psy-cta-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .psy-cta-row a{ text-decoration: none; }
+
     /* A11y */
     .sr-only{
       position:absolute; width:1px; height:1px; padding:0; margin:-1px;
@@ -460,7 +494,7 @@
               </svg>
               Ver grupos
             </a>
-            <a href="#intro">
+            <a href="#cuidados">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2Z" stroke="currentColor" stroke-width="1.6"/>
                 <line x1="8" y1="7" x2="8" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -484,156 +518,123 @@
   </section>
 
   <!-- ===== Contenido ===== -->
-  <main class="wrap psy-main" aria-label="Contenido principal">
-    <div class="psy-grid">
+  <main class=”wrap psy-main” aria-label=”Contenido principal”>
 
-      <!-- ===== Columna principal ===== -->
-      <section class="psy-card" id="intro" aria-label="Introducción interactiva">
-        <h2>🧠 ¿Qué llamamos psicofármacos y por qué se utilizan?</h2>
-        <p class="sub">
-          Cuando hablamos de psicofármacos, nos referimos a medicamentos que actúan sobre el sistema nervioso central y ayudan
-          a regular funciones como el estado de ánimo, la ansiedad, el sueño, la atención o el pensamiento.
-        </p>
-
-        <div class="acc" aria-label="Introducción por secciones">
-          <!-- A -->
-          <article class="acc-item" data-search="gran farmacia medicina general complementan cerebro ansiedad sueño estabilidad emocional percepción corporal impulsos">
-            <button class="acc-btn" id="btn-a" type="button" aria-expanded="false" aria-controls="panel-a">
-              <span class="acc-title">
-                <strong>Medicamentos “de la medicina general” también pueden ayudar</strong>
-                <span>Por qué a veces se complementan con psicofármacos</span>
-              </span>
-              <span class="acc-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="acc-panel" id="panel-a" role="region" aria-labelledby="btn-a" hidden>
-              <p>
-                Muchos medicamentos utilizados en la medicina general —la “gran farmacia médica”— también actúan sobre el cerebro y
-                pueden complementarse con los psicofármacos, aun cuando no hayan sido creados originalmente con ese fin.
-              </p>
-              <p>En distintas especialidades (neurología, cardiología, clínica médica o dolor crónico) algunos fármacos pueden influir sobre:</p>
-              <ul>
-                <li>la ansiedad</li>
-                <li>el sueño</li>
-                <li>la estabilidad emocional</li>
-                <li>la percepción corporal</li>
-                <li>el control de impulsos</li>
-              </ul>
-              <p class="tagline">En psiquiatría no tratamos diagnósticos aislados: tratamos personas, síntomas y funcionamiento global.</p>
-            </div>
-          </article>
-
-          <!-- B -->
-          <article class="acc-item" id="clasificaciones" data-search="clasificación antidepresivos ansiolíticos antipsicóticos estabilizadores ánimo hipnóticos sueño psicoestimulantes">
-            <button class="acc-btn" id="btn-b" type="button" aria-expanded="false" aria-controls="panel-b">
-              <span class="acc-title">
-                <strong>📚 ¿Cómo se clasifican los psicofármacos?</strong>
-                <span>Útil para estudiar, pero no rígido</span>
-              </span>
-              <span class="acc-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="acc-panel" id="panel-b" role="region" aria-labelledby="btn-b" hidden>
-              <p>
-                Académicamente, suelen clasificarse según el síntoma principal para el que fueron diseñados. Esta clasificación es útil para el estudio,
-                pero en la práctica clínica no es rígida.
-              </p>
-
-              <div class="psy-pills" aria-label="Categorías">
-                <button class="psy-pill" type="button" data-pill="antidepresivos">Antidepresivos</button>
-                <button class="psy-pill" type="button" data-pill="ansioliticos">Ansiolíticos</button>
-                <button class="psy-pill" type="button" data-pill="antipsicoticos">Antipsicóticos</button>
-                <button class="psy-pill" type="button" data-pill="estabilizadores">Estabilizadores del ánimo</button>
-                <button class="psy-pill" type="button" data-pill="hipnoticos">Hipnóticos (sueño)</button>
-                <button class="psy-pill" type="button" data-pill="psicoestimulantes">Psicoestimulantes</button>
-              </div>
-
-              <div class="tagline" id="pillExplain" aria-live="polite">
-                Tocá una categoría para leer una explicación breve.
-              </div>
-            </div>
-          </article>
-
-          <!-- C -->
-          <article class="acc-item" data-search="mecanismos de acción neurotransmisores circuitos antidepresivo ansiedad dolor crónico sueño digestivos antipsicótico dosis bajas insomnio desregulación emocional estabilizador impulsividad irritabilidad">
-            <button class="acc-btn" id="btn-c" type="button" aria-expanded="false" aria-controls="panel-c">
-              <span class="acc-title">
-                <strong>🔬 ¿Por qué un mismo fármaco puede usarse para distintos cuadros?</strong>
-                <span>Más de un mecanismo de acción</span>
-              </span>
-              <span class="acc-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="acc-panel" id="panel-c" role="region" aria-labelledby="btn-c" hidden>
-              <p>
-                Muchos psicofármacos tienen más de un mecanismo de acción: actúan sobre diferentes neurotransmisores o circuitos cerebrales.
-                Por eso, un mismo medicamento puede utilizarse en distintos cuadros clínicos según los síntomas predominantes.
-              </p>
-              <ul>
-                <li>Un antidepresivo puede indicarse para ansiedad, dolor crónico, trastornos del sueño o trastornos digestivos funcionales.</li>
-                <li>Un antipsicótico en dosis bajas puede utilizarse para insomnio, ansiedad intensa o desregulación emocional, sin que exista una psicosis.</li>
-                <li>Un estabilizador del ánimo puede ayudar a regular impulsividad, irritabilidad o cambios emocionales más allá del diagnóstico formal.</li>
-              </ul>
-              <p><strong>La elección del tratamiento</strong> se basa en síntomas predominantes, perfil del paciente, mecanismos del fármaco y tolerancia individual.</p>
-              <p class="tagline">🤝 Esto no implica un error: es un enfoque personalizado y basado en evidencia clínica.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- ===== Columna lateral: cuidados ===== -->
-      <aside class="psy-card" aria-label="Cuidados mientras tomás medicación">
-        <h3>✅ Cuidados importantes</h3>
-        <p class="sub">
-          Medidas simples que aumentan la seguridad y mejoran la respuesta al tratamiento.
-        </p>
-        <ul style="margin:12px 0 0; padding-left:18px; color:#475569; line-height:1.55;">
-          <li>No modificar ni interrumpir sin consultar.</li>
-          <li>Crear una rutina de toma (horarios fijos).</li>
-          <li>Evitar alcohol y drogas.</li>
-          <li>Informar otros medicamentos y suplementos.</li>
-          <li>Alimentación equilibrada e hidratación (cuidar el hígado).</li>
-          <li>Actividad física baja a moderada.</li>
-          <li>Rutina de sueño regular.</li>
-          <li>Ante efectos adversos: consultar.</li>
-        </ul>
-
-        <div class="tagline" style="margin-top:12px;">
-          Si algo te preocupa, es mejor consultar que suspender por cuenta propia.
-        </div>
-      </aside>
-
-    </div>
-
-    <!-- ===== Medicamentos + buscador ===== -->
-    <section class="psy-card" id="frecuentes" style="margin-top:16px;" aria-label="Explorador de psicofármacos">
-      <h2>💊 Psicofármacos frecuentes</h2>
-      <p class="sub">
-        Seleccioná un medicamento para leer una descripción general. Podés buscar por nombre o por síntomas (ej: “sueño”, “ansiedad”, “irritabilidad”).
+    <!-- ===== 1. Antes de buscar un medicamento ===== -->
+    <section class=”psy-card” id=”intro” aria-label=”Antes de buscar un medicamento”>
+      <p class=”psy-section-tag”>Introducción</p>
+      <h2>Antes de buscar un medicamento</h2>
+      <p class=”sub”>
+        Entender por qué se indica un medicamento ayuda a usarlo con más seguridad y menos incertidumbre.
       </p>
 
-      <div class="psy-tools" aria-label="Herramientas de búsqueda y control">
-        <label class="psy-search" for="psychoSearch">
-          <span class="sr-only">Buscar psicofármacos</span>
-          <input id="psychoSearch" type="search" placeholder="Buscar por nombre o por texto..." autocomplete="off" />
-        </label>
+      <div class=”acc” aria-label=”Introducción”>
+        <!-- A -->
+        <article class=”acc-item” data-search=”gran farmacia medicina general complementan cerebro ansiedad sueño estabilidad emocional percepción corporal impulsos”>
+          <button class=”acc-btn” id=”btn-a” type=”button” aria-expanded=”false” aria-controls=”panel-a”>
+            <span class=”acc-title”>
+              <strong>Medicamentos “de la medicina general” también pueden aparecer</strong>
+              <span>Por qué a veces se combinan con psicofármacos</span>
+            </span>
+            <span class=”acc-chev” aria-hidden=”true”>▾</span>
+          </button>
+          <div class=”acc-panel” id=”panel-a” role=”region” aria-labelledby=”btn-a” hidden>
+            <p>
+              Muchos medicamentos de la medicina general también actúan sobre el cerebro y
+              pueden complementarse con los psicofármacos, aunque no hayan sido diseñados con ese fin.
+            </p>
+            <p>Algunos fármacos pueden influir sobre:</p>
+            <ul>
+              <li>la ansiedad</li>
+              <li>el sueño</li>
+              <li>la estabilidad emocional</li>
+              <li>la percepción corporal</li>
+              <li>el control de impulsos</li>
+            </ul>
+            <p class=”tagline”>En psiquiatría no tratamos diagnósticos aislados: tratamos personas, síntomas y funcionamiento global.</p>
+          </div>
+        </article>
 
-        <button class="psy-btn" id="expandAll" type="button">Expandir todo</button>
-        <button class="psy-btn" id="collapseAll" type="button">Contraer todo</button>
+        <!-- B -->
+        <article class=”acc-item” id=”clasificaciones” data-search=”clasificación grupos antidepresivos ansiolíticos antipsicóticos estabilizadores ánimo hipnóticos sueño psicoestimulantes”>
+          <button class=”acc-btn” id=”btn-b” type=”button” aria-expanded=”false” aria-controls=”panel-b”>
+            <span class=”acc-title”>
+              <strong>Grupos de psicofármacos</strong>
+              <span>Orientación general, no rígida</span>
+            </span>
+            <span class=”acc-chev” aria-hidden=”true”>▾</span>
+          </button>
+          <div class=”acc-panel” id=”panel-b” role=”region” aria-labelledby=”btn-b” hidden>
+            <p>
+              Se clasifican según el síntoma principal para el que fueron diseñados. En la práctica clínica no es una clasificación rígida.
+            </p>
+
+            <div class=”psy-pills” aria-label=”Categorías”>
+              <button class=”psy-pill” type=”button” data-pill=”antidepresivos”>Antidepresivos</button>
+              <button class=”psy-pill” type=”button” data-pill=”ansioliticos”>Ansiolíticos</button>
+              <button class=”psy-pill” type=”button” data-pill=”antipsicoticos”>Antipsicóticos</button>
+              <button class=”psy-pill” type=”button” data-pill=”estabilizadores”>Estabilizadores del ánimo</button>
+              <button class=”psy-pill” type=”button” data-pill=”hipnoticos”>Hipnóticos (sueño)</button>
+              <button class=”psy-pill” type=”button” data-pill=”psicoestimulantes”>Psicoestimulantes</button>
+            </div>
+
+            <div class=”tagline” id=”pillExplain” aria-live=”polite”>
+              Tocá una categoría para leer una explicación breve.
+            </div>
+          </div>
+        </article>
+
+        <!-- C -->
+        <article class=”acc-item” data-search=”mecanismos de acción neurotransmisores circuitos antidepresivo ansiedad dolor crónico sueño digestivos antipsicótico dosis bajas insomnio desregulación emocional estabilizador impulsividad irritabilidad”>
+          <button class=”acc-btn” id=”btn-c” type=”button” aria-expanded=”false” aria-controls=”panel-c”>
+            <span class=”acc-title”>
+              <strong>Por qué un mismo fármaco puede usarse para distintos cuadros</strong>
+              <span>Más de un mecanismo de acción</span>
+            </span>
+            <span class=”acc-chev” aria-hidden=”true”>▾</span>
+          </button>
+          <div class=”acc-panel” id=”panel-c” role=”region” aria-labelledby=”btn-c” hidden>
+            <p>
+              Muchos psicofármacos actúan sobre diferentes neurotransmisores o circuitos cerebrales.
+              Por eso, un mismo medicamento puede usarse en distintos cuadros clínicos.
+            </p>
+            <ul>
+              <li>Un antidepresivo puede indicarse para ansiedad, dolor crónico, trastornos del sueño o síntomas digestivos funcionales.</li>
+              <li>Un antipsicótico en dosis bajas puede utilizarse para insomnio, ansiedad intensa o desregulación emocional, sin que exista una psicosis.</li>
+              <li>Un estabilizador del ánimo puede ayudar a regular impulsividad, irritabilidad o cambios emocionales más allá del diagnóstico formal.</li>
+            </ul>
+            <p><strong>La elección del tratamiento</strong> se basa en síntomas predominantes, perfil del paciente, mecanismos del fármaco y tolerancia individual.</p>
+            <p class=”tagline”>Esto no implica un error: es un enfoque personalizado y basado en evidencia clínica.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== 2. Psicofármacos frecuentes ===== -->
+    <section class=”psy-card” id=”frecuentes” style=”margin-top:16px;” aria-label=”Psicofármacos frecuentes”>
+      <p class=”psy-section-tag”>Módulo 1</p>
+      <h2>Psicofármacos frecuentes</h2>
+      <p class=”sub”>
+        Medicamentos utilizados en psiquiatría para síntomas relacionados con ánimo, ansiedad, sueño, pensamiento,
+        impulsividad, atención o regulación emocional.
+      </p>
+
+      <!-- Accesos rápidos por medicamento -->
+      <div class=”psy-pills” style=”margin-top:14px;” aria-label=”Acceso rápido por medicamento”>
+        <button class=”psy-pill” type=”button” data-jump=”m-escitalopram”>Escitalopram</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-sertralina”>Sertralina</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-venlafaxina”>Venlafaxina</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-desvenlafaxina”>Desvenlafaxina</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-clonazepam”>Clonazepam</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-lorazepam”>Lorazepam</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-zolpidem”>Zolpidem</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-eszopiclona”>Eszopiclona</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-quetiapina”>Quetiapina</button>
+        <button class=”psy-pill” type=”button” data-jump=”m-olanzapina”>Olanzapina</button>
       </div>
 
-      <!-- Accesos rápidos en pills -->
-      <div class="psy-pills" aria-label="Accesos por medicamento">
-        <button class="psy-pill" type="button" data-jump="m-escitalopram">Escitalopram</button>
-        <button class="psy-pill" type="button" data-jump="m-sertralina">Sertralina</button>
-        <button class="psy-pill" type="button" data-jump="m-venlafaxina">Venlafaxina</button>
-        <button class="psy-pill" type="button" data-jump="m-desvenlafaxina">Desvenlafaxina</button>
-        <button class="psy-pill" type="button" data-jump="m-clonazepam">Clonazepam</button>
-        <button class="psy-pill" type="button" data-jump="m-lorazepam">Lorazepam</button>
-        <button class="psy-pill" type="button" data-jump="m-zolpidem">Zolpidem</button>
-        <button class="psy-pill" type="button" data-jump="m-eszopiclona">Eszopiclona</button>
-        <button class="psy-pill" type="button" data-jump="m-quetiapina">Quetiapina</button>
-        <button class="psy-pill" type="button" data-jump="m-olanzapina">Olanzapina</button>
-      </div>
-
-      <div class="acc" id="accTop" aria-label="Lista de psicofármacos frecuentes">
+      <div class=”acc” id=”accTop” style=”margin-top:4px;” aria-label=”Lista de psicofármacos frecuentes”>
+        <div class=”psy-group-div”>Antidepresivos</div>
         <!-- 1 -->
         <article class="acc-item" id="m-escitalopram" data-search="escitalopram antidepresivo ansiedad depresión estrés serotonina sueño irritabilidad">
           <button class="acc-btn" id="btn-m-escitalopram" type="button" aria-expanded="false" aria-controls="panel-m-escitalopram">
@@ -714,6 +715,7 @@
           </div>
         </article>
 
+        <div class="psy-group-div">Ansiolíticos</div>
         <!-- 5 -->
         <article class="acc-item" id="m-clonazepam" data-search="clonazepam benzodiacepina ansiedad crisis pánico angustia tensión alcohol">
           <button class="acc-btn" id="btn-m-clonazepam" type="button" aria-expanded="false" aria-controls="panel-m-clonazepam">
@@ -754,6 +756,7 @@
           </div>
         </article>
 
+        <div class="psy-group-div">Hipnóticos</div>
         <!-- 7 -->
         <article class="acc-item" id="m-zolpidem" data-search="zolpidem hipnótico sueño insomnio conciliar no benzodiacepina alcohol">
           <button class="acc-btn" id="btn-m-zolpidem" type="button" aria-expanded="false" aria-controls="panel-m-zolpidem">
@@ -794,6 +797,7 @@
           </div>
         </article>
 
+        <div class="psy-group-div">Antipsicóticos</div>
         <!-- 9 -->
         <article class="acc-item" id="m-quetiapina" data-search="quetiapina antipsicótico ánimo sueño ansiedad desregulación emocional irritabilidad">
           <button class="acc-btn" id="btn-m-quetiapina" type="button" aria-expanded="false" aria-controls="panel-m-quetiapina">
@@ -836,10 +840,10 @@
       </div>
 
       <!-- ===== VER MÁS (7) ===== -->
-      <div class="more-wrap" aria-label="Sección ver más psicofármacos">
+      <div class="more-wrap" aria-label="Más psicofármacos">
         <button class="more-head" id="moreToggle" type="button" aria-expanded="false" aria-controls="moreBody">
           <span>
-            <strong>Ver más psicofármacos (lectura opcional)</strong><br>
+            <strong>Más psicofármacos</strong><br>
             <span>Para quienes desean profundizar o si su tratamiento incluye alguno de estos.</span>
           </span>
           <span class="acc-chev" aria-hidden="true">▾</span>
@@ -847,6 +851,7 @@
 
         <div class="more-body" id="moreBody" hidden>
           <div class="acc" id="accMore" aria-label="Lista adicional de psicofármacos">
+            <div class="psy-group-div">Ansiolíticos</div>
             <article class="acc-item" id="m-diazepam" data-search="diazepam benzodiacepina ansiedad crisis relajante muscular alcohol">
               <button class="acc-btn" id="btn-m-diazepam" type="button" aria-expanded="false" aria-controls="panel-m-diazepam">
                 <span class="acc-title">
@@ -901,6 +906,7 @@
               </div>
             </article>
 
+            <div class="psy-group-div">Estabilizadores del ánimo</div>
             <article class="acc-item" id="m-divalproato" data-search="divalproato sodio estabilizador ánimo impulsividad irritabilidad bipolaridad">
               <button class="acc-btn" id="btn-m-divalproato" type="button" aria-expanded="false" aria-controls="panel-m-divalproato">
                 <span class="acc-title">
@@ -976,13 +982,251 @@
         </div>
       </div>
 
-      <!-- ===== Bibliografía ===== -->
-      <div style="margin-top:14px;">
-        <div class="tagline">
-          📚 Bibliografía de referencia: <strong>Stahl, S.M. — Prescriber’s Guide (Stahl’s Essential Psychopharmacology)</strong>. Cambridge University Press.
-        </div>
+    </section>
+
+    <!-- ===== 3. Fármacos frecuentes en pacientes de salud mental ===== -->
+    <section class="psy-card" id="farmacos-clinicos" style="margin-top:16px;" aria-label="Fármacos frecuentes en pacientes de salud mental">
+      <p class="psy-section-tag">Módulo 2</p>
+      <h2>Fármacos frecuentes en pacientes de salud mental</h2>
+      <p class="sub">
+        Algunos medicamentos no son psicofármacos, pero pueden aparecer durante un tratamiento en salud mental
+        por dolor, alergias, sueño, síntomas digestivos, inflamación, metabolismo, vitaminas o enfermedades clínicas asociadas.
+      </p>
+      <div class="psy-note" role="note" style="margin-top:12px;">
+        Siempre informá a tu psiquiatra todos los medicamentos que estás tomando, incluyendo los de venta libre, suplementos y plantas medicinales.
+      </div>
+
+      <div class="acc" id="accClinicos" style="margin-top:14px;" aria-label="Grupos de fármacos frecuentes en salud mental">
+
+        <!-- G1: Dolor e inflamación -->
+        <article class="acc-item" id="g-dolor" data-search="dolor inflamación AINE ibuprofeno naproxeno diclofenac paracetamol tramadol celecoxib analgésico antiinflamatorio reumatología fibromialgia migraña">
+          <button class="acc-btn" id="btn-g-dolor" type="button" aria-expanded="false" aria-controls="panel-g-dolor">
+            <span class="acc-title">
+              <strong>Dolor e inflamación</strong>
+              <span>Analgésicos y antiinflamatorios frecuentes</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-dolor" role="region" aria-labelledby="btn-g-dolor" hidden>
+            <p>
+              Algunos pacientes en tratamiento psiquiátrico conviven con dolor crónico, fibromialgia, migrañas o cuadros inflamatorios que requieren analgésicos de forma regular.
+            </p>
+            <ul>
+              <li><strong>AINEs frecuentes:</strong> ibuprofeno, naproxeno, diclofenac, celecoxib. Pueden irritar la mucosa gástrica; combinar con un protector si se indica.</li>
+              <li><strong>Paracetamol:</strong> primera línea analgésica; evitar alcohol y respetar dosis máxima diaria.</li>
+              <li><strong>Tramadol:</strong> opioide de uso controlado; puede afectar el sueño y producir interacciones con antidepresivos. Informar siempre al médico.</li>
+            </ul>
+            <p class="tagline">Algunos AINEs pueden interactuar con estabilizadores del ánimo como el litio. Siempre informar.</p>
+          </div>
+        </article>
+
+        <!-- G2: Alergia y respiratorio -->
+        <article class="acc-item" id="g-alergia" data-search="alergia respiratorio antihistamínico cetirizina loratadina desloratadina difenhidramina prometazina rinitis asma broncodilatador montelukast sedación">
+          <button class="acc-btn" id="btn-g-alergia" type="button" aria-expanded="false" aria-controls="panel-g-alergia">
+            <span class="acc-title">
+              <strong>Alergia y respiratorio</strong>
+              <span>Antihistamínicos y broncodilatadores</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-alergia" role="region" aria-labelledby="btn-g-alergia" hidden>
+            <p>
+              Las alergias estacionales, la rinitis y el asma son frecuentes en la población general, incluidas las personas en tratamiento en salud mental.
+            </p>
+            <ul>
+              <li><strong>Antihistamínicos no sedantes:</strong> cetirizina, loratadina, desloratadina. Generalmente bien tolerados junto a psicofármacos.</li>
+              <li><strong>Antihistamínicos sedantes:</strong> difenhidramina, prometazina. Pueden potenciar la sedación de psicofármacos; informar al médico.</li>
+              <li><strong>Broncodilatadores (inhaladores):</strong> salbutamol, formoterol. Pueden aumentar la activación y la ansiedad; avisar si hay cambios.</li>
+              <li><strong>Montelukast:</strong> en algunos casos se han reportado cambios de ánimo; comunicar si aparecen.</li>
+            </ul>
+            <p class="tagline">Si usás antihistamínicos sedantes, evitá conducción y avisá a tu médico.</p>
+          </div>
+        </article>
+
+        <!-- G3: Digestivo -->
+        <article class="acc-item" id="g-digestivo" data-search="digestivo omeprazol pantoprazol bomba de protones domperidona metoclopramida loperamida gastritis reflujo náuseas colon irritable">
+          <button class="acc-btn" id="btn-g-digestivo" type="button" aria-expanded="false" aria-controls="panel-g-digestivo">
+            <span class="acc-title">
+              <strong>Digestivo</strong>
+              <span>Protectores gástricos y reguladores del tránsito</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-digestivo" role="region" aria-labelledby="btn-g-digestivo" hidden>
+            <p>
+              Los síntomas digestivos son frecuentes en personas con ansiedad o estrés crónico. Algunos psicofármacos también pueden causar náuseas al inicio.
+            </p>
+            <ul>
+              <li><strong>Inhibidores de bomba de protones (IBP):</strong> omeprazol, pantoprazol, esomeprazol. Generalmente seguros; usar el tiempo indicado.</li>
+              <li><strong>Procinéticos:</strong> domperidona, metoclopramida. Pueden interactuar con antipsicóticos y producir movimientos involuntarios; informar si ocurre.</li>
+              <li><strong>Loperamida:</strong> para diarrea sintomática; uso puntual.</li>
+              <li><strong>Antiespasmódicos:</strong> butil-hioscina y similares; generalmente sin interacciones importantes con psicofármacos.</li>
+            </ul>
+            <p class="tagline">Si tomás antipsicóticos, avisá antes de iniciar metoclopramida o domperidona.</p>
+          </div>
+        </article>
+
+        <!-- G4: Metabolismo y peso corporal -->
+        <article class="acc-item" id="g-metabolismo" data-search="metabolismo peso corporal metformina orlistat glucosa insulina diabetes liraglutida semaglutida GLP-1 obesidad síndrome metabólico colesterol triglicéridos estatinas">
+          <button class="acc-btn" id="btn-g-metabolismo" type="button" aria-expanded="false" aria-controls="panel-g-metabolismo">
+            <span class="acc-title">
+              <strong>Metabolismo y peso corporal</strong>
+              <span>Glucosa, insulina y control de peso</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-metabolismo" role="region" aria-labelledby="btn-g-metabolismo" hidden>
+            <p>
+              Algunos antipsicóticos y estabilizadores del ánimo pueden afectar el peso corporal, la glucosa en sangre o el perfil lipídico. El seguimiento metabólico puede ser parte del tratamiento.
+            </p>
+            <ul>
+              <li><strong>Metformina:</strong> puede indicarse en pacientes con riesgo metabólico asociado al tratamiento con antipsicóticos.</li>
+              <li><strong>Orlistat:</strong> para manejo de peso con supervisión médica.</li>
+              <li><strong>Agonistas GLP-1 (liraglutida, semaglutida):</strong> cada vez más usados para diabetes tipo 2 y obesidad; pueden producir náuseas al inicio.</li>
+              <li><strong>Estatinas:</strong> para colesterol elevado; sin interacciones habituales importantes con psicofármacos.</li>
+            </ul>
+            <p class="tagline">Si tu médico indica controles de peso, glucosa o laboratorio, son parte del seguimiento del tratamiento.</p>
+          </div>
+        </article>
+
+        <!-- G5: Corticoides -->
+        <article class="acc-item" id="g-corticoides" data-search="corticoides prednisona dexametasona betametasona hidrocortisona inflamación autoinmune reumatológica asma ánimo insomnio manía agitación">
+          <button class="acc-btn" id="btn-g-corticoides" type="button" aria-expanded="false" aria-controls="panel-g-corticoides">
+            <span class="acc-title">
+              <strong>Corticoides</strong>
+              <span>Efecto potencial sobre ánimo y sueño</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-corticoides" role="region" aria-labelledby="btn-g-corticoides" hidden>
+            <p>
+              Los corticoides orales pueden indicarse por cuadros inflamatorios, reumatológicos o autoinmunes. Es importante conocer su efecto potencial sobre el estado mental.
+            </p>
+            <ul>
+              <li><strong>Prednisona, dexametasona, betametasona:</strong> pueden producir insomnio, agitación, cambios de ánimo y, en dosis altas o en personas predispuestas, síntomas maníacos.</li>
+              <li><strong>Hidrocortisona:</strong> igual vigilancia según dosis y duración del tratamiento.</li>
+              <li><strong>Corticoides inhalados o tópicos:</strong> menor riesgo de efectos sistémicos sobre el ánimo.</li>
+            </ul>
+            <p class="tagline">Si te indican un corticoide oral, avisá a tu psiquiatra antes o durante el tratamiento.</p>
+          </div>
+        </article>
+
+        <!-- G6: Vitaminas y suplementos -->
+        <article class="acc-item" id="g-vitaminas" data-search="vitaminas suplementos vitamina D magnesio B12 ácido fólico omega-3 melatonina plantas medicinales hipérico Saint John wort hierba de San Juan natural">
+          <button class="acc-btn" id="btn-g-vitaminas" type="button" aria-expanded="false" aria-controls="panel-g-vitaminas">
+            <span class="acc-title">
+              <strong>Vitaminas y suplementos</strong>
+              <span>Nutrientes, suplementos y fitoterapia</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-vitaminas" role="region" aria-labelledby="btn-g-vitaminas" hidden>
+            <p>
+              Muchas personas toman suplementos o productos naturales junto a la medicación. Algunos son seguros; otros pueden producir interacciones importantes.
+            </p>
+            <ul>
+              <li><strong>Vitamina D, magnesio, B12, ácido fólico:</strong> frecuentes, sin interacciones habituales relevantes. Informar igual al médico.</li>
+              <li><strong>Omega-3:</strong> puede tener efecto leve sobre el ánimo; generalmente seguro con psicofármacos.</li>
+              <li><strong>Melatonina:</strong> útil para sueño en algunos casos; puede complementar el tratamiento; informar siempre.</li>
+              <li><strong>Hipérico (hierba de San Juan):</strong> puede reducir la efectividad de antidepresivos y otros fármacos. No combinar sin consultar.</li>
+            </ul>
+            <p class="tagline">Lo "natural" no siempre es inocuo. Informá todos los suplementos que tomás.</p>
+          </div>
+        </article>
+
+        <!-- G7: Otros medicamentos clínicamente relevantes -->
+        <article class="acc-item" id="g-otros-clinicos" data-search="betabloqueantes propranolol atenolol ansiedad situacional gabapentina pregabalina dolor neuropático carbamazepina anticonvulsivante interacciones opioides morfina codéína tramadol">
+          <button class="acc-btn" id="btn-g-otros" type="button" aria-expanded="false" aria-controls="panel-g-otros">
+            <span class="acc-title">
+              <strong>Otros medicamentos clínicamente relevantes</strong>
+              <span>Betabloqueantes, anticonvulsivantes y más</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-g-otros" role="region" aria-labelledby="btn-g-otros" hidden>
+            <p>
+              Algunos medicamentos de otras especialidades tienen aplicaciones clínicas en psiquiatría o interacciones importantes con los psicofármacos.
+            </p>
+            <ul>
+              <li><strong>Betabloqueantes (propranolol, atenolol):</strong> a veces indicados para ansiedad situacional. Pueden bajar la presión y producir cansancio.</li>
+              <li><strong>Gabapentina / pregabalina:</strong> indicados en dolor neuropático o ansiedad refractaria en ciertos contextos; pueden producir sedación.</li>
+              <li><strong>Carbamazepina:</strong> anticonvulsivante con uso psiquiátrico; produce interacciones importantes con varios psicofármacos. Informar siempre.</li>
+              <li><strong>Opioides:</strong> la combinación con benzodiacepinas o sedantes aumenta el riesgo. Siempre informar si te indicaron un opioide.</li>
+            </ul>
+            <p class="tagline">Siempre informá al psiquiatra cualquier medicamento nuevo, aunque lo haya indicado otro médico.</p>
+          </div>
+        </article>
+
       </div>
     </section>
+
+    <!-- ===== 4. Cuidados importantes ===== -->
+    <section class="psy-card" id="cuidados" style="margin-top:16px;" aria-label="Cuidados importantes">
+      <p class="psy-section-tag">Para tener en cuenta</p>
+      <h2>Cuidados importantes</h2>
+      <p class="sub">
+        Medidas simples que aumentan la seguridad y mejoran la respuesta al tratamiento.
+      </p>
+      <ul style="margin:12px 0 0; padding-left:18px; color:#475569; line-height:1.7;">
+        <li>No modificar ni interrumpir medicación sin consultar.</li>
+        <li>Crear una rutina de toma (horarios fijos).</li>
+        <li>Evitar alcohol y drogas.</li>
+        <li>Informar todos los medicamentos, suplementos y plantas medicinales.</li>
+        <li>Alimentación equilibrada e hidratación (cuidar el hígado).</li>
+        <li>Actividad física baja a moderada.</li>
+        <li>Rutina de sueño regular.</li>
+        <li>Ante efectos adversos: consultar antes de suspender.</li>
+      </ul>
+      <div class="tagline" style="margin-top:12px;">
+        Si algo te preocupa, es mejor consultar que suspender por cuenta propia.
+      </div>
+    </section>
+
+    <!-- ===== 5. Buscar por nombre o síntoma ===== -->
+    <section class="psy-card" id="buscador" style="margin-top:16px;" aria-label="Buscador de medicamentos">
+      <p class="psy-section-tag">Herramienta</p>
+      <h2>Buscar por nombre o síntoma</h2>
+      <p class="sub">
+        Ingresá un nombre de medicamento o un síntoma (ej: "sueño", "ansiedad", "irritabilidad") para filtrar resultados en toda la guía.
+      </p>
+      <div class="psy-tools" aria-label="Herramientas de búsqueda y control">
+        <label class="psy-search" for="psychoSearch">
+          <span class="sr-only">Buscar medicamentos</span>
+          <input id="psychoSearch" type="search" placeholder="Buscar por nombre o síntoma..." autocomplete="off" />
+        </label>
+        <button class="psy-btn" id="expandAll" type="button">Expandir todo</button>
+        <button class="psy-btn" id="collapseAll" type="button">Contraer todo</button>
+      </div>
+    </section>
+
+    <!-- ===== 6. Bibliografía y criterio de uso ===== -->
+    <section class="psy-card" id="bibliografia" style="margin-top:16px;" aria-label="Bibliografía y criterio de uso">
+      <p class="psy-section-tag">Referencias</p>
+      <h2>Bibliografía y criterio de uso</h2>
+      <p class="sub">
+        Esta guía es informativa y orientativa. No reemplaza la indicación ni el seguimiento médico.
+      </p>
+      <div class="tagline" style="margin-top:12px;">
+        Bibliografía de referencia: <strong>Stahl, S.M. — Prescriber’s Guide (Stahl’s Essential Psychopharmacology)</strong>. Cambridge University Press.
+      </div>
+      <p style="margin-top:12px; color:var(--psy-text); font-size:14px; line-height:1.55;">
+        Los textos de esta guía fueron elaborados con criterio psicoeducativo para pacientes. Las fichas de medicamentos describen usos habituales; la indicación y el ajuste son siempre personalizados por el médico tratante.
+      </p>
+    </section>
+
+    <!-- ===== 7. Central de Turnos ===== -->
+    <section class="psy-card" id="turnos-cta" style="margin-top:16px;" aria-label="Central de Turnos">
+      <p class="psy-section-tag">Consulta</p>
+      <h2>Central de Turnos</h2>
+      <p class="sub">
+        Si tenés dudas sobre tu tratamiento, necesitás una consulta o querés coordinar un turno, el canal indicado es la Central de Turnos.
+      </p>
+      <div class="psy-cta-row">
+        <a class="btn-primary" href="turnos.html">Ir a Central de Turnos</a>
+        <a class="btn-secondary" href="index.html">Volver al inicio</a>
+      </div>
+    </section>
+
   </main>
 
   <!-- ===== Footer (igual al index, con mini mapa) ===== -->
@@ -1033,7 +1277,7 @@
     <div class="origen-box" id="origenBox">
       <div class="origen-box-head">
         <div>
-          <span class="origen-sub">🕰 Origen del fármaco</span>
+          <span class="origen-sub"><svg width="11" height="11" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px;" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="8" y1="4" x2="8" y2="8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="8" y1="8.5" x2="11" y2="10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Origen del fármaco</span>
           <div class="origen-box-title" id="origenTitle"></div>
         </div>
         <button class="origen-close" id="origenClose" type="button" aria-label="Cerrar">✕</button>
@@ -1241,7 +1485,7 @@
         btn.className = 'origen-btn';
         btn.type = 'button';
         btn.setAttribute('data-origen', key);
-        btn.innerHTML = '🕰 Origen del fármaco';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:5px;" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="8" y1="4" x2="8" y2="8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="8" y1="8.5" x2="11" y2="10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Origen del fármaco';
         var tagline = panel.querySelector('.tagline');
         if (tagline) {
           panel.insertBefore(btn, tagline);
