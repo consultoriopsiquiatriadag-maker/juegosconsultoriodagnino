@@ -53,24 +53,26 @@
       padding: 18px;
     }
     .psy-hero h1{
-      margin: 0;
+      margin: 4px 0 0;
       color: var(--psy-navy);
-      font-size: clamp(22px, 2.3vw, 30px);
-      letter-spacing: -0.02em;
+      font-size: clamp(24px, 2.6vw, 34px);
+      letter-spacing: -0.025em;
+      line-height: 1.15;
     }
-    .psy-hero p{
-      margin: 8px 0 0;
+    .psy-eyebrow{
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--psy-blue);
+    }
+    .psy-lead{
+      margin: 10px 0 0;
       color: var(--psy-text);
       line-height: 1.55;
-      max-width: 72ch;
-    }
-
-    .psy-actions{
-      display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end;
-      margin-top: 6px;
-    }
-    .psy-actions a{
-      text-decoration:none;
+      max-width: 70ch;
+      font-size: 15px;
     }
 
     .psy-note{
@@ -121,23 +123,33 @@
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin-top: 12px;
+      margin-top: 16px;
     }
     .psy-nav a{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-radius: 999px;
-      border: 1px solid var(--psy-border);
+      border: 1.5px solid var(--psy-border);
       background: #fff;
       color: var(--psy-navy);
       text-decoration:none;
       font-weight: 600;
       font-size: 14px;
+      min-height: 44px;
+      transition: border-color .15s ease, background .15s ease;
     }
+    .psy-nav a:last-child{
+      background: var(--psy-navy);
+      color: #fff;
+      border-color: var(--psy-navy);
+    }
+    .psy-nav a:last-child svg{ stroke: #fff; }
+    .psy-nav a:last-child:hover{ background: #162f4a; border-color: #162f4a; }
     .psy-nav a:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
-    .psy-nav a:hover{ border-color: rgba(37,99,235,.35); }
+    .psy-nav a:hover{ border-color: rgba(37,99,235,.45); background: rgba(37,99,235,.04); }
+    .psy-nav a:last-child:focus-visible{ background: #162f4a; }
 
     /* Buscador */
     .psy-tools{
@@ -416,32 +428,56 @@
   </header>
 
   <!-- ===== Hero de página ===== -->
-  <section class="psy-hero" aria-label="Portada Psicofármacos">
+  <section class="psy-hero" aria-label="Portada — Medicamentos y salud mental">
     <div class="wrap">
       <div class="heroish">
         <div>
-          <h1>Psicofármacos: guía para pacientes</h1>
-          <p>
-            Una explicación clara y breve para comprender qué son los psicofármacos, por qué se utilizan
-            y cómo cuidarse mientras se realiza un tratamiento.
+          <p class="psy-eyebrow">Guía orientativa para pacientes</p>
+          <h1>Medicamentos y salud mental</h1>
+          <p class="psy-lead">
+            Información clara sobre psicofármacos y otros medicamentos frecuentes que pueden
+            aparecer durante un tratamiento en salud mental.
           </p>
 
           <div class="psy-note" role="note">
-            <strong>Importante:</strong> No modifiques ni interrumpas tu tratamiento sin consultarlo primero.
-            Evitá alcohol y drogas. Ante efectos adversos o dudas, consultá.
+            Esta guía no reemplaza la indicación médica. No modifiques dosis, no suspendas
+            tratamientos y no combines medicamentos sin consultar previamente.
           </div>
 
           <nav class="psy-nav" aria-label="Navegación rápida">
-            <a href="index.html">⬅︎ Volver al inicio</a>
-            <a href="#intro">🧠 Introducción</a>
-            <a href="#clasificaciones">📚 Clasificaciones</a>
-            <a href="#frecuentes">💊 Psicofármacos frecuentes</a>
+            <a href="#psychoSearch">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              Buscar medicamento
+            </a>
+            <a href="#clasificaciones">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="1" y="3" width="14" height="2" rx="1" fill="currentColor"/>
+                <rect x="1" y="7" width="10" height="2" rx="1" fill="currentColor"/>
+                <rect x="1" y="11" width="12" height="2" rx="1" fill="currentColor"/>
+              </svg>
+              Ver grupos
+            </a>
+            <a href="#intro">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2Z" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="8" y1="7" x2="8" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="8" cy="5" r="0.9" fill="currentColor"/>
+              </svg>
+              Cuidados importantes
+            </a>
+            <a href="turnos.html">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="5" y1="1" x2="5" y2="5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <line x1="11" y1="1" x2="11" y2="5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <line x1="2" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.4"/>
+              </svg>
+              Central de Turnos
+            </a>
           </nav>
-        </div>
-
-        <div class="psy-actions" aria-label="Accesos">
-          <a class="btn-primary" href="#frecuentes">Explorar medicamentos</a>
-          <a class="btn-secondary" href="turnos.html">Central de Turnos</a>
         </div>
       </div>
     </div>
