@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Psicofármacos — Guía para pacientes | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA (opcional mantener) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO para esta página (sin tocar app.css) -->
+  <style>
+    :root{
+      --psy-bg: #f2f5f8;
+      --psy-card: #ffffff;
+      --psy-navy: #0e2239;
+      --psy-blue: #2563eb;
+      --psy-text: #475569;
+      --psy-border: rgba(14,34,57,.12);
+      --psy-shadow: 0 8px 24px rgba(2, 6, 23, .08);
+      --psy-radius: 22px;
+    }
+
+    body{ background: var(--psy-bg); }
+
+    .psy-hero{
+      padding: 22px 0 8px;
+    }
+    .psy-hero .heroish{
+      display:flex; gap:18px; align-items:flex-start; justify-content:space-between;
+      background: var(--psy-card);
+      border: 1px solid var(--psy-border);
+      box-shadow: var(--psy-shadow);
+      border-radius: var(--psy-radius);
+      padding: 18px;
+    }
+    .psy-hero h1{
+      margin: 0;
+      color: var(--psy-navy);
+      font-size: clamp(22px, 2.3vw, 30px);
+      letter-spacing: -0.02em;
+    }
+    .psy-hero p{
+      margin: 8px 0 0;
+      color: var(--psy-text);
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+
+    .psy-actions{
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end;
+      margin-top: 6px;
+    }
+    .psy-actions a{
+      text-decoration:none;
+    }
+
+    .psy-note{
+      margin-top: 12px;
+      background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.22);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--psy-navy);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .psy-note strong{ font-weight: 700; }
+
+    .psy-main{ padding: 16px 0 28px; }
+
+    .psy-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .psy-grid{ grid-template-columns: 1fr; }
+      .psy-actions{ justify-content:flex-start; }
+    }
+
+    .psy-card{
+      background: var(--psy-card);
+      border: 1px solid var(--psy-border);
+      box-shadow: var(--psy-shadow);
+      border-radius: var(--psy-radius);
+      padding: 16px;
+    }
+
+    .psy-card h2, .psy-card h3{
+      margin: 0;
+      color: var(--psy-navy);
+      letter-spacing: -0.02em;
+    }
+    .psy-card .sub{
+      margin: 8px 0 0;
+      color: var(--psy-text);
+      line-height: 1.55;
+    }
+
+    /* Mini navegación */
+    .psy-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .psy-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--psy-border);
+      background: #fff;
+      color: var(--psy-navy);
+      text-decoration:none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .psy-nav a:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+    .psy-nav a:hover{ border-color: rgba(37,99,235,.35); }
+
+    /* Buscador */
+    .psy-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+      align-items:center;
+    }
+    .psy-search{
+      flex: 1 1 320px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#fff;
+      border:1px solid var(--psy-border);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .psy-search input{
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: transparent;
+      color: var(--psy-navy);
+    }
+    .psy-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--psy-border);
+      background: #fff;
+      color: var(--psy-navy);
+      font-weight: 700;
+      cursor:pointer;
+    }
+    .psy-btn:hover{ border-color: rgba(37,99,235,.35); }
+    .psy-btn:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+
+    /* Pills */
+    .psy-pills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .psy-pill{
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,.22);
+      background: rgba(37,99,235,.08);
+      color: var(--psy-navy);
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor:pointer;
+    }
+    .psy-pill:hover{ background: rgba(37,99,235,.12); }
+
+    /* Accordion */
+    .acc{
+      margin-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .acc-item{
+      border: 1px solid var(--psy-border);
+      border-radius: 16px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .acc-btn{
+      width:100%;
+      text-align:left;
+      padding: 12px 12px;
+      background: #fff;
+      border: none;
+      cursor:pointer;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .acc-title{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .acc-title strong{ color: var(--psy-navy); font-size: 16px; }
+    .acc-title span{ color: var(--psy-text); font-size: 13px; }
+    .acc-chev{
+      color: var(--psy-blue);
+      font-weight: 900;
+      transition: transform .16s ease;
+    }
+    .acc-btn[aria-expanded="true"] .acc-chev{ transform: rotate(180deg); }
+    .acc-panel{
+      padding: 0 12px 12px 12px;
+      color: var(--psy-text);
+      line-height: 1.55;
+    }
+    .acc-panel ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .acc-panel li{ margin: 6px 0; }
+    .tagline{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(14,34,57,.22);
+      color: var(--psy-navy);
+      background: rgba(14,34,57,.04);
+      font-size: 14px;
+    }
+
+    /* Sección colapsable "Ver más" */
+    .more-wrap{
+      margin-top: 14px;
+      border: 1px solid var(--psy-border);
+      border-radius: 16px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .more-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      cursor:pointer;
+      background:#fff;
+      border:none;
+      width:100%;
+      text-align:left;
+    }
+    .more-head strong{ color: var(--psy-navy); }
+    .more-head span{ color: var(--psy-text); font-size: 13px; }
+    .more-body{ padding: 0 12px 12px 12px; }
+    .hide{ display:none !important; }
+
+    /* A11y */
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); border:0;
+    }
+
+    /* ===== Botón "Origen del fármaco" ===== */
+    .origen-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      padding:7px 13px;
+      border-radius:999px;
+      border:1px solid rgba(14,34,57,.22);
+      background:rgba(14,34,57,.05);
+      color:var(--psy-navy);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .15s ease, border-color .15s ease;
+    }
+    .origen-btn:hover{ background:rgba(14,34,57,.10); border-color:rgba(14,34,57,.35); }
+    .origen-btn:focus-visible{ outline:3px solid rgba(37,99,235,.35); outline-offset:2px; }
+
+    /* ===== Modal Origen ===== */
+    .origen-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:9000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      animation:origenFadeIn .18s ease;
+    }
+    .origen-overlay[hidden]{ display:none !important; }
+    @keyframes origenFadeIn{ from{ opacity:0; } to{ opacity:1; } }
+
+    .origen-box{
+      background:#fff;
+      border-radius:20px;
+      padding:24px;
+      max-width:520px;
+      width:100%;
+      box-shadow:0 20px 60px rgba(0,0,0,.18);
+      position:relative;
+      max-height:90vh;
+      overflow-y:auto;
+      animation:origenSlideIn .2s ease;
+    }
+    @keyframes origenSlideIn{
+      from{ transform:translateY(14px); opacity:0; }
+      to{ transform:translateY(0); opacity:1; }
+    }
+
+    .origen-box-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .origen-sub{
+      display:inline-block;
+      margin-bottom:8px;
+      font-size:11px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      color:var(--psy-blue);
+      background:rgba(37,99,235,.09);
+      border-radius:999px;
+      padding:3px 10px;
+    }
+    .origen-box-title{
+      font-size:18px;
+      font-weight:700;
+      color:var(--psy-navy);
+      line-height:1.3;
+    }
+    .origen-close{
+      background:none;
+      border:1px solid var(--psy-border);
+      border-radius:999px;
+      width:32px;
+      height:32px;
+      font-size:15px;
+      cursor:pointer;
+      color:var(--psy-navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      transition:background .15s ease;
+    }
+    .origen-close:hover{ background:rgba(14,34,57,.07); }
+    .origen-close:focus-visible{ outline:3px solid rgba(37,99,235,.35); outline-offset:2px; }
+    .origen-body{
+      color:var(--psy-text);
+      line-height:1.7;
+      font-size:14.5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== Header (igual al index) ===== -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Controles">
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero de página ===== -->
+  <section class="psy-hero" aria-label="Portada Psicofármacos">
+    <div class="wrap">
+      <div class="heroish">
+        <div>
+          <h1>Psicofármacos: guía para pacientes</h1>
+          <p>
+            Una explicación clara y breve para comprender qué son los psicofármacos, por qué se utilizan
+            y cómo cuidarse mientras se realiza un tratamiento.
+          </p>
+
+          <div class="psy-note" role="note">
+            <strong>Importante:</strong> No modifiques ni interrumpas tu tratamiento sin consultarlo primero.
+            Evitá alcohol y drogas. Ante efectos adversos o dudas, consultá.
+          </div>
+
+          <nav class="psy-nav" aria-label="Navegación rápida">
+            <a href="index.html">⬅︎ Volver al inicio</a>
+            <a href="#intro">🧠 Introducción</a>
+            <a href="#clasificaciones">📚 Clasificaciones</a>
+            <a href="#frecuentes">💊 Psicofármacos frecuentes</a>
+          </nav>
+        </div>
+
+        <div class="psy-actions" aria-label="Accesos">
+          <a class="btn-primary" href="#frecuentes">Explorar medicamentos</a>
+          <a class="btn-secondary" href="turnos.html">Central de Turnos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contenido ===== -->
+  <main class="wrap psy-main" aria-label="Contenido principal">
+    <div class="psy-grid">
+
+      <!-- ===== Columna principal ===== -->
+      <section class="psy-card" id="intro" aria-label="Introducción interactiva">
+        <h2>🧠 ¿Qué llamamos psicofármacos y por qué se utilizan?</h2>
+        <p class="sub">
+          Cuando hablamos de psicofármacos, nos referimos a medicamentos que actúan sobre el sistema nervioso central y ayudan
+          a regular funciones como el estado de ánimo, la ansiedad, el sueño, la atención o el pensamiento.
+        </p>
+
+        <div class="acc" aria-label="Introducción por secciones">
+          <!-- A -->
+          <article class="acc-item" data-search="gran farmacia medicina general complementan cerebro ansiedad sueño estabilidad emocional percepción corporal impulsos">
+            <button class="acc-btn" id="btn-a" type="button" aria-expanded="false" aria-controls="panel-a">
+              <span class="acc-title">
+                <strong>Medicamentos "de la medicina general" también pueden ayudar</strong>
+                <span>Por qué a veces se complementan con psicofármacos</span>
+              </span>
+              <span class="acc-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="acc-panel" id="panel-a" role="region" aria-labelledby="btn-a" hidden>
+              <p>
+                Muchos medicamentos utilizados en la medicina general —la "gran farmacia médica"— también actúan sobre el cerebro y
+                pueden complementarse con los psicofármacos, aun cuando no hayan sido creados originalmente con ese fin.
+              </p>
+              <p>En distintas especialidades (neurología, cardiología, clínica médica o dolor crónico) algunos fármacos pueden influir sobre:</p>
+              <ul>
+                <li>la ansiedad</li>
+                <li>el sueño</li>
+                <li>la estabilidad emocional</li>
+                <li>la percepción corporal</li>
+                <li>el control de impulsos</li>
+              </ul>
+              <p class="tagline">En psiquiatría no tratamos diagnósticos aislados: tratamos personas, síntomas y funcionamiento global.</p>
+            </div>
+          </article>
+
+          <!-- B -->
+          <article class="acc-item" id="clasificaciones" data-search="clasificación antidepresivos ansiolíticos antipsicóticos estabilizadores ánimo hipnóticos sueño psicoestimulantes">
+            <button class="acc-btn" id="btn-b" type="button" aria-expanded="false" aria-controls="panel-b">
+              <span class="acc-title">
+                <strong>📚 ¿Cómo se clasifican los psicofármacos?</strong>
+                <span>Útil para estudiar, pero no rígido</span>
+              </span>
+              <span class="acc-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="acc-panel" id="panel-b" role="region" aria-labelledby="btn-b" hidden>
+              <p>
+                Académicamente, suelen clasificarse según el síntoma principal para el que fueron diseñados. Esta clasificación es útil para el estudio,
+                pero en la práctica clínica no es rígida.
+              </p>
+
+              <div class="psy-pills" aria-label="Categorías">
+                <button class="psy-pill" type="button" data-pill="antidepresivos">Antidepresivos</button>
+                <button class="psy-pill" type="button" data-pill="ansioliticos">Ansiolíticos</button>
+                <button class="psy-pill" type="button" data-pill="antipsicoticos">Antipsicóticos</button>
+                <button class="psy-pill" type="button" data-pill="estabilizadores">Estabilizadores del ánimo</button>
+                <button class="psy-pill" type="button" data-pill="hipnoticos">Hipnóticos (sueño)</button>
+                <button class="psy-pill" type="button" data-pill="psicoestimulantes">Psicoestimulantes</button>
+              </div>
+
+              <div class="tagline" id="pillExplain" aria-live="polite">
+                Tocá una categoría para leer una explicación breve.
+              </div>
+            </div>
+          </article>
+
+          <!-- C -->
+          <article class="acc-item" data-search="mecanismos de acción neurotransmisores circuitos antidepresivo ansiedad dolor crónico sueño digestivos antipsicótico dosis bajas insomnio desregulación emocional estabilizador impulsividad irritabilidad">
+            <button class="acc-btn" id="btn-c" type="button" aria-expanded="false" aria-controls="panel-c">
+              <span class="acc-title">
+                <strong>🔬 ¿Por qué un mismo fármaco puede usarse para distintos cuadros?</strong>
+                <span>Más de un mecanismo de acción</span>
+              </span>
+              <span class="acc-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="acc-panel" id="panel-c" role="region" aria-labelledby="btn-c" hidden>
+              <p>
+                Muchos psicofármacos tienen más de un mecanismo de acción: actúan sobre diferentes neurotransmisores o circuitos cerebrales.
+                Por eso, un mismo medicamento puede utilizarse en distintos cuadros clínicos según los síntomas predominantes.
+              </p>
+              <ul>
+                <li>Un antidepresivo puede indicarse para ansiedad, dolor crónico, trastornos del sueño o trastornos digestivos funcionales.</li>
+                <li>Un antipsicótico en dosis bajas puede utilizarse para insomnio, ansiedad intensa o desregulación emocional, sin que exista una psicosis.</li>
+                <li>Un estabilizador del ánimo puede ayudar a regular impulsividad, irritabilidad o cambios emocionales más allá del diagnóstico formal.</li>
+              </ul>
+              <p><strong>La elección del tratamiento</strong> se basa en síntomas predominantes, perfil del paciente, mecanismos del fármaco y tolerancia individual.</p>
+              <p class="tagline">🤝 Esto no implica un error: es un enfoque personalizado y basado en evidencia clínica.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== Columna lateral: cuidados ===== -->
+      <aside class="psy-card" aria-label="Cuidados mientras tomás medicación">
+        <h3>✅ Cuidados importantes</h3>
+        <p class="sub">
+          Medidas simples que aumentan la seguridad y mejoran la respuesta al tratamiento.
+        </p>
+        <ul style="margin:12px 0 0; padding-left:18px; color:#475569; line-height:1.55;">
+          <li>No modificar ni interrumpir sin consultar.</li>
+          <li>Crear una rutina de toma (horarios fijos).</li>
+          <li>Evitar alcohol y drogas.</li>
+          <li>Informar otros medicamentos y suplementos.</li>
+          <li>Alimentación equilibrada e hidratación (cuidar el hígado).</li>
+          <li>Actividad física baja a moderada.</li>
+          <li>Rutina de sueño regular.</li>
+          <li>Ante efectos adversos: consultar.</li>
+        </ul>
+
+        <div class="tagline" style="margin-top:12px;">
+          Si algo te preocupa, es mejor consultar que suspender por cuenta propia.
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ===== Medicamentos + buscador ===== -->
+    <section class="psy-card" id="frecuentes" style="margin-top:16px;" aria-label="Explorador de psicofármacos">
+      <h2>💊 Psicofármacos frecuentes</h2>
+      <p class="sub">
+        Seleccioná un medicamento para leer una descripción general. Podés buscar por nombre o por síntomas (ej: "sueño", "ansiedad", "irritabilidad").
+      </p>
+
+      <div class="psy-tools" aria-label="Herramientas de búsqueda y control">
+        <label class="psy-search" for="psychoSearch">
+          <span class="sr-only">Buscar psicofármacos</span>
+          <input id="psychoSearch" type="search" placeholder="Buscar por nombre o por texto..." autocomplete="off" />
+        </label>
+
+        <button class="psy-btn" id="expandAll" type="button">Expandir todo</button>
+        <button class="psy-btn" id="collapseAll" type="button">Contraer todo</button>
+      </div>
+
+      <!-- Accesos rápidos en pills -->
+      <div class="psy-pills" aria-label="Accesos por medicamento">
+        <button class="psy-pill" type="button" data-jump="m-escitalopram">Escitalopram</button>
+        <button class="psy-pill" type="button" data-jump="m-sertralina">Sertralina</button>
+        <button class="psy-pill" type="button" data-jump="m-venlafaxina">Venlafaxina</button>
+        <button class="psy-pill" type="button" data-jump="m-desvenlafaxina">Desvenlafaxina</button>
+        <button class="psy-pill" type="button" data-jump="m-clonazepam">Clonazepam</button>
+        <button class="psy-pill" type="button" data-jump="m-lorazepam">Lorazepam</button>
+        <button class="psy-pill" type="button" data-jump="m-zolpidem">Zolpidem</button>
+        <button class="psy-pill" type="button" data-jump="m-eszopiclona">Eszopiclona</button>
+        <button class="psy-pill" type="button" data-jump="m-quetiapina">Quetiapina</button>
+        <button class="psy-pill" type="button" data-jump="m-olanzapina">Olanzapina</button>
+      </div>
+
+      <div class="acc" id="accTop" aria-label="Lista de psicofármacos frecuentes">
+        <!-- 1 -->
+        <article class="acc-item" id="m-escitalopram" data-search="escitalopram antidepresivo ansiedad depresión estrés serotonina sueño irritabilidad">
+          <button class="acc-btn" id="btn-m-escitalopram" type="button" aria-expanded="false" aria-controls="panel-m-escitalopram">
+            <span class="acc-title">
+              <strong>Escitalopram</strong>
+              <span>Antidepresivo / ansiedad</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-escitalopram" role="region" aria-labelledby="btn-m-escitalopram" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> ansiedad, depresión y cuadros relacionados con estrés.</li>
+              <li><strong>Puede ayudar en:</strong> preocupación excesiva, angustia persistente, irritabilidad, síntomas físicos de ansiedad y alteraciones del sueño.</li>
+              <li><strong>Por qué puede indicarse en distintos cuadros:</strong> regula circuitos de serotonina implicados en el equilibrio emocional.</li>
+              <li><strong>Cuidados generales:</strong> tomarlo diariamente; efecto progresivo; no suspender sin indicación médica.</li>
+            </ul>
+            <p class="tagline">Información educativa: la indicación y el seguimiento siempre son personalizados.</p>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="acc-item" id="m-sertralina" data-search="sertralina antidepresivo ansiedad pánico obsesiones toc estrés postraumático">
+          <button class="acc-btn" id="btn-m-sertralina" type="button" aria-expanded="false" aria-controls="panel-m-sertralina">
+            <span class="acc-title">
+              <strong>Sertralina</strong>
+              <span>Antidepresivo / ansiedad</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-sertralina" role="region" aria-labelledby="btn-m-sertralina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> ansiedad, depresión, ataques de pánico, obsesiones y estrés postraumático.</li>
+              <li><strong>Puede ayudar en:</strong> nerviosismo, pensamientos repetitivos, bajo ánimo, síntomas corporales de la ansiedad.</li>
+              <li><strong>Uso clínico ampliado:</strong> aunque se clasifique como "antidepresivo", se utiliza ampliamente para trastornos de ansiedad.</li>
+              <li><strong>Cuidados generales:</strong> constancia; consultar ante efectos adversos iniciales; no suspender sin indicación.</li>
+            </ul>
+            <p class="tagline">Si algo preocupa, consultá: no ajustes el tratamiento por tu cuenta.</p>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="acc-item" id="m-venlafaxina" data-search="venlafaxina ansiedad depresión serotonina noradrenalina energía dolor concentración">
+          <button class="acc-btn" id="btn-m-venlafaxina" type="button" aria-expanded="false" aria-controls="panel-m-venlafaxina">
+            <span class="acc-title">
+              <strong>Venlafaxina</strong>
+              <span>Antidepresivo / ansiedad</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-venlafaxina" role="region" aria-labelledby="btn-m-venlafaxina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> depresión y trastornos de ansiedad.</li>
+              <li><strong>Puede ayudar en:</strong> falta de energía, ansiedad intensa, síntomas físicos asociados al estrés y dificultades de concentración.</li>
+              <li><strong>Por qué se usa en distintos cuadros:</strong> actúa sobre serotonina y noradrenalina, lo que amplía su efecto terapéutico.</li>
+              <li><strong>Cuidados generales:</strong> no suspender bruscamente; respetar horarios; ante dudas, consultar.</li>
+            </ul>
+            <p class="tagline">La regularidad en la toma es clave para la estabilidad de síntomas.</p>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="acc-item" id="m-desvenlafaxina" data-search="desvenlafaxina depresión ansiedad tolerancia serotonina noradrenalina">
+          <button class="acc-btn" id="btn-m-desvenlafaxina" type="button" aria-expanded="false" aria-controls="panel-m-desvenlafaxina">
+            <span class="acc-title">
+              <strong>Desvenlafaxina</strong>
+              <span>Antidepresivo / ansiedad</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-desvenlafaxina" role="region" aria-labelledby="btn-m-desvenlafaxina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> trastornos del ánimo y ansiedad.</li>
+              <li><strong>Puede ayudar en:</strong> decaimiento, angustia persistente, síntomas físicos del estrés.</li>
+              <li><strong>Por qué puede indicarse:</strong> en algunas personas puede resultar mejor tolerada según el perfil individual.</li>
+              <li><strong>Cuidados generales:</strong> seguimiento médico regular; constancia; no suspender sin indicación.</li>
+            </ul>
+            <p class="tagline">El objetivo es aliviar malestar y mejorar funcionamiento de manera segura.</p>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="acc-item" id="m-clonazepam" data-search="clonazepam benzodiacepina ansiedad crisis pánico angustia tensión alcohol">
+          <button class="acc-btn" id="btn-m-clonazepam" type="button" aria-expanded="false" aria-controls="panel-m-clonazepam">
+            <span class="acc-title">
+              <strong>Clonazepam</strong>
+              <span>Ansiolítico (benzodiacepina)</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-clonazepam" role="region" aria-labelledby="btn-m-clonazepam" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> ansiedad intensa, crisis de angustia y algunos trastornos del sueño.</li>
+              <li><strong>Puede aliviar:</strong> tensión, inquietud, palpitaciones, sensación de pérdida de control.</li>
+              <li><strong>Uso clínico real:</strong> suele ser un apoyo sintomático, a menudo por tiempo limitado y con supervisión.</li>
+              <li><strong>Cuidados generales:</strong> no combinar con alcohol; no suspender sin indicación médica; evitar automedicación.</li>
+            </ul>
+            <p class="tagline">Si estás somnoliento/a o mareado/a, consultá (no conduzcas si no estás seguro/a).</p>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="acc-item" id="m-lorazepam" data-search="lorazepam benzodiacepina ansiedad insomnio crisis estrés sedación alcohol">
+          <button class="acc-btn" id="btn-m-lorazepam" type="button" aria-expanded="false" aria-controls="panel-m-lorazepam">
+            <span class="acc-title">
+              <strong>Lorazepam</strong>
+              <span>Ansiolítico (benzodiacepina)</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-lorazepam" role="region" aria-labelledby="btn-m-lorazepam" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> ansiedad, insomnio relacionado al estrés, situaciones de crisis.</li>
+              <li><strong>Puede ayudar en:</strong> ansiedad aguda y dificultad para dormir por activación mental.</li>
+              <li><strong>Consideraciones clínicas:</strong> se prioriza uso controlado y supervisado.</li>
+              <li><strong>Cuidados generales:</strong> evitar alcohol; no automedicar; no suspender sin indicación.</li>
+            </ul>
+            <p class="tagline">La meta es estabilizar síntomas sin riesgos: el seguimiento es parte del tratamiento.</p>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article class="acc-item" id="m-zolpidem" data-search="zolpidem hipnótico sueño insomnio conciliar no benzodiacepina alcohol">
+          <button class="acc-btn" id="btn-m-zolpidem" type="button" aria-expanded="false" aria-controls="panel-m-zolpidem">
+            <span class="acc-title">
+              <strong>Zolpidem</strong>
+              <span>Hipnótico (sueño)</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-zolpidem" role="region" aria-labelledby="btn-m-zolpidem" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> dificultad para iniciar el sueño.</li>
+              <li><strong>Puede ayudar en:</strong> conciliar el sueño cuando hay "mente acelerada".</li>
+              <li><strong>Aclaración:</strong> no es benzodiacepina, aunque actúa en receptores relacionados con el sueño.</li>
+              <li><strong>Cuidados generales:</strong> uso nocturno; evitar alcohol; no prolongar sin control médico.</li>
+            </ul>
+            <p class="tagline">El sueño mejora más cuando se combina con higiene del sueño y rutina estable.</p>
+          </div>
+        </article>
+
+        <!-- 8 -->
+        <article class="acc-item" id="m-eszopiclona" data-search="eszopiclona hipnótico sueño despertares nocturnos sueño no reparador ansiedad">
+          <button class="acc-btn" id="btn-m-eszopiclona" type="button" aria-expanded="false" aria-controls="panel-m-eszopiclona">
+            <span class="acc-title">
+              <strong>Eszopiclona</strong>
+              <span>Hipnótico (sueño)</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-eszopiclona" role="region" aria-labelledby="btn-m-eszopiclona" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> trastornos del sueño, especialmente dificultad para mantener el descanso.</li>
+              <li><strong>Puede ayudar en:</strong> despertares nocturnos y sueño no reparador.</li>
+              <li><strong>Uso clínico:</strong> puede indicarse cuando el insomnio está asociado a ansiedad o estrés.</li>
+              <li><strong>Cuidados generales:</strong> evitar combinaciones no indicadas; rutina de sueño regular; evitar alcohol.</li>
+            </ul>
+            <p class="tagline">Si notás efectos no deseados, consultá antes de modificar la toma.</p>
+          </div>
+        </article>
+
+        <!-- 9 -->
+        <article class="acc-item" id="m-quetiapina" data-search="quetiapina antipsicótico ánimo sueño ansiedad desregulación emocional irritabilidad">
+          <button class="acc-btn" id="btn-m-quetiapina" type="button" aria-expanded="false" aria-controls="panel-m-quetiapina">
+            <span class="acc-title">
+              <strong>Quetiapina</strong>
+              <span>Antipsicótico / regulación emocional</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-quetiapina" role="region" aria-labelledby="btn-m-quetiapina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> trastornos del ánimo y psicosis.</li>
+              <li><strong>Uso clínico ampliado:</strong> en algunas situaciones, puede ayudar a regular sueño, ansiedad e irritabilidad.</li>
+              <li><strong>Por qué puede usarse fuera de la etiqueta:</strong> por sus efectos sobre circuitos de activación y regulación emocional.</li>
+              <li><strong>Cuidados generales:</strong> seguimiento médico y, cuando corresponde, controles clínicos periódicos.</li>
+            </ul>
+            <p class="tagline">Que se use en ansiedad o sueño no significa "psicosis": se elige por síntomas y mecanismos.</p>
+          </div>
+        </article>
+
+        <!-- 10 -->
+        <article class="acc-item" id="m-olanzapina" data-search="olanzapina antipsicótico ánimo sueño ansiedad agitación estabilización">
+          <button class="acc-btn" id="btn-m-olanzapina" type="button" aria-expanded="false" aria-controls="panel-m-olanzapina">
+            <span class="acc-title">
+              <strong>Olanzapina</strong>
+              <span>Antipsicótico / estabilización</span>
+            </span>
+            <span class="acc-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="acc-panel" id="panel-m-olanzapina" role="region" aria-labelledby="btn-m-olanzapina" hidden>
+            <ul>
+              <li><strong>Uso habitual:</strong> trastornos psicóticos y del ánimo.</li>
+              <li><strong>Uso clínico ampliado:</strong> puede ayudar en estabilización emocional, sueño y reducción de ansiedad severa en ciertos cuadros.</li>
+              <li><strong>Consideraciones:</strong> se indica por perfil clínico y tolerancia individual.</li>
+              <li><strong>Cuidados generales:</strong> seguimiento médico regular y hábitos saludables.</li>
+            </ul>
+            <p class="tagline">La indicación es individual: si tenés dudas, traelas a consulta.</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- ===== VER MÁS (7) ===== -->
+      <div class="more-wrap" aria-label="Sección ver más psicofármacos">
+        <button class="more-head" id="moreToggle" type="button" aria-expanded="false" aria-controls="moreBody">
+          <span>
+            <strong>Ver más psicofármacos (lectura opcional)</strong><br>
+            <span>Para quienes desean profundizar o si su tratamiento incluye alguno de estos.</span>
+          </span>
+          <span class="acc-chev" aria-hidden="true">▾</span>
+        </button>
+
+        <div class="more-body" id="moreBody" hidden>
+          <div class="acc" id="accMore" aria-label="Lista adicional de psicofármacos">
+            <article class="acc-item" id="m-diazepam" data-search="diazepam benzodiacepina ansiedad crisis relajante muscular alcohol">
+              <button class="acc-btn" id="btn-m-diazepam" type="button" aria-expanded="false" aria-controls="panel-m-diazepam">
+                <span class="acc-title">
+                  <strong>Diazepam</strong>
+                  <span>Ansiolítico (benzodiacepina)</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-diazepam" role="region" aria-labelledby="btn-m-diazepam" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> ansiedad, crisis y otras indicaciones clínicas específicas.</li>
+                  <li><strong>Puede ayudar en:</strong> tensión y ansiedad intensa (según criterio médico).</li>
+                  <li><strong>Cuidados generales:</strong> evitar alcohol; uso supervisado; no suspender sin indicación.</li>
+                </ul>
+                <p class="tagline">En benzodiacepinas, el control médico es parte esencial de la seguridad.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-risperidona" data-search="risperidona antipsicótico ánimo irritabilidad impulsividad ansiedad">
+              <button class="acc-btn" id="btn-m-risperidona" type="button" aria-expanded="false" aria-controls="panel-m-risperidona">
+                <span class="acc-title">
+                  <strong>Risperidona</strong>
+                  <span>Antipsicótico / regulación</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-risperidona" role="region" aria-labelledby="btn-m-risperidona" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> cuadros psicóticos y algunos trastornos del ánimo.</li>
+                  <li><strong>Uso clínico ampliado:</strong> en ciertos contextos puede ayudar a regular irritabilidad o desorganización conductual.</li>
+                  <li><strong>Cuidados generales:</strong> seguimiento médico y controles cuando corresponda.</li>
+                </ul>
+                <p class="tagline">La indicación no define una etiqueta diagnóstica: se decide por síntomas y seguridad.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-levomepromazina" data-search="levomepromazina sueño sedación ansiedad agitación">
+              <button class="acc-btn" id="btn-m-levomepromazina" type="button" aria-expanded="false" aria-controls="panel-m-levomepromazina">
+                <span class="acc-title">
+                  <strong>Levomepromazina</strong>
+                  <span>Antipsicótico / sedación clínica</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-levomepromazina" role="region" aria-labelledby="btn-m-levomepromazina" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> algunas indicaciones psiquiátricas específicas (según criterio médico).</li>
+                  <li><strong>Puede ayudar en:</strong> agitación, ansiedad intensa o insomnio en contextos seleccionados.</li>
+                  <li><strong>Cuidados generales:</strong> puede producir somnolencia; evitar alcohol; seguimiento médico.</li>
+                </ul>
+                <p class="tagline">Si hay somnolencia marcada, evitá conducción y consultá.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-divalproato" data-search="divalproato sodio estabilizador ánimo impulsividad irritabilidad bipolaridad">
+              <button class="acc-btn" id="btn-m-divalproato" type="button" aria-expanded="false" aria-controls="panel-m-divalproato">
+                <span class="acc-title">
+                  <strong>Divalproato de sodio</strong>
+                  <span>Estabilizador del ánimo</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-divalproato" role="region" aria-labelledby="btn-m-divalproato" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> estabilización del ánimo en cuadros específicos.</li>
+                  <li><strong>Puede ayudar en:</strong> irritabilidad, impulsividad o inestabilidad emocional (según criterio clínico).</li>
+                  <li><strong>Cuidados generales:</strong> controles médicos y de laboratorio cuando corresponda; evitar alcohol.</li>
+                </ul>
+                <p class="tagline">Los estabilizadores suelen requerir seguimiento clínico periódico.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-valproato-magnesio" data-search="valproato magnesio estabilizador ánimo impulsividad irritabilidad">
+              <button class="acc-btn" id="btn-m-valproato-magnesio" type="button" aria-expanded="false" aria-controls="panel-m-valproato-magnesio">
+                <span class="acc-title">
+                  <strong>Valproato de magnesio</strong>
+                  <span>Estabilizador del ánimo</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-valproato-magnesio" role="region" aria-labelledby="btn-m-valproato-magnesio" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> estabilización del ánimo en ciertos cuadros.</li>
+                  <li><strong>Puede ayudar en:</strong> labilidad emocional e irritabilidad según evaluación médica.</li>
+                  <li><strong>Cuidados generales:</strong> controles clínicos y, cuando corresponde, de laboratorio; hábitos saludables.</li>
+                </ul>
+                <p class="tagline">No modificar tomas sin consultar, incluso si te sentís mejor.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-lamotrigina" data-search="lamotrigina estabilizador ánimo depresión bipolaridad regulación">
+              <button class="acc-btn" id="btn-m-lamotrigina" type="button" aria-expanded="false" aria-controls="panel-m-lamotrigina">
+                <span class="acc-title">
+                  <strong>Lamotrigina</strong>
+                  <span>Estabilizador del ánimo</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-lamotrigina" role="region" aria-labelledby="btn-m-lamotrigina" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> regulación del ánimo en cuadros específicos.</li>
+                  <li><strong>Puede ayudar en:</strong> prevención de oscilaciones del ánimo en algunos pacientes.</li>
+                  <li><strong>Cuidados generales:</strong> seguir exactamente las indicaciones médicas; ante reacciones inesperadas, consultar.</li>
+                </ul>
+                <p class="tagline">La titulación y los controles son parte del plan terapéutico.</p>
+              </div>
+            </article>
+
+            <article class="acc-item" id="m-topiramato" data-search="topiramato estabilizador ánimo impulsividad apetito ansiedad">
+              <button class="acc-btn" id="btn-m-topiramato" type="button" aria-expanded="false" aria-controls="panel-m-topiramato">
+                <span class="acc-title">
+                  <strong>Topiramato</strong>
+                  <span>Uso neurológico / apoyo clínico</span>
+                </span>
+                <span class="acc-chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="acc-panel" id="panel-m-topiramato" role="region" aria-labelledby="btn-m-topiramato" hidden>
+                <ul>
+                  <li><strong>Uso habitual:</strong> indicaciones neurológicas y, en algunos casos, apoyo en cuadros seleccionados.</li>
+                  <li><strong>Puede ayudar en:</strong> ciertos síntomas según evaluación médica individual.</li>
+                  <li><strong>Cuidados generales:</strong> hidratación adecuada; no suspender sin consulta; seguimiento médico.</li>
+                </ul>
+                <p class="tagline">La indicación varía según síntomas y antecedentes: consultá ante dudas.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Bibliografía ===== -->
+      <div style="margin-top:14px;">
+        <div class="tagline">
+          📚 Bibliografía de referencia: <strong>Stahl, S.M. — Prescriber's Guide (Stahl's Essential Psychopharmacology)</strong>. Cambridge University Press.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer (igual al index, con mini mapa) ===== -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <iframe class="map"
+          src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+        <div class="footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+          <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>
+          Barrio Norte – Recoleta<br>
+          Ciudad Autónoma de Buenos Aires – Argentina
+        </div>
+
+        <div style="margin-top:12px">
+          <div><strong>Email administrativo</strong></div>
+          <div style="margin-top:6px">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="legal" id="legalBlock">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT. Año automático.<br><br>
+          Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Modal Origen del fármaco ===== -->
+  <div class="origen-overlay" id="origenOverlay" role="dialog" aria-modal="true"
+       aria-labelledby="origenTitle" hidden>
+    <div class="origen-box" id="origenBox">
+      <div class="origen-box-head">
+        <div>
+          <span class="origen-sub">🕰 Origen del fármaco</span>
+          <div class="origen-box-title" id="origenTitle"></div>
+        </div>
+        <button class="origen-close" id="origenClose" type="button" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="origen-body" id="origenBody"></div>
+    </div>
+  </div>
+
+  <!-- ===== JS del sitio (mismos que tu index) ===== -->
+  <script src="assets/js/i18n.js?v=1"></script>
+  <script src="assets/js/audio.js?v=1"></script>
+  <script src="assets/js/spa.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!-- ===== JS específico de psicofarmacos.html ===== -->
+  <script>
+    // Año footer
+    (function(){
+      var y = document.getElementById('yearNow');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+
+    // Utilidades acordeón
+    function togglePanel(btn, panel){
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      panel.hidden = isOpen;
+    }
+
+    function wireAccordion(container){
+      var items = container.querySelectorAll('.acc-item');
+      items.forEach(function(item){
+        var btn = item.querySelector('.acc-btn');
+        var panelId = btn.getAttribute('aria-controls');
+        var panel = document.getElementById(panelId);
+        if(!panel) return;
+
+        btn.addEventListener('click', function(){
+          togglePanel(btn, panel);
+        });
+
+        // Accesibilidad teclado (Enter/Espacio)
+        btn.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            togglePanel(btn, panel);
+          }
+        });
+      });
+    }
+
+    // Acordeones principales
+    wireAccordion(document);
+
+    // Pills de categorías (explicación breve)
+    (function(){
+      var el = document.getElementById('pillExplain');
+      if(!el) return;
+
+      var map = {
+        antidepresivos: "Antidepresivos: se diseñaron para depresión, pero también se usan mucho en ansiedad y otros síntomas según su mecanismo de acción.",
+        ansioliticos: "Ansiolíticos: alivian ansiedad intensa o crisis. Suelen usarse como apoyo sintomático y con supervisión (evitar alcohol).",
+        antipsicoticos: "Antipsicóticos: se usan en psicosis y cuadros del ánimo. En dosis bajas, algunos se utilizan para sueño, ansiedad o desregulación emocional en casos seleccionados.",
+        estabilizadores: "Estabilizadores del ánimo: ayudan a reducir oscilaciones emocionales, irritabilidad e impulsividad en cuadros específicos, con seguimiento clínico.",
+        hipnoticos: "Hipnóticos: fármacos orientados al sueño. Se indican con criterio, evitando alcohol y combinaciones no indicadas, junto a higiene del sueño.",
+        psicoestimulantes: "Psicoestimulantes: se usan en trastornos de atención/impulsividad en casos seleccionados, con evaluación y monitoreo."
+      };
+
+      document.querySelectorAll('[data-pill]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var key = btn.getAttribute('data-pill');
+          el.textContent = map[key] || "Tocá una categoría para leer una explicación breve.";
+        });
+      });
+    })();
+
+    // Jump pills (scroll a ficha)
+    (function(){
+      document.querySelectorAll('[data-jump]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('data-jump');
+          var target = document.getElementById(id);
+          if(!target) return;
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+          var headerBtn = target.querySelector('.acc-btn');
+          if(headerBtn){
+            headerBtn.focus({preventScroll:true});
+          }
+        });
+      });
+    })();
+
+    // Expandir / contraer todo
+    (function(){
+      function setAll(open){
+        document.querySelectorAll('.acc-btn').forEach(function(btn){
+          var panel = document.getElementById(btn.getAttribute('aria-controls'));
+          if(!panel) return;
+          btn.setAttribute('aria-expanded', String(open));
+          panel.hidden = !open;
+        });
+      }
+      var ex = document.getElementById('expandAll');
+      var co = document.getElementById('collapseAll');
+      if(ex) ex.addEventListener('click', function(){ setAll(true); });
+      if(co) co.addEventListener('click', function(){ setAll(false); });
+    })();
+
+    // Toggle "Ver más"
+    (function(){
+      var t = document.getElementById('moreToggle');
+      var body = document.getElementById('moreBody');
+      if(!t || !body) return;
+      t.addEventListener('click', function(){
+        var open = t.getAttribute('aria-expanded') === 'true';
+        t.setAttribute('aria-expanded', String(!open));
+        body.hidden = open;
+      });
+      t.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          t.click();
+        }
+      });
+    })();
+
+    // ===== Origen del fármaco – Modal =====
+    (function(){
+      var origenData = {
+        'escitalopram': {
+          nombre: 'Escitalopram',
+          texto: 'El escitalopram fue desarrollado por el laboratorio danés Lundbeck como refinamiento del citalopram, su molécula precursora. Es el enantiómero S (la parte activa) del citalopram; al aislar esa fracción se obtuvo un compuesto farmacológicamente más limpio. Fue aprobado por la FDA en 2002 bajo el nombre comercial Lexapro. Su diseño buscó conservar la eficacia antidepresiva mejorando la tolerabilidad y reduciendo efectos adversos. Rápidamente se convirtió en uno de los inhibidores selectivos de la recaptación de serotonina (ISRS) más recetados del mundo.'
+        },
+        'sertralina': {
+          nombre: 'Sertralina',
+          texto: 'La sertralina fue sintetizada por el químico Willard Welch en los laboratorios Pfizer durante la década de 1970, en el marco de la búsqueda de compuestos que inhibieran selectivamente la recaptación de serotonina. Fue aprobada por la FDA en 1991 bajo el nombre comercial Zoloft. Llamó la atención desde el inicio por su amplio perfil terapéutico: resultó eficaz no solo en depresión, sino también en ansiedad, trastorno obsesivo-compulsivo (TOC) y estrés postraumático. Con el tiempo se convirtió en uno de los antidepresivos más prescriptos a nivel mundial.'
+        },
+        'venlafaxina': {
+          nombre: 'Venlafaxina',
+          texto: 'La venlafaxina fue desarrollada por American Home Products (luego Wyeth) y aprobada por la FDA en 1993 bajo el nombre Effexor. Fue el primer representante de los inhibidores de la recaptación de serotonina y noradrenalina (IRSN), una clase nueva de antidepresivos. Su desarrollo buscó superar limitaciones de los antidepresivos tricíclicos, ofreciendo doble mecanismo de acción con mejor tolerabilidad. Se convirtió en referencia terapéutica tanto en depresión mayor como en trastornos de ansiedad generalizada.'
+        },
+        'desvenlafaxina': {
+          nombre: 'Desvenlafaxina',
+          texto: 'La desvenlafaxina es el metabolito activo principal de la venlafaxina (O-desmetilvenlafaxina). Fue desarrollada por Wyeth y aprobada por la FDA en 2008 bajo el nombre Pristiq. Su creación buscó ofrecer un perfil farmacocinético más predecible: a diferencia de la venlafaxina, no requiere una conversión hepática significativa para ser activa, lo que puede ser una ventaja en pacientes con variabilidad en el metabolismo. Es un IRSN con mayor efecto noradrenérgico relativo.'
+        },
+        'clonazepam': {
+          nombre: 'Clonazepam',
+          texto: 'El clonazepam fue sintetizado por Leo Sternbach —el mismo químico de Roche que descubrió el diazepam— a finales de la década de 1960. Fue aprobado en varios países durante los años 70, inicialmente para el tratamiento de la epilepsia. Con el tiempo, su uso se extendió al manejo de los trastornos de ansiedad y los ataques de pánico. Su mayor duración de acción respecto de otras benzodiacepinas lo diferencia clínicamente. Hoy es uno de los ansiolíticos más indicados en psiquiatría a nivel mundial.'
+        },
+        'lorazepam': {
+          nombre: 'Lorazepam',
+          texto: 'El lorazepam fue sintetizado por primera vez por D.J. Richards en los laboratorios Wyeth en 1971 y aprobado por la FDA en 1977 bajo el nombre Ativan. Se desarrolló en el contexto del auge de las benzodiacepinas, buscando una molécula de duración de acción intermedia y sin metabolitos activos acumulables. Estas propiedades lo hacen útil en poblaciones especiales (adultos mayores, pacientes con enfermedades hepáticas). Se usa ampliamente en ansiedad aguda, insomnio situacional y como premedicación en procedimientos médicos.'
+        },
+        'zolpidem': {
+          nombre: 'Zolpidem',
+          texto: 'El zolpidem fue desarrollado por los laboratorios Synthelabo (hoy parte de Sanofi) en Francia. Aprobado en Europa en 1988 y en EE.UU. en 1992 bajo el nombre Ambien, surgió de la búsqueda de hipnóticos más selectivos que las benzodiacepinas. Actúa sobre los receptores GABA-A, pero con mayor selectividad hacia los subtipos vinculados al sueño, lo que reduce comparativamente los efectos ansiolíticos y relajantes musculares. Se convirtió en el hipnótico más prescripto del mundo durante varios años.'
+        },
+        'eszopiclona': {
+          nombre: 'Eszopiclona',
+          texto: 'La eszopiclona es el enantiómero activo de la zopiclona, desarrollado por Sepracor (hoy Sunovion Pharmaceuticals) y aprobado por la FDA en 2004 bajo el nombre Lunesta. Fue el primer hipnótico aprobado en EE.UU. sin restricciones de tiempo de uso en su ficha técnica inicial. Su desarrollo buscó separar el enantiómero activo de la zopiclona para mejorar el perfil farmacológico. Actúa sobre receptores GABA-A buscando mejorar tanto el inicio como el mantenimiento del sueño.'
+        },
+        'quetiapina': {
+          nombre: 'Quetiapina',
+          texto: 'La quetiapina fue desarrollada por ICI Pharmaceuticals (luego AstraZeneca) y aprobada por la FDA en 1997 bajo el nombre Seroquel. Pertenece a los antipsicóticos atípicos de segunda generación, surgidos del esfuerzo por crear fármacos con eficacia antipsicótica y menor riesgo de efectos extrapiramidales que los clásicos. Su amplio perfil de afinidad receptoral (dopamina D2, serotonina 5-HT2, histamina H1, receptores adrenérgicos) explica su utilidad adicional en ansiedad, insomnio y regulación emocional a dosis bajas.'
+        },
+        'olanzapina': {
+          nombre: 'Olanzapina',
+          texto: 'La olanzapina fue desarrollada por Eli Lilly y aprobada por la FDA en 1996 bajo el nombre Zyprexa. Su diseño se inspiró en la clozapina —el primer antipsicótico atípico, de gran eficacia pero con riesgo de agranulocitosis—, buscando mantener su eficacia con mejor perfil de seguridad. Actúa sobre múltiples receptores (dopamina, serotonina, histamina, muscarínicos). Es uno de los antipsicóticos más estudiados del mundo y se considera eficaz en esquizofrenia, trastorno bipolar y en la estabilización emocional en cuadros seleccionados.'
+        },
+        'diazepam': {
+          nombre: 'Diazepam',
+          texto: 'El diazepam nació de una serendipia científica: Leo Sternbach, químico de los laboratorios Roche, lo sintetizó en 1959 mientras investigaba colorantes orgánicos. Aprobado por la FDA en 1963 bajo el nombre Valium, se convirtió en el medicamento más recetado del mundo durante los años 70. Su eficacia como ansiolítico, relajante muscular, anticonvulsivante y sedante lo posicionó como el gran referente de las benzodiacepinas. El auge del Valium marcó un hito cultural además de médico, aunque también alertó sobre el riesgo de dependencia.'
+        },
+        'risperidona': {
+          nombre: 'Risperidona',
+          texto: 'La risperidona fue desarrollada por Janssen Pharmaceutica (Bélgica) bajo la dirección del Dr. Paul Janssen y aprobada por la FDA en 1993 bajo el nombre Risperdal. Fue el primer antipsicótico atípico aprobado tras la clozapina. Su diseño como antagonista dual de receptores de dopamina D2 y serotonina 5-HT2A buscó ofrecer eficacia antipsicótica con menor incidencia de efectos extrapiramidales. Se convirtió en una de las moléculas de referencia en el tratamiento de la esquizofrenia y otros cuadros del ánimo.'
+        },
+        'levomepromazina': {
+          nombre: 'Levomepromazina',
+          texto: 'La levomepromazina (o metotrimeprazina) pertenece a los antipsicóticos de primera generación de la familia de las fenotiazinas. Su desarrollo se enmarca en el período posterior al descubrimiento de la clorpromazina en 1952, considerada el primer psicofármaco moderno. La clorpromazina fue hallada accidentalmente por el cirujano Henri Laborit, quien buscaba potenciar la anestesia. La levomepromazina, con perfil más sedante, se utilizó inicialmente en psicosis y luego se extendió como sedante y analgésico en contextos clínicos específicos, especialmente en cuidados paliativos.'
+        },
+        'divalproato': {
+          nombre: 'Divalproato de sodio',
+          texto: 'El ácido valproico fue sintetizado por primera vez por Beverly Burton en 1882 como solvente, sin uso terapéutico inmediato. En 1962, el farmacólogo francés Pierre Eymard descubrió accidentalmente sus propiedades anticonvulsivantes al usarlo como vehículo disolvente en experimentos. El valproato fue aprobado en Francia en 1967 y por la FDA en 1978. El divalproato de sodio es una sal estabilizada con mejor tolerancia gastrointestinal, aprobada en 1983. Hoy se utiliza en epilepsia, trastorno bipolar y manejo de la irritabilidad.'
+        },
+        'valproato-magnesio': {
+          nombre: 'Valproato de magnesio',
+          texto: 'El valproato de magnesio comparte la misma historia de origen que el ácido valproico, sintetizado en 1882 y cuya actividad anticonvulsivante fue descubierta accidentalmente en 1962 por Pierre Eymard. Esta sal del ácido valproico fue formulada buscando mejorar la tolerancia gastrointestinal y la estabilidad respecto a otras presentaciones. Es ampliamente utilizada en América Latina. Su perfil clínico —estabilización del ánimo, control de la irritabilidad y apoyo en cuadros impulsivos— es equivalente al del divalproato de sodio.'
+        },
+        'lamotrigina': {
+          nombre: 'Lamotrigina',
+          texto: 'La lamotrigina fue desarrollada por Wellcome Research Laboratories (hoy GlaxoSmithKline) y aprobada por la FDA en 1994 para el tratamiento de la epilepsia. Su desarrollo partió de la hipótesis de que el folato podía influir en la epilepsia, aunque la molécula final actúa principalmente bloqueando canales de sodio dependientes de voltaje. Con el tiempo se descubrió su eficacia en la depresión bipolar. Fue aprobada para el trastorno bipolar por la FDA en 2003 y se convirtió en uno de los estabilizadores del ánimo más utilizados en psiquiatría.'
+        },
+        'topiramato': {
+          nombre: 'Topiramato',
+          texto: 'El topiramato fue desarrollado por Johnson & Johnson (Ortho-McNeil) y aprobado por la FDA en 1996 como antiepiléptico. Surgió de investigaciones sobre derivados de la fructosa con propiedades anticonvulsivantes durante la década de 1980. Tiene múltiples mecanismos de acción: bloqueo de canales de sodio, potenciación del GABA e inhibición del glutamato. Su uso se amplió a la prevención de la migraña (aprobado por la FDA en 2004) y en psiquiatría se emplea como apoyo en el control de la impulsividad y en ciertos cuadros clínicos seleccionados.'
+        }
+      };
+
+      // Insertar botones en cada panel
+      Object.keys(origenData).forEach(function(key){
+        var panel = document.getElementById('panel-m-' + key);
+        if (!panel) return;
+        var btn = document.createElement('button');
+        btn.className = 'origen-btn';
+        btn.type = 'button';
+        btn.setAttribute('data-origen', key);
+        btn.innerHTML = '🕰 Origen del fármaco';
+        var tagline = panel.querySelector('.tagline');
+        if (tagline) {
+          panel.insertBefore(btn, tagline);
+        } else {
+          panel.appendChild(btn);
+        }
+      });
+
+      // Modal
+      var overlay = document.getElementById('origenOverlay');
+      var titleEl = document.getElementById('origenTitle');
+      var bodyEl  = document.getElementById('origenBody');
+      var closeBtn = document.getElementById('origenClose');
+      var lastFocused = null;
+
+      function openModal(key){
+        var data = origenData[key];
+        if (!data) return;
+        lastFocused = document.activeElement;
+        titleEl.textContent = data.nombre;
+        bodyEl.textContent  = data.texto;
+        overlay.hidden = false;
+        overlay.removeAttribute('aria-hidden');
+        closeBtn.focus();
+      }
+
+      function closeModal(){
+        overlay.hidden = true;
+        overlay.setAttribute('aria-hidden', 'true');
+        if (lastFocused) lastFocused.focus();
+      }
+
+      document.addEventListener('click', function(e){
+        var btn = e.target.closest('[data-origen]');
+        if (btn) { openModal(btn.getAttribute('data-origen')); return; }
+        if (e.target === overlay) closeModal();
+      });
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && !overlay.hidden) closeModal();
+      });
+    })();
+
+    // Buscador (filtra por data-search + texto)
+    (function(){
+      var input = document.getElementById('psychoSearch');
+      if(!input) return;
+
+      var items = Array.prototype.slice.call(document.querySelectorAll('.acc-item'));
+
+      function normalize(s){
+        return (s || "")
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[̀-ͯ]/g, '');
+      }
+
+      function applyFilter(){
+        var q = normalize(input.value.trim());
+        if(!q){
+          items.forEach(function(it){ it.classList.remove('hide'); });
+          return;
+        }
+        items.forEach(function(it){
+          var hay = normalize(it.getAttribute('data-search')) + " " + normalize(it.innerText);
+          var match = hay.indexOf(q) !== -1;
+          it.classList.toggle('hide', !match);
+        });
+      }
+
+      input.addEventListener('input', applyFilter);
+    })();
+  </script>
+</body>
+</html>
