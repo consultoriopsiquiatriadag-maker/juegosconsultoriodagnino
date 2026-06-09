@@ -612,6 +612,27 @@
       border-color:rgba(22,163,74,.45);
       color:#15803d;
     }
+    /* Botón WhatsApp */
+    .psy-wa-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      margin-left:6px;
+      padding:7px 14px;
+      border-radius:999px;
+      border:1px solid #25d366;
+      background:#fff;
+      color:#075e54;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .15s,color .15s,border-color .15s;
+      min-height:36px;
+      text-decoration:none;
+      line-height:1;
+    }
+    .psy-wa-btn:hover{ background:#25d366; color:#fff; border-color:#25d366; }
 
     /* ===== RESPONSIVE ===== */
 
@@ -3097,6 +3118,21 @@
         var d  = allCopyData[id];
         if(!d) return;
         copyToClipboard(buildText(d), btn);
+      });
+
+      /* ===== FASE 11E — Compartir por WhatsApp ===== */
+      Object.keys(allCopyData).forEach(function(panelId){
+        var panel = document.getElementById(panelId);
+        if(!panel || panel.querySelector('.psy-wa-btn')) return;
+        var d = allCopyData[panelId];
+        var a = document.createElement('a');
+        a.className = 'psy-wa-btn';
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+        a.setAttribute('aria-label', 'Compartir resumen de ' + d.nombre + ' por WhatsApp');
+        a.textContent = 'Compartir por WhatsApp';
+        a.href = 'https://wa.me/?text=' + encodeURIComponent(buildText(d));
+        panel.appendChild(a);
       });
     })();
   </script>
