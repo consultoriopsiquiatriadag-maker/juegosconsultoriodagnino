@@ -140,6 +140,15 @@
       min-height: 44px;
       transition: border-color .15s ease, background .15s ease;
     }
+    /* Buscar medicamento — primario azul */
+    .psy-nav a:first-child{
+      background: var(--psy-blue);
+      color: #fff;
+      border-color: var(--psy-blue);
+    }
+    .psy-nav a:first-child:hover{ background: #1d4ed8; border-color: #1d4ed8; }
+    .psy-nav a:first-child:focus-visible{ background: #1d4ed8; }
+    /* Central de Turnos — primario navy */
     .psy-nav a:last-child{
       background: var(--psy-navy);
       color: #fff;
@@ -148,6 +157,7 @@
     .psy-nav a:last-child svg{ stroke: #fff; }
     .psy-nav a:last-child:hover{ background: #162f4a; border-color: #162f4a; }
     .psy-nav a:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+    /* Secundarios (Ver grupos, Cuidados importantes) */
     .psy-nav a:hover{ border-color: rgba(37,99,235,.45); background: rgba(37,99,235,.04); }
     .psy-nav a:last-child:focus-visible{ background: #162f4a; }
 
@@ -182,14 +192,17 @@
       align-items:center;
       justify-content:center;
       border-radius: 14px;
-      padding: 10px 12px;
-      border: 1px solid var(--psy-border);
-      background: #fff;
+      padding: 10px 14px;
+      border: 1px solid rgba(37,99,235,.28);
+      background: rgba(37,99,235,.07);
       color: var(--psy-navy);
-      font-weight: 700;
-      cursor:pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
     }
-    .psy-btn:hover{ border-color: rgba(37,99,235,.35); }
+    .psy-btn:hover{ background: rgba(37,99,235,.13); border-color: rgba(37,99,235,.45); }
     .psy-btn:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
 
     /* Pills */
@@ -240,7 +253,11 @@
       gap:10px;
       align-items:center;
       justify-content:space-between;
+      font-family: inherit;
+      transition: background .15s;
     }
+    .acc-btn:hover{ background: rgba(37,99,235,.04); }
+    .acc-btn[aria-expanded="true"]{ background: rgba(37,99,235,.05); }
     .acc-title{
       display:flex;
       flex-direction:column;
@@ -269,12 +286,13 @@
       align-items:center;
       gap:8px;
       margin-top: 10px;
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: 14px;
-      border: 1px dashed rgba(14,34,57,.22);
-      color: var(--psy-navy);
-      background: rgba(14,34,57,.04);
-      font-size: 14px;
+      border: 1px solid rgba(180,100,0,.28);
+      color: #78350f;
+      background: rgba(251,191,36,.10);
+      font-size: 13.5px;
+      font-weight: 500;
     }
 
     /* Sección colapsable "Ver más" */
@@ -452,9 +470,12 @@
       padding:6px 14px;
       border-radius:999px;
       border:1.5px solid var(--psy-border);
-      background:var(--psy-bg);
+      background:#fff;
       color:var(--psy-text);
+      font-family:inherit;
       font-size:13px;
+      font-weight:600;
+      white-space:nowrap;
       cursor:pointer;
       line-height:1.4;
       transition:background .15s,color .15s,border-color .15s;
@@ -462,6 +483,7 @@
     .psy-filter-btn:hover{
       border-color:var(--psy-blue);
       color:var(--psy-navy);
+      background:rgba(37,99,235,.05);
     }
     .psy-filter-btn.active{
       background:var(--psy-navy);
@@ -588,7 +610,7 @@
       line-height:1.65;
     }
 
-    /* ===== Botón Copiar resumen ===== */
+    /* ===== Botón Copiar resumen — cian/teal ===== */
     .psy-copy-btn{
       display:inline-flex;
       align-items:center;
@@ -596,9 +618,10 @@
       margin-top:10px;
       padding:7px 14px;
       border-radius:999px;
-      border:1px solid var(--psy-border);
-      background:#fff;
-      color:var(--psy-navy);
+      border:1px solid rgba(8,145,178,.35);
+      background:rgba(8,145,178,.08);
+      color:#0e7490;
+      font-family:inherit;
       font-size:13px;
       font-weight:600;
       cursor:pointer;
@@ -606,11 +629,12 @@
       min-height:36px;
     }
     .psy-copy-btn:hover{
-      border-color:var(--psy-blue);
-      color:var(--psy-blue);
+      background:rgba(8,145,178,.15);
+      border-color:rgba(8,145,178,.55);
+      color:#0c6e85;
     }
     .psy-copy-btn:focus-visible{
-      outline:3px solid rgba(37,99,235,.35);
+      outline:3px solid rgba(8,145,178,.4);
       outline-offset:2px;
     }
     .psy-copy-btn.copied{
@@ -618,7 +642,7 @@
       border-color:rgba(22,163,74,.45);
       color:#15803d;
     }
-    /* Botón WhatsApp */
+    /* Botón WhatsApp — verde sobrio */
     .psy-wa-btn{
       display:inline-flex;
       align-items:center;
@@ -628,6 +652,7 @@
       padding:7px 14px;
       border-radius:999px;
       border:1px solid #25d366;
+      font-family:inherit;
       background:#fff;
       color:#075e54;
       font-size:13px;
