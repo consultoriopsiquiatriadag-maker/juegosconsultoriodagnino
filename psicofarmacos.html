@@ -173,7 +173,7 @@
       width: 100%;
       border: none;
       outline: none;
-      font-size: 15px;
+      font-size: 16px; /* ≥16px evita zoom automático en iOS */
       background: transparent;
       color: var(--psy-navy);
     }
@@ -541,6 +541,133 @@
       font-size:14px;
       color:var(--psy-text);
       line-height:1.6;
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    /* Prevenir scroll horizontal global */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+    .wrap {
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    /* Botones y acordeones: mínimo 44 px de alto en todos los tamaños */
+    .acc-btn {
+      min-height: 44px;
+      padding: 12px 14px;
+      box-sizing: border-box;
+    }
+    .psy-btn {
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .psy-filter-btn {
+      min-height: 36px;
+      box-sizing: border-box;
+    }
+    .psy-kw-chip {
+      min-height: 32px;
+      display:inline-flex;
+      align-items:center;
+      box-sizing: border-box;
+    }
+    .psy-pill {
+      min-height: 36px;
+      display:inline-flex;
+      align-items:center;
+      box-sizing: border-box;
+    }
+    .psy-nav a {
+      box-sizing: border-box;
+    }
+
+    /* 768 px — tablet */
+    @media (max-width: 768px) {
+      .psy-hero { padding: 14px 0 6px; }
+      .psy-hero .heroish { padding: 16px; gap: 12px; }
+      .psy-hero h1 { font-size: clamp(20px, 5vw, 28px); }
+      .psy-lead { font-size: 14px; }
+      .psy-card { padding: 14px; border-radius: 18px; }
+      .psy-main { padding: 12px 0 22px; }
+      .acc-title strong { font-size: 15px; }
+      .acc-panel { padding: 0 14px 14px; }
+      .psy-filter-btn { font-size: 13px; padding: 7px 13px; }
+      .psy-tools { gap: 8px; }
+      .psy-search { flex: 1 1 100%; }
+    }
+
+    /* 430 px — teléfonos grandes (iPhone Plus, Pixel) */
+    @media (max-width: 430px) {
+      .psy-hero .heroish {
+        flex-direction: column;
+        padding: 14px 14px;
+        border-radius: 18px;
+        gap: 10px;
+      }
+      .psy-hero h1 { font-size: clamp(19px, 5.5vw, 24px); line-height: 1.2; }
+      .psy-lead { font-size: 13.5px; }
+      .psy-note { font-size: 13px; padding: 10px 12px; }
+      .psy-nav { gap: 8px; }
+      .psy-nav a {
+        padding: 10px 14px;
+        font-size: 13px;
+        min-height: 44px;
+      }
+      .psy-card {
+        padding: 12px 12px;
+        border-radius: 16px;
+      }
+      .psy-card h2 { font-size: 17px; }
+      .psy-card .sub { font-size: 13.5px; }
+      .acc-btn { padding: 12px 12px; min-height: 48px; }
+      .acc-title strong { font-size: 14.5px; }
+      .acc-title span { font-size: 12px; }
+      .acc-panel { padding: 0 12px 12px; font-size: 14px; }
+      .acc-panel ul { padding-left: 16px; }
+      .psy-filter-tabs { gap: 6px; }
+      .psy-filter-btn {
+        font-size: 12.5px;
+        padding: 7px 11px;
+        min-height: 36px;
+      }
+      .psy-kw-chip {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-height: 32px;
+      }
+      .psy-tools { flex-direction: column; align-items: stretch; }
+      .psy-search { flex: 1 1 auto; width: 100%; box-sizing: border-box; }
+      .psy-search input { font-size: 16px; } /* evita zoom en iOS */
+      .psy-btn { min-height: 44px; width: 100%; justify-content: center; }
+      .psy-group-div { font-size: 10.5px; }
+      .psy-safety-card { padding: 12px 14px; }
+      .psy-safety-card h3 { font-size: 14px; }
+      .psy-safety-card p { font-size: 13.5px; }
+      .tagline { font-size: 13px; padding: 9px 11px; }
+      .psy-section-tag { font-size: 10.5px; }
+      .psy-pill { font-size: 13px; padding: 8px 12px; }
+    }
+
+    /* 390 px — iPhone 14/15 estándar */
+    @media (max-width: 390px) {
+      .psy-hero .heroish { padding: 12px 12px; border-radius: 16px; }
+      .psy-hero h1 { font-size: 19px; }
+      .psy-card { padding: 11px 11px; border-radius: 14px; }
+      .psy-card h2 { font-size: 16px; }
+      .acc-btn { padding: 11px 11px; min-height: 48px; }
+      .acc-title strong { font-size: 14px; }
+      .psy-filter-btn { font-size: 12px; padding: 6px 10px; }
+      .psy-kw-chip { font-size: 11.5px; padding: 4px 9px; }
+      .psy-btn { font-size: 13.5px; }
+      .psy-safety-card h3 { font-size: 13.5px; }
+      .psy-safety-card p { font-size: 13px; }
     }
   </style>
 </head>
