@@ -2763,8 +2763,9 @@
     /* ===== FASE 11A — Copiar resumen ===== */
     (function(){
       var RECORDATORIO = '\n\nRecordatorio: Esta información es orientativa y no reemplaza la indicación médica. No modificar dosis, suspender ni combinar medicamentos sin consultar.';
+      var CONSULTORIO_SOURCE = '\n\nInformación obtenida del sitio web oficial del Consultorio de Psiquiatría del Dr. Dagnino:\nhttps://juegosconsultoriodagnino.netlify.app/';
 
-      var copyData = {
+      var copyData = { /* FASE 11A data */
         'panel-m-sertralina': {
           nombre:   'Sertralina',
           grupo:    'Antidepresivo / ansiedad',
@@ -2808,7 +2809,8 @@
                '\nUso habitual: ' + d.uso +
                '\nCuidados generales: ' + d.cuidados +
                '\nCuándo consultar: ' + d.consultar +
-               RECORDATORIO;
+               RECORDATORIO +
+               CONSULTORIO_SOURCE;
       }
 
       function copyToClipboard(text, btn){
@@ -2970,6 +2972,7 @@
     /* ===== FASE 11D — Copiar resumen — todas las fichas ===== */
     (function(){
       var RECORDATORIO = '\n\nRecordatorio: Esta información es orientativa y no reemplaza la indicación médica. No modificar dosis, suspender ni combinar medicamentos sin consultar.';
+      var CONSULTORIO_SOURCE = '\n\nInformación obtenida del sitio web oficial del Consultorio de Psiquiatría del Dr. Dagnino:\nhttps://juegosconsultoriodagnino.netlify.app/';
       var allCopyData = {
         /* Módulo 1 — Psicofármacos */
         'panel-m-sertralina':         { nombre:'Sertralina',          grupo:'Antidepresivo / ansiedad',              uso:'depresión, ansiedad, ataques de pánico, TOC y estrés postraumático',                                                  cuidados:'constancia en la toma; los primeros días puede haber náuseas leves que suelen ceder; evitar alcohol',                                                              consultar:'si los síntomas no mejoran en las primeras semanas o si aparecen efectos no esperados' },
@@ -3042,7 +3045,8 @@
                '\nUso habitual: ' + d.uso +
                '\nCuidados generales: ' + d.cuidados +
                '\nCuándo consultar: ' + d.consultar +
-               RECORDATORIO;
+               RECORDATORIO +
+               CONSULTORIO_SOURCE;
       }
 
       function copyToClipboard(text, btn){
