@@ -2359,8 +2359,23 @@
       });
     }
 
-    // Acordeones principales
-    wireAccordion(document);
+    // Acordeones principales — event delegation (robusto, immune a errores de ítem individual)
+    document.addEventListener('click', function(e){
+      var btn = e.target.closest('.acc-btn');
+      if(!btn) return;
+      var panelId = btn.getAttribute('aria-controls');
+      if(!panelId) return;
+      var panel = document.getElementById(panelId);
+      if(!panel) return;
+      togglePanel(btn, panel);
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Enter' && e.key !== ' ') return;
+      var btn = e.target.closest('.acc-btn');
+      if(!btn) return;
+      e.preventDefault();
+      btn.click();
+    });
 
     // Pills de categorías (explicación breve)
     (function(){
