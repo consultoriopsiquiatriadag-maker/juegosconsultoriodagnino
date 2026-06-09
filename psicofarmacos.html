@@ -434,6 +434,86 @@
       line-height:1.7;
       font-size:14.5px;
     }
+
+    /* ===== Filtros de grupo ===== */
+    .psy-filter-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:14px;
+    }
+    .psy-filter-btn{
+      padding:6px 14px;
+      border-radius:999px;
+      border:1.5px solid var(--psy-border);
+      background:var(--psy-bg);
+      color:var(--psy-text);
+      font-size:13px;
+      cursor:pointer;
+      line-height:1.4;
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .psy-filter-btn:hover{
+      border-color:var(--psy-blue);
+      color:var(--psy-navy);
+    }
+    .psy-filter-btn.active{
+      background:var(--psy-navy);
+      color:#fff;
+      border-color:var(--psy-navy);
+    }
+    .psy-filter-btn:focus-visible{ outline:3px solid rgba(37,99,235,.35); outline-offset:2px; }
+
+    /* ===== Chips de palabras clave ===== */
+    .psy-kw-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+      margin-top:12px;
+    }
+    .psy-kw-label{
+      font-size:12px;
+      color:var(--psy-text);
+      opacity:.65;
+      flex-basis:100%;
+      margin-bottom:2px;
+    }
+    .psy-kw-chip{
+      padding:4px 11px;
+      border-radius:12px;
+      border:1.5px solid var(--psy-border);
+      background:transparent;
+      color:var(--psy-blue);
+      font-size:12px;
+      cursor:pointer;
+      transition:background .12s,color .12s,border-color .12s;
+    }
+    .psy-kw-chip:hover{
+      background:rgba(37,99,235,.08);
+      border-color:var(--psy-blue);
+    }
+    .psy-kw-chip.active{
+      background:var(--psy-blue);
+      color:#fff;
+      border-color:var(--psy-blue);
+    }
+    .psy-kw-chip:focus-visible{ outline:3px solid rgba(37,99,235,.35); outline-offset:2px; }
+
+    /* ===== Sin resultados ===== */
+    .psy-search-empty{
+      margin-top:16px;
+      padding:12px;
+      background:var(--psy-card);
+      border-radius:var(--psy-radius);
+      color:var(--psy-text);
+      font-size:14px;
+      text-align:center;
+      opacity:.75;
+    }
+
+    /* Ocultar divisores de grupo cuando no hay ítems visibles */
+    .psy-group-div.hide{ display:none; }
   </style>
 </head>
 
@@ -1902,17 +1982,55 @@
     <section class="psy-card" id="buscador" style="margin-top:16px;" aria-label="Buscador de medicamentos">
       <p class="psy-section-tag">Herramienta</p>
       <h2>Buscar por nombre o síntoma</h2>
-      <p class="sub">
-        Ingresá un nombre de medicamento o un síntoma (ej: "sueño", "ansiedad", "irritabilidad") para filtrar resultados en toda la guía.
-      </p>
-      <div class="psy-tools" aria-label="Herramientas de búsqueda y control">
+      <p class="sub">Filtrá por nombre, grupo, síntoma o cuidado en toda la guía.</p>
+
+      <!-- Filtros de grupo -->
+      <div class="psy-filter-tabs" role="group" aria-label="Filtrar por grupo de medicamentos">
+        <button class="psy-filter-btn active" type="button" data-group-filter="todos">Todos</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="psicofarmacos">Psicofármacos</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="dolor">Dolor e inflamación</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="alergia">Alergia y respiratorio</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="digestivo">Digestivo</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="metabolismo">Metabolismo y peso</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="vitaminas">Vitaminas y suplementos</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="corticoides">Corticoides</button>
+        <button class="psy-filter-btn" type="button" data-group-filter="otros">Otros relevantes</button>
+      </div>
+
+      <!-- Palabras clave frecuentes -->
+      <div class="psy-kw-chips" aria-label="Palabras clave frecuentes">
+        <span class="psy-kw-label">Búsquedas frecuentes:</span>
+        <button class="psy-kw-chip" type="button" data-kw="ansiedad">ansiedad</button>
+        <button class="psy-kw-chip" type="button" data-kw="sueño">sueño</button>
+        <button class="psy-kw-chip" type="button" data-kw="dolor">dolor</button>
+        <button class="psy-kw-chip" type="button" data-kw="alergia">alergia</button>
+        <button class="psy-kw-chip" type="button" data-kw="acidez">acidez</button>
+        <button class="psy-kw-chip" type="button" data-kw="constipación">constipación</button>
+        <button class="psy-kw-chip" type="button" data-kw="diarrea">diarrea</button>
+        <button class="psy-kw-chip" type="button" data-kw="náuseas">náuseas</button>
+        <button class="psy-kw-chip" type="button" data-kw="apetito">apetito</button>
+        <button class="psy-kw-chip" type="button" data-kw="peso">peso</button>
+        <button class="psy-kw-chip" type="button" data-kw="somnolencia">somnolencia</button>
+        <button class="psy-kw-chip" type="button" data-kw="alcohol">alcohol</button>
+        <button class="psy-kw-chip" type="button" data-kw="conducción">conducción</button>
+        <button class="psy-kw-chip" type="button" data-kw="embarazo">embarazo</button>
+        <button class="psy-kw-chip" type="button" data-kw="presión">presión</button>
+        <button class="psy-kw-chip" type="button" data-kw="hígado">hígado</button>
+        <button class="psy-kw-chip" type="button" data-kw="riñón">riñón</button>
+      </div>
+
+      <!-- Campo de búsqueda -->
+      <div class="psy-tools" style="margin-top:14px;" aria-label="Herramientas de búsqueda y control">
         <label class="psy-search" for="psychoSearch">
           <span class="sr-only">Buscar medicamentos</span>
-          <input id="psychoSearch" type="search" placeholder="Buscar por nombre o síntoma..." autocomplete="off" />
+          <input id="psychoSearch" type="search" placeholder="Buscar por nombre, síntoma o cuidado..." autocomplete="off" />
         </label>
         <button class="psy-btn" id="expandAll" type="button">Expandir todo</button>
         <button class="psy-btn" id="collapseAll" type="button">Contraer todo</button>
       </div>
+
+      <!-- Mensaje de sin resultados -->
+      <p id="searchEmpty" class="psy-search-empty" hidden>No se encontraron resultados. Probá con otra búsqueda o limpiá los filtros.</p>
     </section>
 
     <!-- ===== 6. Bibliografía y criterio de uso ===== -->
@@ -2247,34 +2365,156 @@
       });
     })();
 
-    // Buscador (filtra por data-search + texto)
+    // ===== Buscador + Filtros de grupo + Chips de palabras clave =====
     (function(){
-      var input = document.getElementById('psychoSearch');
+      var input    = document.getElementById('psychoSearch');
+      var emptyMsg = document.getElementById('searchEmpty');
       if(!input) return;
 
-      var items = Array.prototype.slice.call(document.querySelectorAll('.acc-item'));
+      var items     = Array.prototype.slice.call(document.querySelectorAll('.acc-item'));
+      var groupDivs = Array.prototype.slice.call(document.querySelectorAll('.psy-group-div'));
+
+      // Estado activo
+      var activeGroup = 'todos';
+
+      // Mapa: id del psy-group-div \u2192 clave de grupo
+      var divToGroup = {
+        'c-paracetamol': 'dolor',
+        'c-loratadina':  'alergia',
+        'c-omeprazol':   'digestivo',
+        'c-semaglutida': 'metabolismo',
+        'c-dexametasona':'corticoides',
+        'c-vitamina-d':  'vitaminas',
+        'c-propranolol': 'otros'
+      };
+
+      // Keywords adicionales por id de acc-item (t\u00e9rminos que no aparecen en data-search ni en textContent)
+      var extraKw = {
+        'c-paracetamol-item':   'higado alcohol h\u00edgado',
+        'c-omeprazol-item':     'acidez higado h\u00edgado',
+        'c-pantoprazol-item':   'acidez',
+        'c-ibuprofeno-item':    'rinon ri\u00f1\u00f3n presion presi\u00f3n',
+        'c-naproxeno-item':     'rinon ri\u00f1\u00f3n presion presi\u00f3n',
+        'c-diclofenac-item':    'rinon ri\u00f1\u00f3n',
+        'c-etoricoxib-item':    'rinon ri\u00f1\u00f3n presion presi\u00f3n',
+        'c-ketorolac-item':     'rinon ri\u00f1\u00f3n',
+        'c-pregabalina-item':   'somnolencia conduccion conducci\u00f3n',
+        'c-gabapentina-item':   'somnolencia conduccion conducci\u00f3n',
+        'c-prednisona-item':    'apetito',
+        'c-meprednisona-item':  'apetito',
+        'c-metformina-item':    'peso',
+        'm-olanzapina':         'apetito peso',
+        'm-quetiapina':         'apetito peso somnolencia conduccion conducci\u00f3n'
+      };
+
+      // Derivar grupo de un acc-item
+      function getGroup(item) {
+        // M\u00f3dulo 1: IDs con prefijo m-
+        if (/^m-/.test(item.id)) return 'psicofarmacos';
+        // M\u00f3dulo 2: buscar el psy-group-div anterior
+        var prev = item.previousElementSibling;
+        while (prev) {
+          if (prev.classList.contains('psy-group-div')) {
+            return divToGroup[prev.id] || 'otros';
+          }
+          prev = prev.previousElementSibling;
+        }
+        return 'todos';
+      }
 
       function normalize(s){
-        return (s || "")
+        return (s || '')
           .toLowerCase()
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '');
       }
 
-      function applyFilter(){
+      function applyFilters(){
         var q = normalize(input.value.trim());
-        if(!q){
-          items.forEach(function(it){ it.classList.remove('hide'); });
-          return;
-        }
+        var visibleCount = 0;
+
         items.forEach(function(it){
-          var hay = normalize(it.getAttribute('data-search')) + " " + normalize(it.innerText);
-          var match = hay.indexOf(q) !== -1;
-          it.classList.toggle('hide', !match);
+          // Filtro de grupo
+          var grp = getGroup(it);
+          var groupMatch = (activeGroup === 'todos') || (grp === activeGroup);
+
+          // Filtro de texto
+          var textMatch = true;
+          if (q) {
+            var hay = normalize(it.getAttribute('data-search') || '')
+              + ' ' + normalize(it.textContent)
+              + ' ' + normalize(extraKw[it.id] || '');
+            textMatch = hay.indexOf(q) !== -1;
+          }
+
+          var visible = groupMatch && textMatch;
+          it.classList.toggle('hide', !visible);
+          if (visible) visibleCount++;
         });
+
+        // Mostrar/ocultar divisores de grupo seg\u00fan \u00edtems visibles debajo
+        groupDivs.forEach(function(div){
+          var isM1Div = !div.id || !divToGroup[div.id]; // divisores de M\u00f3dulo 1 (sin id o id no en mapa)
+          var divGroup = divToGroup[div.id] || 'psicofarmacos';
+
+          // Si el filtro de grupo excluye este divisor, ocultarlo directamente
+          if (activeGroup !== 'todos' && activeGroup !== divGroup) {
+            div.classList.add('hide');
+            return;
+          }
+
+          // Comprobar si hay al menos un \u00edtem visible tras este divisor
+          var hasVisible = false;
+          var next = div.nextElementSibling;
+          while (next) {
+            if (next.classList.contains('psy-group-div')) break;
+            if (next.classList.contains('acc-item') && !next.classList.contains('hide')) {
+              hasVisible = true;
+              break;
+            }
+            next = next.nextElementSibling;
+          }
+          div.classList.toggle('hide', !hasVisible);
+        });
+
+        // Mensaje sin resultados
+        if (emptyMsg) emptyMsg.hidden = (visibleCount > 0 || (!q && activeGroup === 'todos'));
       }
 
-      input.addEventListener('input', applyFilter);
+      // Campo de texto
+      input.addEventListener('input', function(){
+        // Desactivar chip si el usuario escribe manualmente
+        document.querySelectorAll('[data-kw]').forEach(function(c){ c.classList.remove('active'); });
+        applyFilters();
+      });
+
+      // Filtros de grupo
+      document.querySelectorAll('[data-group-filter]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          activeGroup = btn.getAttribute('data-group-filter');
+          document.querySelectorAll('[data-group-filter]').forEach(function(b){
+            b.classList.toggle('active', b === btn);
+          });
+          applyFilters();
+        });
+      });
+
+      // Chips de palabras clave
+      document.querySelectorAll('[data-kw]').forEach(function(chip){
+        chip.addEventListener('click', function(){
+          var kw = chip.getAttribute('data-kw');
+          var isActive = chip.classList.contains('active');
+          // Quitar estado activo de todos
+          document.querySelectorAll('[data-kw]').forEach(function(c){ c.classList.remove('active'); });
+          if (!isActive) {
+            chip.classList.add('active');
+            input.value = kw;
+          } else {
+            input.value = '';
+          }
+          applyFilters();
+        });
+      });
     })();
   </script>
 </body>
