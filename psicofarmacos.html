@@ -597,6 +597,18 @@
       .intro-zocalos-grid{ grid-template-columns: 1fr; gap: 10px; }
     }
 
+    /* ===== Módulo 1 — zócalo institucional ===== */
+    .medications-module{
+      text-align: center;
+    }
+    .module-card{
+      max-width: 920px;
+      margin-inline: auto;
+    }
+    .medication-chip-grid{
+      justify-content: center;
+    }
+
     /* ===== Origen del fármaco (details/summary) ===== */
     .psy-history{
       margin-top:12px;
@@ -929,16 +941,18 @@
     </section>
 
     <!-- ===== 2. Psicofármacos frecuentes ===== -->
-    <section class=”psy-card” id=”frecuentes” style=”margin-top:16px;” aria-label=”Psicofármacos frecuentes”>
-      <p class=”psy-section-tag”>Módulo 1</p>
-      <h2>Psicofármacos frecuentes</h2>
-      <p class=”sub”>
-        Medicamentos utilizados en psiquiatría para síntomas relacionados con ánimo, ansiedad, sueño, pensamiento,
-        impulsividad, atención o regulación emocional.
-      </p>
+    <section class=”psy-card medications-module” id=”frecuentes” style=”margin-top:16px;” aria-label=”Psicofármacos frecuentes”>
+      <div class=”module-card”>
+        <p class=”psy-section-tag”>Módulo 1</p>
+        <h2>Psicofármacos frecuentes</h2>
+        <p class=”sub”>
+          Medicamentos utilizados en psiquiatría para síntomas relacionados con ánimo, ansiedad, sueño, pensamiento,
+          impulsividad, atención o regulación emocional.
+        </p>
+      </div>
 
       <!-- Accesos rápidos por medicamento -->
-      <div class=”psy-pills” style=”margin-top:14px;” aria-label=”Acceso rápido por medicamento”>
+      <div class=”psy-pills medication-chip-grid” style=”margin-top:14px;” aria-label=”Acceso rápido por medicamento”>
         <button class=”psy-pill” type=”button” data-jump=”m-escitalopram”>Escitalopram</button>
         <button class=”psy-pill” type=”button” data-jump=”m-sertralina”>Sertralina</button>
         <button class=”psy-pill” type=”button” data-jump=”m-venlafaxina”>Venlafaxina</button>
