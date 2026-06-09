@@ -125,14 +125,15 @@
       gap:10px;
       margin-top: 16px;
     }
+    /* Secundarios (Ver grupos, Cuidados importantes) — fondo translúcido, borde azul suave */
     .psy-nav a{
       display:inline-flex;
       align-items:center;
       gap:8px;
       padding: 12px 16px;
       border-radius: 999px;
-      border: 1.5px solid var(--psy-border);
-      background: #fff;
+      border: 1.5px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);
       color: var(--psy-navy);
       text-decoration:none;
       font-weight: 600;
@@ -140,26 +141,21 @@
       min-height: 44px;
       transition: border-color .15s ease, background .15s ease;
     }
-    /* Buscar medicamento — primario azul */
-    .psy-nav a:first-child{
+    .psy-nav a:hover{ border-color: rgba(37,99,235,.50); background: rgba(37,99,235,.12); }
+    .psy-nav a:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+    /* Primarios (Buscar medicamento, Central de Turnos) — azul institucional sólido */
+    .psy-nav a:first-child,
+    .psy-nav a:last-child{
       background: var(--psy-blue);
       color: #fff;
       border-color: var(--psy-blue);
     }
-    .psy-nav a:first-child:hover{ background: #1d4ed8; border-color: #1d4ed8; }
-    .psy-nav a:first-child:focus-visible{ background: #1d4ed8; }
-    /* Central de Turnos — primario navy */
-    .psy-nav a:last-child{
-      background: var(--psy-navy);
-      color: #fff;
-      border-color: var(--psy-navy);
-    }
+    .psy-nav a:first-child svg,
     .psy-nav a:last-child svg{ stroke: #fff; }
-    .psy-nav a:last-child:hover{ background: #162f4a; border-color: #162f4a; }
-    .psy-nav a:focus-visible{ outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
-    /* Secundarios (Ver grupos, Cuidados importantes) */
-    .psy-nav a:hover{ border-color: rgba(37,99,235,.45); background: rgba(37,99,235,.04); }
-    .psy-nav a:last-child:focus-visible{ background: #162f4a; }
+    .psy-nav a:first-child:hover,
+    .psy-nav a:last-child:hover{ background: #1d4ed8; border-color: #1d4ed8; }
+    .psy-nav a:first-child:focus-visible,
+    .psy-nav a:last-child:focus-visible{ background: #1d4ed8; }
 
     /* Buscador */
     .psy-tools{
@@ -664,7 +660,7 @@
       font-weight:600;
       cursor:pointer;
       transition:background .15s,border-color .15s,color .15s;
-      min-height:36px;
+      min-height:44px;
     }
     .psy-copy-btn:hover{
       background:rgba(8,145,178,.15);
@@ -697,7 +693,7 @@
       font-weight:600;
       cursor:pointer;
       transition:background .15s,color .15s,border-color .15s;
-      min-height:36px;
+      min-height:44px;
       text-decoration:none;
       line-height:1;
     }
@@ -729,7 +725,7 @@
       box-sizing: border-box;
     }
     .psy-filter-btn {
-      min-height: 36px;
+      min-height: 44px;
       box-sizing: border-box;
     }
     .psy-kw-chip {
@@ -739,7 +735,7 @@
       box-sizing: border-box;
     }
     .psy-pill {
-      min-height: 36px;
+      min-height: 44px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -796,7 +792,7 @@
       .psy-filter-btn {
         font-size: 12.5px;
         padding: 7px 11px;
-        min-height: 36px;
+        min-height: 44px;
       }
       .psy-kw-chip {
         font-size: 12px;
@@ -813,7 +809,7 @@
       .psy-safety-card p { font-size: 13.5px; }
       .tagline { font-size: 13px; padding: 9px 11px; }
       .psy-section-tag { font-size: 10.5px; }
-      .psy-pill { font-size: 13px; padding: 7px 13px; min-height: 34px; }
+      .psy-pill { font-size: 13px; padding: 7px 13px; min-height: 44px; }
     }
 
     /* 390 px — iPhone 14/15 estándar */
