@@ -773,15 +773,15 @@
       if (t.match(/ansie|nerv|agob|taqu|miedo|calmar/)) {
         items.push({ label:"Respiración (1 min)", voice:"respiracion" });
         items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
-        items.push({ label:"Psicoeducación sobre ansiedad", link:"psicoeducacion.html" });
+        items.push({ label:"Psicoeducación sobre ansiedad", link:"psicoeducacion-ejercicios.html#ansiedad" });
         items.push({ label:"Técnica en silla", link:"silla-ansiedad-3d.html" });
       } else if (t.match(/p[áa]nico|ataque/)) {
         items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
-        items.push({ label:"Psicoeducación", link:"psicoeducacion.html" });
+        items.push({ label:"Recurso para pánico", link:"psicoeducacion-ejercicios.html#panico" });
       } else if (t.match(/rumia|pensamiento|cabeza no para|ordenar|no puedo frenar/)) {
         items.push({ label:"Anclaje al presente (1:30)", voice:"grounding" });
-        items.push({ label:"Mindfulness (1 min)", voice:"mind" });
-        items.push({ label:"Registro emocional", link:"emociones.html" });
+        items.push({ label:"Ejercicio para rumiación", link:"psicoeducacion-ejercicios.html#rumiacion" });
+        items.push({ label:"Registro emocional", link:"registro-emocional.html" });
       } else if (t.match(/trist|vac[ií]o|llor|sin ganas|apagado/)) {
         items.push({ label:"Mindfulness (1 min)", voice:"mind" });
         items.push({ label:"Registro emocional", link:"emociones.html" });
@@ -830,6 +830,10 @@
           el = document.createElement("a");
           el.href = it.link;
           el.className = "rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-3 py-2.5 text-sm hover:bg-inst-light soft-ring text-center";
+          el.style.minHeight = "44px";
+          el.style.display = "inline-flex";
+          el.style.alignItems = "center";
+          el.style.justifyContent = "center";
           el.textContent = it.label;
           el.addEventListener("click", () => {
             sessionStats.resourceChosen = true;
@@ -839,6 +843,7 @@
           el = document.createElement("button");
           el.type = "button";
           el.className = "rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-3 py-2.5 text-sm hover:bg-inst-light soft-ring";
+          el.style.minHeight = "44px";
           el.textContent = it.label;
           el.addEventListener("click", async () => {
             if (it.voice){
@@ -864,9 +869,9 @@
       {
         key: "panico",
         rx: /p[áa]nico|ataque|falta (el )?aire|me voy a morir|descontrol/,
-        text: "Lo que describís puede sentirse muy intenso. Para este momento, conviene orientarte al presente y bajar la activación paso a paso. Te sugiero un anclaje breve o una respiración guiada.",
+        text: "Lo que describís puede sentirse muy intenso. Para este momento, conviene orientarte al presente y bajar la activación paso a paso. Te sugiero iniciar el recurso para pánico o una respiración breve.",
         actions: [
-          { label:"Anclaje al presente (1:30)", voice:"grounding" },
+          { label:"Recurso para pánico", link:"psicoeducacion-ejercicios.html#panico" },
           { label:"Respiración guiada", link:"respiracion-guiada.html" },
           { label:"Central de Turnos", link:"turnos.html" }
         ]
@@ -878,7 +883,7 @@
         actions: [
           { label:"Respiración guiada", link:"respiracion-guiada.html" },
           { label:"Rutina en silla", link:"silla-ansiedad-3d.html" },
-          { label:"Psicoeducación sobre ansiedad", link:"psicoeducacion.html" }
+          { label:"Psicoeducación sobre ansiedad", link:"psicoeducacion-ejercicios.html#ansiedad" }
         ]
       },
       {
