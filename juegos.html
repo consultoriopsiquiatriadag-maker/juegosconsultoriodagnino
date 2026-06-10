@@ -495,25 +495,44 @@
       max-width: 520px;
     }
 
-    .games-hero-chips{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
+    /* Subtítulo del hero — institucional */
+    .games-hero-subtitle{
+      font-size: 15.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      margin: 0 0 8px;
+      line-height: 1.45;
+      max-width: 560px;
     }
 
-    .games-chip{
+    /* Botones iniciales del hero */
+    .games-hero-actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .ghx-btn{
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 5px 13px;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 12px;
       background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.84);
-      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .15s ease;
     }
+    .ghx-btn:hover,
+    .ghx-btn:focus-visible{ background: rgba(255,255,255,0.16); outline: none; }
+    .ghx-btn:focus-visible{ box-shadow: 0 0 0 3px rgba(147,197,253,0.5); }
+    .ghx-primary{ background: #2563eb; border-color: #2563eb; }
+    .ghx-primary:hover,
+    .ghx-primary:focus-visible{ background: #1d4ed8; }
 
     @media (max-width: 480px){
       .games-hero{
@@ -573,13 +592,14 @@
     <!-- Hero interno -->
     <div class="games-hero">
       <p class="games-hero-eyebrow">Sala de espera virtual · Consultorio Dr. Dagnino</p>
-      <h1 class="games-hero-title">🧠 Juegos cognitivos</h1>
-      <p class="games-hero-sub">Actividades breves para entrenar memoria, atención, velocidad de respuesta y flexibilidad mental.</p>
-      <div class="games-hero-chips" aria-label="Indicaciones de uso">
-        <span class="games-chip">⏱ 3 a 7 minutos</span>
-        <span class="games-chip">🎯 Uso recreativo</span>
-        <span class="games-chip">💙 Pausá si genera frustración</span>
-      </div>
+      <h1 class="games-hero-title">Juegos cognitivos</h1>
+      <p class="games-hero-subtitle">Entrenamiento breve para atención, memoria, flexibilidad cognitiva y planificación.</p>
+      <p class="games-hero-sub">Elegí un recurso y usalo en rondas cortas. Estos juegos son orientativos y no reemplazan una evaluación profesional.</p>
+      <nav class="games-hero-actions" aria-label="Accesos rápidos de la sección">
+        <a class="ghx-btn ghx-primary" href="#sec-todos">Ver juegos destacados</a>
+        <a class="ghx-btn" href="#sec-enf">Entrenamiento neurocognitivo</a>
+        <a class="ghx-btn" href="#otros-recursos">Otros recursos</a>
+      </nav>
     </div>
 
     <!-- ── Filtro de categorías ──────────────────────── -->
@@ -1478,7 +1498,7 @@
     </div>
 
     <!-- ── 4 ZÓCALOS PRINCIPALES (al final) ──────────── -->
-    <section class="section" aria-label="Recursos principales">
+    <section class="section" aria-label="Recursos principales" id="otros-recursos">
       <div class="grid-4-local">
 
         <article class="section-card card-hover hint-bg hint-cog">
