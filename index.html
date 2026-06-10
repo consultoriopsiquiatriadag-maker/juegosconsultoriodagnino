@@ -511,11 +511,15 @@ a.btn-primary[href*="whatsapp"]{
 
 .hero-card--inline .pill{
   white-space: normal;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* punto titilante y texto siempre en la misma línea */
   align-items: center;
   gap: 8px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.hero-card--inline .pill .dot{
+  flex: 0 0 auto; /* el punto no se encoge ni se separa del texto */
 }
 
 .hero-card--inline .hero-title{
@@ -527,6 +531,8 @@ a.btn-primary[href*="whatsapp"]{
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
+  flex: 1 1 auto;
+  min-width: 0; /* permite que el texto use el ancho restante y baje de línea internamente, sin caer debajo del punto */
   max-width: 100%;
   box-sizing: border-box;
   line-height: 1.25;
