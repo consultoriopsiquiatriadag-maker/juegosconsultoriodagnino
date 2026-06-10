@@ -250,24 +250,30 @@
       margin-bottom: 10px;
     }
 
-    /* CTA "Ingresar →" al pie */
+    /* CTA "Ingresar" al pie — botón principal de la tarjeta */
     .game-cta{
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
-      margin-top: 10px;
-      font-size: 12px;
+      margin-top: 12px;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.2px;
-      opacity: 0.55;
-      transition: opacity 0.14s ease;
+      color: #ffffff;
+      transition: opacity 0.14s ease, transform 0.14s ease;
     }
-    .cat-at  .game-cta { color: var(--cat-at);  }
-    .cat-mem .game-cta { color: var(--cat-mem); }
-    .cat-inh .game-cta { color: var(--cat-inh); }
-    .cat-lng .game-cta { color: var(--cat-lng); }
-    .cat-raz .game-cta { color: var(--cat-raz); }
-    a.card-link:hover .game-cta{ opacity: 1; }
+    .cat-at  .game-cta { background: var(--cat-at);  }
+    .cat-mem .game-cta { background: var(--cat-mem); }
+    .cat-inh .game-cta { background: var(--cat-inh); }
+    .cat-lng .game-cta { background: var(--cat-lng); }
+    .cat-raz .game-cta { background: var(--cat-raz); }
+    a.card-link:hover .game-cta{ opacity: 0.92; }
 
     @media (prefers-reduced-motion: reduce){
       .game-cta{ transition: none !important; }
@@ -640,7 +646,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15A9 9 0 1 1 23 10"></path></svg></div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">ENF · Cambiá la Regla</h3>
             <p class="game-desc">Flexibilidad cognitiva (switching) y control inhibitorio.</p>
@@ -652,7 +658,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path></svg></div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">ENF · Stop Rumiación</h3>
             <p class="game-desc">Go/No-Go con palabras: entrená freno al impulso y foco.</p>
@@ -689,7 +695,7 @@
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></div>
               <span class="game-cat-badge">Atención</span>
             </div>
-            <h3 class="game-title">Juego 1</h3>
+            <h3 class="game-title">Juego 1 · Atención sostenida</h3>
             <p class="game-desc">Atención sostenida con estímulos simples.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -701,7 +707,7 @@
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"></path><path d="M5 12h14"></path></svg></div>
               <span class="game-cat-badge">Atención</span>
             </div>
-            <h3 class="game-title">Juego 3</h3>
+            <h3 class="game-title">Juego 3 · Memoria de trabajo y foco</h3>
             <p class="game-desc">Memoria de trabajo y foco.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -735,7 +741,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path></svg></div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">Juego 7 · Semáforo (Go / No-Go)</h3>
             <p class="game-desc">Inhibición y control de impulsos.</p>
@@ -772,7 +778,7 @@
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
               <span class="game-cat-badge">Memoria</span>
             </div>
-            <h3 class="game-title">Juego 2</h3>
+            <h3 class="game-title">Juego 2 · Velocidad de procesamiento</h3>
             <p class="game-desc">Velocidad de procesamiento en rondas cortas.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -924,7 +930,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico</span>
             </div>
             <h3 class="game-title">Juego 8 · Checklist pre-flight</h3>
             <p class="game-desc">Rutina de chequeo y enfoque previo (adaptable a hábitos).</p>
@@ -936,7 +942,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"></path><path d="M5 12h14"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico</span>
             </div>
             <h3 class="game-title">Juego 16 · Ruta de vuelo</h3>
             <p class="game-desc">Memoria visuoespacial.</p>
@@ -948,7 +954,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico</span>
             </div>
             <h3 class="game-title">Juego 13 · Aeropuertos</h3>
             <p class="game-desc">Memoria semántica + geografía aeronáutica.</p>
@@ -960,7 +966,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"></path><path d="M7 16l5-12 5 12"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico</span>
             </div>
             <h3 class="game-title">Juego 14 · Alfabeto aeronáutico (ICAO)</h3>
             <p class="game-desc">Aprendizaje y automatización del código ICAO.</p>
@@ -972,7 +978,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-5"></path><path d="M7 19l-1-4"></path><path d="M11 18l-1-4"></path><path d="M15 17l-1-4"></path><path d="M19 16l-1-4"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico · Acceso externo</span>
             </div>
             <h3 class="game-title">Juego 12 · Aventura 3D — AeroCalma</h3>
             <p class="game-desc">Entorno 3D de calma y atención focalizada. Acceso externo.</p>
@@ -984,7 +990,7 @@
           <div class="game-card-inner">
             <div class="game-card-top">
               <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10"></path></svg></div>
-              <span class="game-cat-badge">Aeronáutica</span>
+              <span class="game-cat-badge">Aeronáutico · Acceso externo</span>
             </div>
             <h3 class="game-title">Juego 18 · Simulador de vuelo (GeoFS)</h3>
             <p class="game-desc">Simulador online de vuelo. Acceso externo.</p>
@@ -1025,7 +1031,7 @@
                   <path d="M20.49 15A9 9 0 1 1 23 10"></path>
                 </svg>
               </div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">ENF · Cambiá la Regla</h3>
             <p class="game-desc">Flexibilidad cognitiva (switching) y control inhibitorio. <em>Entrenamiento Neurocognitivo Funcional</em></p>
@@ -1042,7 +1048,7 @@
                   <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
                 </svg>
               </div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">ENF · Stop Rumiación</h3>
             <p class="game-desc">Go/No-Go con palabras: entrená freno al impulso y foco. <em>Entrenamiento Neurocognitivo Funcional</em></p>
@@ -1079,7 +1085,7 @@
               </div>
               <span class="game-cat-badge">Atención</span>
             </div>
-            <h3 class="game-title">Juego 1</h3>
+            <h3 class="game-title">Juego 1 · Atención sostenida</h3>
             <p class="game-desc">Atención sostenida con estímulos simples.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -1096,7 +1102,7 @@
               </div>
               <span class="game-cat-badge">Atención</span>
             </div>
-            <h3 class="game-title">Juego 2</h3>
+            <h3 class="game-title">Juego 2 · Velocidad de procesamiento</h3>
             <p class="game-desc">Velocidad de procesamiento en rondas cortas.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -1113,7 +1119,7 @@
               </div>
               <span class="game-cat-badge">Memoria</span>
             </div>
-            <h3 class="game-title">Juego 3</h3>
+            <h3 class="game-title">Juego 3 · Memoria de trabajo y foco</h3>
             <p class="game-desc">Memoria de trabajo y foco.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
@@ -1182,7 +1188,7 @@
                   <circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path>
                 </svg>
               </div>
-              <span class="game-cat-badge">Inhibición</span>
+              <span class="game-cat-badge">Flexibilidad</span>
             </div>
             <h3 class="game-title">Juego 7 · Semáforo (Go / No-Go)</h3>
             <p class="game-desc">Inhibición y control de impulsos.</p>
