@@ -148,6 +148,27 @@
       color: var(--muted);
       max-width: 68ch;
     }
+
+    /* ── Zócalo introductorio institucional ── */
+    .emotions-intro-card {
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto 22px;
+    }
+    .emotions-intro-card h2 {
+      margin: 0 0 8px;
+      font-size: calc(22px * var(--text-scale));
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+    }
+    .emotions-intro-card p {
+      margin: 0 auto;
+      font-size: calc(15px * var(--text-scale));
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.6;
+    }
   </style>
 </head>
 
@@ -219,9 +240,13 @@
     <!-- ── Sección: Recursos disponibles ── -->
     <section class="section" aria-labelledby="recursos-heading">
 
-      <div class="section-lead">
+      <!-- Zócalo introductorio institucional -->
+      <div class="section-card hint-bg emotions-intro-card">
         <h2 id="recursos-heading">¿Qué querés hacer hoy?</h2>
-        <p>Tres recursos con propósitos distintos, supervisados por el Dr. Pedro Nicolás Dagnino. Podés usarlos de forma independiente.</p>
+        <p>
+          Tres recursos con propósitos distintos, supervisados por el Dr. Pedro Nicolás Dagnino.
+          Podés usarlos de forma independiente según lo que necesites en este momento.
+        </p>
       </div>
 
       <!-- Grilla de 3 tarjetas de recursos -->
