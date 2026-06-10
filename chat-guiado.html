@@ -479,7 +479,7 @@
     // únicamente { event_category: "sueno" }, nunca el mensaje original.
     function categorizeMessage(text) {
       const t = (text || "").toLowerCase();
-      if (t.match(/suicid|matarme|autoles|no quiero vivir|riesgo/)) return "riesgo";
+      if (t.match(/suicid|matarme|quiero matar|quiero morir|autoles|no quiero vivir|me voy a lastimar|lastimarme|hacer(me)? da[ñn]o|violencia|riesgo/)) return "riesgo";
       if (t.match(/ansie|nerv|agob|taqu|miedo|p[áa]nico|ataque/)) return "ansiedad";
       if (t.match(/no duermo|insom|dormir|sue[ñn]o/)) return "sueno";
       if (t.match(/rumia|pensamiento|cabeza no para|no puedo frenar/)) return "rumiacion";
@@ -856,6 +856,100 @@
       });
     }
 
+    /* ===== FASE 4 — Detección de categorías y respuestas diferenciadas =====
+       Cada categoría tiene: expresión regular de detección, una respuesta de
+       validación breve (sin diagnóstico, sin medicación, sin promesas clínicas)
+       y botones hacia recursos reales del sitio. */
+    const CATEGORY_REPLIES = [
+      {
+        key: "panico",
+        rx: /p[áa]nico|ataque|falta (el )?aire|me voy a morir|descontrol/,
+        text: "Lo que describís puede sentirse muy intenso. Para este momento, conviene orientarte al presente y bajar la activación paso a paso. Te sugiero un anclaje breve o una respiración guiada.",
+        actions: [
+          { label:"Anclaje al presente (1:30)", voice:"grounding" },
+          { label:"Respiración guiada", link:"respiracion-guiada.html" },
+          { label:"Central de Turnos", link:"turnos.html" }
+        ]
+      },
+      {
+        key: "ansiedad",
+        rx: /ansie|ansios|nervi|palpitaci|taqu|miedo|tensi[oó]n|agob|calma|calmar/,
+        text: "Te leo. Si sentís ansiedad o activación, conviene empezar por algo breve y corporal. Podés probar una respiración guiada, la rutina en silla o un material de psicoeducación sobre ansiedad.",
+        actions: [
+          { label:"Respiración guiada", link:"respiracion-guiada.html" },
+          { label:"Rutina en silla", link:"silla-ansiedad-3d.html" },
+          { label:"Psicoeducación sobre ansiedad", link:"psicoeducacion.html" }
+        ]
+      },
+      {
+        key: "sueno",
+        rx: /sue[ñn]o|insom|dormir|no puedo dormir|me despierto|desvel/,
+        text: "Si el problema es el sueño, conviene bajar estímulos y preparar una rutina breve. Podés iniciar el ejercicio para conciliar el sueño, el cierre del día o revisar las pautas de higiene del sueño.",
+        actions: [
+          { label:"Conciliar el sueño", link:"sueno.html" },
+          { label:"Cierre del día", link:"cierre-del-dia.html" },
+          { label:"Higiene del sueño", link:"higienedelsueno.html" }
+        ]
+      },
+      {
+        key: "rumiacion",
+        rx: /rumia|pensamiento|no paro de pensar|cabeza no para|bucle|dar vueltas/,
+        text: "Cuando la mente queda en bucle, suele ayudar pasar de pensar a ordenar. Podés probar el ejercicio para frenar la rumiación o uno breve para volver al presente.",
+        actions: [
+          { label:"Stop rumiación", link:"enf-stop-rumiacion.html" },
+          { label:"Volver al presente", link:"volver-al-presente.html" },
+          { label:"Registro emocional", link:"registro-emocional.html" }
+        ]
+      },
+      {
+        key: "impulsividad_ira",
+        rx: /enojo|enojad|ira\b|bronca|impuls|explotar|pelear|irrit/,
+        text: "Si aparece enojo o impulso de reaccionar, la prioridad es ganar unos minutos antes de actuar. Podés usar el semáforo de impulsividad o registrar la intensidad de lo que sentís.",
+        actions: [
+          { label:"Semáforo de impulsividad", link:"juego7.html" },
+          { label:"Registro emocional", link:"registro-emocional.html" },
+          { label:"Central de Turnos", link:"turnos.html" }
+        ]
+      },
+      {
+        key: "tristeza",
+        rx: /trist|angusti|llor|llanto|vac[ií]o|des[áa]nimo|sin ganas|apagad/,
+        text: "Lamento que estés pasando por eso. Para empezar, podés ordenar lo que sentís en el registro emocional o usar una herramienta breve para volver al presente. Si esto se sostiene o empeora, conviene coordinar una consulta.",
+        actions: [
+          { label:"Registro emocional", link:"registro-emocional.html" },
+          { label:"Volver al presente", link:"volver-al-presente.html" },
+          { label:"Central de Turnos", link:"turnos.html" }
+        ]
+      },
+      {
+        key: "busqueda_turno",
+        rx: /turno|consulta|secretar[ií]a|whatsapp|m[eé]dic[oa]|doctor/,
+        text: "Para coordinar una consulta o consultar disponibilidad, lo más adecuado es comunicarte con la Central de Turnos.",
+        actions: [
+          { label:"Ir a Central de Turnos", link:"turnos.html" }
+        ]
+      }
+    ];
+
+    function isGreeting(t){
+      return /^\s*(hola+|buenas+(\s+(tardes|noches|d[ií]as?))?|buen\s*d[ií]a|qu[eé]\s*tal)[\s!,.¡¿?]*$/.test(t);
+    }
+
+    function matchesAnyCategory(t){
+      return CATEGORY_REPLIES.some(c => c.rx.test(t)) ||
+             /recurso|sitio|qu[eé] hay|qu[eé] tiene|ordenar|no s[eé] qu[eé] siento|confundi/.test(t);
+    }
+
+    function isInvalidInput(t){
+      const clean = t.trim();
+      const letters = (clean.match(/[a-záéíóúüñ]/gi) || []).length;
+      if (letters === 0) return true;                    // solo números o símbolos
+      if (letters < 3) return true;                      // demasiado corto
+      const words = clean.split(/\s+/);
+      if (words.length === 1 && clean.length <= 5 && !matchesAnyCategory(clean.toLowerCase())) return true;
+      return false;
+    }
+
     function assistantReply(userText){
       const t = (userText||"").toLowerCase();
 
@@ -867,13 +961,40 @@
       // localStorage (ver bloque de analítica). No guarda el mensaje.
       recordLocalChatStat(messageCategory);
 
-      // Seguridad
-      if (t.match(/suicid|matarme|autoles|no quiero vivir|riesgo/)){
-        mostrarSeguridad();
+      // 1. Seguridad — siempre primero
+      if (t.match(/suicid|matarme|quiero matar|quiero morir|autoles|no quiero vivir|me voy a lastimar|lastimarme|hacer(me)? da[ñn]o|violencia|riesgo/)){
+        mostrarSeguridad(false);
         return;
       }
 
-      // Busca recurso del sitio
+      // 2. Saludo
+      if (isGreeting(t)){
+        bubble("assistant",
+          "Hola. Podés contarme en una frase qué necesitás ahora: ansiedad, sueño, enojo, tristeza, pensamientos repetitivos, orientación o turno."
+        );
+        renderActions(actionsFor(""));
+        return;
+      }
+
+      // 3. Entrada inválida o sin contenido reconocible
+      if (isInvalidInput(t)){
+        bubble("assistant",
+          "No llego a entender qué necesitás todavía. Podés escribir una palabra como ansiedad, sueño, enojo, tristeza, pensamientos repetitivos, calma o turno."
+        );
+        renderActions(actionsFor(""));
+        return;
+      }
+
+      // 4. Categorías con respuesta y recursos propios
+      for (const cat of CATEGORY_REPLIES){
+        if (cat.rx.test(t)){
+          bubble("assistant", cat.text);
+          renderActions(cat.actions);
+          return;
+        }
+      }
+
+      // 5. Busca recurso del sitio
       if (t.match(/recurso|sitio|qu[eé] hay|qu[eé] tiene/)){
         bubble("assistant",
           "El sitio tiene varios recursos. Aquí algunas opciones según lo que necesitás:"
@@ -882,7 +1003,7 @@
         return;
       }
 
-      // Quiere ordenar emociones
+      // 6. Quiere ordenar emociones
       if (t.match(/ordenar|no s[eé] qu[eé] siento|confundi|no entiendo/)){
         bubble("assistant",
           "Ordenar lo que sentís es un buen punto de partida. " +
@@ -892,16 +1013,7 @@
         return;
       }
 
-      // Turno
-      if (t.match(/turno|consulta|m[eé]dic[oa]|doctor/)){
-        bubble("assistant",
-          "Para coordinar un turno o una consulta, el canal indicado es la Central de Turnos."
-        );
-        renderActions([{ label:"Central de Turnos", link:"turnos.html" }]);
-        return;
-      }
-
-      // Respuesta contextual según modo
+      // 7. Texto válido pero no reconocido — respuesta contextual según modo
       if (mode === "wait"){
         bubble("assistant",
           "Entiendo. Estás en sala de espera. Hagamos algo simple: exhalá más largo que la inhalación (4-6) por 60 segundos. " +
@@ -939,17 +1051,22 @@
       renderActions(actionsFor(""));
     }
 
-    function mostrarSeguridad(){
-      bubble("user", "Estoy en riesgo.");
+    function mostrarSeguridad(fromQuick){
+      // Solo se muestra la burbuja de usuario cuando viene del atajo rápido;
+      // si la persona escribió su propio mensaje, ya quedó en pantalla.
+      if (fromQuick !== false) bubble("user", "Estoy en riesgo.");
       bubble("assistant",
-        "Gracias por decirlo. Si estás en riesgo o necesitás ayuda inmediata, " +
-        "este chat no alcanza como único recurso. " +
-        "El bloque de seguridad al final de la página tiene acceso directo a emergencias y a la Central de Turnos."
+        "Gracias por decirlo. Si estás en riesgo o podés lastimarte, no uses este chat como único recurso. " +
+        "Buscá ayuda inmediata: emergencias locales, una guardia o una persona de confianza que pueda acompañarte ahora. " +
+        "El bloque de seguridad al final de la página tiene los accesos directos."
       );
       sessionStats.resourceChosen = true;
       trackChatEvent("risk_flag", { event_category: "riesgo" });
       recordLocalChatStat("riesgo"); // Etapa B: contador agregado, sin texto ni datos personales
-      renderActions([{ label:"Ver bloque de seguridad", link:"#bloque-seguridad" }]);
+      renderActions([
+        { label:"Ver aviso de urgencias", link:"#bloque-seguridad" },
+        { label:"Central de Turnos (consulta no urgente)", link:"turnos.html" }
+      ]);
       // Scroll suave al bloque
       setTimeout(() => {
         const el = document.getElementById("bloque-seguridad");
