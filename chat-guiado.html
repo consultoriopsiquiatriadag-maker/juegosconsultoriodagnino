@@ -30,8 +30,15 @@
     .card-hover { transition: all .25s ease; }
     .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
     .soft-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+    .soft-ring:focus-visible { outline: 3px solid rgba(37, 99, 235, .45); outline-offset: 2px; }
     .icon-inline{ display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
     .icon-inline svg{ display:block; }
+    /* FASE 6 — burbujas del chat */
+    .chat-bubble-safety{
+      background: #fef2f2 !important;
+      border: 1px solid #fecaca !important;
+      color: #7f1d1d !important;
+    }
     @media (prefers-reduced-motion: reduce){
       .card-hover { transition: none; }
       .card-hover:hover { transform: none; box-shadow: none; }
@@ -251,14 +258,22 @@
 
           <div class="mt-5 grid lg:grid-cols-12 gap-4">
             <div class="lg:col-span-8 rounded-2xl border border-gray-100 bg-inst-light p-4">
-              <div id="chatLog" class="space-y-3 max-h-[420px] overflow-auto pr-1"></div>
+              <p class="text-xs text-inst-gray mb-3" role="note">
+                Este chat orienta recursos del sitio. No reemplaza una consulta profesional ni atiende urgencias.
+              </p>
+              <div id="chatLog" class="space-y-3 max-h-[420px] overflow-auto pr-1"
+                   role="log" aria-live="polite" aria-label="Conversación del Chat de Apoyo Guiado"></div>
 
               <div class="mt-4 flex flex-col sm:flex-row gap-2">
                 <input id="chatInput" type="text"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm soft-ring"
-                  placeholder="Escribí acá (ej: “me siento ansioso” / “no puedo parar de pensar”)">
+                  class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm soft-ring"
+                  style="min-height:44px;"
+                  aria-label="Escribí tu mensaje para el Chat de Apoyo Guiado"
+                  placeholder="Escribí en pocas palabras qué necesitás ahora">
                 <button id="chatSend"
-                  class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95 soft-ring">
+                  class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95 soft-ring"
+                  style="min-height:44px;"
+                  aria-label="Enviar mensaje">
                   Enviar
                 </button>
               </div>
@@ -738,12 +753,17 @@
       resourceChosen: false
     };
 
-    function bubble(role, text){
+    function bubble(role, text, variant){
       const wrap = document.createElement("div");
       const isUser = role === "user";
       wrap.className = isUser ? "flex justify-end" : "flex justify-start";
+      // variant "safety": aviso de seguridad con estilo diferenciado (rojo sobrio)
+      const baseClass = isUser
+        ? "bg-inst-blue text-white"
+        : "bg-white border border-gray-200 text-inst-navy";
+      const safetyClass = (variant === "safety" && !isUser) ? " chat-bubble-safety" : "";
       wrap.innerHTML = `
-        <div class="${isUser ? "bg-inst-blue text-white" : "bg-white border border-gray-200 text-inst-navy"} max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed">
+        <div class="${baseClass}${safetyClass} max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed">
           ${text.replace(/</g,"&lt;").replace(/>/g,"&gt;")}
         </div>
       `;
@@ -1036,7 +1056,11 @@
 
     function send(){
       const txt = chatInput.value.trim();
-      if (!txt) return;
+      if (!txt){
+        bubble("assistant", "Escribí una palabra o frase breve para poder orientarte.");
+        chatInput.focus();
+        return;
+      }
       bubble("user", txt);
       chatInput.value = "";
       assistantReply(txt);
@@ -1063,7 +1087,8 @@
       bubble("assistant",
         "Gracias por decirlo. Si estás en riesgo o podés lastimarte, no uses este chat como único recurso. " +
         "Buscá ayuda inmediata: emergencias locales, una guardia o una persona de confianza que pueda acompañarte ahora. " +
-        "El bloque de seguridad al final de la página tiene los accesos directos."
+        "El bloque de seguridad al final de la página tiene los accesos directos.",
+        "safety"
       );
       sessionStats.resourceChosen = true;
       trackChatEvent("risk_flag", { event_category: "riesgo" });
