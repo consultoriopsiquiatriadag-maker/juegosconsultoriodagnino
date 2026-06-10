@@ -53,7 +53,7 @@
       padding: 26px;   /* sobrescribe el 22px de .section-card */
     }
 
-    /* Ícono en badge cuadrado */
+    /* Ícono en badge cuadrado (ícono lineal SVG, tono institucional) */
     .resource-icon-wrap {
       width: 48px;
       height: 48px;
@@ -62,7 +62,7 @@
       border: 1px solid rgba(14, 34, 57, .10);
       display: grid;
       place-items: center;
-      font-size: 22px;
+      color: #0e2239;
       line-height: 1;
       margin-bottom: 16px;
       flex-shrink: 0;
@@ -230,7 +230,9 @@
         <!-- Tarjeta 1: Registro emocional -->
         <article class="section-card card-hover hint-mood resource-card"
                  aria-label="Registro emocional">
-          <div class="resource-icon-wrap" aria-hidden="true">📝</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><line x1="9" y1="9" x2="15" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="9" y1="13" x2="15" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="9" y1="17" x2="12.5" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
           <h3 class="resource-title">Registro emocional</h3>
           <p class="resource-desc">
             Anotá tu estado de ánimo del momento con un formulario breve y estructurado.
@@ -245,20 +247,23 @@
           </div>
         </article>
 
-        <!-- Tarjeta 2: Chat guiado -->
+        <!-- Tarjeta 2: Chat de Apoyo Guiado -->
         <article class="section-card card-hover hint-cog resource-card"
-                 aria-label="Chat guiado">
-          <div class="resource-icon-wrap" aria-hidden="true">💬</div>
-          <h3 class="resource-title">Chat guiado</h3>
+                 aria-label="Chat de Apoyo Guiado">
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-5 4V6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="8" y1="12.5" x2="13" y2="12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="resource-title">Chat de Apoyo Guiado</h3>
+          <p class="resource-desc" style="margin-bottom:4px;"><strong>Orientación automática, breve y psicoeducativa</strong></p>
           <p class="resource-desc">
-            Un recorrido conversacional paso a paso para calmarte, organizar lo que sentís
-            y encontrar un punto de enfoque.
+            Un recorrido conversacional para ordenar lo que sentís, encontrar una herramienta breve
+            y elegir un recurso del sitio.
           </p>
-          <span class="resource-hint">Ideal si estás ansioso o muy disperso</span>
+          <span class="resource-hint">Para orientación emocional inicial</span>
           <div class="resource-cta">
             <a class="btn-secondary" href="chat-guiado.html" data-spa="0"
-               aria-label="Ir al chat guiado">
-              Iniciar chat
+               aria-label="Abrir Chat de Apoyo Guiado">
+              Abrir chat
             </a>
           </div>
         </article>
@@ -266,11 +271,13 @@
         <!-- Tarjeta 3: Conciliar el sueño -->
         <article class="section-card card-hover hint-sleep resource-card"
                  aria-label="Ejercicio para conciliar el sueño">
-          <div class="resource-icon-wrap" aria-hidden="true">🌧️</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
           <h3 class="resource-title">Conciliar el sueño</h3>
           <p class="resource-desc">
             Ejercicio de relajación guiado para preparar el cuerpo y la mente antes de dormir.
-            También funciona en momentos de tensión o activación elevada.
+            También puede utilizarse en momentos de tensión o activación elevada.
           </p>
           <span class="resource-hint">Para usar antes de dormir</span>
           <div class="resource-cta">
@@ -310,7 +317,9 @@
         <!-- ① Foco 3 minutos — ACTIVO -->
         <article class="section-card card-hover hint-cog resource-card"
                  aria-label="Foco 3 minutos">
-          <div class="resource-icon-wrap" aria-hidden="true">🎯</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
+          </div>
           <h3 class="resource-title">Foco de 3 minutos</h3>
           <p class="resource-desc">
             Una pausa breve para ordenar la mente, bajar la sobrecarga
@@ -329,7 +338,9 @@
         <!-- ② Respiración guiada — ACTIVO -->
         <article class="section-card card-hover hint-bg resource-card"
                  aria-label="Respiración guiada">
-          <div class="resource-icon-wrap" aria-hidden="true">🌬️</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 8h9.5a3 3 0 1 0-3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 12.5h13.5a3 3 0 1 1-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
           <h3 class="resource-title">Respiración guiada</h3>
           <p class="resource-desc">
             Un ejercicio breve para recuperar aire, disminuir tensión
@@ -348,7 +359,9 @@
         <!-- ③ Volver al presente — ACTIVO -->
         <article class="section-card card-hover hint-bg resource-card"
                  aria-label="Volver al presente">
-          <div class="resource-icon-wrap" aria-hidden="true">🌿</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19C5 9.5 12.5 4.5 20 4.5c0 7.5-5 14.5-15 14.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 19c3.5-5.5 8-9.5 12-11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
           <h3 class="resource-title">Volver al presente</h3>
           <p class="resource-desc">
             Ejercicio de anclaje sensorial para salir del espiral de pensamientos
@@ -367,7 +380,9 @@
         <!-- ④ Soltar tensión — ACTIVO -->
         <article class="section-card card-hover hint-bg resource-card"
                  aria-label="Soltar tensión">
-          <div class="resource-icon-wrap" aria-hidden="true">🪨</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9c3-3.5 6 3.5 9 0s6 3.5 9 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 15.5c3-3.5 6 3.5 9 0s6 3.5 9 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
           <h3 class="resource-title">Soltar tensión</h3>
           <p class="resource-desc">
             Rutina breve de relajación muscular progresiva para liberar
@@ -386,7 +401,9 @@
         <!-- ⑤ Cierre del día — ACTIVO -->
         <article class="section-card card-hover hint-sleep resource-card"
                  aria-label="Cierre del día">
-          <div class="resource-icon-wrap" aria-hidden="true">🌙</div>
+          <div class="resource-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="4" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8 17a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="5" x2="12" y2="7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="5.5" y1="8.5" x2="7.2" y2="10.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="18.5" y1="8.5" x2="16.8" y2="10.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
           <h3 class="resource-title">Cierre del día</h3>
           <p class="resource-desc">
             Un momento breve para revisar cómo estuvo tu día, soltar carga
