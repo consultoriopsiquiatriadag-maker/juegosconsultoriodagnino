@@ -308,6 +308,29 @@
     .cat-section-title.t-mem { background: rgba(124,58,237,0.12);       color: var(--cat-mem); }
     .cat-section-title.t-lng { background: rgba(15,118,110,0.12);       color: var(--cat-lng); }
     .cat-section-title.t-aero{ background: rgba(146,64,14,0.10);        color: #92400e; }
+    .cat-section-title.t-casino{ background: rgba(159,18,57,0.10);      color: #9f1239; }
+
+    /* ── Casino de Salud Mental ── */
+    .cat-cas { border-left: 3px solid #9f1239; background: rgba(159,18,57,0.05); }
+    .cat-cas .game-icon { background: rgba(159,18,57,0.08); border-color: rgba(159,18,57,0.20); }
+    .cat-cas .game-icon svg { stroke: #9f1239; }
+    .cat-cas .game-cat-badge { color: #9f1239; background: rgba(159,18,57,0.10); }
+    .cat-cas .game-cta { background: #9f1239; }
+    .casino-intro-text{
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--muted, #475569);
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+    .casino-disclaimer{
+      margin: 0 0 16px;
+      font-size: 12.5px;
+      color: var(--muted, #64748b);
+      opacity: .85;
+      line-height: 1.5;
+      max-width: 72ch;
+    }
 
     .cat-section-desc{
       font-size: 13px;
@@ -1472,6 +1495,61 @@
             </div>
             <h3 class="game-title">Juego 23 · Palabras inversas</h3>
             <p class="game-desc">Memoria de trabajo fonológica.</p>
+            <span class="game-cta">Ingresar →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── Casino de Salud Mental ───────────────────────── -->
+    <section class="section" aria-label="Casino de Salud Mental" id="sec-casino">
+      <div class="cat-section-header">
+        <span class="cat-section-title t-casino">Casino de Salud Mental</span>
+      </div>
+      <p class="cat-section-desc">Juegos breves para reconocer señales emocionales y elegir respuestas más saludables.</p>
+      <p class="casino-intro-text">
+        Tres juegos simbólicos para reconocer patrones de ansiedad, estado de ánimo e impulsividad.
+        No hay apuestas ni premios: el objetivo es identificar señales y elegir una respuesta más saludable.
+      </p>
+      <p class="casino-disclaimer" role="note">
+        Estos juegos son recursos psicoeducativos. No implican apuestas, premios ni dinero real.
+        No reemplazan una consulta profesional ni están destinados a urgencias.
+      </p>
+      <div class="games-grid">
+
+        <a class="section-card card-hover card-link cat-cas" href="casino-ansiedad-slots.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1.5"></rect><rect x="9.5" y="6" width="5" height="12" rx="1.5"></rect><rect x="16" y="6" width="5" height="12" rx="1.5"></rect></svg></div>
+              <span class="game-cat-badge">Ansiedad</span>
+            </div>
+            <h3 class="game-title">Slots de la Ansiedad</h3>
+            <p class="game-desc">Reconocé cómo se combinan cuerpo, pensamiento y conducta cuando sube la ansiedad.</p>
+            <span class="game-cta">Ingresar →</span>
+          </div>
+        </a>
+
+        <a class="section-card card-hover card-link cat-cas" href="casino-estado-animo-ruleta.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v9l6.5 6.5"></path><path d="M12 12L5.5 18.5"></path></svg></div>
+              <span class="game-cat-badge">Estado de ánimo</span>
+            </div>
+            <h3 class="game-title">Ruleta del Estado de Ánimo</h3>
+            <p class="game-desc">Explorá áreas que influyen en ánimo, energía, sueño, rutina y autocuidado.</p>
+            <span class="game-cta">Ingresar →</span>
+          </div>
+        </a>
+
+        <a class="section-card card-hover card-link cat-cas" href="casino-impulsividad-bingo.html">
+          <div class="game-card-inner">
+            <div class="game-card-top">
+              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 10h16"></path><path d="M4 15.5h16"></path><path d="M10 4v16"></path><path d="M15.5 4v16"></path></svg></div>
+              <span class="game-cat-badge">Impulsividad</span>
+            </div>
+            <h3 class="game-title">Bingo de Impulsividad</h3>
+            <p class="game-desc">Marcá señales de activación y elegí una pausa antes de responder o actuar.</p>
             <span class="game-cta">Ingresar →</span>
           </div>
         </a>
