@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ruleta del Estado de Ánimo — Casino de Salud Mental | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo para explorar áreas que influyen en el estado de ánimo: sueño, energía, rutina, autocuidado y más. Sin apuestas ni premios." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --cas-accent: #9f1239;
+      --cas-accent-soft: rgba(159,18,57,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #1b2f4d 55%, #0e2239 100%);
+      border: 1px solid rgba(159,18,57,0.35);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.78);
+      margin: 0 0 10px; line-height: 1.55; max-width: 600px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 640px;
+    }
+
+    /* Tablero de la ruleta */
+    .wheel-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .wheel-wrap{
+      position: relative;
+      width: min(260px, 70vw);
+      margin: 0 auto 18px;
+    }
+    .wheel-pointer{
+      position: absolute;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 16px solid var(--cas-accent);
+      z-index: 2;
+    }
+    #wheelSvg{
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    #wheelGroup{
+      transform-origin: 100px 100px;
+      transition: transform 3s cubic-bezier(0.18, 0.85, 0.25, 1);
+    }
+    @media (prefers-reduced-motion: reduce){
+      #wheelGroup{ transition: none; }
+    }
+
+    .btn-girar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 38px;
+      border: none;
+      border-radius: 14px;
+      background: var(--cas-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-girar:hover{ background: #881337; }
+    .btn-girar:focus-visible{ outline: 3px solid rgba(159,18,57,0.4); outline-offset: 2px; }
+    .btn-girar:disabled{ opacity: .55; cursor: default; }
+
+    /* Resultado */
+    .wheel-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--cas-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .wheel-result[hidden]{ display: none; }
+    .wheel-result-cat{
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--cas-accent);
+      background: var(--cas-accent-soft);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin: 0 0 10px;
+    }
+    .wheel-result-q{
+      font-size: 16px; font-weight: 600; color: #0f172a;
+      margin: 0 0 12px; line-height: 1.5;
+    }
+    .wheel-action{
+      background: var(--cas-accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px; color: #1e293b; line-height: 1.5;
+      margin: 0;
+    }
+    .wheel-action strong{ color: var(--cas-accent); }
+
+    /* Botones de recursos */
+    .wheel-links{
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+    }
+    .wheel-links .btn-primary,
+    .wheel-links .btn-secondary{ min-height: 44px; }
+
+    .topbar-back{ margin: 14px 0; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Ruleta del Estado de Ánimo">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino de Salud Mental · Recurso psicoeducativo</p>
+      <h1>Ruleta del Estado de Ánimo</h1>
+      <p class="casino-hero-sub">
+        Tocá <strong>Girar ruleta</strong>. La ruleta cae en un área que puede influir
+        en el ánimo, la energía o el desánimo. Cada área trae una pregunta breve para
+        pensar y una acción mínima posible.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, premios ni dinero real.
+        No reemplaza una consulta profesional ni está destinado a urgencias.
+      </p>
+    </div>
+
+    <!-- Ruleta -->
+    <section class="wheel-board" aria-label="Ruleta simbólica">
+      <div class="wheel-wrap" aria-hidden="true">
+        <div class="wheel-pointer"></div>
+        <svg id="wheelSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g id="wheelGroup"></g>
+          <circle cx="100" cy="100" r="16" fill="#0e2239"></circle>
+          <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
+        </svg>
+      </div>
+      <button class="btn-girar" id="btnGirar" type="button">Girar ruleta</button>
+    </section>
+
+    <!-- Resultado -->
+    <section class="wheel-result" id="resultBox" hidden aria-live="polite">
+      <p class="wheel-result-cat" id="resultCat"></p>
+      <p class="wheel-result-q" id="resultQ"></p>
+      <p class="wheel-action">
+        <strong>Elegí una acción de menos de cinco minutos:</strong> <span id="actionText"></span>
+      </p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="wheel-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="emociones.html" data-spa="0">Registro emocional</a>
+      <a class="btn-secondary" href="psicoeducacion-ejercicios.html#sueno" data-spa="0">Ver recursos de sueño</a>
+      <a class="btn-secondary" href="turnos.html" data-spa="0">Central de Turnos</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var CATEGORIAS = [
+        { cat: "Sueño",                 q: "¿Dormiste menos, más o peor que de costumbre?" },
+        { cat: "Energía",               q: "¿Tu energía de hoy alcanza para lo que tenés planeado, o conviene ajustar el plan?" },
+        { cat: "Aislamiento",           q: "¿Te estás alejando de personas que podrían acompañarte?" },
+        { cat: "Pensamientos negativos",q: "¿Estás repitiendo pensamientos muy críticos sobre vos? ¿Le hablarías así a alguien que querés?" },
+        { cat: "Autocuidado",           q: "¿Qué acción mínima podrías hacer hoy para cuidarte?" },
+        { cat: "Actividad física",      q: "¿Hace cuánto que no movés el cuerpo, aunque sea unos minutos?" },
+        { cat: "Alimentación",          q: "¿Comiste algo nutritivo hoy, o venís salteando comidas?" },
+        { cat: "Pedido de ayuda",       q: "¿Hay algo que venís cargando en soledad y podrías compartir con alguien?" },
+        { cat: "Rutina",                q: "¿Tu día de hoy tiene algún punto de apoyo: una comida, un descanso, una pausa?" },
+        { cat: "Contacto social",       q: "¿Cuándo fue tu último contacto con alguien que te hace bien?" },
+        { cat: "Exigencia interna",     q: "¿Lo que te estás pidiendo hoy es realista para cómo estás?" },
+        { cat: "Pequeño logro",         q: "¿Qué tarea pequeña podría darte sensación de avance?" }
+      ];
+
+      var ACCIONES = [
+        "Ducharte.",
+        "Abrir una ventana.",
+        "Tomar agua.",
+        "Escribir una frase.",
+        "Ordenar un objeto.",
+        "Enviar un mensaje a alguien de confianza.",
+        "Coordinar consulta si el malestar se sostiene (botón Central de Turnos)."
+      ];
+
+      var N = CATEGORIAS.length;
+      var SEG = 360 / N;
+
+      /* Construcción de la ruleta (12 sectores, dos tonos sobrios alternados) */
+      var group = document.getElementById('wheelGroup');
+      var colores = ["#16365c", "#9f1239"];
+      function polar(cx, cy, r, deg){
+        var rad = (deg - 90) * Math.PI / 180;
+        return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+      }
+      for (var i = 0; i < N; i++){
+        var a0 = i * SEG, a1 = (i + 1) * SEG;
+        var p0 = polar(100, 100, 96, a0);
+        var p1 = polar(100, 100, 96, a1);
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d',
+          'M100,100 L' + p0[0].toFixed(2) + ',' + p0[1].toFixed(2) +
+          ' A96,96 0 0,1 ' + p1[0].toFixed(2) + ',' + p1[1].toFixed(2) + ' Z');
+        path.setAttribute('fill', colores[i % 2]);
+        path.setAttribute('opacity', i % 2 === 0 ? '0.92' : '0.85');
+        path.setAttribute('stroke', '#ffffff');
+        path.setAttribute('stroke-width', '1');
+        group.appendChild(path);
+      }
+
+      var btn = document.getElementById('btnGirar');
+      var resultBox = document.getElementById('resultBox');
+      var resultCat = document.getElementById('resultCat');
+      var resultQ = document.getElementById('resultQ');
+      var actionText = document.getElementById('actionText');
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var rotacionActual = 0;
+
+      function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+      function mostrarResultado(idx){
+        resultCat.textContent = CATEGORIAS[idx].cat;
+        resultQ.textContent = CATEGORIAS[idx].q;
+        actionText.textContent = pick(ACCIONES);
+        resultBox.hidden = false;
+        btn.disabled = false;
+      }
+
+      function girar(){
+        btn.disabled = true;
+        resultBox.hidden = true;
+
+        var idx = Math.floor(Math.random() * N);
+        /* Ángulo del centro del sector idx; el puntero está arriba (0°).
+           Rotación destino: 4 vueltas completas + lo necesario para alinear. */
+        var centroSector = idx * SEG + SEG / 2;
+        var vueltas = 4 * 360;
+        var destino = rotacionActual + vueltas + (360 - centroSector) - (rotacionActual % 360);
+
+        if (reduceMotion){
+          group.style.transform = 'rotate(' + destino + 'deg)';
+          rotacionActual = destino;
+          mostrarResultado(idx);
+          return;
+        }
+
+        rotacionActual = destino;
+        group.style.transform = 'rotate(' + destino + 'deg)';
+        setTimeout(function(){ mostrarResultado(idx); }, 3050);
+      }
+
+      btn.addEventListener('click', girar);
+    })();
+  </script>
+
+</body>
+</html>
