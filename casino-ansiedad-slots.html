@@ -78,48 +78,98 @@
       box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
       margin-bottom: 16px;
     }
-    .slots-grid{
+    /* ── Carretes tipo máquina de slots ── */
+    .slot-reels{
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin: 0 auto 18px;
+      max-width: 900px;
     }
-    @media (max-width: 560px){
-      .slots-grid{ grid-template-columns: 1fr; }
-    }
-    .slot-col{
-      border: 1.5px solid rgba(14,34,57,0.12);
-      border-radius: 14px;
-      overflow: hidden;
-      background: #f8fafc;
-    }
-    .slot-col-label{
-      display: block;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
+    .slot-reel{ text-align: center; }
+    .slot-label{
+      font-weight: 900;
       text-transform: uppercase;
-      color: #fff;
-      background: #0e2239;
-      padding: 8px 6px;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      color: #0b3b70;
+      margin: 0 0 10px;
     }
-    .slot-window{
-      min-height: 96px;
+    .reel-window{
+      position: relative;
+      min-height: 230px;
+      border-radius: 24px;
+      border: 3px solid rgba(125, 211, 252, 0.72);
+      background:
+        linear-gradient(180deg, rgba(6,25,54,0.96), rgba(239,246,255,0.96) 45%, rgba(6,25,54,0.96));
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,0.45),
+        0 0 24px rgba(76,201,240,0.34);
+      overflow: hidden;
+    }
+    .reel-window::before,
+    .reel-window::after{
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 34%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .reel-window::before{ top: 0;    background: linear-gradient(180deg, rgba(6,25,54,0.8), transparent); }
+    .reel-window::after{  bottom: 0; background: linear-gradient(0deg,  rgba(6,25,54,0.8), transparent); }
+    .reel-center-line{
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 58px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.86);
+      border-top: 1px solid rgba(76,201,240,0.65);
+      border-bottom: 1px solid rgba(76,201,240,0.65);
+      z-index: 1;
+    }
+    .reel-items{
+      position: relative;
+      z-index: 3;
+      height: 230px;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 20px;
+    }
+    .reel-item{
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 14px 12px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #0f172a;
-      line-height: 1.4;
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.25;
     }
-    .slot-window.is-spinning{ color: #64748b; font-weight: 500; }
-    .slot-col.has-result{
-      border-color: rgba(159,18,57,0.45);
-      box-shadow: 0 0 0 3px var(--cas-accent-soft);
+    .reel-item.muted{ color: rgba(226,232,240,0.78); font-size: 0.82rem; font-weight: 600; }
+    .reel-item.active{
+      color: #08224a;
+      font-size: clamp(1.02rem, 2.4vw, 1.3rem);
+      font-weight: 900;
+    }
+    .reel-window.is-spinning .reel-items{ filter: blur(2px); }
+    .reel-settle .reel-items{ animation: reelSpin 520ms ease-in-out; }
+    @keyframes reelSpin{
+      0%{ transform: translateY(-32px); filter: blur(2px); }
+      50%{ transform: translateY(34px); filter: blur(3px); }
+      100%{ transform: translateY(0); filter: blur(0); }
+    }
+    .slot-reel.has-result .reel-window{
+      border-color: rgba(159,18,57,0.65);
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,0.45),
+        0 0 26px rgba(159,18,57,0.30);
+    }
+    @media (max-width: 760px){
+      .slot-reels{ grid-template-columns: 1fr; gap: 14px; }
+      .reel-window{ min-height: 190px; }
+      .reel-items{ height: 190px; gap: 12px; padding: 14px; }
     }
 
     .slots-controls{
@@ -250,18 +300,39 @@
 
     <!-- Tablero -->
     <section class="slots-board casino-machine" aria-label="Tablero de slots">
-      <div class="slots-grid">
-        <div class="slot-col" id="colCuerpo">
-          <span class="slot-col-label">Cuerpo</span>
-          <div class="slot-window" id="winCuerpo" aria-live="off">Listo para girar</div>
+      <div class="slot-reels">
+        <div class="slot-reel" id="colCuerpo">
+          <p class="slot-label">Cuerpo</p>
+          <div class="reel-window" id="winCuerpo">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">Respiración rápida</div>
+              <div class="reel-item active">Listo para girar</div>
+              <div class="reel-item muted">Sudoración</div>
+            </div>
+          </div>
         </div>
-        <div class="slot-col" id="colPensamiento">
-          <span class="slot-col-label">Pensamiento</span>
-          <div class="slot-window" id="winPensamiento" aria-live="off">Listo para girar</div>
+        <div class="slot-reel" id="colPensamiento">
+          <p class="slot-label">Pensamiento</p>
+          <div class="reel-window" id="winPensamiento">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">“No voy a poder”</div>
+              <div class="reel-item active">Listo para girar</div>
+              <div class="reel-item muted">“Y si me equivoco”</div>
+            </div>
+          </div>
         </div>
-        <div class="slot-col" id="colConducta">
-          <span class="slot-col-label">Conducta</span>
-          <div class="slot-window" id="winConducta" aria-live="off">Listo para girar</div>
+        <div class="slot-reel" id="colConducta">
+          <p class="slot-label">Conducta</p>
+          <div class="reel-window" id="winConducta">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">Posponer</div>
+              <div class="reel-item active">Listo para girar</div>
+              <div class="reel-item muted">Evitar</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="slots-controls">
@@ -367,10 +438,27 @@
 
       function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
+      function pickOther(arr, not){
+        if (arr.length < 2) return arr[0];
+        var v;
+        do { v = pick(arr); } while (v === not);
+        return v;
+      }
+
+      /* Coloca el valor central y dos vecinos atenuados arriba/abajo */
+      function setReel(colObj, center){
+        var its = colObj.win.querySelectorAll('.reel-item');
+        its[0].textContent = pickOther(colObj.items, center);
+        its[1].textContent = center;
+        its[2].textContent = pickOther(colObj.items, center);
+      }
+
       function settle(colObj, value){
-        colObj.win.textContent = value;
+        setReel(colObj, value);
         colObj.win.classList.remove('is-spinning');
         colObj.col.classList.add('has-result');
+        colObj.col.classList.add('reel-settle');
+        setTimeout(function(){ colObj.col.classList.remove('reel-settle'); }, 560);
       }
 
       function girar(){
@@ -391,7 +479,7 @@
           c.col.classList.remove('has-result');
           c.win.classList.add('is-spinning');
           timers.push(setInterval(function(){
-            c.win.textContent = pick(c.items);
+            setReel(c, pick(c.items));
           }, 90));
         });
 

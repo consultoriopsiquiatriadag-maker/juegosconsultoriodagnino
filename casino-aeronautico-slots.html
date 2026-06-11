@@ -67,44 +67,82 @@
       box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
       margin-bottom: 16px;
     }
-    .slots-grid{
+    /* ── Carretes tipo máquina de slots ── */
+    .slot-reels{
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin: 0 auto 18px;
+      max-width: 900px;
     }
-    @media (max-width: 560px){
-      .slots-grid{ grid-template-columns: 1fr; }
-    }
-    .slot-col{
-      border: 1.5px solid rgba(12,74,110,0.18);
-      border-radius: 14px;
-      overflow: hidden;
-      background: #f8fafc;
-    }
-    .slot-col-label{
-      display: block;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
+    .slot-reel{ text-align: center; }
+    .slot-label{
+      font-weight: 900;
       text-transform: uppercase;
-      color: #fff;
-      background: var(--caer-accent);
-      padding: 8px 6px;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      color: #0b3b70;
+      margin: 0 0 10px;
     }
-    .slot-window{
-      min-height: 104px;
+    .reel-window{
+      position: relative;
+      min-height: 230px;
+      border-radius: 24px;
+      border: 3px solid rgba(125, 211, 252, 0.72);
+      background:
+        linear-gradient(180deg, rgba(6,25,54,0.96), rgba(239,246,255,0.96) 45%, rgba(6,25,54,0.96));
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,0.45),
+        0 0 24px rgba(76,201,240,0.34);
+      overflow: hidden;
+    }
+    .reel-window::before,
+    .reel-window::after{
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 34%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .reel-window::before{ top: 0;    background: linear-gradient(180deg, rgba(6,25,54,0.8), transparent); }
+    .reel-window::after{  bottom: 0; background: linear-gradient(0deg,  rgba(6,25,54,0.8), transparent); }
+    .reel-center-line{
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 64px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.86);
+      border-top: 1px solid rgba(76,201,240,0.65);
+      border-bottom: 1px solid rgba(76,201,240,0.65);
+      z-index: 1;
+    }
+    .reel-items{
+      position: relative;
+      z-index: 3;
+      height: 230px;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 20px;
+    }
+    .reel-item{
+      min-height: 52px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 4px;
-      padding: 14px 10px;
+      line-height: 1.2;
     }
+    .reel-item.muted{
+      color: rgba(226,232,240,0.78);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .reel-item.active{ flex-direction: column; gap: 3px; }
     .slot-iata{
-      font-size: 26px;
+      font-size: clamp(24px, 3vw, 30px);
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--caer-accent);
@@ -116,11 +154,23 @@
       color: #475569;
       line-height: 1.3;
     }
-    .slot-window.is-spinning .slot-iata{ color: #94a3b8; }
-    .slot-window.is-spinning .slot-nombre{ color: #94a3b8; font-weight: 500; }
-    .slot-col.has-match{
+    .reel-window.is-spinning .reel-items{ filter: blur(2px); }
+    .reel-settle .reel-items{ animation: reelSpin 520ms ease-in-out; }
+    @keyframes reelSpin{
+      0%{ transform: translateY(-32px); filter: blur(2px); }
+      50%{ transform: translateY(34px); filter: blur(3px); }
+      100%{ transform: translateY(0); filter: blur(0); }
+    }
+    .slot-reel.has-match .reel-window{
       border-color: var(--caer-gold);
-      box-shadow: 0 0 0 3px var(--caer-gold-soft);
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,0.45),
+        0 0 28px rgba(180,83,9,0.40);
+    }
+    @media (max-width: 760px){
+      .slot-reels{ grid-template-columns: 1fr; gap: 14px; }
+      .reel-window{ min-height: 190px; }
+      .reel-items{ height: 190px; gap: 12px; padding: 14px; }
     }
 
     .slots-controls{
@@ -240,26 +290,47 @@
 
     <!-- Tablero -->
     <section class="slots-board casino-machine" aria-label="Tablero de slots de aeropuertos">
-      <div class="slots-grid">
-        <div class="slot-col" id="col0">
-          <span class="slot-col-label">Carrete 1</span>
-          <div class="slot-window" id="win0">
-            <span class="slot-iata">—</span>
-            <span class="slot-nombre">Listo para girar</span>
+      <div class="slot-reels">
+        <div class="slot-reel" id="col0">
+          <p class="slot-label">Carrete 1</p>
+          <div class="reel-window" id="win0">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">EZE</div>
+              <div class="reel-item active">
+                <span class="slot-iata">—</span>
+                <span class="slot-nombre">Listo para girar</span>
+              </div>
+              <div class="reel-item muted">BRC</div>
+            </div>
           </div>
         </div>
-        <div class="slot-col" id="col1">
-          <span class="slot-col-label">Carrete 2</span>
-          <div class="slot-window" id="win1">
-            <span class="slot-iata">—</span>
-            <span class="slot-nombre">Listo para girar</span>
+        <div class="slot-reel" id="col1">
+          <p class="slot-label">Carrete 2</p>
+          <div class="reel-window" id="win1">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">COR</div>
+              <div class="reel-item active">
+                <span class="slot-iata">—</span>
+                <span class="slot-nombre">Listo para girar</span>
+              </div>
+              <div class="reel-item muted">USH</div>
+            </div>
           </div>
         </div>
-        <div class="slot-col" id="col2">
-          <span class="slot-col-label">Carrete 3</span>
-          <div class="slot-window" id="win2">
-            <span class="slot-iata">—</span>
-            <span class="slot-nombre">Listo para girar</span>
+        <div class="slot-reel" id="col2">
+          <p class="slot-label">Carrete 3</p>
+          <div class="reel-window" id="win2">
+            <div class="reel-center-line" aria-hidden="true"></div>
+            <div class="reel-items" aria-live="off">
+              <div class="reel-item muted">MDZ</div>
+              <div class="reel-item active">
+                <span class="slot-iata">—</span>
+                <span class="slot-nombre">Listo para girar</span>
+              </div>
+              <div class="reel-item muted">IGR</div>
+            </div>
           </div>
         </div>
       </div>
@@ -357,9 +428,19 @@
 
       function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
+      function pickOther(not){
+        var a;
+        do { a = pick(AEROPUERTOS); } while (a.iata === not.iata);
+        return a;
+      }
+
+      /* Centro: IATA + nombre; vecinos atenuados arriba/abajo: solo IATA */
       function setWindow(win, aero){
+        var its = win.querySelectorAll('.reel-item');
+        its[0].textContent = pickOther(aero).iata;
         win.querySelector('.slot-iata').textContent = aero.iata;
         win.querySelector('.slot-nombre').textContent = aero.nombre;
+        its[2].textContent = pickOther(aero).iata;
       }
 
       /* Resultado del giro:
@@ -419,6 +500,8 @@
             clearInterval(timers[i]);
             w.classList.remove('is-spinning');
             setWindow(w, finales[i]);
+            cols[i].classList.add('reel-settle');
+            setTimeout(function(){ cols[i].classList.remove('reel-settle'); }, 560);
             if (i === wins.length - 1){
               mostrarResultado(finales);
             }
