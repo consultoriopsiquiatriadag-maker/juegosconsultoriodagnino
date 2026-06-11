@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slots de la Ansiedad — Casino de Salud Mental | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo para reconocer cómo se combinan señales corporales, pensamientos y conductas en la ansiedad. Sin apuestas ni premios." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --cas-accent: #9f1239;
+      --cas-accent-soft: rgba(159,18,57,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #1b2f4d 55%, #0e2239 100%);
+      border: 1px solid rgba(159,18,57,0.35);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.78);
+      margin: 0 0 10px;
+      line-height: 1.55;
+      max-width: 600px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.55);
+      margin: 0;
+      line-height: 1.5;
+      max-width: 640px;
+    }
+
+    /* Tablero de slots */
+    .slots-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+    .slots-grid{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 560px){
+      .slots-grid{ grid-template-columns: 1fr; }
+    }
+    .slot-col{
+      border: 1.5px solid rgba(14,34,57,0.12);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .slot-col-label{
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #fff;
+      background: #0e2239;
+      padding: 8px 6px;
+    }
+    .slot-window{
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+    .slot-window.is-spinning{ color: #64748b; font-weight: 500; }
+    .slot-col.has-result{
+      border-color: rgba(159,18,57,0.45);
+      box-shadow: 0 0 0 3px var(--cas-accent-soft);
+    }
+
+    .slots-controls{
+      display: flex;
+      justify-content: center;
+    }
+    .btn-girar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 38px;
+      border: none;
+      border-radius: 14px;
+      background: var(--cas-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease, transform .15s ease;
+    }
+    .btn-girar:hover{ background: #881337; }
+    .btn-girar:focus-visible{ outline: 3px solid rgba(159,18,57,0.4); outline-offset: 2px; }
+    .btn-girar:disabled{ opacity: .55; cursor: default; }
+
+    /* Resultado psicoeducativo */
+    .slots-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--cas-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .slots-result[hidden]{ display: none; }
+    .slots-result-title{
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--cas-accent);
+      margin: 0 0 8px;
+    }
+    .slots-result-text{
+      font-size: 14.5px;
+      color: #1e293b;
+      margin: 0 0 12px;
+      line-height: 1.6;
+    }
+    .slots-action{
+      background: var(--cas-accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .slots-action strong{ color: var(--cas-accent); }
+
+    /* Botones de recursos */
+    .slots-links{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .slots-links .btn-primary,
+    .slots-links .btn-secondary{
+      min-height: 44px;
+    }
+
+    .topbar-back{ margin: 14px 0; }
+
+    @media (prefers-reduced-motion: reduce){
+      .btn-girar{ transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Slots de la Ansiedad">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino de Salud Mental · Recurso psicoeducativo</p>
+      <h1>Slots de la Ansiedad</h1>
+      <p class="casino-hero-sub">
+        Tocá <strong>Girar</strong> y observá cómo puede combinarse una señal del cuerpo,
+        un pensamiento automático y una conducta cuando sube la ansiedad.
+        Reconocer el patrón es el primer paso para responder distinto.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, premios ni dinero real.
+        No reemplaza una consulta profesional ni está destinado a urgencias.
+      </p>
+    </div>
+
+    <!-- Tablero -->
+    <section class="slots-board" aria-label="Tablero de slots">
+      <div class="slots-grid">
+        <div class="slot-col" id="colCuerpo">
+          <span class="slot-col-label">Cuerpo</span>
+          <div class="slot-window" id="winCuerpo" aria-live="off">Listo para girar</div>
+        </div>
+        <div class="slot-col" id="colPensamiento">
+          <span class="slot-col-label">Pensamiento</span>
+          <div class="slot-window" id="winPensamiento" aria-live="off">Listo para girar</div>
+        </div>
+        <div class="slot-col" id="colConducta">
+          <span class="slot-col-label">Conducta</span>
+          <div class="slot-window" id="winConducta" aria-live="off">Listo para girar</div>
+        </div>
+      </div>
+      <div class="slots-controls">
+        <button class="btn-girar" id="btnGirar" type="button">Girar</button>
+      </div>
+    </section>
+
+    <!-- Resultado -->
+    <section class="slots-result" id="resultBox" hidden aria-live="polite">
+      <p class="slots-result-title">Qué muestra esta combinación</p>
+      <p class="slots-result-text">
+        Esta combinación muestra cómo la ansiedad puede unir una señal corporal,
+        un pensamiento y una conducta. El primer paso es reconocer el patrón.
+      </p>
+      <p class="slots-action"><strong>Acción saludable sugerida:</strong> <span id="actionText"></span></p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="slots-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="psicoeducacion-ejercicios.html#ansiedad" data-spa="0">Ver recurso de ansiedad</a>
+      <a class="btn-secondary" href="silla-ansiedad.html" data-spa="0">Rutina en silla</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var CUERPO = [
+        "Tensión muscular",
+        "Palpitaciones",
+        "Respiración rápida",
+        "Nudo en el estómago",
+        "Sudoración",
+        "Sensación de alerta"
+      ];
+      var PENSAMIENTO = [
+        "“Algo malo va a pasar”",
+        "“No voy a poder”",
+        "“Me va a dar algo”",
+        "“Tengo que controlar todo”",
+        "“Necesito salir de acá”",
+        "“Y si me equivoco”"
+      ];
+      var CONDUCTA = [
+        "Evitar",
+        "Revisar muchas veces",
+        "Pedir tranquilidad",
+        "Escapar",
+        "Posponer",
+        "Buscar certezas"
+      ];
+      var ACCIONES = [
+        "Respirar lento durante un minuto.",
+        "Apoyar los pies en el piso.",
+        "Nombrar cinco cosas que ves.",
+        "Bajar la velocidad antes de decidir.",
+        "Elegir una acción pequeña y posible.",
+        "Ir a psicoeducación sobre ansiedad (botón debajo)."
+      ];
+
+      var btn = document.getElementById('btnGirar');
+      var resultBox = document.getElementById('resultBox');
+      var actionText = document.getElementById('actionText');
+      var cols = [
+        { win: document.getElementById('winCuerpo'),      col: document.getElementById('colCuerpo'),      items: CUERPO },
+        { win: document.getElementById('winPensamiento'), col: document.getElementById('colPensamiento'), items: PENSAMIENTO },
+        { win: document.getElementById('winConducta'),    col: document.getElementById('colConducta'),    items: CONDUCTA }
+      ];
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+      function settle(colObj, value){
+        colObj.win.textContent = value;
+        colObj.win.classList.remove('is-spinning');
+        colObj.col.classList.add('has-result');
+      }
+
+      function girar(){
+        btn.disabled = true;
+        resultBox.hidden = true;
+
+        var finales = cols.map(function(c){ return pick(c.items); });
+
+        if (reduceMotion){
+          cols.forEach(function(c, i){ settle(c, finales[i]); });
+          mostrarResultado();
+          btn.disabled = false;
+          return;
+        }
+
+        var timers = [];
+        cols.forEach(function(c){
+          c.col.classList.remove('has-result');
+          c.win.classList.add('is-spinning');
+          timers.push(setInterval(function(){
+            c.win.textContent = pick(c.items);
+          }, 90));
+        });
+
+        /* Detención escalonada: 0.9s, 1.4s, 1.9s */
+        cols.forEach(function(c, i){
+          setTimeout(function(){
+            clearInterval(timers[i]);
+            settle(c, finales[i]);
+            if (i === cols.length - 1){
+              mostrarResultado();
+              btn.disabled = false;
+            }
+          }, 900 + i * 500);
+        });
+      }
+
+      function mostrarResultado(){
+        actionText.textContent = pick(ACCIONES);
+        resultBox.hidden = false;
+      }
+
+      btn.addEventListener('click', girar);
+    })();
+  </script>
+
+</body>
+</html>
