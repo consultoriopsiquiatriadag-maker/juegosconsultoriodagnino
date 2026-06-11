@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slots de Aeropuertos — Casino Aeronáutico | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo de temática aeronáutica para acompañar el afrontamiento del temor a volar. Sin apuestas, dinero ni premios reales." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --caer-accent: #0c4a6e;
+      --caer-accent-soft: rgba(12,74,110,0.08);
+      --caer-gold: #b45309;
+      --caer-gold-soft: rgba(180,83,9,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #0c4a6e 60%, #0e2239 100%);
+      border: 1px solid rgba(180,83,9,0.40);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.80);
+      margin: 0 0 10px; line-height: 1.55; max-width: 620px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 640px;
+    }
+
+    /* Tablero de slots */
+    .slots-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+    .slots-grid{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 560px){
+      .slots-grid{ grid-template-columns: 1fr; }
+    }
+    .slot-col{
+      border: 1.5px solid rgba(12,74,110,0.18);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .slot-col-label{
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--caer-accent);
+      padding: 8px 6px;
+    }
+    .slot-window{
+      min-height: 104px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 4px;
+      padding: 14px 10px;
+    }
+    .slot-iata{
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--caer-accent);
+      line-height: 1;
+    }
+    .slot-nombre{
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.3;
+    }
+    .slot-window.is-spinning .slot-iata{ color: #94a3b8; }
+    .slot-window.is-spinning .slot-nombre{ color: #94a3b8; font-weight: 500; }
+    .slot-col.has-match{
+      border-color: var(--caer-gold);
+      box-shadow: 0 0 0 3px var(--caer-gold-soft);
+    }
+
+    .slots-controls{
+      display: flex;
+      justify-content: center;
+    }
+    .btn-girar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 38px;
+      border: none;
+      border-radius: 14px;
+      background: var(--caer-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-girar:hover{ background: #093a57; }
+    .btn-girar:focus-visible{ outline: 3px solid rgba(12,74,110,0.4); outline-offset: 2px; }
+    .btn-girar:disabled{ opacity: .55; cursor: default; }
+
+    /* Resultado psicoeducativo */
+    .slots-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--caer-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .slots-result[hidden]{ display: none; }
+    .slots-result.is-match{
+      border-left-color: var(--caer-gold);
+      background: linear-gradient(135deg, #fff 70%, rgba(180,83,9,0.05) 100%);
+    }
+    .slots-result-title{
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--caer-accent);
+      margin: 0 0 8px;
+    }
+    .slots-result.is-match .slots-result-title{ color: var(--caer-gold); }
+    .slots-result-text{
+      font-size: 15px;
+      color: #1e293b;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Botones de recursos */
+    .slots-links{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .slots-links .btn-primary,
+    .slots-links .btn-secondary{ min-height: 44px; }
+
+    .topbar-back{ margin: 14px 0; }
+
+    .casino-aviso{
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 4px 0 18px;
+      max-width: 72ch;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Slots de Aeropuertos">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino Aeronáutico · Recurso psicoeducativo</p>
+      <h1>Slots de Aeropuertos</h1>
+      <p class="casino-hero-sub">
+        Tocá <strong>Girar</strong> y buscá alinear tres aeropuertos iguales en la línea central.
+        Cuando coinciden, se desbloquea una frase de ayuda para afrontar el temor a volar.
+        Cuando no coinciden, también hay algo para entrenar: la espera.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, dinero ni premios reales.
+        Está pensado para acompañar el afrontamiento del temor a volar.
+      </p>
+    </div>
+
+    <!-- Tablero -->
+    <section class="slots-board" aria-label="Tablero de slots de aeropuertos">
+      <div class="slots-grid">
+        <div class="slot-col" id="col0">
+          <span class="slot-col-label">Carrete 1</span>
+          <div class="slot-window" id="win0">
+            <span class="slot-iata">—</span>
+            <span class="slot-nombre">Listo para girar</span>
+          </div>
+        </div>
+        <div class="slot-col" id="col1">
+          <span class="slot-col-label">Carrete 2</span>
+          <div class="slot-window" id="win1">
+            <span class="slot-iata">—</span>
+            <span class="slot-nombre">Listo para girar</span>
+          </div>
+        </div>
+        <div class="slot-col" id="col2">
+          <span class="slot-col-label">Carrete 3</span>
+          <div class="slot-window" id="win2">
+            <span class="slot-iata">—</span>
+            <span class="slot-nombre">Listo para girar</span>
+          </div>
+        </div>
+      </div>
+      <div class="slots-controls">
+        <button class="btn-girar" id="btnGirar" type="button">Girar</button>
+      </div>
+    </section>
+
+    <!-- Resultado -->
+    <section class="slots-result" id="resultBox" hidden aria-live="polite">
+      <p class="slots-result-title" id="resultTitle"></p>
+      <p class="slots-result-text" id="resultText"></p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="slots-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="fobia-al-vuelo.html" data-spa="0">Ver recurso miedo a volar</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+    <p class="casino-aviso" role="note">
+      Este recurso es psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.
+      Si sentís que estás en riesgo, buscá ayuda inmediata en una guardia, emergencias locales
+      o una persona de confianza.
+    </p>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var AEROPUERTOS = [
+        { iata: "AEP", nombre: "Aeroparque Jorge Newbery" },
+        { iata: "EZE", nombre: "Ezeiza" },
+        { iata: "COR", nombre: "Córdoba" },
+        { iata: "MDZ", nombre: "Mendoza" },
+        { iata: "BRC", nombre: "Bariloche" },
+        { iata: "IGR", nombre: "Iguazú" },
+        { iata: "SLA", nombre: "Salta" },
+        { iata: "USH", nombre: "Ushuaia" },
+        { iata: "ROS", nombre: "Rosario" },
+        { iata: "RES", nombre: "Resistencia" }
+      ];
+
+      var FRASES_PREMIO = [
+        "Respirar lento también es una forma de despegar con más calma.",
+        "El miedo puede aparecer, pero no necesita pilotear la experiencia.",
+        "Volar no exige ausencia de ansiedad, sino aprender a atravesarla.",
+        "La calma se construye paso a paso, incluso antes del embarque.",
+        "Cada exposición gradual fortalece la confianza.",
+        "Podés sentir incertidumbre y aun así continuar.",
+        "No necesitás controlar todo para poder viajar.",
+        "El cuerpo puede activarse, y aun así el vuelo seguir siendo seguro.",
+        "El primer logro no es disfrutar: es quedarte presente.",
+        "Cada intento cuenta como entrenamiento emocional."
+      ];
+
+      var FRASE_ESPERA =
+        "Todavía no coincidieron los tres aeropuertos. " +
+        "A veces la calma también se entrena tolerando la espera y la incertidumbre.";
+
+      var btn = document.getElementById('btnGirar');
+      var resultBox = document.getElementById('resultBox');
+      var resultTitle = document.getElementById('resultTitle');
+      var resultText = document.getElementById('resultText');
+
+      var wins = [0,1,2].map(function(i){ return document.getElementById('win' + i); });
+      var cols = [0,1,2].map(function(i){ return document.getElementById('col' + i); });
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+      function setWindow(win, aero){
+        win.querySelector('.slot-iata').textContent = aero.iata;
+        win.querySelector('.slot-nombre').textContent = aero.nombre;
+      }
+
+      /* Resultado del giro:
+         con cierta frecuencia se favorece la coincidencia para que las frases
+         de ayuda aparezcan de forma razonable (lógica guiada, no azar puro). */
+      function generarFinales(){
+        if (Math.random() < 0.35){
+          var a = pick(AEROPUERTOS);
+          return [a, a, a];
+        }
+        return [pick(AEROPUERTOS), pick(AEROPUERTOS), pick(AEROPUERTOS)];
+      }
+
+      function esTriple(f){
+        return f[0].iata === f[1].iata && f[1].iata === f[2].iata;
+      }
+
+      function mostrarResultado(finales){
+        var triple = esTriple(finales);
+        resultBox.classList.toggle('is-match', triple);
+        cols.forEach(function(c){ c.classList.toggle('has-match', triple); });
+        if (triple){
+          resultTitle.textContent = "Tres aeropuertos alineados: " + finales[0].nombre;
+          resultText.textContent = pick(FRASES_PREMIO);
+        } else {
+          resultTitle.textContent = "Sin coincidencia en este giro";
+          resultText.textContent = FRASE_ESPERA;
+        }
+        resultBox.hidden = false;
+        btn.disabled = false;
+      }
+
+      function girar(){
+        btn.disabled = true;
+        resultBox.hidden = true;
+        cols.forEach(function(c){ c.classList.remove('has-match'); });
+
+        var finales = generarFinales();
+
+        if (reduceMotion){
+          wins.forEach(function(w, i){ setWindow(w, finales[i]); });
+          mostrarResultado(finales);
+          return;
+        }
+
+        var timers = [];
+        wins.forEach(function(w){
+          w.classList.add('is-spinning');
+          timers.push(setInterval(function(){
+            setWindow(w, pick(AEROPUERTOS));
+          }, 90));
+        });
+
+        /* Detención escalonada */
+        wins.forEach(function(w, i){
+          setTimeout(function(){
+            clearInterval(timers[i]);
+            w.classList.remove('is-spinning');
+            setWindow(w, finales[i]);
+            if (i === wins.length - 1){
+              mostrarResultado(finales);
+            }
+          }, 900 + i * 500);
+        });
+      }
+
+      btn.addEventListener('click', girar);
+    })();
+  </script>
+
+</body>
+</html>
