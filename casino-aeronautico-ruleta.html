@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ruleta de Aeropuertos — Casino Aeronáutico | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo para entrenar espera, anticipación e incertidumbre con temática aeronáutica. Sin apuestas, dinero ni premios reales." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --caer-accent: #0c4a6e;
+      --caer-accent-soft: rgba(12,74,110,0.08);
+      --caer-gold: #b45309;
+      --caer-gold-soft: rgba(180,83,9,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #0c4a6e 60%, #0e2239 100%);
+      border: 1px solid rgba(180,83,9,0.40);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.80);
+      margin: 0 0 10px; line-height: 1.55; max-width: 620px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 640px;
+    }
+
+    /* Selector de destino */
+    .dest-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+    .dest-title{
+      font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 4px;
+    }
+    .dest-sub{
+      font-size: 13px; color: #64748b; margin: 0 0 12px; line-height: 1.5;
+    }
+    .dest-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 8px;
+    }
+    .dest-btn{
+      min-height: 48px;
+      padding: 8px 10px;
+      border: 1.5px solid rgba(12,74,110,0.20);
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #0f172a;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      cursor: pointer;
+      transition: background .14s ease, border-color .14s ease;
+    }
+    .dest-btn:hover{ background: #f1f5f9; }
+    .dest-btn:focus-visible{ outline: 3px solid rgba(12,74,110,0.4); outline-offset: 2px; }
+    .dest-btn[aria-pressed="true"]{
+      background: var(--caer-accent);
+      border-color: var(--caer-accent);
+      color: #fff;
+    }
+
+    /* Tablero de ruleta */
+    .wheel-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .wheel-board[hidden]{ display: none; }
+    .wheel-destino{
+      font-size: 13.5px; color: #475569; margin: 0 0 14px;
+    }
+    .wheel-destino strong{ color: var(--caer-accent); }
+    .wheel-wrap{
+      position: relative;
+      width: min(260px, 70vw);
+      margin: 0 auto 18px;
+    }
+    .wheel-pointer{
+      position: absolute;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 16px solid var(--caer-gold);
+      z-index: 2;
+    }
+    #wheelSvg{ display: block; width: 100%; height: auto; }
+    #wheelGroup{
+      transform-origin: 100px 100px;
+      transition: transform 2.4s cubic-bezier(0.18, 0.85, 0.25, 1);
+    }
+    @media (prefers-reduced-motion: reduce){
+      #wheelGroup{ transition: none; }
+    }
+
+    .btn-girar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 38px;
+      border: none;
+      border-radius: 14px;
+      background: var(--caer-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-girar:hover{ background: #093a57; }
+    .btn-girar:focus-visible{ outline: 3px solid rgba(12,74,110,0.4); outline-offset: 2px; }
+    .btn-girar:disabled{ opacity: .55; cursor: default; }
+
+    /* Resultado */
+    .wheel-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--caer-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .wheel-result[hidden]{ display: none; }
+    .wheel-result.is-final{
+      border-left-color: var(--caer-gold);
+      background: linear-gradient(135deg, #fff 70%, rgba(180,83,9,0.06) 100%);
+    }
+    .wheel-result-where{
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--caer-accent);
+      background: var(--caer-accent-soft);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin: 0 0 10px;
+    }
+    .wheel-result.is-final .wheel-result-where{
+      color: var(--caer-gold);
+      background: var(--caer-gold-soft);
+    }
+    .wheel-result-main{
+      font-size: 16px; font-weight: 700; color: #0f172a;
+      margin: 0 0 8px; line-height: 1.45;
+    }
+    .wheel-result-text{
+      font-size: 14.5px; color: #1e293b; margin: 0; line-height: 1.6;
+    }
+
+    /* Botones de recursos */
+    .wheel-links{
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+    }
+    .wheel-links .btn-primary,
+    .wheel-links .btn-secondary{ min-height: 44px; }
+    .wheel-links [hidden]{ display: none; }
+
+    .topbar-back{ margin: 14px 0; }
+
+    .casino-aviso{
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 4px 0 18px;
+      max-width: 72ch;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Ruleta de Aeropuertos">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino Aeronáutico · Recurso psicoeducativo</p>
+      <h1>Ruleta de Aeropuertos</h1>
+      <p class="casino-hero-sub">
+        Elegí tu aeropuerto de destino y tocá <strong>Girar ruleta</strong>.
+        La ruleta va a caer varias veces en otros aeropuertos antes de llegar al tuyo:
+        ese recorrido es el ejercicio. Entrenás espera, anticipación e incertidumbre,
+        igual que antes de un vuelo.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, dinero ni premios reales.
+        Está pensado para acompañar el afrontamiento del temor a volar.
+      </p>
+    </div>
+
+    <!-- Selector de destino -->
+    <section class="dest-board" id="destBoard" aria-label="Elegir aeropuerto de destino">
+      <p class="dest-title">Elegí tu destino</p>
+      <p class="dest-sub">Tocá un aeropuerto. Después, girá la ruleta hasta llegar.</p>
+      <div class="dest-grid" id="destGrid"></div>
+    </section>
+
+    <!-- Ruleta -->
+    <section class="wheel-board" id="wheelBoard" hidden aria-label="Ruleta de aeropuertos">
+      <p class="wheel-destino">Destino elegido: <strong id="destinoLabel"></strong> · Giro <span id="giroNum">0</span></p>
+      <div class="wheel-wrap" aria-hidden="true">
+        <div class="wheel-pointer"></div>
+        <svg id="wheelSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g id="wheelGroup"></g>
+          <circle cx="100" cy="100" r="16" fill="#0e2239"></circle>
+          <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
+        </svg>
+      </div>
+      <button class="btn-girar" id="btnGirar" type="button">Girar ruleta</button>
+    </section>
+
+    <!-- Resultado -->
+    <section class="wheel-result" id="resultBox" hidden aria-live="polite">
+      <p class="wheel-result-where" id="resultWhere"></p>
+      <p class="wheel-result-main" id="resultMain"></p>
+      <p class="wheel-result-text" id="resultText"></p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="wheel-links" aria-label="Recursos relacionados">
+      <button class="btn-primary" id="btnReiniciar" type="button" hidden>Volver a girar</button>
+      <a class="btn-secondary" href="fobia-al-vuelo.html" data-spa="0">Ver recurso temor a volar</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+    <p class="casino-aviso" role="note">
+      Este recurso es psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.
+      Si sentís que estás en riesgo, buscá ayuda inmediata en una guardia, emergencias locales
+      o una persona de confianza.
+    </p>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var AEROPUERTOS = [
+        "Ezeiza", "Aeroparque", "Córdoba", "Mendoza", "Bariloche",
+        "Iguazú", "Salta", "Ushuaia", "Rosario", "Resistencia"
+      ];
+
+      var FRASES_ESPERA = [
+        "Todavía no salió. A veces el desafío es sostener la espera sin escapar.",
+        "La ansiedad suele pedir certeza inmediata. Este juego entrena otra respuesta.",
+        "Esperar también puede ser una práctica de regulación.",
+        "No todo se resuelve en el primer intento.",
+        "La anticipación baja cuando dejamos de pelear con cada segundo.",
+        "Podés seguir aun con algo de tensión."
+      ];
+
+      var FRASES_FINAL = [
+        "A veces el objetivo no es eliminar el miedo, sino avanzar con él más regulado.",
+        "Llegar no siempre implica no sentir ansiedad: implica no dejar que la ansiedad decida todo.",
+        "Lo importante no es controlar cada variable, sino sostenerte durante el proceso."
+      ];
+
+      var N = AEROPUERTOS.length;
+      var SEG = 360 / N;
+
+      /* Construcción de la ruleta (10 sectores, dos tonos sobrios alternados) */
+      var group = document.getElementById('wheelGroup');
+      var colores = ["#0c4a6e", "#16365c"];
+      function polar(cx, cy, r, deg){
+        var rad = (deg - 90) * Math.PI / 180;
+        return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+      }
+      for (var i = 0; i < N; i++){
+        var a0 = i * SEG, a1 = (i + 1) * SEG;
+        var p0 = polar(100, 100, 96, a0);
+        var p1 = polar(100, 100, 96, a1);
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d',
+          'M100,100 L' + p0[0].toFixed(2) + ',' + p0[1].toFixed(2) +
+          ' A96,96 0 0,1 ' + p1[0].toFixed(2) + ',' + p1[1].toFixed(2) + ' Z');
+        path.setAttribute('fill', colores[i % 2]);
+        path.setAttribute('opacity', i % 2 === 0 ? '0.92' : '0.85');
+        path.setAttribute('stroke', '#ffffff');
+        path.setAttribute('stroke-width', '1');
+        group.appendChild(path);
+      }
+
+      var destBoard = document.getElementById('destBoard');
+      var destGrid = document.getElementById('destGrid');
+      var wheelBoard = document.getElementById('wheelBoard');
+      var destinoLabel = document.getElementById('destinoLabel');
+      var giroNum = document.getElementById('giroNum');
+      var btn = document.getElementById('btnGirar');
+      var btnReiniciar = document.getElementById('btnReiniciar');
+      var resultBox = document.getElementById('resultBox');
+      var resultWhere = document.getElementById('resultWhere');
+      var resultMain = document.getElementById('resultMain');
+      var resultText = document.getElementById('resultText');
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Estado del recorrido */
+      var destinoIdx = -1;
+      var giroObjetivo = 0;   /* en qué giro sale el destino (entre 4 y 7) */
+      var giroActual = 0;
+      var rotacionActual = 0;
+      var esperaUsadas = [];
+
+      function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+      /* Frase de espera sin repetir hasta agotar la lista */
+      function fraseEspera(){
+        if (esperaUsadas.length === FRASES_ESPERA.length) esperaUsadas = [];
+        var idx;
+        do { idx = Math.floor(Math.random() * FRASES_ESPERA.length); }
+        while (esperaUsadas.indexOf(idx) !== -1);
+        esperaUsadas.push(idx);
+        return FRASES_ESPERA[idx];
+      }
+
+      /* Selector de destino */
+      AEROPUERTOS.forEach(function(nombre, idx){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'dest-btn';
+        b.setAttribute('aria-pressed', 'false');
+        b.textContent = nombre;
+        b.addEventListener('click', function(){
+          destGrid.querySelectorAll('.dest-btn').forEach(function(x){
+            x.setAttribute('aria-pressed', 'false');
+          });
+          b.setAttribute('aria-pressed', 'true');
+          iniciarRecorrido(idx);
+        });
+        destGrid.appendChild(b);
+      });
+
+      function iniciarRecorrido(idx){
+        destinoIdx = idx;
+        giroActual = 0;
+        giroObjetivo = 4 + Math.floor(Math.random() * 4); /* 4 a 7 */
+        esperaUsadas = [];
+        destinoLabel.textContent = AEROPUERTOS[idx];
+        giroNum.textContent = '0';
+        wheelBoard.hidden = false;
+        resultBox.hidden = true;
+        btnReiniciar.hidden = true;
+        btn.disabled = false;
+        wheelBoard.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      }
+
+      function sectorParaEsteGiro(){
+        if (giroActual >= giroObjetivo) return destinoIdx;
+        /* Intento intermedio: cualquier aeropuerto menos el destino */
+        var idx;
+        do { idx = Math.floor(Math.random() * N); }
+        while (idx === destinoIdx);
+        return idx;
+      }
+
+      function mostrarResultado(idx){
+        var esFinal = idx === destinoIdx;
+        resultBox.classList.toggle('is-final', esFinal);
+        resultWhere.textContent = 'La ruleta cayó en ' + AEROPUERTOS[idx];
+        if (esFinal){
+          resultMain.textContent = 'Llegaste a ' + AEROPUERTOS[idx] + '.';
+          resultText.textContent = pick(FRASES_FINAL);
+          btn.disabled = true;
+          btnReiniciar.hidden = false;
+        } else {
+          resultMain.textContent = 'Todavía no es tu destino.';
+          resultText.textContent = fraseEspera();
+          btn.disabled = false;
+        }
+        resultBox.hidden = false;
+      }
+
+      function girar(){
+        if (destinoIdx < 0) return;
+        btn.disabled = true;
+        resultBox.hidden = true;
+
+        giroActual++;
+        giroNum.textContent = String(giroActual);
+
+        var idx = sectorParaEsteGiro();
+        var centroSector = idx * SEG + SEG / 2;
+        var destino = rotacionActual + 3 * 360 + (360 - centroSector) - (rotacionActual % 360);
+
+        if (reduceMotion){
+          group.style.transform = 'rotate(' + destino + 'deg)';
+          rotacionActual = destino;
+          mostrarResultado(idx);
+          return;
+        }
+
+        rotacionActual = destino;
+        group.style.transform = 'rotate(' + destino + 'deg)';
+        setTimeout(function(){ mostrarResultado(idx); }, 2450);
+      }
+
+      btn.addEventListener('click', girar);
+
+      btnReiniciar.addEventListener('click', function(){
+        /* Mismo destino, nuevo recorrido */
+        iniciarRecorrido(destinoIdx);
+      });
+    })();
+  </script>
+
+</body>
+</html>
