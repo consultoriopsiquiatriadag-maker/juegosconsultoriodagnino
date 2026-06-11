@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bingo de Impulsividad — Casino de Salud Mental | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo para reconocer señales previas a una reacción impulsiva y elegir una pausa antes de actuar. Sin apuestas ni premios." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --cas-accent: #9f1239;
+      --cas-accent-soft: rgba(159,18,57,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #1b2f4d 55%, #0e2239 100%);
+      border: 1px solid rgba(159,18,57,0.35);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.78);
+      margin: 0 0 10px; line-height: 1.55; max-width: 600px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 640px;
+    }
+
+    /* Cartón de bingo */
+    .bingo-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+    .bingo-count{
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #475569;
+      margin: 0 0 14px;
+    }
+    .bingo-count strong{ color: var(--cas-accent); font-size: 16px; }
+    .bingo-grid{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 640px){
+      .bingo-grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    .bingo-cell{
+      min-height: 76px;
+      padding: 10px 8px;
+      border: 1.5px solid rgba(14,34,57,0.14);
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #0f172a;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+      cursor: pointer;
+      transition: background .14s ease, border-color .14s ease, box-shadow .14s ease;
+    }
+    .bingo-cell:hover{ background: #f1f5f9; }
+    .bingo-cell:focus-visible{ outline: 3px solid rgba(159,18,57,0.4); outline-offset: 2px; }
+    .bingo-cell[aria-pressed="true"]{
+      background: var(--cas-accent-soft);
+      border-color: var(--cas-accent);
+      color: var(--cas-accent);
+      box-shadow: inset 0 0 0 1px var(--cas-accent);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .bingo-cell{ transition: none; }
+    }
+
+    .bingo-controls{
+      display: flex;
+      justify-content: center;
+    }
+    .btn-reiniciar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 24px;
+      border: 1px solid rgba(14,34,57,0.16);
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #0e2239;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-reiniciar:hover{ background: #eef2f7; }
+    .btn-reiniciar:focus-visible{ outline: 3px solid rgba(37,99,235,0.35); outline-offset: 2px; }
+
+    /* Devolución */
+    .bingo-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--cas-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .bingo-result-title{
+      font-size: 13px; font-weight: 700; letter-spacing: 0.4px;
+      text-transform: uppercase; color: var(--cas-accent); margin: 0 0 8px;
+    }
+    .bingo-result-text{
+      font-size: 14.5px; color: #1e293b; margin: 0; line-height: 1.6;
+    }
+
+    /* Botones de recursos */
+    .bingo-links{
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+    }
+    .bingo-links .btn-primary,
+    .bingo-links .btn-secondary{ min-height: 44px; }
+
+    .topbar-back{ margin: 14px 0; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Bingo de Impulsividad">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino de Salud Mental · Recurso psicoeducativo</p>
+      <h1>Bingo de Impulsividad</h1>
+      <p class="casino-hero-sub">
+        Tocá los casilleros con las señales que reconocés en este momento o en los últimos días.
+        El objetivo no es completar el cartón: es identificar la activación a tiempo
+        y elegir una pausa antes de actuar.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, premios ni dinero real.
+        No reemplaza una consulta profesional ni está destinado a urgencias.
+      </p>
+    </div>
+
+    <!-- Cartón -->
+    <section class="bingo-board" aria-label="Cartón de señales de impulsividad">
+      <p class="bingo-count" aria-live="polite">
+        Señales marcadas: <strong id="countNum">0</strong> de 16
+      </p>
+      <div class="bingo-grid" id="bingoGrid"></div>
+      <div class="bingo-controls">
+        <button class="btn-reiniciar" id="btnReiniciar" type="button">Reiniciar cartón</button>
+      </div>
+    </section>
+
+    <!-- Devolución -->
+    <section class="bingo-result" aria-live="polite">
+      <p class="bingo-result-title">Lectura del cartón</p>
+      <p class="bingo-result-text" id="resultText">
+        Hoy no aparecen muchas señales de impulsividad. Igual puede ser útil registrar qué te ayudó a mantener la pausa.
+      </p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="bingo-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="impulsividad.html" data-spa="0">Usar Semáforo de Impulsividad</a>
+      <a class="btn-secondary" href="emociones.html" data-spa="0">Registro emocional</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var SENALES = [
+        "Hablar sin pensar",
+        "Subir el tono",
+        "Mandar mensajes largos",
+        "Responder en caliente",
+        "Sentir presión en el pecho",
+        "Querer irse de golpe",
+        "Pensar “no me importa nada”",
+        "Necesitar tener razón",
+        "Interrumpir",
+        "Acelerar decisiones",
+        "Buscar pelea",
+        "Comprar impulsivamente",
+        "Consumir para calmar",
+        "Manejar enojado",
+        "Revisar redes compulsivamente",
+        "Amenazar con cortar todo"
+      ];
+
+      var grid = document.getElementById('bingoGrid');
+      var countNum = document.getElementById('countNum');
+      var resultText = document.getElementById('resultText');
+      var btnReiniciar = document.getElementById('btnReiniciar');
+
+      var celdas = [];
+
+      SENALES.forEach(function(texto){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'bingo-cell';
+        b.setAttribute('aria-pressed', 'false');
+        b.textContent = texto;
+        b.addEventListener('click', function(){
+          var marcada = b.getAttribute('aria-pressed') === 'true';
+          b.setAttribute('aria-pressed', marcada ? 'false' : 'true');
+          actualizar();
+        });
+        grid.appendChild(b);
+        celdas.push(b);
+      });
+
+      function contar(){
+        return celdas.filter(function(c){
+          return c.getAttribute('aria-pressed') === 'true';
+        }).length;
+      }
+
+      function devolucion(n){
+        if (n <= 2){
+          return "Hoy no aparecen muchas señales de impulsividad. Igual puede ser útil registrar qué te ayudó a mantener la pausa.";
+        }
+        if (n <= 5){
+          return "Hay varias señales de activación. Conviene bajar velocidad antes de responder o decidir.";
+        }
+        return "La activación parece alta. Priorizá una pausa concreta y evitá tomar decisiones importantes ahora.";
+      }
+
+      function actualizar(){
+        var n = contar();
+        countNum.textContent = n;
+        resultText.textContent = devolucion(n);
+      }
+
+      btnReiniciar.addEventListener('click', function(){
+        celdas.forEach(function(c){ c.setAttribute('aria-pressed', 'false'); });
+        actualizar();
+      });
+
+      actualizar();
+    })();
+  </script>
+
+</body>
+</html>
