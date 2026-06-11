@@ -23,6 +23,7 @@
 
   <!-- Estilos del sitio -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
   <!-- Estilos SOLO de esta página -->
   <style>
@@ -216,7 +217,7 @@
   </style>
 </head>
 
-<body>
+<body class="casino-page">
 
   <!-- ── Header institucional ──────────────────────────── -->
   <header>
@@ -256,14 +257,14 @@
     </div>
 
     <!-- Selector de destino -->
-    <section class="dest-board" id="destBoard" aria-label="Elegir aeropuerto de destino">
+    <section class="dest-board casino-machine" id="destBoard" aria-label="Elegir aeropuerto de destino">
       <p class="dest-title">Elegí tu destino</p>
       <p class="dest-sub">Tocá un aeropuerto. Después, girá la ruleta hasta llegar.</p>
       <div class="dest-grid" id="destGrid"></div>
     </section>
 
     <!-- Ruleta -->
-    <section class="wheel-board" id="wheelBoard" hidden aria-label="Ruleta de aeropuertos">
+    <section class="wheel-board casino-machine" id="wheelBoard" hidden aria-label="Ruleta de aeropuertos">
       <p class="wheel-destino">Destino elegido: <strong id="destinoLabel"></strong> · Giro <span id="giroNum">0</span></p>
       <div class="wheel-wrap" aria-hidden="true">
         <div class="wheel-pointer"></div>
@@ -273,11 +274,11 @@
           <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
         </svg>
       </div>
-      <button class="btn-girar" id="btnGirar" type="button">Girar ruleta</button>
+      <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
     </section>
 
     <!-- Resultado -->
-    <section class="wheel-result" id="resultBox" hidden aria-live="polite">
+    <section class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
       <p class="wheel-result-where" id="resultWhere"></p>
       <p class="wheel-result-main" id="resultMain"></p>
       <p class="wheel-result-text" id="resultText"></p>

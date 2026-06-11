@@ -23,6 +23,7 @@
 
   <!-- Estilos del sitio -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
   <!-- Estilos SOLO de esta página -->
   <style>
@@ -167,7 +168,7 @@
   </style>
 </head>
 
-<body>
+<body class="casino-page">
 
   <!-- ── Header institucional ──────────────────────────── -->
   <header>
@@ -206,7 +207,7 @@
     </div>
 
     <!-- Cartón -->
-    <section class="bingo-board" aria-label="Cartón de señales de impulsividad">
+    <section class="bingo-board casino-machine" aria-label="Cartón de señales de impulsividad">
       <p class="bingo-count" aria-live="polite">
         Señales marcadas: <strong id="countNum">0</strong> de 16
       </p>
@@ -217,7 +218,7 @@
     </section>
 
     <!-- Devolución -->
-    <section class="bingo-result" aria-live="polite">
+    <section class="bingo-result casino-result-card" aria-live="polite">
       <p class="bingo-result-title">Lectura del cartón</p>
       <p class="bingo-result-text" id="resultText">
         Hoy no aparecen muchas señales de impulsividad. Igual puede ser útil registrar qué te ayudó a mantener la pausa.

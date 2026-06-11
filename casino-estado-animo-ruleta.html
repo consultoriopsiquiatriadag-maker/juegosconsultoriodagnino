@@ -23,6 +23,7 @@
 
   <!-- Estilos del sitio -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
   <!-- Estilos SOLO de esta página -->
   <style>
@@ -167,7 +168,7 @@
   </style>
 </head>
 
-<body>
+<body class="casino-page">
 
   <!-- ── Header institucional ──────────────────────────── -->
   <header>
@@ -206,7 +207,7 @@
     </div>
 
     <!-- Ruleta -->
-    <section class="wheel-board" aria-label="Ruleta simbólica">
+    <section class="wheel-board casino-machine" aria-label="Ruleta simbólica">
       <div class="wheel-wrap" aria-hidden="true">
         <div class="wheel-pointer"></div>
         <svg id="wheelSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -215,11 +216,11 @@
           <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
         </svg>
       </div>
-      <button class="btn-girar" id="btnGirar" type="button">Girar ruleta</button>
+      <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
     </section>
 
     <!-- Resultado -->
-    <section class="wheel-result" id="resultBox" hidden aria-live="polite">
+    <section class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
       <p class="wheel-result-cat" id="resultCat"></p>
       <p class="wheel-result-q" id="resultQ"></p>
       <p class="wheel-action">

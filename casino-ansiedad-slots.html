@@ -23,6 +23,7 @@
 
   <!-- Estilos del sitio -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
   <!-- Estilos SOLO de esta página -->
   <style>
@@ -209,7 +210,7 @@
   </style>
 </head>
 
-<body>
+<body class="casino-page">
 
   <!-- ── Header institucional ──────────────────────────── -->
   <header>
@@ -248,7 +249,7 @@
     </div>
 
     <!-- Tablero -->
-    <section class="slots-board" aria-label="Tablero de slots">
+    <section class="slots-board casino-machine" aria-label="Tablero de slots">
       <div class="slots-grid">
         <div class="slot-col" id="colCuerpo">
           <span class="slot-col-label">Cuerpo</span>
@@ -264,12 +265,12 @@
         </div>
       </div>
       <div class="slots-controls">
-        <button class="btn-girar" id="btnGirar" type="button">Girar</button>
+        <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar</button>
       </div>
     </section>
 
     <!-- Resultado -->
-    <section class="slots-result" id="resultBox" hidden aria-live="polite">
+    <section class="slots-result casino-result-card" id="resultBox" hidden aria-live="polite">
       <p class="slots-result-title">Qué muestra esta combinación</p>
       <p class="slots-result-text">
         Esta combinación muestra cómo la ansiedad puede unir una señal corporal,

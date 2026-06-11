@@ -23,6 +23,7 @@
 
   <!-- Estilos del sitio -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
   <!-- Estilos SOLO de esta página -->
   <style>
@@ -199,7 +200,7 @@
   </style>
 </head>
 
-<body>
+<body class="casino-page">
 
   <!-- ── Header institucional ──────────────────────────── -->
   <header>
@@ -238,7 +239,7 @@
     </div>
 
     <!-- Tablero -->
-    <section class="slots-board" aria-label="Tablero de slots de aeropuertos">
+    <section class="slots-board casino-machine" aria-label="Tablero de slots de aeropuertos">
       <div class="slots-grid">
         <div class="slot-col" id="col0">
           <span class="slot-col-label">Carrete 1</span>
@@ -263,12 +264,12 @@
         </div>
       </div>
       <div class="slots-controls">
-        <button class="btn-girar" id="btnGirar" type="button">Girar</button>
+        <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar</button>
       </div>
     </section>
 
     <!-- Resultado -->
-    <section class="slots-result" id="resultBox" hidden aria-live="polite">
+    <section class="slots-result casino-result-card" id="resultBox" hidden aria-live="polite">
       <p class="slots-result-title" id="resultTitle"></p>
       <p class="slots-result-text" id="resultText"></p>
     </section>
@@ -326,7 +327,7 @@
         { iata: "RES", nombre: "Resistencia" }
       ];
 
-      var FRASES_PREMIO = [
+      var FRASES_AYUDA = [
         "Respirar lento también es una forma de despegar con más calma.",
         "El miedo puede aparecer, pero no necesita pilotear la experiencia.",
         "Volar no exige ausencia de ansiedad, sino aprender a atravesarla.",
@@ -382,7 +383,7 @@
         cols.forEach(function(c){ c.classList.toggle('has-match', triple); });
         if (triple){
           resultTitle.textContent = "Tres aeropuertos alineados: " + finales[0].nombre;
-          resultText.textContent = pick(FRASES_PREMIO);
+          resultText.textContent = pick(FRASES_AYUDA);
         } else {
           resultTitle.textContent = "Sin coincidencia en este giro";
           resultText.textContent = FRASE_ESPERA;
