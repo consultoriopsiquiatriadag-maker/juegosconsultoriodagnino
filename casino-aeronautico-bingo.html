@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bingo Aeronáutico — Casino Aeronáutico | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bingo psicoeducativo de temática aeronáutica: completá líneas y cartón para desbloquear frases de apoyo frente al temor a volar. Sin apuestas ni premios reales." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --caer-accent: #0c4a6e;
+      --caer-accent-soft: rgba(12,74,110,0.08);
+      --caer-gold: #b45309;
+      --caer-gold-soft: rgba(180,83,9,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #0c4a6e 60%, #0e2239 100%);
+      border: 1px solid rgba(180,83,9,0.40);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.80);
+      margin: 0 0 10px; line-height: 1.55; max-width: 620px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 640px;
+    }
+
+    /* Tablero */
+    .bingo-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+    .bingo-status{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #475569;
+      margin: 0 0 14px;
+      text-align: center;
+    }
+    .bingo-status strong{ color: var(--caer-accent); }
+    .bingo-sorteo{
+      text-align: center;
+      margin: 0 0 14px;
+    }
+    .bingo-bolilla{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      min-height: 64px;
+      border-radius: 999px;
+      background: var(--caer-accent);
+      color: #fff;
+      font-size: 26px;
+      font-weight: 800;
+      box-shadow: 0 6px 18px rgba(12,74,110,0.25);
+    }
+    .bingo-bolilla.is-empty{
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: none;
+    }
+    .bingo-historial{
+      font-size: 12px;
+      color: #94a3b8;
+      margin: 8px 0 0;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .bingo-grid{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      max-width: 420px;
+      margin: 0 auto 16px;
+    }
+    .bingo-cell{
+      aspect-ratio: 1 / 1;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid rgba(12,74,110,0.18);
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #0f172a;
+      font-size: 19px;
+      font-weight: 700;
+      transition: background .14s ease, border-color .14s ease, color .14s ease;
+    }
+    .bingo-cell.is-marked{
+      background: var(--caer-accent);
+      border-color: var(--caer-accent);
+      color: #fff;
+    }
+    .bingo-cell.in-line{
+      background: var(--caer-gold);
+      border-color: var(--caer-gold);
+      color: #fff;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .bingo-cell{ transition: none; }
+    }
+
+    .bingo-controls{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-sortear{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 14px;
+      background: var(--caer-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-sortear:hover{ background: #093a57; }
+    .btn-sortear:focus-visible{ outline: 3px solid rgba(12,74,110,0.4); outline-offset: 2px; }
+    .btn-sortear:disabled{ opacity: .55; cursor: default; }
+    .btn-nuevo{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 24px;
+      border: 1px solid rgba(14,34,57,0.16);
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #0e2239;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-nuevo:hover{ background: #eef2f7; }
+    .btn-nuevo:focus-visible{ outline: 3px solid rgba(37,99,235,0.35); outline-offset: 2px; }
+
+    /* Resultado */
+    .bingo-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--caer-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .bingo-result[hidden]{ display: none; }
+    .bingo-result.is-carton{
+      border-left-color: var(--caer-gold);
+      background: linear-gradient(135deg, #fff 70%, rgba(180,83,9,0.06) 100%);
+    }
+    .bingo-result-title{
+      font-size: 13px; font-weight: 700; letter-spacing: 0.4px;
+      text-transform: uppercase; color: var(--caer-accent); margin: 0 0 8px;
+    }
+    .bingo-result.is-carton .bingo-result-title{ color: var(--caer-gold); }
+    .bingo-result-text{
+      font-size: 15px; color: #1e293b; margin: 0; line-height: 1.6;
+    }
+
+    /* Botones de recursos */
+    .bingo-links{
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+    }
+    .bingo-links .btn-primary,
+    .bingo-links .btn-secondary{ min-height: 44px; }
+
+    .topbar-back{ margin: 14px 0; }
+
+    .casino-aviso{
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 4px 0 18px;
+      max-width: 72ch;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="Bingo Aeronáutico">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino Aeronáutico · Recurso psicoeducativo</p>
+      <h1>Bingo Aeronáutico</h1>
+      <p class="casino-hero-sub">
+        Tocá <strong>Sortear número</strong>. Los números que estén en tu cartón se marcan solos.
+        Cada línea completada desbloquea una frase de apoyo frente al temor a volar,
+        y el cartón completo desbloquea un mensaje final.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Este juego es un recurso psicoeducativo. No implica apuestas, dinero ni premios reales.
+        Está pensado para acompañar el afrontamiento del temor a volar.
+      </p>
+    </div>
+
+    <!-- Tablero -->
+    <section class="bingo-board" aria-label="Cartón de bingo aeronáutico">
+      <p class="bingo-status" aria-live="polite">
+        <span>Líneas completadas: <strong id="lineasNum">0</strong> de 8</span>
+        <span>Cartón completo: <strong id="cartonEstado">No</strong></span>
+      </p>
+      <div class="bingo-sorteo">
+        <span class="bingo-bolilla is-empty" id="bolilla">Sin sorteos</span>
+        <p class="bingo-historial" id="historial"></p>
+      </div>
+      <div class="bingo-grid" id="bingoGrid" aria-hidden="true"></div>
+      <div class="bingo-controls">
+        <button class="btn-sortear" id="btnSortear" type="button">Sortear número</button>
+        <button class="btn-nuevo" id="btnNuevo" type="button">Nuevo cartón</button>
+      </div>
+    </section>
+
+    <!-- Devolución -->
+    <section class="bingo-result" id="resultBox" hidden aria-live="polite">
+      <p class="bingo-result-title" id="resultTitle"></p>
+      <p class="bingo-result-text" id="resultText"></p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="bingo-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="fobia-al-vuelo.html" data-spa="0">Ver recurso miedo a volar</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+    <p class="casino-aviso" role="note">
+      Este recurso es psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.
+      Si sentís que estás en riesgo, buscá ayuda inmediata en una guardia, emergencias locales
+      o una persona de confianza.
+    </p>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var POOL_MAX = 24;   /* números 1 a 24 */
+      var SIZE = 4;        /* cartón 4x4 = 16 números */
+
+      var FRASES_LINEA = [
+        "Una línea completada: cada pequeño paso también cuenta en el proceso de animarse a volar.",
+        "Otra línea: la confianza no aparece de golpe, se construye con repetición.",
+        "Seguir en el juego también es una forma de entrenar tolerancia.",
+        "La ansiedad no desaparece por magia; se vuelve más manejable con práctica."
+      ];
+
+      var FRASES_CARTON = [
+        "Cartón completo: podés sentir temor y aun así aprender a viajar con más confianza.",
+        "Completar el cartón simboliza algo importante: la seguridad emocional también se entrena.",
+        "Vencer el temor a volar no siempre es dejar de sentir miedo, sino dejar de obedecerlo automáticamente.",
+        "Cada paso de exposición, información y regulación suma."
+      ];
+
+      var grid = document.getElementById('bingoGrid');
+      var bolilla = document.getElementById('bolilla');
+      var historial = document.getElementById('historial');
+      var lineasNum = document.getElementById('lineasNum');
+      var cartonEstado = document.getElementById('cartonEstado');
+      var btnSortear = document.getElementById('btnSortear');
+      var btnNuevo = document.getElementById('btnNuevo');
+      var resultBox = document.getElementById('resultBox');
+      var resultTitle = document.getElementById('resultTitle');
+      var resultText = document.getElementById('resultText');
+
+      var carton = [];        /* 16 números */
+      var marcados = [];      /* booleanos */
+      var bolillero = [];     /* números pendientes de sortear */
+      var sorteados = [];
+      var lineasCompletas = 0;
+      var fraseLineaIdx = 0;
+
+      function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+      function barajar(arr){
+        for (var i = arr.length - 1; i > 0; i--){
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+        }
+        return arr;
+      }
+
+      /* Líneas: 4 filas + 4 columnas */
+      function indicesLineas(){
+        var lineas = [];
+        for (var f = 0; f < SIZE; f++){
+          lineas.push([f*SIZE, f*SIZE+1, f*SIZE+2, f*SIZE+3]);
+        }
+        for (var c = 0; c < SIZE; c++){
+          lineas.push([c, c+SIZE, c+2*SIZE, c+3*SIZE]);
+        }
+        return lineas;
+      }
+      var LINEAS = indicesLineas();
+
+      function contarLineas(){
+        return LINEAS.filter(function(linea){
+          return linea.every(function(i){ return marcados[i]; });
+        }).length;
+      }
+
+      function cartonCompleto(){
+        return marcados.every(function(m){ return m; });
+      }
+
+      function render(){
+        var lineasAhora = contarLineas();
+        var celdas = grid.querySelectorAll('.bingo-cell');
+        var enLinea = {};
+        LINEAS.forEach(function(linea){
+          if (linea.every(function(i){ return marcados[i]; })){
+            linea.forEach(function(i){ enLinea[i] = true; });
+          }
+        });
+        celdas.forEach(function(c, i){
+          c.classList.toggle('is-marked', !!marcados[i]);
+          c.classList.toggle('in-line', !!enLinea[i]);
+        });
+        lineasNum.textContent = lineasAhora;
+        cartonEstado.textContent = cartonCompleto() ? 'Sí' : 'No';
+      }
+
+      function nuevoCarton(){
+        var todos = [];
+        for (var n = 1; n <= POOL_MAX; n++) todos.push(n);
+        barajar(todos);
+        carton = todos.slice(0, SIZE * SIZE);
+        marcados = carton.map(function(){ return false; });
+        bolillero = barajar(todos.slice());
+        sorteados = [];
+        lineasCompletas = 0;
+        fraseLineaIdx = 0;
+
+        grid.innerHTML = '';
+        carton.forEach(function(n){
+          var d = document.createElement('div');
+          d.className = 'bingo-cell';
+          d.textContent = n;
+          grid.appendChild(d);
+        });
+
+        bolilla.textContent = 'Sin sorteos';
+        bolilla.classList.add('is-empty');
+        historial.textContent = '';
+        resultBox.hidden = true;
+        resultBox.classList.remove('is-carton');
+        btnSortear.disabled = false;
+        render();
+      }
+
+      function sortear(){
+        if (!bolillero.length || cartonCompleto()) return;
+
+        var n = bolillero.pop();
+        sorteados.push(n);
+        bolilla.textContent = n;
+        bolilla.classList.remove('is-empty');
+        historial.textContent = 'Salieron: ' + sorteados.join(' · ');
+
+        var idx = carton.indexOf(n);
+        if (idx !== -1) marcados[idx] = true;
+
+        var lineasAhora = contarLineas();
+        var nuevasLineas = lineasAhora - lineasCompletas;
+        var completo = cartonCompleto();
+
+        render();
+
+        if (completo){
+          resultTitle.textContent = 'Cartón completo';
+          resultText.textContent = pick(FRASES_CARTON);
+          resultBox.classList.add('is-carton');
+          resultBox.hidden = false;
+          btnSortear.disabled = true;
+        } else if (nuevasLineas > 0){
+          resultTitle.textContent = lineasAhora === 1 ? 'Línea completada' : 'Línea completada (' + lineasAhora + ' en total)';
+          resultText.textContent = FRASES_LINEA[fraseLineaIdx % FRASES_LINEA.length];
+          fraseLineaIdx++;
+          resultBox.classList.remove('is-carton');
+          resultBox.hidden = false;
+        }
+
+        lineasCompletas = lineasAhora;
+      }
+
+      btnSortear.addEventListener('click', sortear);
+      btnNuevo.addEventListener('click', nuevoCarton);
+
+      nuevoCarton();
+    })();
+  </script>
+
+</body>
+</html>
