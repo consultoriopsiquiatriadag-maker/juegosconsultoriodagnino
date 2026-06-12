@@ -66,32 +66,107 @@
       margin-bottom: 16px;
       text-align: center;
     }
-    .wheel-wrap{
+    /* ── Ruleta circular real + panel lateral ── */
+    .roulette-layout{
+      display: grid;
+      grid-template-columns: minmax(300px, 1.15fr) minmax(260px, 0.85fr);
+      gap: 28px;
+      align-items: center;
+    }
+    .roulette-stage{
       position: relative;
-      width: min(260px, 70vw);
-      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      padding-top: 10px;
     }
-    .wheel-pointer{
+    .roulette-pointer{
       position: absolute;
-      top: -6px; left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-top: 16px solid var(--cas-accent);
-      z-index: 2;
+      top: 2px;
+      z-index: 5;
+      width: 34px;
+      height: 54px;
+      background: linear-gradient(180deg, #f8d878, #b7791f);
+      clip-path: polygon(50% 100%, 0 22%, 50% 0, 100% 22%);
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.28));
     }
-    #wheelSvg{
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    #wheelGroup{
-      transform-origin: 100px 100px;
+    .roulette-wheel{
+      --wsize: min(440px, 82vw);
+      width: var(--wsize);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 8px solid #d9a441;
+      background: conic-gradient(
+        #082b57 0deg 30deg,    #0f5fa8 30deg 60deg,
+        #082b57 60deg 90deg,   #0f5fa8 90deg 120deg,
+        #082b57 120deg 150deg, #0f5fa8 150deg 180deg,
+        #082b57 180deg 210deg, #0f5fa8 210deg 240deg,
+        #082b57 240deg 270deg, #0f5fa8 270deg 300deg,
+        #082b57 300deg 330deg, #0f5fa8 330deg 360deg
+      );
+      box-shadow:
+        0 25px 60px rgba(0,0,0,.32),
+        inset 0 0 26px rgba(0,0,0,.36);
+      position: relative;
       transition: transform 3s cubic-bezier(0.18, 0.85, 0.25, 1);
     }
+    .roulette-wheel::after{
+      content: "";
+      position: absolute;
+      inset: 42%;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f8d878, #b7791f);
+      box-shadow: 0 0 20px rgba(0,0,0,.34);
+    }
+    .roulette-label{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform:
+        rotate(var(--angle))
+        translateY(calc(var(--wsize) / -2 + 40px))
+        rotate(calc(-1 * var(--angle)));
+      transform-origin: center;
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      font-size: 0.66rem;
+      line-height: 1.15;
+      width: 84px;
+      margin-left: -42px;
+      margin-top: -10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.45);
+      pointer-events: none;
+    }
+    .roulette-side-panel{
+      border-radius: 24px;
+      background: rgba(255,255,255,0.90);
+      border: 1px solid rgba(217,164,65,.35);
+      box-shadow: 0 18px 45px rgba(15,23,42,.16);
+      padding: 20px;
+      text-align: left;
+    }
+    .side-title{
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--cas-accent);
+      margin: 0 0 10px;
+    }
+    .side-line{
+      font-size: 13.5px;
+      color: #475569;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+    .side-line strong{ color: #0f172a; }
+    .roulette-side-panel .btn-girar{ width: 100%; margin-bottom: 4px; }
+    .roulette-side-panel .wheel-result{ margin: 12px 0 0; padding: 14px; }
+    @media (max-width: 860px){
+      .roulette-layout{ grid-template-columns: 1fr; gap: 18px; }
+    }
     @media (prefers-reduced-motion: reduce){
-      #wheelGroup{ transition: none; }
+      .roulette-wheel{ transition: none; }
     }
 
     .btn-girar{
@@ -208,24 +283,41 @@
 
     <!-- Ruleta -->
     <section class="wheel-board casino-machine" aria-label="Ruleta simbólica">
-      <div class="wheel-wrap" aria-hidden="true">
-        <div class="wheel-pointer"></div>
-        <svg id="wheelSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <g id="wheelGroup"></g>
-          <circle cx="100" cy="100" r="16" fill="#0e2239"></circle>
-          <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
-        </svg>
-      </div>
-      <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
-    </section>
+      <div class="roulette-layout">
 
-    <!-- Resultado -->
-    <section class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
-      <p class="wheel-result-cat" id="resultCat"></p>
-      <p class="wheel-result-q" id="resultQ"></p>
-      <p class="wheel-action">
-        <strong>Elegí una acción de menos de cinco minutos:</strong> <span id="actionText"></span>
-      </p>
+        <div class="roulette-stage" aria-hidden="true">
+          <div class="roulette-pointer"></div>
+          <div class="roulette-wheel" id="wheelEl">
+            <span class="roulette-label" style="--angle:15deg">Sueño</span>
+            <span class="roulette-label" style="--angle:45deg">Energía</span>
+            <span class="roulette-label" style="--angle:75deg">Aislamiento</span>
+            <span class="roulette-label" style="--angle:105deg">Pensamientos negativos</span>
+            <span class="roulette-label" style="--angle:135deg">Autocuidado</span>
+            <span class="roulette-label" style="--angle:165deg">Actividad física</span>
+            <span class="roulette-label" style="--angle:195deg">Alimentación</span>
+            <span class="roulette-label" style="--angle:225deg">Pedido de ayuda</span>
+            <span class="roulette-label" style="--angle:255deg">Rutina</span>
+            <span class="roulette-label" style="--angle:285deg">Contacto social</span>
+            <span class="roulette-label" style="--angle:315deg">Exigencia interna</span>
+            <span class="roulette-label" style="--angle:345deg">Pequeño logro</span>
+          </div>
+        </div>
+
+        <div class="roulette-side-panel">
+          <p class="side-title">Tablero</p>
+          <p class="side-line">Últimos giros: <strong id="ultimosGiros">—</strong></p>
+          <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
+
+          <div class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
+            <p class="wheel-result-cat" id="resultCat"></p>
+            <p class="wheel-result-q" id="resultQ"></p>
+            <p class="wheel-action">
+              <strong>Elegí una acción de menos de cinco minutos:</strong> <span id="actionText"></span>
+            </p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- Recursos -->
@@ -298,27 +390,11 @@
       var N = CATEGORIAS.length;
       var SEG = 360 / N;
 
-      /* Construcción de la ruleta (12 sectores, dos tonos sobrios alternados) */
-      var group = document.getElementById('wheelGroup');
-      var colores = ["#16365c", "#9f1239"];
-      function polar(cx, cy, r, deg){
-        var rad = (deg - 90) * Math.PI / 180;
-        return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
-      }
-      for (var i = 0; i < N; i++){
-        var a0 = i * SEG, a1 = (i + 1) * SEG;
-        var p0 = polar(100, 100, 96, a0);
-        var p1 = polar(100, 100, 96, a1);
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d',
-          'M100,100 L' + p0[0].toFixed(2) + ',' + p0[1].toFixed(2) +
-          ' A96,96 0 0,1 ' + p1[0].toFixed(2) + ',' + p1[1].toFixed(2) + ' Z');
-        path.setAttribute('fill', colores[i % 2]);
-        path.setAttribute('opacity', i % 2 === 0 ? '0.92' : '0.85');
-        path.setAttribute('stroke', '#ffffff');
-        path.setAttribute('stroke-width', '1');
-        group.appendChild(path);
-      }
+      /* La ruleta es ahora un elemento circular CSS (conic-gradient) con
+         etiquetas posicionadas; se rota el elemento completo. */
+      var wheel = document.getElementById('wheelEl');
+      var ultimosGiros = document.getElementById('ultimosGiros');
+      var historiaGiros = [];
 
       var btn = document.getElementById('btnGirar');
       var resultBox = document.getElementById('resultBox');
@@ -339,6 +415,8 @@
         actionText.textContent = pick(ACCIONES);
         resultBox.hidden = false;
         btn.disabled = false;
+        historiaGiros.push(CATEGORIAS[idx].cat);
+        ultimosGiros.textContent = historiaGiros.slice(-3).join(' · ');
       }
 
       function girar(){
@@ -353,14 +431,14 @@
         var destino = rotacionActual + vueltas + (360 - centroSector) - (rotacionActual % 360);
 
         if (reduceMotion){
-          group.style.transform = 'rotate(' + destino + 'deg)';
+          wheel.style.transform = 'rotate(' + destino + 'deg)';
           rotacionActual = destino;
           mostrarResultado(idx);
           return;
         }
 
         rotacionActual = destino;
-        group.style.transform = 'rotate(' + destino + 'deg)';
+        wheel.style.transform = 'rotate(' + destino + 'deg)';
         setTimeout(function(){ mostrarResultado(idx); }, 3050);
       }
 

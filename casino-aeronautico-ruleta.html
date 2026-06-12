@@ -115,28 +115,106 @@
       font-size: 13.5px; color: #475569; margin: 0 0 14px;
     }
     .wheel-destino strong{ color: var(--caer-accent); }
-    .wheel-wrap{
+    /* ── Ruleta circular real + panel lateral ── */
+    .roulette-layout{
+      display: grid;
+      grid-template-columns: minmax(300px, 1.15fr) minmax(260px, 0.85fr);
+      gap: 28px;
+      align-items: center;
+    }
+    .roulette-stage{
       position: relative;
-      width: min(260px, 70vw);
-      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      padding-top: 10px;
     }
-    .wheel-pointer{
+    .roulette-pointer{
       position: absolute;
-      top: -6px; left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-top: 16px solid var(--caer-gold);
-      z-index: 2;
+      top: 2px;
+      z-index: 5;
+      width: 34px;
+      height: 54px;
+      background: linear-gradient(180deg, #f8d878, #b7791f);
+      clip-path: polygon(50% 100%, 0 22%, 50% 0, 100% 22%);
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.28));
     }
-    #wheelSvg{ display: block; width: 100%; height: auto; }
-    #wheelGroup{
-      transform-origin: 100px 100px;
+    .roulette-wheel{
+      --wsize: min(440px, 82vw);
+      width: var(--wsize);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 8px solid #d9a441;
+      background: conic-gradient(
+        #082b57 0deg 36deg,    #0f5fa8 36deg 72deg,
+        #082b57 72deg 108deg,  #0f5fa8 108deg 144deg,
+        #082b57 144deg 180deg, #0f5fa8 180deg 216deg,
+        #082b57 216deg 252deg, #0f5fa8 252deg 288deg,
+        #082b57 288deg 324deg, #0f5fa8 324deg 360deg
+      );
+      box-shadow:
+        0 25px 60px rgba(0,0,0,.32),
+        inset 0 0 26px rgba(0,0,0,.36);
+      position: relative;
       transition: transform 2.4s cubic-bezier(0.18, 0.85, 0.25, 1);
     }
+    .roulette-wheel::after{
+      content: "";
+      position: absolute;
+      inset: 42%;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f8d878, #b7791f);
+      box-shadow: 0 0 20px rgba(0,0,0,.34);
+    }
+    .roulette-label{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform:
+        rotate(var(--angle))
+        translateY(calc(var(--wsize) / -2 + 40px))
+        rotate(calc(-1 * var(--angle)));
+      transform-origin: center;
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      font-size: 0.72rem;
+      line-height: 1.15;
+      width: 90px;
+      margin-left: -45px;
+      margin-top: -10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.45);
+      pointer-events: none;
+    }
+    .roulette-side-panel{
+      border-radius: 24px;
+      background: rgba(255,255,255,0.90);
+      border: 1px solid rgba(217,164,65,.35);
+      box-shadow: 0 18px 45px rgba(15,23,42,.16);
+      padding: 20px;
+      text-align: left;
+    }
+    .side-title{
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--caer-accent);
+      margin: 0 0 10px;
+    }
+    .side-line{
+      font-size: 13.5px;
+      color: #475569;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+    .side-line strong{ color: #0f172a; }
+    .roulette-side-panel .btn-girar{ width: 100%; margin-bottom: 4px; }
+    .roulette-side-panel .wheel-result{ margin: 12px 0 0; padding: 14px; }
+    @media (max-width: 860px){
+      .roulette-layout{ grid-template-columns: 1fr; gap: 18px; }
+    }
     @media (prefers-reduced-motion: reduce){
-      #wheelGroup{ transition: none; }
+      .roulette-wheel{ transition: none; }
     }
 
     .btn-girar{
@@ -265,23 +343,38 @@
 
     <!-- Ruleta -->
     <section class="wheel-board casino-machine" id="wheelBoard" hidden aria-label="Ruleta de aeropuertos">
-      <p class="wheel-destino">Destino elegido: <strong id="destinoLabel"></strong> · Giro <span id="giroNum">0</span></p>
-      <div class="wheel-wrap" aria-hidden="true">
-        <div class="wheel-pointer"></div>
-        <svg id="wheelSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <g id="wheelGroup"></g>
-          <circle cx="100" cy="100" r="16" fill="#0e2239"></circle>
-          <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(14,34,57,0.25)" stroke-width="2"></circle>
-        </svg>
-      </div>
-      <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
-    </section>
+      <div class="roulette-layout">
 
-    <!-- Resultado -->
-    <section class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
-      <p class="wheel-result-where" id="resultWhere"></p>
-      <p class="wheel-result-main" id="resultMain"></p>
-      <p class="wheel-result-text" id="resultText"></p>
+        <div class="roulette-stage" aria-hidden="true">
+          <div class="roulette-pointer"></div>
+          <div class="roulette-wheel" id="wheelEl">
+            <span class="roulette-label" style="--angle:18deg">Ezeiza</span>
+            <span class="roulette-label" style="--angle:54deg">Aeroparque</span>
+            <span class="roulette-label" style="--angle:90deg">Córdoba</span>
+            <span class="roulette-label" style="--angle:126deg">Mendoza</span>
+            <span class="roulette-label" style="--angle:162deg">Bariloche</span>
+            <span class="roulette-label" style="--angle:198deg">Iguazú</span>
+            <span class="roulette-label" style="--angle:234deg">Salta</span>
+            <span class="roulette-label" style="--angle:270deg">Ushuaia</span>
+            <span class="roulette-label" style="--angle:306deg">Rosario</span>
+            <span class="roulette-label" style="--angle:342deg">Resistencia</span>
+          </div>
+        </div>
+
+        <div class="roulette-side-panel">
+          <p class="side-title">Plan de vuelo</p>
+          <p class="side-line">Aeropuerto elegido: <strong id="destinoLabel"></strong></p>
+          <p class="side-line">Giro: <strong id="giroNum">0</strong> · Últimos giros: <strong id="ultimosGiros">—</strong></p>
+          <button class="btn-girar casino-action-btn" id="btnGirar" type="button">Girar ruleta</button>
+
+          <div class="wheel-result casino-result-card" id="resultBox" hidden aria-live="polite">
+            <p class="wheel-result-where" id="resultWhere"></p>
+            <p class="wheel-result-main" id="resultMain"></p>
+            <p class="wheel-result-text" id="resultText"></p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- Recursos -->
@@ -348,27 +441,11 @@
       var N = AEROPUERTOS.length;
       var SEG = 360 / N;
 
-      /* Construcción de la ruleta (10 sectores, dos tonos sobrios alternados) */
-      var group = document.getElementById('wheelGroup');
-      var colores = ["#0c4a6e", "#16365c"];
-      function polar(cx, cy, r, deg){
-        var rad = (deg - 90) * Math.PI / 180;
-        return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
-      }
-      for (var i = 0; i < N; i++){
-        var a0 = i * SEG, a1 = (i + 1) * SEG;
-        var p0 = polar(100, 100, 96, a0);
-        var p1 = polar(100, 100, 96, a1);
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d',
-          'M100,100 L' + p0[0].toFixed(2) + ',' + p0[1].toFixed(2) +
-          ' A96,96 0 0,1 ' + p1[0].toFixed(2) + ',' + p1[1].toFixed(2) + ' Z');
-        path.setAttribute('fill', colores[i % 2]);
-        path.setAttribute('opacity', i % 2 === 0 ? '0.92' : '0.85');
-        path.setAttribute('stroke', '#ffffff');
-        path.setAttribute('stroke-width', '1');
-        group.appendChild(path);
-      }
+      /* La ruleta es ahora un elemento circular CSS (conic-gradient) con
+         etiquetas de aeropuertos; se rota el elemento completo. */
+      var wheel = document.getElementById('wheelEl');
+      var ultimosGiros = document.getElementById('ultimosGiros');
+      var historiaGiros = [];
 
       var destBoard = document.getElementById('destBoard');
       var destGrid = document.getElementById('destGrid');
@@ -426,6 +503,8 @@
         giroActual = 0;
         giroObjetivo = 4 + Math.floor(Math.random() * 4); /* 4 a 7 */
         esperaUsadas = [];
+        historiaGiros = [];
+        ultimosGiros.textContent = '—';
         destinoLabel.textContent = AEROPUERTOS[idx];
         giroNum.textContent = '0';
         wheelBoard.hidden = false;
@@ -446,6 +525,8 @@
 
       function mostrarResultado(idx){
         var esFinal = idx === destinoIdx;
+        historiaGiros.push(AEROPUERTOS[idx]);
+        ultimosGiros.textContent = historiaGiros.slice(-3).join(' · ');
         resultBox.classList.toggle('is-final', esFinal);
         resultWhere.textContent = 'La ruleta cayó en ' + AEROPUERTOS[idx];
         if (esFinal){
@@ -474,14 +555,14 @@
         var destino = rotacionActual + 3 * 360 + (360 - centroSector) - (rotacionActual % 360);
 
         if (reduceMotion){
-          group.style.transform = 'rotate(' + destino + 'deg)';
+          wheel.style.transform = 'rotate(' + destino + 'deg)';
           rotacionActual = destino;
           mostrarResultado(idx);
           return;
         }
 
         rotacionActual = destino;
-        group.style.transform = 'rotate(' + destino + 'deg)';
+        wheel.style.transform = 'rotate(' + destino + 'deg)';
         setTimeout(function(){ mostrarResultado(idx); }, 2450);
       }
 
