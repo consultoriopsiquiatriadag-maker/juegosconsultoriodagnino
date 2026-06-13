@@ -593,6 +593,33 @@
     @media (prefers-reduced-motion: reduce){
       .games-hero{ background: #0e2239; }
     }
+
+    /* == Zocalos Casino Premium ================================ */
+    .casino-zocalo{border-radius:24px;background:linear-gradient(160deg,#0b1929 0%,#0e2239 100%);border:1px solid rgba(217,164,65,0.38);padding:28px 24px;margin:28px 0 0;box-shadow:0 20px 56px rgba(8,16,32,0.26),inset 0 1px 0 rgba(255,255,255,0.04);}
+    .casino-zocalo-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px;}
+    .casino-zocalo-title{font-size:clamp(18px,4vw,22px);font-weight:800;color:#fff;margin:0 0 5px;letter-spacing:-0.2px;}
+    .casino-zocalo-sub{font-size:14px;color:rgba(255,255,255,0.60);margin:0;line-height:1.5;max-width:520px;}
+    .casino-zocalo-disclaimer{font-size:11.5px;font-weight:600;color:rgba(217,164,65,0.80);margin:0;line-height:1.4;padding:6px 13px;border:1px solid rgba(217,164,65,0.30);border-radius:8px;background:rgba(217,164,65,0.06);align-self:flex-start;flex-shrink:0;}
+    .casino-zocalo-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));}
+    .casino-game-card{display:flex;flex-direction:column;text-decoration:none;background:rgba(255,255,255,0.97);border:1px solid rgba(217,164,65,0.20);border-radius:18px;padding:18px;color:inherit;-webkit-tap-highlight-color:transparent;transition:transform 0.18s ease,box-shadow 0.18s ease;}
+    @media(hover:hover)and(pointer:fine){.casino-game-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,0.18),0 0 0 1.5px rgba(217,164,65,0.38);}.casino-game-card:active{transform:translateY(0);transition-duration:0.08s;}}
+    @media(hover:none){.casino-game-card:active{opacity:0.80;}}
+    .casino-game-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .casino-game-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .casino-game-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:3px 10px;border-radius:999px;}
+    .casino-game-title{font-size:16px;font-weight:700;color:#0e2239;margin:0 0 6px;line-height:1.3;}
+    .casino-game-desc{font-size:13.5px;color:#475569;margin:0 0 14px;line-height:1.5;font-weight:500;flex:1;}
+    .casino-game-btn{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:12px;font-size:13.5px;font-weight:700;color:#fff;width:100%;text-align:center;box-sizing:border-box;letter-spacing:0.15px;}
+    .casino-salud .casino-game-icon{background:rgba(159,18,57,0.08);border:1px solid rgba(159,18,57,0.18);}
+    .casino-salud .casino-game-icon svg{stroke:#9f1239;}
+    .casino-salud .casino-game-badge{color:#9f1239;background:rgba(159,18,57,0.10);}
+    .casino-salud .casino-game-btn{background:#9f1239;}
+    .casino-aero .casino-game-icon{background:rgba(12,74,110,0.08);border:1px solid rgba(12,74,110,0.18);}
+    .casino-aero .casino-game-icon svg{stroke:#0c4a6e;}
+    .casino-aero .casino-game-badge{color:#b45309;background:rgba(180,83,9,0.10);}
+    .casino-aero .casino-game-btn{background:#0c4a6e;}
+    @media(max-width:640px){.casino-zocalo{padding:20px 16px;border-radius:18px;}.casino-zocalo-disclaimer{font-size:11px;}.casino-game-title{font-size:15px;}.casino-game-desc{font-size:13px;}.casino-game-btn{font-size:13px;min-height:40px;}}
+    @media(prefers-reduced-motion:reduce){.casino-game-card{transition:none!important;}}
   </style>
 </head>
 
@@ -1511,114 +1538,86 @@
     </section>
 
     <!-- ── Casino de Salud Mental ───────────────────────── -->
-    <section class="section" aria-label="Casino de Salud Mental" id="sec-casino">
-      <div class="cat-section-header">
-        <span class="cat-section-title t-casino">Casino de Salud Mental</span>
+    <section class="casino-zocalo casino-salud" aria-label="Casino de Salud Mental" id="sec-casino">
+      <div class="casino-zocalo-header">
+        <div>
+          <h2 class="casino-zocalo-title">Casino de Salud Mental</h2>
+          <p class="casino-zocalo-sub">Tres juegos simbólicos para reconocer patrones de ansiedad, estado de ánimo e impulsividad. No hay apuestas: el objetivo es identificar señales y elegir una respuesta más saludable.</p>
+        </div>
+        <p class="casino-zocalo-disclaimer" role="note">Recursos psicoeducativos sin apuestas, dinero ni premios reales.</p>
       </div>
-      <p class="cat-section-desc">Juegos breves para reconocer señales emocionales y elegir respuestas más saludables.</p>
-      <p class="casino-intro-text">
-        Tres juegos simbólicos para reconocer patrones de ansiedad, estado de ánimo e impulsividad.
-        No hay apuestas ni premios: el objetivo es identificar señales y elegir una respuesta más saludable.
-      </p>
-      <p class="casino-disclaimer" role="note">
-        Estos juegos son recursos psicoeducativos. No implican apuestas, premios ni dinero real.
-        No reemplazan una consulta profesional ni están destinados a urgencias.
-      </p>
-      <div class="games-grid">
-
-        <a class="section-card card-hover card-link cat-cas" href="casino-ansiedad-slots.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1.5"></rect><rect x="9.5" y="6" width="5" height="12" rx="1.5"></rect><rect x="16" y="6" width="5" height="12" rx="1.5"></rect></svg></div>
-              <span class="game-cat-badge">Ansiedad</span>
-            </div>
-            <h3 class="game-title">Slots de la Ansiedad</h3>
-            <p class="game-desc">Reconocé cómo se combinan cuerpo, pensamiento y conducta cuando sube la ansiedad.</p>
-            <span class="game-cta">Ingresar →</span>
+      <div class="casino-zocalo-grid">
+        <a class="casino-game-card" href="casino-ansiedad-slots.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1.5"></rect><rect x="9.5" y="6" width="5" height="12" rx="1.5"></rect><rect x="16" y="6" width="5" height="12" rx="1.5"></rect></svg></div>
+            <span class="casino-game-badge">Ansiedad</span>
           </div>
+          <h3 class="casino-game-title">Slots de la Ansiedad</h3>
+          <p class="casino-game-desc">Reconocé cómo se combinan cuerpo, pensamiento y conducta cuando sube la ansiedad.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
-        <a class="section-card card-hover card-link cat-cas" href="casino-estado-animo-ruleta.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v9l6.5 6.5"></path><path d="M12 12L5.5 18.5"></path></svg></div>
-              <span class="game-cat-badge">Estado de ánimo</span>
-            </div>
-            <h3 class="game-title">Ruleta del Estado de Ánimo</h3>
-            <p class="game-desc">Explorá áreas que influyen en ánimo, energía, sueño, rutina y autocuidado.</p>
-            <span class="game-cta">Ingresar →</span>
+        <a class="casino-game-card" href="casino-estado-animo-ruleta.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v9l6.5 6.5"></path><path d="M12 12L5.5 18.5"></path></svg></div>
+            <span class="casino-game-badge">Estado de ánimo</span>
           </div>
+          <h3 class="casino-game-title">Ruleta del Estado de Ánimo</h3>
+          <p class="casino-game-desc">Explorá áreas que influyen en ánimo, energía, sueño, rutina y autocuidado.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
-        <a class="section-card card-hover card-link cat-cas" href="casino-impulsividad-bingo.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 10h16"></path><path d="M4 15.5h16"></path><path d="M10 4v16"></path><path d="M15.5 4v16"></path></svg></div>
-              <span class="game-cat-badge">Impulsividad</span>
-            </div>
-            <h3 class="game-title">Bingo de Impulsividad</h3>
-            <p class="game-desc">Marcá señales de activación y elegí una pausa antes de responder o actuar.</p>
-            <span class="game-cta">Ingresar →</span>
+        <a class="casino-game-card" href="casino-impulsividad-bingo.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 10h16"></path><path d="M4 15.5h16"></path><path d="M10 4v16"></path><path d="M15.5 4v16"></path></svg></div>
+            <span class="casino-game-badge">Impulsividad</span>
           </div>
+          <h3 class="casino-game-title">Bingo de Impulsividad</h3>
+          <p class="casino-game-desc">Marcá señales de activación y elegí una pausa antes de responder o actuar.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
       </div>
     </section>
 
     <!-- ── Casino Aeronáutico ───────────────────────────── -->
-    <section class="section" aria-label="Casino Aeronáutico" id="sec-casino-aero">
-      <div class="cat-section-header">
-        <span class="cat-section-title t-casino-aero">Casino Aeronáutico</span>
+    <section class="casino-zocalo casino-aero" aria-label="Casino Aeronáutico" id="sec-casino-aero">
+      <div class="casino-zocalo-header">
+        <div>
+          <h2 class="casino-zocalo-title">Casino Aeronáutico</h2>
+          <p class="casino-zocalo-sub">Tres juegos breves para trabajar el temor a volar desde una dinámica lúdica y psicoeducativa. Cada juego desbloquea frases de apoyo clínico.</p>
+        </div>
+        <p class="casino-zocalo-disclaimer" role="note">Recursos psicoeducativos sin apuestas, dinero ni premios reales.</p>
       </div>
-      <p class="cat-section-desc">Tres juegos breves para trabajar el temor a volar desde una dinámica lúdica y psicoeducativa.</p>
-      <p class="casino-intro-text">
-        Tres juegos simbólicos para trabajar el temor a volar desde una dinámica breve,
-        lúdica y psicoeducativa.
-      </p>
-      <p class="casino-disclaimer" role="note">
-        Estos juegos son recursos psicoeducativos. No implican apuestas, dinero ni premios reales.
-        Están pensados para acompañar el afrontamiento del temor a volar y no reemplazan una consulta profesional.
-      </p>
-      <div class="games-grid">
-
-        <a class="section-card card-hover card-link cat-caer" href="casino-aeronautico-slots.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1.5"></rect><rect x="9.5" y="6" width="5" height="12" rx="1.5"></rect><rect x="16" y="6" width="5" height="12" rx="1.5"></rect><path d="M3 12h18"></path></svg></div>
-              <span class="game-cat-badge">Temor a volar</span>
-            </div>
-            <h3 class="game-title">Slots de Aeropuertos</h3>
-            <p class="game-desc">Alineá tres aeropuertos iguales y descubrí una frase de ayuda para afrontar el temor a volar.</p>
-            <span class="game-cta">Ingresar →</span>
+      <div class="casino-zocalo-grid">
+        <a class="casino-game-card" href="casino-aeronautico-slots.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1.5"></rect><rect x="9.5" y="6" width="5" height="12" rx="1.5"></rect><rect x="16" y="6" width="5" height="12" rx="1.5"></rect><path d="M3 12h18"></path></svg></div>
+            <span class="casino-game-badge">Temor a volar</span>
           </div>
+          <h3 class="casino-game-title">Slots de Aeropuertos</h3>
+          <p class="casino-game-desc">Alineá tres aeropuertos iguales y descubrí una frase de ayuda para afrontar el temor a volar.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
-        <a class="section-card card-hover card-link cat-caer" href="casino-aeronautico-ruleta.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v9l6.5 6.5"></path><path d="M12 12L5.5 18.5"></path></svg></div>
-              <span class="game-cat-badge">Temor a volar</span>
-            </div>
-            <h3 class="game-title">Ruleta de Aeropuertos</h3>
-            <p class="game-desc">Elegí un aeropuerto, girá varias veces y entrená paciencia, espera e incertidumbre hasta llegar a destino.</p>
-            <span class="game-cta">Ingresar →</span>
+        <a class="casino-game-card" href="casino-aeronautico-ruleta.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v9l6.5 6.5"></path><path d="M12 12L5.5 18.5"></path></svg></div>
+            <span class="casino-game-badge">Temor a volar</span>
           </div>
+          <h3 class="casino-game-title">Ruleta de Aeropuertos</h3>
+          <p class="casino-game-desc">Elegí un aeropuerto, girá varias veces y entrená paciencia, espera e incertidumbre hasta llegar a destino.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
-        <a class="section-card card-hover card-link cat-caer" href="casino-aeronautico-bingo.html">
-          <div class="game-card-inner">
-            <div class="game-card-top">
-              <div class="game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e2239" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 10h16"></path><path d="M4 15.5h16"></path><path d="M10 4v16"></path><path d="M15.5 4v16"></path></svg></div>
-              <span class="game-cat-badge">Temor a volar</span>
-            </div>
-            <h3 class="game-title">Bingo Aeronáutico</h3>
-            <p class="game-desc">Completá líneas y cartón para desbloquear frases de apoyo y confianza frente al miedo a volar.</p>
-            <span class="game-cta">Ingresar →</span>
+        <a class="casino-game-card" href="casino-aeronautico-bingo.html">
+          <div class="casino-game-top">
+            <div class="casino-game-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 10h16"></path><path d="M4 15.5h16"></path><path d="M10 4v16"></path><path d="M15.5 4v16"></path></svg></div>
+            <span class="casino-game-badge">Temor a volar</span>
           </div>
+          <h3 class="casino-game-title">Bingo Aeronáutico</h3>
+          <p class="casino-game-desc">Completá líneas y cartón para desbloquear frases de apoyo y confianza frente al miedo a volar.</p>
+          <span class="casino-game-btn">Ingresar</span>
         </a>
-
       </div>
     </section>
+
+    
 
     <!-- ── Cómo usar estos juegos ───────────────────────── -->
     <section class="section" aria-label="Cómo usar estos juegos">
