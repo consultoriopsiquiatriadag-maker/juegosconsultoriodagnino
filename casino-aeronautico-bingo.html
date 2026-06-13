@@ -111,36 +111,119 @@
       text-align: center;
     }
 
+    /* ── Layout cartón + panel lateral ── */
+    .bingo-layout{
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(250px, 0.55fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .bingo-card{
+      border-radius: 28px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #eff6ff);
+      border: 1px solid rgba(217,164,65,.42);
+      box-shadow: 0 24px 60px rgba(0,0,0,.22);
+    }
+    .bingo-banner{
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .bingo-banner span{
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #0f5fa8, #052f66);
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.35rem;
+      box-shadow: inset 0 0 16px rgba(255,255,255,.12);
+    }
     .bingo-grid{
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
-      max-width: 420px;
-      margin: 0 auto 16px;
     }
     .bingo-cell{
       aspect-ratio: 1 / 1;
       min-height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px solid rgba(12,74,110,0.18);
-      border-radius: 12px;
-      background: #f8fafc;
-      color: #0f172a;
-      font-size: 19px;
-      font-weight: 700;
-      transition: background .14s ease, border-color .14s ease, color .14s ease;
+      border-radius: 16px;
+      border: 1px solid rgba(14, 116, 144, 0.26);
+      background: rgba(255,255,255,.88);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 8px;
+      color: #08224a;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: inset 0 -8px 18px rgba(15,23,42,.05);
+      transition: background .14s ease, border-color .14s ease, color .14s ease, box-shadow .14s ease;
     }
     .bingo-cell.is-marked{
-      background: var(--caer-accent);
-      border-color: var(--caer-accent);
       color: #fff;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.32), transparent 28%),
+        linear-gradient(180deg, #0891b2, #075985);
+      border-color: rgba(125, 211, 252, 0.78);
+      box-shadow:
+        0 0 18px rgba(76, 201, 240, 0.28),
+        inset 0 0 16px rgba(255,255,255,0.14);
     }
     .bingo-cell.in-line{
-      background: var(--caer-gold);
-      border-color: var(--caer-gold);
       color: #fff;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.32), transparent 28%),
+        linear-gradient(180deg, #d9a441, #92611a);
+      border-color: rgba(248, 216, 120, 0.85);
+      box-shadow:
+        0 0 18px rgba(217, 164, 65, 0.38),
+        inset 0 0 16px rgba(255,255,255,0.16);
+    }
+    .bingo-side-panel{
+      border-radius: 24px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(147,197,253,.42);
+      padding: 18px;
+      box-shadow: 0 18px 45px rgba(15,23,42,.14);
+      text-align: left;
+    }
+    .side-title{
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--caer-accent);
+      margin: 0 0 10px;
+    }
+    .drawn-numbers{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 14px;
+      min-height: 42px;
+    }
+    .drawn-number{
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #082b57;
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(8,43,87,.28);
+    }
+    .bingo-side-panel .bingo-controls{ flex-direction: column; }
+    .bingo-side-panel .btn-sortear,
+    .bingo-side-panel .btn-nuevo{ width: 100%; }
+    .bingo-side-panel .bingo-result{ margin: 14px 0 0; padding: 14px; }
+    @media (max-width: 860px){
+      .bingo-layout{ grid-template-columns: 1fr; gap: 16px; }
+      .bingo-cell{ font-size: 17px; border-radius: 12px; }
     }
     @media (prefers-reduced-motion: reduce){
       .bingo-cell{ transition: none; }
