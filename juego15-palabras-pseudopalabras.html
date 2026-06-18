@@ -6,6 +6,7 @@
   <title>Juego 15 · Palabras vs pseudopalabras — Sala de espera virtual</title>
   <meta name="description" content="Decisión léxica: decidí rápido si lo que ves es una palabra real o una pseudopalabra. Puntaje, racha y registro copiable." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <meta name="theme-color" content="#0e2239" />
 
   <style>
@@ -158,11 +159,11 @@
   </style>
 </head>
 
-<body>
+<body class="gs-scope">
   <header class="topbar" role="banner">
     <div class="wrap topbar-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">🧾</div>
+        <div class="logo" aria-hidden="true"><img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;"></div>
         <div class="brand-text" style="min-width:0">
           <div class="brand-title">Sala de espera virtual</div>
           <div class="brand-sub">Juego 15 · Palabras vs pseudopalabras</div>
@@ -172,13 +173,13 @@
         <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
         <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
         <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
-        <span class="pill" id="pillMode" title="Configuración actual">🎛️</span>
+        <span class="pill" id="pillMode" title="Configuración actual">—</span>
       </div>
     </div>
   </header>
 
   <main class="wrap game-shell">
-    <section class="section-card">
+    <section class="section-card game-card">
       <div class="game-head">
         <div>
           <h1 class="card-title" style="margin:0">Palabras vs pseudopalabras</h1>
@@ -186,10 +187,16 @@
             Decisión léxica: decidí rápido si el estímulo es una <b>palabra real</b> o una <b>pseudopalabra</b> (parece palabra, pero no existe).
           </p>
         </div>
-        <div class="row">
-          <button class="btn-primary" id="btnStart" type="button">Iniciar</button>
-          <button class="btn btn-ghost" id="btnStop" type="button" disabled>Terminar</button>
+        <div class="row game-actions">
+          <button class="btn-primary game-btn game-btn-primary" id="btnStart" type="button">Iniciar</button>
+          <button class="btn btn-ghost game-btn" id="btnStop" type="button" disabled>Terminar</button>
         </div>
+      </div>
+
+      <div class="game-status-group" style="margin-top:10px;">
+        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+        <span class="game-chip" id="scorePill">Puntaje: 0</span>
+        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
       </div>
 
       <div class="kpiwrap" aria-label="Indicadores">
@@ -217,7 +224,7 @@
 
       <div class="stage">
         <div>
-          <div class="prompt-box" aria-live="polite">
+          <div class="prompt-box game-card" aria-live="polite">
             <div>
               <p class="subline" id="hintLine">Configurá y presioná <b>Iniciar</b>.</p>
               <h2 class="stim" id="stim">—</h2>
@@ -229,8 +236,8 @@
 
             <div>
               <div class="choices" aria-label="Respuestas">
-                <button class="choice" id="btnWord" type="button" disabled>✅ Palabra</button>
-                <button class="choice" id="btnNon" type="button" disabled>🚫 No palabra</button>
+                <button class="choice" id="btnWord" type="button" disabled>Palabra</button>
+                <button class="choice" id="btnNon" type="button" disabled>No palabra</button>
               </div>
 
               <div class="status" id="status">
@@ -244,7 +251,7 @@
           </div>
         </div>
 
-        <aside class="section-card" style="margin:0">
+        <aside class="section-card game-card" style="margin:0">
           <h2 class="card-title" style="margin:0">Configuración</h2>
           <p class="card-sub" style="margin-top:6px">Ajustá antes de iniciar.</p>
 
@@ -276,10 +283,12 @@
 
           <div class="result-box" id="resultBox" style="display:none">
             <h3 class="card-title" style="margin:0">Resultado</h3>
+            <div id="resMedal" class="game-medal" style="margin:8px 0; display:none;"></div>
             <p class="card-sub" id="resultText" style="margin-top:8px"></p>
-            <div class="row" style="margin-top:10px">
-              <button class="btn" id="btnCopy" type="button">Copiar</button>
-              <button class="btn btn-ghost" id="btnRestart" type="button">Reiniciar</button>
+            <div class="game-result-stats" id="resStats" style="margin-top:10px"></div>
+            <div class="row game-actions" style="margin-top:10px">
+              <button class="btn game-btn" id="btnCopy" type="button">Copiar</button>
+              <button class="btn btn-ghost game-btn" id="btnRestart" type="button">Reiniciar</button>
             </div>
           </div>
         </aside>
@@ -287,6 +296,8 @@
 
     </section>
   </main>
+
+  <script src="assets/js/gamification.js"></script>
 
   <script>
     // Accesibilidad: tamaño de texto (persistente)
@@ -328,6 +339,28 @@
     const resultText= $("resultText");
     const btnCopy = $("btnCopy");
     const btnRestart = $("btnRestart");
+
+    const resMedal = $("resMedal");
+    const resStats = $("resStats");
+    const gpLevelPill = $("gpLevelPill");
+    const scorePill = $("scorePill");
+    const streakPill = $("streakPill");
+
+    let session = null;
+    function startSession(){
+      session = window.GP.createSession({ messages: window.GP.neutralMessages });
+      updateGPChips();
+    }
+    function updateGPChips(){
+      const s = session.state;
+      gpLevelPill.textContent = s.level.name;
+      scorePill.textContent = "Puntaje: " + s.score;
+      streakPill.textContent = "Racha: " + s.streak;
+    }
+    function pulseStreak(){
+      streakPill.classList.add("is-up");
+      setTimeout(()=> streakPill.classList.remove("is-up"), 500);
+    }
 
     // === Bancos (tamaño moderado; podés ampliar después) ===
     const WORDS = [
@@ -385,7 +418,7 @@
       const d = diffSel.value==="easy"?"Fácil":diffSel.value==="hard"?"Difícil":"Normal";
       const t = parseInt(timeSel.value,10);
       const tt = t===0?"∞":(t/1000).toFixed(1)+"s";
-      pillMode.textContent = `🎛️ ${d} · ${trialsNum.value} ítems · ${tt}`;
+      pillMode.textContent = `${d} · ${trialsNum.value} ítems · ${tt}`;
       pillMode.title = `Dificultad: ${d} | Ítems: ${trialsNum.value} | Tiempo/ítem: ${tt}`;
     }
     ["change","input"].forEach(ev=>{
@@ -476,17 +509,21 @@
 
       if(correct){
         ok++; streak++;
+        session.registerHit(2);
+        pulseStreak();
         if(ans){ btnWord.classList.add("good"); } else { btnNon.classList.add("good"); }
-        statusEl.innerHTML = `✅ <b>Correcto</b> · ${Math.round(rt)} ms`;
+        statusEl.innerHTML = `<b>Correcto</b> · ${Math.round(rt)} ms`;
       }else{
         bad++; streak=0;
+        session.registerMiss(0);
         if(isTimeout){
-          statusEl.innerHTML = `⏱️ <b>Tiempo</b> · era ${cur.isWord?"<b>PALABRA</b>":"<b>NO PALABRA</b>"}`;
+          statusEl.innerHTML = `<b>Tiempo</b> · era ${cur.isWord?"<b>PALABRA</b>":"<b>NO PALABRA</b>"}`;
         }else{
           if(ans){ btnWord.classList.add("bad"); } else { btnNon.classList.add("bad"); }
-          statusEl.innerHTML = `❌ <b>Incorrecto</b> · era ${cur.isWord?"<b>PALABRA</b>":"<b>NO PALABRA</b>"}`;
+          statusEl.innerHTML = `<b>Incorrecto</b> · era ${cur.isWord?"<b>PALABRA</b>":"<b>NO PALABRA</b>"}`;
         }
       }
+      updateGPChips();
 
       if(rt!==null) rts.push(rt);
 
@@ -510,6 +547,8 @@
 
     function start(){
       resultBox.style.display="none";
+      resMedal.style.display="none";
+      resStats.innerHTML = "";
       trials = clamp(parseInt(trialsNum.value,10)||30, 10, 60);
       perItem = parseInt(timeSel.value,10) || 0;
       idx=0; ok=0; bad=0; streak=0; rts=[];
@@ -518,6 +557,7 @@
       setEnabled(true);
       btnWord.disabled = false;
       btnNon.disabled = false;
+      startSession();
       next();
     }
 
@@ -526,7 +566,7 @@
       state="ended";
       setEnabled(false);
       stopTimer();
-      stimEl.textContent = "✓";
+      stimEl.textContent = "Fin";
       hintLine.textContent = "Juego finalizado.";
       btnWord.disabled = true;
       btnNon.disabled = true;
@@ -541,7 +581,18 @@
       const txt = `Resultado: ${level}. Aciertos: ${ok}/${trials} (${Math.round(acc*100)}%). Errores: ${bad}. Tiempo medio: ${avg?Math.round(avg):"—"} ms.`;
       resultText.textContent = txt;
       resultBox.style.display="block";
-      statusEl.innerHTML = `📌 <b>${level}</b> · Podés probar otra dificultad o bajar el tiempo por ítem.`;
+      statusEl.innerHTML = `<b>${level}</b> · Podés probar otra dificultad o bajar el tiempo por ítem.`;
+
+      const summary = session.summary();
+      const medal = summary.medal;
+      resMedal.className = `game-medal game-medal-${medal.id}`;
+      resMedal.textContent = medal.name;
+      resMedal.style.display = "inline-flex";
+      resStats.innerHTML = `
+        <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+        <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      `;
+
       updateKPIs();
     }
 
@@ -557,7 +608,10 @@
       statusEl.innerHTML = '<span class="muted">Tip:</span> respondé por intuición (sin “pensar demasiado”).';
       kpiItem.textContent="—"; kpiOk.textContent="—"; kpiBad.textContent="—"; kpiRT.textContent="—"; kpiStreak.textContent="—";
       resultBox.style.display="none";
+      resMedal.style.display="none";
+      resStats.innerHTML = "";
       updatePill();
+      startSession();
     });
 
     btnCopy.addEventListener("click", async ()=>{
@@ -567,9 +621,9 @@
       const text = `Juego 15 · Palabras/pseudopalabras | Dif: ${d} | Aciertos: ${ok}/${trials} (${Math.round(acc*100)}%) | Errores: ${bad} | RT medio: ${avg?Math.round(avg):"—"} ms`;
       try{
         await navigator.clipboard.writeText(text);
-        statusEl.innerHTML = "✅ Copiado al portapapeles.";
+        statusEl.innerHTML = "Copiado al portapapeles.";
       }catch(e){
-        statusEl.innerHTML = "⚠️ No se pudo copiar automáticamente.";
+        statusEl.innerHTML = "No se pudo copiar automáticamente.";
       }
     });
 
@@ -578,6 +632,7 @@
     btnWord.disabled = true;
     btnNon.disabled  = true;
     updateKPIs();
+    startSession();
   </script>
 </body>
 </html>

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -191,7 +192,7 @@
     footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
   </style>
 </head>
-<body>
+<body class="gs-scope">
 
 <header class="topbar" role="banner">
   <div>
@@ -201,11 +202,16 @@
   <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
+<main class="game-shell">
+
+  <div class="game-status-group" style="margin-bottom:14px; justify-content:center;">
+    <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+    <span class="game-chip" id="scorePill">Puntaje: 0</span>
+    <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+  </div>
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active card">
-    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">🔤</div>
+  <div id="screen-intro" class="screen active card game-card">
     <h1>Palabras inversas</h1>
     <p class="subtitle">Memoria de trabajo fonológica — Juego 23</p>
     <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
@@ -214,12 +220,12 @@
       <li>10 palabras por partida, de dificultad creciente. Sin cronómetro.</li>
     </ul>
     <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
     </div>
   </div>
 
   <!-- GAME -->
-  <div id="screen-game" class="screen card">
+  <div id="screen-game" class="screen card game-card">
     <div class="prog-wrap">
       <div class="prog-header">
         <span class="prog-label" id="prog-label">Palabra 1 de 10</span>
@@ -241,23 +247,24 @@
     <div class="fb-wrap" id="fb-wrap"></div>
 
     <div style="display:none; text-align:right;" id="next-wrap">
-      <button class="btn btn-primary" id="btn-next" aria-label="Siguiente palabra">Siguiente →</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next" aria-label="Siguiente palabra">Siguiente →</button>
     </div>
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card result-center">
-    <div class="result-icon" id="res-icon" aria-hidden="true">🌟</div>
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
     <div class="result-title" id="res-title">¡Ejercicio completado!</div>
     <div class="result-sub"  id="res-sub"></div>
     <div class="score-box">
       <div class="snum"   id="res-num">10</div>
       <div class="slabel" id="res-lbl">respuestas correctas de 10</div>
     </div>
+    <div class="game-result-stats" id="res-gp-stats" style="margin-bottom:16px;"></div>
     <ul class="detail-list" id="detail-list"></ul>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="btn-row game-actions">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
     </div>
   </div>
 
@@ -267,6 +274,7 @@
   Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
 </footer>
 
+<script src="assets/js/gamification.js"></script>
 <script>
 (function () {
   'use strict';
@@ -300,6 +308,26 @@
   let results = []; // {word, correct, chosen}
 
   const $ = id => document.getElementById(id);
+
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    const pill = $('streakPill');
+    pill.classList.add('is-up');
+    setTimeout(() => pill.classList.remove('is-up'), 500);
+  }
 
   function reverse(s) {
     return s.split('').reverse().join('');
@@ -428,9 +456,13 @@
     if (isCorrect) {
       score++;
       btn.classList.add('correct');
+      session.registerHit(2);
+      pulseStreak();
     } else {
       btn.classList.add('wrong');
+      session.registerMiss(0);
     }
+    updateGPChips();
 
     results.push({ word, correct, chosen, isCorrect });
 
@@ -440,7 +472,7 @@
     fbBox.className = `fb-box ${isCorrect ? 'ok' : 'err'}`;
 
     if (isCorrect) {
-      fbBox.textContent = `✓ ¡Correcto! ${word} al revés es ${correct}.`;
+      fbBox.textContent = `¡Correcto! ${word} al revés es ${correct}.`;
     } else {
       fbBox.textContent = `La respuesta correcta era: ${correct}`;
       // Show letter-by-letter reveal
@@ -480,11 +512,20 @@
     $('res-lbl').textContent = `respuestas correctas de ${total}`;
 
     const pct = score / total;
-    $('res-icon').textContent  = pct === 1 ? '🏆' : pct >= .7 ? '🌟' : pct >= .5 ? '✈️' : '🛫';
     $('res-title').textContent = pct === 1 ? '¡Fonología perfecta!' : pct >= .7 ? '¡Excelente!' : pct >= .5 ? '¡Buen ejercicio!' : '¡Seguí practicando!';
     $('res-sub').textContent   = pct === 1
       ? 'Tu bucle fonológico está en pleno vuelo. ¡Perfecto!'
       : `Acertaste ${score} de ${total} palabras. Cada práctica entrena la flexibilidad cognitiva.`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+    `;
 
     // Detail list
     const list = $('detail-list');
@@ -492,7 +533,7 @@
     results.forEach(r => {
       const li = document.createElement('li');
       li.innerHTML = `
-        <span class="det-icon">${r.isCorrect ? '✅' : '❌'}</span>
+        <span class="det-icon" style="font-weight:700; color:${r.isCorrect ? '#065f46' : '#991b1b'}">${r.isCorrect ? 'OK' : 'X'}</span>
         <span class="det-word">${r.word}</span>
         <span style="color:var(--muted)">→ reverso:</span>
         <span style="font-weight:700; color:${r.isCorrect ? '#065f46' : '#0e6cc4'}">${r.correct}</span>
@@ -508,12 +549,15 @@
     currentIdx = 0;
     results = [];
     wordQueue = buildWordQueue();
+    startSession();
     loadWord(0);
     showScreen('screen-game');
   }
 
   $('btn-start').addEventListener('click', startGame);
   $('btn-again').addEventListener('click', startGame);
+
+  startSession();
 
 })();
 </script>

@@ -6,6 +6,7 @@
   <title>Juego · Categorías semánticas — Sala de espera virtual</title>
   <meta name="description" content="Juego breve de categorización semántica: elegí la categoría correcta para cada palabra." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <meta name="theme-color" content="#0e2239" />
   <style>
     .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
@@ -48,11 +49,11 @@
     html{ font-size: var(--scale); }
   </style>
 </head>
-<body>
+<body class="gs-scope">
   <header class="topbar" role="banner">
     <div class="wrap topbar-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">🧠</div>
+        <div class="logo" aria-hidden="true"><img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;"></div>
         <div class="brand-text" style="min-width:0">
           <div class="brand-title">Sala de espera virtual</div>
           <div class="brand-sub">Juego · Categorías semánticas</div>
@@ -68,7 +69,7 @@
 
   <main class="wrap game-shell">
     <section class="section">
-      <div class="section-card hint-bg">
+      <div class="section-card hint-bg game-card">
         <div class="game-head">
           <div>
             <h1 class="card-title" style="margin:0">Categorías semánticas</h1>
@@ -76,16 +77,22 @@
               Elegí la categoría correcta para cada palabra. Entrenamiento breve de <b>categorización semántica</b> (memoria de conocimiento).
             </p>
           </div>
-          <div class="row">
-            <button class="btn btn-primary" id="btnStart" type="button">▶ Iniciar</button>
-            <button class="btn" id="btnRestart" type="button" hidden>↻ Reiniciar</button>
+          <div class="row game-actions">
+            <button class="btn btn-primary game-btn game-btn-primary" id="btnStart" type="button">Iniciar</button>
+            <button class="btn game-btn" id="btnRestart" type="button" hidden>Reiniciar</button>
           </div>
+        </div>
+
+        <div class="game-status-group" style="margin-top:10px;">
+          <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="game-chip" id="scorePill">Puntaje: 0</span>
+          <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
         </div>
 
         <div class="divider" aria-hidden="true"></div>
 
         <div class="stage" aria-label="Área de juego">
-          <div class="section-card" style="margin:0">
+          <div class="section-card game-card" style="margin:0">
             <div class="row" style="justify-content:space-between">
               <div class="kpiwrap">
                 <div class="kpi">
@@ -118,7 +125,7 @@
             <div class="toast" id="toast" role="status" aria-live="polite"></div>
           </div>
 
-          <aside class="section-card" style="margin:0">
+          <aside class="section-card game-card" style="margin:0">
             <h2 class="card-title" style="margin-top:0">Configuración</h2>
             <div class="form" style="margin-top:10px">
               <div class="field">
@@ -158,11 +165,13 @@
             <div class="divider" aria-hidden="true"></div>
 
             <h2 class="card-title" style="margin-top:0">Resultados</h2>
+            <div id="resMedal" class="game-medal" style="margin:8px 0; display:none;"></div>
             <p class="card-sub" id="resultText">Iniciá el juego para ver resultados.</p>
+            <div class="game-result-stats" id="resStats" style="margin-top:10px"></div>
 
             <div class="row" style="margin-top:10px">
-              <button class="btn" id="btnCopy" type="button" disabled>Copiar resumen</button>
-              <a class="btn" href="turnos.html" data-spa="0">Central de Turnos</a>
+              <button class="btn game-btn" id="btnCopy" type="button" disabled>Copiar resumen</button>
+              <a class="btn game-btn" href="turnos.html" data-spa="0">Central de Turnos</a>
             </div>
 
             <div class="note" style="margin-top:12px">
@@ -174,6 +183,7 @@
     </section>
   </main>
 
+  <script src="assets/js/gamification.js"></script>
   <script>
     // Accesibilidad: tamaño de texto (persistente)
     (function(){
@@ -226,11 +236,32 @@
       kpiStreak: document.getElementById("kpiStreak"),
       timeBar: document.getElementById("timeBar"),
       resultText: document.getElementById("resultText"),
+      resMedal: document.getElementById("resMedal"),
+      resStats: document.getElementById("resStats"),
+      gpLevelPill: document.getElementById("gpLevelPill"),
+      scorePill: document.getElementById("scorePill"),
+      streakPill: document.getElementById("streakPill"),
     };
 
     let state = null;
     let timer = null;
     let tStart = 0;
+    let session = null;
+
+    function startSession(){
+      session = window.GP.createSession({ messages: window.GP.neutralMessages });
+      updateGPChips();
+    }
+    function updateGPChips(){
+      const s = session.state;
+      els.gpLevelPill.textContent = s.level.name;
+      els.scorePill.textContent = "Puntaje: " + s.score;
+      els.streakPill.textContent = "Racha: " + s.streak;
+    }
+    function pulseStreak(){
+      els.streakPill.classList.add("is-up");
+      setTimeout(()=> els.streakPill.classList.remove("is-up"), 500);
+    }
 
     function shuffle(arr){
       const a = arr.slice();
@@ -334,12 +365,16 @@
         state.correct += 1;
         state.streak += 1;
         state.bestStreak = Math.max(state.bestStreak, state.streak);
-        setToast("ok", "✅ Correcto");
+        setToast("ok", "Correcto");
+        session.registerHit(2);
+        pulseStreak();
       }else{
         state.streak = 0;
-        const why = isTimeout ? "⏱️ Tiempo" : "❌ Incorrecto";
+        const why = isTimeout ? "Tiempo" : "Incorrecto";
         setToast("bad", `${why}. Era: ${it.correctCat}`);
+        session.registerMiss(0);
       }
+      updateGPChips();
       updateKpis();
       setTimeout(renderQuestion, 320);
     }
@@ -357,6 +392,16 @@
       els.restart.hidden = false;
       els.start.disabled = false;
       state.summary = sum;
+
+      const summary = session.summary();
+      const medal = summary.medal;
+      els.resMedal.className = `game-medal game-medal-${medal.id}`;
+      els.resMedal.textContent = medal.name;
+      els.resMedal.style.display = "inline-flex";
+      els.resStats.innerHTML = `
+        <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+        <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      `;
     }
 
     function startGame(){
@@ -366,9 +411,12 @@
       els.kpiOk.textContent = "0";
       els.kpiStreak.textContent = "0";
       els.resultText.textContent = "Jugando…";
+      els.resMedal.style.display = "none";
+      els.resStats.innerHTML = "";
       els.copy.disabled = true;
       els.start.disabled = true;
       els.restart.hidden = true;
+      startSession();
       renderQuestion();
     }
 
@@ -379,7 +427,7 @@
       if(!state || !state.summary) return;
       try{
         await navigator.clipboard.writeText(state.summary);
-        setToast("ok", "📋 Copiado");
+        setToast("ok", "Copiado");
       }catch(e){
         const ta = document.createElement("textarea");
         ta.value = state.summary;
@@ -387,9 +435,11 @@
         ta.select();
         document.execCommand("copy");
         document.body.removeChild(ta);
-        setToast("ok", "📋 Copiado");
+        setToast("ok", "Copiado");
       }
     });
+
+    startSession();
   </script>
 </body>
 </html>
