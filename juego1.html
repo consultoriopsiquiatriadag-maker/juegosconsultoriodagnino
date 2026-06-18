@@ -62,7 +62,7 @@
         <!-- Botón de sonido (se muestra solo si el navegador bloquea autoplay) -->
         <button id="soundBtn" type="button" style="display:none"
           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          🔊 Activar sonido
+          Activar sonido
         </button>
 
         <a href="juegos.html"
@@ -102,7 +102,13 @@
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100 game-chip"
                   id="catPill">Categoría de hoy: —</span>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100 game-chip"
-                  id="lvlPill">Nivel: Medio</span>
+                  id="lvlPill">Dificultad: Medio</span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100 game-chip"
+                  id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100 game-chip"
+                  id="scorePill">Puntaje: 0</span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border border-gray-100 game-chip game-streak"
+                  id="streakPill">Racha: 0</span>
           </div>
 
           <button id="finishEarly" type="button"
@@ -136,7 +142,7 @@
         <div id="options" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6"></div>
 
         <!-- Resultado -->
-        <div id="result" class="hidden mt-5 rounded-2xl border border-gray-100 bg-inst-light p-5"></div>
+        <div id="result" class="hidden mt-5 game-result-card"></div>
 
         <!-- Acciones -->
         <div class="flex flex-wrap gap-2 mt-6 game-actions">
@@ -207,6 +213,9 @@
   <!-- Audio -->
   <audio id="audioGracias" preload="auto" src="gracias.mp3"></audio>
   <audio id="audioPremio" preload="auto" src="premio_excelente.mp3"></audio>
+
+  <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+  <script src="assets/js/gamification.js"></script>
 
 <script>
 /* =========================================================
@@ -335,6 +344,9 @@ let totalOptions = LEVELS[levelKey].total;
 let correctCountInGrid = LEVELS[levelKey].correctPool;
 
 const lvlPill = document.getElementById("lvlPill");
+const gpLevelPill = document.getElementById("gpLevelPill");
+const scorePill = document.getElementById("scorePill");
+const streakPill = document.getElementById("streakPill");
 const kpi = document.getElementById("kpi");
 const optionsBox = document.getElementById("options");
 const resultBox = document.getElementById("result");
@@ -343,9 +355,10 @@ let hits = 0;
 let selected = new Set();
 let correctInThisGame = new Set();
 let finished = false;
+let session = null;
 
 function setLevelUI(){
-  lvlPill.textContent = "Nivel: " + LEVELS[levelKey].name;
+  lvlPill.textContent = "Dificultad: " + LEVELS[levelKey].name;
 
   document.querySelectorAll(".levelBtn").forEach(b=>{
     const isActive = b.dataset.level === levelKey;
@@ -353,6 +366,13 @@ function setLevelUI(){
     b.classList.toggle("bg-white", isActive);
     b.classList.toggle("bg-inst-light", !isActive);
   });
+}
+
+function updateGPChips(){
+  const s = session.state;
+  gpLevelPill.textContent = s.level.name;
+  scorePill.textContent = "Puntaje: " + s.score;
+  streakPill.textContent = "Racha: " + s.streak;
 }
 
 function updateKPI(){
@@ -394,23 +414,18 @@ function lockOptions(){
   document.querySelectorAll(".option").forEach(o=>o.classList.add("pointer-events-none"));
 }
 
-function showResultSuccess(){
+function renderResult(title, message){
+  const summary = session.summary();
+  const medal = summary.medal;
   resultBox.classList.remove("hidden");
   resultBox.innerHTML = `
-    <h3 class="text-lg font-extrabold text-green-700">✨ Objetivo alcanzado</h3>
-    <div class="text-inst-gray mt-2 leading-relaxed">
-      Muchas gracias por participar en nuestra sala de espera virtual.
-      <br>Tu premio simbólico se reproducirá a continuación.
-    </div>
-  `;
-}
-
-function showResultThanks(){
-  resultBox.classList.remove("hidden");
-  resultBox.innerHTML = `
-    <h3 class="text-lg font-extrabold text-inst-navy">✅ Muchas gracias por participar</h3>
-    <div class="text-inst-gray mt-2 leading-relaxed">
-      Podés volver a la sala de espera virtual cuando quieras.
+    <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
+    <h3 class="game-result-title mt-3">${title}</h3>
+    <p class="game-result-message">${message}</p>
+    <div class="game-result-stats">
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
     </div>
   `;
 }
@@ -421,7 +436,7 @@ async function finish(success){
   lockOptions();
 
   if(success){
-    showResultSuccess();
+    renderResult("Objetivo alcanzado", session.summary().message);
     const started = await playSafe(audioPremio);
 
     // Si no pudo iniciar el audio (bloqueo), NO desbloqueamos juego 2.
@@ -434,7 +449,7 @@ async function finish(success){
       `;
     }
   }else{
-    showResultThanks();
+    renderResult("Ejercicio finalizado", "Podés volver a la sala de espera virtual cuando quieras.");
     await playSafe(audioGracias);
   }
 }
@@ -447,13 +462,18 @@ function selectWord(word, el){
 
   if(correctInThisGame.has(word)){
     hits++;
-    el.classList.add("border-green-200","bg-green-50","text-green-800");
+    el.classList.add("border-green-200","bg-green-50","text-green-800","game-feedback-ok");
+    session.registerHit(2);
+    streakPill.classList.add("is-up");
+    setTimeout(()=>streakPill.classList.remove("is-up"), 500);
   }else{
-    el.classList.add("opacity-50");
+    el.classList.add("opacity-50","game-feedback-retry");
+    session.registerMiss(0);
   }
 
   el.classList.add("pointer-events-none");
   updateKPI();
+  updateGPChips();
 
   if(hits >= target){
     finish(true);
@@ -464,9 +484,11 @@ function startNewGame(){
   hits = 0;
   selected = new Set();
   finished = false;
+  session = window.GP.createSession({messages: window.GP.neutralMessages});
   resultBox.classList.add("hidden");
   resultBox.innerHTML = "";
   updateKPI();
+  updateGPChips();
   renderBoard();
 }
 

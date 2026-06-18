@@ -187,13 +187,13 @@
           <button id="audioToggle"
             class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
             aria-pressed="true">
-            🔊 Sonido: Activado
+            Sonido: Activado
           </button>
 
           <button id="voiceToggle"
             class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
             aria-pressed="true">
-            🗣️ Voz: Activada (3–2–1)
+            Voz: Activada (3–2–1)
           </button>
         </div>
 
@@ -215,9 +215,14 @@
             <p class="text-lg font-semibold" id="stateText">Listo</p>
           </div>
 
-          <div class="inline-flex items-center gap-2 rounded-xl bg-inst-light border border-gray-100 px-4 py-2 game-chip">
-            <span class="text-sm text-inst-gray">Objetivo:</span>
-            <span class="text-sm font-semibold" id="goalText">Encontrá todos los pares.</span>
+          <div class="game-status-group">
+            <span class="game-chip">
+              <span class="text-inst-gray">Objetivo:</span>
+              <span id="goalText">Encontrá todos los pares.</span>
+            </span>
+            <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="game-chip" id="scorePill">Puntaje: 0</span>
+            <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
           </div>
         </div>
 
@@ -227,6 +232,8 @@
           Tip: podés jugar con teclado (<span class="font-semibold">Tab</span> para navegar y
           <span class="font-semibold">Enter</span>/<span class="font-semibold">Espacio</span> para voltear).
         </div>
+
+        <div id="result" class="hidden mt-6 game-result-card"></div>
       </section>
     </div>
   </main>
@@ -270,6 +277,9 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
+  <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+  <script src="assets/js/gamification.js"></script>
+
   <script>
   (() => {
     // ======= DATA =======
@@ -305,6 +315,10 @@
     const elStateText = document.getElementById("stateText");
     const elAudioToggle = document.getElementById("audioToggle");
     const elVoiceToggle = document.getElementById("voiceToggle");
+    const gpLevelPill = document.getElementById("gpLevelPill");
+    const scorePill = document.getElementById("scorePill");
+    const streakPill = document.getElementById("streakPill");
+    const resultBox = document.getElementById("result");
 
     const audioSeatbelt = document.getElementById("audioSeatbelt");
     const audioPremio = document.getElementById("audioPremio");
@@ -328,6 +342,14 @@
     let timer = null;
     let startTs = null;
     let elapsed = 0;
+    let session = null;
+
+    function updateGPChips(){
+      const s = session.state;
+      gpLevelPill.textContent = s.level.name;
+      scorePill.textContent = "Puntaje: " + s.score;
+      streakPill.textContent = "Racha: " + s.streak;
+    }
 
     // ======= AUDIO STATE =======
     let soundEnabled = true;
@@ -409,12 +431,12 @@
 
     function updateAudioButton(){
       elAudioToggle.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
-      elAudioToggle.textContent = soundEnabled ? "🔊 Sonido: Activado" : "🔇 Sonido: Desactivado";
+      elAudioToggle.textContent = soundEnabled ? "Sonido: Activado" : "Sonido: Desactivado";
     }
 
     function updateVoiceButton(){
       elVoiceToggle.setAttribute("aria-pressed", voiceEnabled ? "true" : "false");
-      elVoiceToggle.textContent = voiceEnabled ? "🗣️ Voz: Activada (3–2–1)" : "🗣️ Voz: Desactivada";
+      elVoiceToggle.textContent = voiceEnabled ? "Voz: Activada (3–2–1)" : "Voz: Desactivada";
     }
 
     elAudioToggle.addEventListener("click", async () => {
@@ -580,9 +602,26 @@
     }
 
     // ======= GAMEPLAY =======
+    function renderResult(title, message){
+      const summary = session.summary();
+      const medal = summary.medal;
+      resultBox.classList.remove("hidden");
+      resultBox.innerHTML = `
+        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
+        <h3 class="game-result-title mt-3">${title}</h3>
+        <p class="game-result-message">${message}</p>
+        <div class="game-result-stats">
+          <div class="game-result-stat"><div class="game-result-stat-label">Tiempo</div><div class="game-result-stat-value">${formatTime(elapsed)}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Movimientos</div><div class="game-result-stat-value">${moves}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+        </div>
+      `;
+    }
+
     async function onWin(){
       stopTimer();
-      elStateText.textContent = "Completado ✅";
+      elStateText.textContent = "Completado";
       const improved = saveBest();
       loadBest();
 
@@ -590,9 +629,10 @@
       await playSafe(audioPremio);
       chime("win");
 
-      setTimeout(() => {
-        alert(improved ? "¡Excelente! Nueva mejor marca." : "¡Excelente! Partida completada.");
-      }, 50);
+      renderResult(
+        improved ? "Nueva mejor marca" : "Partida completada",
+        session.summary().message
+      );
     }
 
     function flip(btn){
@@ -626,13 +666,17 @@
         c1.matched = true;
         c2.matched = true;
 
-        first.btn.classList.add("ring-2", "ring-emerald-300/60");
-        second.btn.classList.add("ring-2", "ring-emerald-300/60");
+        first.btn.classList.add("ring-2", "ring-emerald-300/60", "game-feedback-ok");
+        second.btn.classList.add("ring-2", "ring-emerald-300/60", "game-feedback-ok");
 
         matches += 1;
         elMatches.textContent = String(matches);
 
         chime("match");
+        session.registerHit(2);
+        streakPill.classList.add("is-up");
+        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        updateGPChips();
 
         first = null; second = null;
 
@@ -648,9 +692,11 @@
       lock = true;
       elStateText.textContent = "No coincide…";
       chime("error");
+      session.registerMiss(0);
+      updateGPChips();
 
-      second.btn.classList.add("shake");
-      setTimeout(() => second.btn.classList.remove("shake"), 250);
+      second.btn.classList.add("shake", "game-feedback-retry");
+      setTimeout(() => second.btn.classList.remove("shake", "game-feedback-retry"), 400);
 
       setTimeout(() => {
         setFlipped(first.btn, false);
@@ -733,6 +779,10 @@
       buildDeck();
       render();
       loadBest();
+      session = window.GP.createSession({messages: window.GP.neutralMessages});
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
+      updateGPChips();
     }
 
     // ======= UI EVENTS =======
