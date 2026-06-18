@@ -3,299 +3,444 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juego 8 · Checklist pre-flight | Sala de Espera Virtual</title>
+  <title>Juego 8 · Pre-Flight Focus — Checklist de despegue mental</title>
+  <meta name="description" content="Entrenamiento de atención y memoria de trabajo con temática de cabina de avión. Recurso psicoeducativo, sin apuestas ni premios reales." />
+  <meta name="theme-color" content="#0e2239">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#eef2f7',
-            'inst-gray': '#475569'
-          },
-          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
+  <link rel="stylesheet" href="assets/css/gamification.css?v=1">
 
   <style>
-    :root { --base-font: 16px; }
-    html { font-size: var(--base-font); }
-    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
-    @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+    body{ font-family: Inter, system-ui, sans-serif; }
+
+    /* ── Barra de estado de cabina ───────────────────── */
+    .cockpit-status{
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+      background: var(--gp-card); border:1px solid var(--gp-line);
+      border-radius:14px; padding:10px 16px; margin-bottom:16px;
+    }
+    .status-pill{
+      font-weight:800; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+      padding:6px 12px; border-radius:999px; background:rgba(76,201,240,.16); color:#075985;
+      white-space:nowrap;
+    }
+    .status-pill.is-ready{ background:rgba(34,197,94,.18); color:#15803d; }
+    .status-progress{ flex:1; min-width:120px; height:8px; border-radius:999px; background:rgba(11,47,99,.12); overflow:hidden; }
+    .status-progress-fill{ height:100%; background:linear-gradient(90deg,#0f5fa8,#4cc9f0); width:0%; transition:width .4s ease; }
+    .status-focus{ font-size:12.5px; font-weight:700; color:var(--gp-navy); white-space:nowrap; }
+
+    /* ── Panel de cabina (mostrar / elegir) ──────────── */
+    .cockpit-panel{
+      background: var(--gp-card); border:1px solid var(--gp-line);
+      border-radius:20px; padding:22px 20px; margin-bottom:16px;
+      box-shadow: 0 16px 40px rgba(6,25,54,.16);
+      transition: box-shadow .3s ease, border-color .3s ease;
+    }
+    .cockpit-panel.is-complete-green{ border-color: rgba(34,197,94,.55); box-shadow: 0 16px 40px rgba(6,25,54,.16), 0 0 26px rgba(34,197,94,.30); }
+    .cockpit-panel.is-complete-blue{ border-color: rgba(76,201,240,.55); box-shadow: 0 16px 40px rgba(6,25,54,.16), 0 0 26px rgba(76,201,240,.30); }
+    .cockpit-eyebrow{ font-size:11px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#0b3b70; margin:0 0 6px; }
+    .cockpit-h2{ font-size:20px; font-weight:800; color:var(--gp-navy); margin:0 0 4px; }
+    .cockpit-sub{ font-size:13.5px; color:#475569; margin:0 0 14px; }
+
+    .cockpit-list{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+    .cockpit-item{
+      display:flex; align-items:center; gap:10px; background:rgba(11,47,99,.05);
+      border:1px solid rgba(11,47,99,.12); border-radius:12px; padding:10px 14px;
+      font-weight:700; color:var(--gp-navy); font-size:14px;
+    }
+    .cockpit-item .lamp{ width:10px; height:10px; border-radius:50%; background:#4cc9f0; box-shadow:0 0 8px rgba(76,201,240,.7); flex-shrink:0; }
+
+    /* ── Switches estilo cabina ──────────────────────── */
+    .toggle-grid{ display:grid; gap:10px; }
+    @media (min-width: 640px){ .toggle-grid{ grid-template-columns: 1fr 1fr; } }
+    .toggle-row{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:rgba(11,47,99,.04); border:1px solid rgba(11,47,99,.14);
+      border-radius:14px; padding:12px 14px; cursor:pointer; position:relative;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .toggle-row:hover{ background: rgba(76,201,240,.10); }
+    .toggle-row.is-on{ border-color: rgba(34,197,94,.5); background: rgba(34,197,94,.10); }
+    .toggle-row input[type="checkbox"]{ position:absolute; opacity:0; width:0; height:0; }
+    .toggle-label{ font-size:13.5px; font-weight:700; color:var(--gp-navy); line-height:1.35; }
+    .toggle-switch{ position:relative; width:44px; height:25px; border-radius:999px; background:#cbd5e1; flex-shrink:0; transition: background .2s ease; }
+    .toggle-switch::after{
+      content:""; position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%;
+      background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.3); transition: transform .2s ease;
+    }
+    .toggle-row.is-on .toggle-switch{ background:#22c55e; }
+    .toggle-row.is-on .toggle-switch::after{ transform: translateX(19px); }
+
+    .cockpit-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+    .cockpit-note{
+      margin-top:16px; font-size:12.5px; color:#64748b; background:rgba(11,47,99,.04);
+      border:1px solid rgba(11,47,99,.10); border-radius:12px; padding:10px 14px; line-height:1.55;
+    }
+
+    .cat-chip{
+      display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800;
+      text-transform:uppercase; letter-spacing:.05em; color:#075985; background:rgba(76,201,240,.14);
+      border-radius:999px; padding:4px 10px;
+    }
+
+    .mode-pick{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:0 0 16px; }
+    .mode-pick button{ min-width: 170px; }
+    .mode-pick .gp-btn-start.alt{ background: linear-gradient(180deg, #0b3b70, #062148); }
+
+    @media (max-width: 560px){
+      .cockpit-status{ flex-direction:column; align-items:stretch; }
+      .status-progress{ order: 3; width:100%; }
+    }
   </style>
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased">
-  <main class="max-w-5xl mx-auto px-6 py-10">
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
-        ← Volver a Juegos
-      </a>
-      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
-        Inicio
-      </a>
+<body class="casino-page">
+
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap gp-scope" aria-label="Juego 8 · Pre-Flight Focus">
+
+    <nav class="topbar-back" aria-label="Navegación" style="display:flex; gap:8px; flex-wrap:wrap;">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+      <a class="btn-secondary" href="index.html">Inicio</a>
+    </nav>
+
+    <!-- ════════ PANTALLA DE MISIÓN (intro) ════════ -->
+    <section id="screenIntro" class="gp-mission-screen">
+      <p class="gp-mission-eyebrow">Cabina · Entrenamiento cognitivo</p>
+      <h1 class="gp-mission-title">Pre-Flight Focus</h1>
+      <p class="gp-mission-subtitle">Checklist de despegue mental</p>
+      <div class="gp-mission-objective">🎯 Objetivo: entrenar atención sostenida y memoria de trabajo</div>
+
+      <div class="gp-mission-brief">
+        <p><strong>Misión:</strong> vas a ver una checklist breve de cabina, organizada en 5 categorías
+        (Cuerpo, Entorno, Prioridades, Riesgos, Primer paso). Memorizala y después marcá, con los
+        interruptores de cabina, cuáles ítems viste.</p>
+        <p style="margin-top:8px">No hay límite de tiempo para responder. Tomate el tiempo que necesites.</p>
+      </div>
+
+      <div class="mode-pick">
+        <button class="gp-btn-start" id="btnModeRapido" type="button">Modo rápido →</button>
+        <button class="gp-btn-start alt" id="btnModeCompleto" type="button">Modo completo →</button>
+      </div>
+
+      <button class="gp-sound-toggle" id="btnSound" type="button" aria-pressed="false">🔊 Sonido activado</button>
+    </section>
+
+    <!-- ════════ HUD de progreso (visible durante el juego) ════════ -->
+    <div id="hud" class="gp-hud" hidden>
+      <div class="gp-hud-group">
+        <span class="gp-hud-chip"><span class="gp-hud-chip-icon">🛫</span> Ronda <span class="gp-hud-chip-value" id="hudRound">0/5</span></span>
+        <span class="gp-hud-chip"><span class="gp-hud-chip-icon">⭐</span> Score <span class="gp-hud-chip-value" id="hudScore">0</span></span>
+        <span class="gp-hud-chip gp-streak" id="hudStreakChip"><span class="gp-hud-chip-icon">🔥</span> Racha <span class="gp-hud-chip-value" id="hudStreak">0</span></span>
+      </div>
+      <div class="gp-hud-group">
+        <span class="gp-badge gp-badge-bronce" id="hudLevel">Nivel 1 · Entrenamiento</span>
+      </div>
     </div>
 
-    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
-      <div class="flex items-start justify-between gap-4 flex-wrap">
-        <div class="min-w-0">
-          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Juego 8 · Checklist pre-flight (rápido)</h1>
-          <p class="text-inst-gray mt-2 leading-relaxed">
-            Vas a ver una mini-checklist de <strong>5 ítems por 4 segundos</strong>.
-            Luego marcás cuáles estaban. Entrena atención + memoria.
-          </p>
-        </div>
+    <!-- ════════ Barra de estado de cabina ════════ -->
+    <div id="statusBar" class="cockpit-status" hidden>
+      <span class="status-pill" id="statusPill">PRE-FLIGHT</span>
+      <div class="status-progress"><div class="status-progress-fill" id="statusFill"></div></div>
+      <span class="status-focus" id="statusFocus">Categoría: —</span>
+    </div>
 
-        <div class="flex gap-2 flex-wrap">
-          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
-          <button id="btnNext" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Siguiente</button>
-          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
-        </div>
+    <!-- ════════ Pantalla: mostrar checklist ════════ -->
+    <section id="stageShow" class="cockpit-panel" hidden>
+      <p class="cockpit-eyebrow">Pre-flight · mirá y recordá</p>
+      <h2 class="cockpit-h2">Checklist <span class="cat-chip" id="showCatChip">Categoría</span></h2>
+      <p class="cockpit-sub">Vas a verla por <strong><span id="showSec">4</span>s</strong>.</p>
+      <ul id="checklistList" class="cockpit-list"></ul>
+      <p class="cockpit-note">Consejo: respirá, mirá la lista completa y recordá la idea general de cada ítem.</p>
+    </section>
+
+    <!-- ════════ Pantalla: elegir (switches) ════════ -->
+    <section id="stagePick" class="cockpit-panel" hidden>
+      <p class="cockpit-eyebrow">Selección · interruptores de cabina</p>
+      <h2 class="cockpit-h2">¿Cuáles estaban en la checklist?</h2>
+      <p class="cockpit-sub">Activá los interruptores de los ítems que viste. Después tocá <strong>Evaluar</strong>.</p>
+
+      <div class="toggle-grid" id="optionsGrid"></div>
+
+      <div class="cockpit-actions">
+        <button id="btnEval" class="btn-primary">Evaluar</button>
+        <button id="btnClear" class="btn-secondary">Limpiar selección</button>
       </div>
 
-      <div class="mt-6 grid md:grid-cols-3 gap-4">
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Ronda</p>
-          <p class="text-2xl font-semibold"><span id="round">0</span>/<span id="roundMax">8</span></p>
-        </div>
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
-          <p class="text-2xl font-semibold"><span id="score">0</span></p>
-          <p class="text-sm text-inst-gray mt-1">Aciertos totales: <span id="hits">0</span></p>
-        </div>
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Precisión</p>
-          <p class="text-2xl font-semibold"><span id="acc">—</span></p>
-          <p class="text-sm text-inst-gray mt-1">Falsos positivos: <span id="fp">0</span></p>
-        </div>
+      <div id="feedback" class="cockpit-note" style="display:none"></div>
+    </section>
+
+    <!-- ════════ Pantalla final ════════ -->
+    <section id="screenFinal" class="gp-final-screen" hidden>
+      <div class="gp-final-medal" id="finalMedalIcon">🥉</div>
+      <h2 class="gp-final-title" id="finalTitle">Misión completada</h2>
+      <p class="gp-final-message" id="finalMessage">Buen trabajo en cabina.</p>
+
+      <div class="gp-final-stats">
+        <div class="gp-final-stat"><div class="gp-final-stat-label">Score</div><div class="gp-final-stat-value" id="finalScore">0</div></div>
+        <div class="gp-final-stat"><div class="gp-final-stat-label">Nivel</div><div class="gp-final-stat-value" id="finalLevel">1</div></div>
+        <div class="gp-final-stat"><div class="gp-final-stat-label">Racha máx.</div><div class="gp-final-stat-value" id="finalStreak">0</div></div>
+        <div class="gp-final-stat"><div class="gp-final-stat-label">Precisión</div><div class="gp-final-stat-value" id="finalAcc">—</div></div>
       </div>
 
-      <!-- Pantalla: mostrar checklist -->
-      <div id="stageShow" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
-        <p class="text-xs uppercase tracking-wider text-inst-gray">Pre-flight (mirá y recordá)</p>
-        <h2 class="text-xl font-semibold mt-1">Checklist</h2>
-        <p class="text-inst-gray mt-2">Vas a verla por <strong><span id="showSec">4</span>s</strong>.</p>
-
-        <div class="mt-4 bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <ul id="checklistList" class="space-y-2 text-inst-navy font-semibold"></ul>
-        </div>
-
-        <div class="mt-4 text-sm text-inst-gray">
-          Consejo: respirá, mirá la lista completa y recordá “la idea general”.
-        </div>
-      </div>
-
-      <!-- Pantalla: elegir -->
-      <div id="stagePick" class="mt-6 bg-white rounded-2xl border border-gray-200 p-6 hidden">
-        <p class="text-xs uppercase tracking-wider text-inst-gray">Selección</p>
-        <h2 class="text-xl font-semibold mt-1">¿Cuáles estaban?</h2>
-        <p class="text-inst-gray mt-2">Marcá los ítems que viste recién. Luego tocá <strong>Evaluar</strong>.</p>
-
-        <div class="mt-4 grid sm:grid-cols-2 gap-3" id="optionsGrid"></div>
-
-        <div class="mt-4 flex gap-2 flex-wrap">
-          <button id="btnEval" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Evaluar</button>
-          <button id="btnClear" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Limpiar selección</button>
-        </div>
-
-        <div id="feedback" class="mt-4 hidden bg-inst-light rounded-2xl border border-gray-200 p-4"></div>
-      </div>
-
-      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
-        <p class="text-sm text-inst-gray">
-          <strong>Nota:</strong> esto es un entrenamiento breve. Si te genera frustración, hacé menos rondas y retomá en otro momento.
-        </p>
+      <div class="gp-final-actions">
+        <button class="gp-btn-start" id="btnPlayAgain" type="button">Jugar otra vez</button>
+        <a class="btn-secondary" href="juegos.html">Volver a juegos</a>
+        <a class="btn-secondary" href="index.html">Volver a inicio</a>
       </div>
     </section>
+
+    <p class="casino-aviso" role="note">
+      Este recurso es psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.
+      Si te genera frustración, hacé menos rondas y retomá en otro momento.
+    </p>
+
   </main>
 
-  <script>
-    // Config
-    const SHOW_SECONDS = 4;
-    const ROUNDS_MAX = 8;
-    const ITEMS_PER_ROUND = 5;
-    const OPTIONS_PER_ROUND = 10; // 5 correctos + 5 distractores
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
 
-    // Banco de ítems temático (pre-flight)
-    const BANK = [
-      "Documentación (licencia / ID)",
-      "Meteo (METAR/TAF)",
-      "Combustible (cantidad)",
-      "Aceite (nivel)",
-      "Luces (check)",
-      "Flaps (check)",
-      "Trim (neutral)",
-      "Frenos (check)",
-      "Batería / alternador",
-      "Radio / comunicación",
-      "Transponder (set)",
-      "Altímetro (ajuste)",
-      "Cinturón / arnés",
-      "Puertas / cierres",
-      "Instrumentos (scan)",
-      "Presión neumáticos",
-      "Superficies de mando",
-      "Plan de vuelo / ruta",
-      "Velocidades (V-speeds)",
-      "Briefing de emergencia",
-      "Pista / viento cruzado",
-      "Peso y balance",
-      "Checklists a bordo",
-      "Antihielo (si aplica)"
+  <script src="assets/js/gamification.js?v=1"></script>
+  <script>
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    // ── Banco temático: checklist de cabina en 5 categorías ──
+    var CATEGORIES = [
+      { key:'cuerpo',       label:'Cuerpo',        icon:'🫀', items:[
+        'Respiración consciente', 'Postura relajada en el asiento', 'Manos sueltas, sin tensión',
+        'Mandíbula relajada', 'Hombros bajos', 'Ritmo cardíaco en observación'
+      ]},
+      { key:'entorno',      label:'Entorno',       icon:'✈️', items:[
+        'Cinturón de seguridad', 'Luces de cabina', 'Ventanilla y persiana', 'Volumen del entorno',
+        'Temperatura de cabina', 'Ubicación de salidas'
+      ]},
+      { key:'prioridades',  label:'Prioridades',   icon:'🎯', items:[
+        'Plan de vuelo claro', 'Documentación a mano', 'Horarios confirmados', 'Contacto de referencia',
+        'Objetivo del viaje', 'Rutina pre-vuelo'
+      ]},
+      { key:'riesgos',      label:'Riesgos',       icon:'⚠️', items:[
+        'Meteo (METAR/TAF)', 'Combustible verificado', 'Turbulencia esperada', 'Plan ante imprevistos',
+        'Tolerancia a la incertidumbre', 'Pensamientos catastróficos identificados'
+      ]},
+      { key:'primerpaso',   label:'Primer paso',   icon:'🚀', items:[
+        'Respirar antes de embarcar', 'Nombrar la emoción presente', 'Recordar un vuelo logrado antes',
+        'Frase de afrontamiento elegida', 'Apoyo o acompañante disponible', 'Pequeña acción concreta de calma'
+      ]}
     ];
 
-    // State
-    let round = 0;
-    let score = 0;
-    let hits = 0;
-    let totalSelections = 0;
-    let falsePositives = 0;
+    var FINAL_MSGS = [
+      'Checklist completada. Tu mente ya practicó el procedimiento antes de despegar.',
+      'Buen entrenamiento de atención pre-vuelo. La calma también se prepara en tierra.',
+      'Misión de cabina cumplida. Cada repaso fortalece tu sensación de control.',
+      'Procedimiento finalizado. Entrenar la atención es parte del vuelo, no solo el aire.'
+    ];
 
-    let currentCorrect = [];
-    let currentOptions = [];
-    let revealed = false;
-    let timer = null;
+    // ── Config por modo ──
+    var MODE_CONFIG = {
+      rapido:   { showSeconds: 3, itemsPerRound: 3, optionsPerRound: 6 },
+      completo: { showSeconds: 5, itemsPerRound: 4, optionsPerRound: 8 }
+    };
 
-    // UI
-    const roundEl = document.getElementById("round");
-    const roundMaxEl = document.getElementById("roundMax");
-    const scoreEl = document.getElementById("score");
-    const hitsEl = document.getElementById("hits");
-    const accEl = document.getElementById("acc");
-    const fpEl = document.getElementById("fp");
+    var mode = 'rapido';
+    var cfg = MODE_CONFIG.rapido;
+    var ROUNDS_MAX = CATEGORIES.length; // 5, una por categoría
 
-    const stageShow = document.getElementById("stageShow");
-    const stagePick = document.getElementById("stagePick");
+    var round = 0;
+    var hits = 0, falsePositives = 0, totalSelections = 0;
+    var currentCorrect = [];
+    var currentOptions = [];
+    var currentCategory = null;
+    var timer = null;
+    var pickStartTime = 0;
 
-    const checklistList = document.getElementById("checklistList");
-    const optionsGrid = document.getElementById("optionsGrid");
-    const feedback = document.getElementById("feedback");
+    var session = null;
 
-    const btnStart = document.getElementById("btnStart");
-    const btnNext = document.getElementById("btnNext");
-    const btnReset = document.getElementById("btnReset");
-    const btnEval = document.getElementById("btnEval");
-    const btnClear = document.getElementById("btnClear");
+    // ── Refs ──
+    var screenIntro = document.getElementById('screenIntro');
+    var hud = document.getElementById('hud');
+    var statusBar = document.getElementById('statusBar');
+    var stageShow = document.getElementById('stageShow');
+    var stagePick = document.getElementById('stagePick');
+    var screenFinal = document.getElementById('screenFinal');
 
-    const showSecEl = document.getElementById("showSec");
-    roundMaxEl.textContent = ROUNDS_MAX;
-    showSecEl.textContent = SHOW_SECONDS;
+    var hudRound = document.getElementById('hudRound');
+    var hudScore = document.getElementById('hudScore');
+    var hudStreak = document.getElementById('hudStreak');
+    var hudStreakChip = document.getElementById('hudStreakChip');
+    var hudLevel = document.getElementById('hudLevel');
+
+    var statusPill = document.getElementById('statusPill');
+    var statusFill = document.getElementById('statusFill');
+    var statusFocus = document.getElementById('statusFocus');
+
+    var checklistList = document.getElementById('checklistList');
+    var showSecEl = document.getElementById('showSec');
+    var showCatChip = document.getElementById('showCatChip');
+    var optionsGrid = document.getElementById('optionsGrid');
+    var feedback = document.getElementById('feedback');
+
+    var btnEval = document.getElementById('btnEval');
+    var btnClear = document.getElementById('btnClear');
+    var btnSound = document.getElementById('btnSound');
+    var btnPlayAgain = document.getElementById('btnPlayAgain');
 
     function shuffle(arr){
-      const a = arr.slice();
-      for(let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i], a[j]] = [a[j], a[i]];
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--){
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
       }
       return a;
     }
-
-    function pickUnique(fromArr, n, excludeSet = new Set()){
-      const pool = fromArr.filter(x => !excludeSet.has(x));
+    function pickUnique(fromArr, n, excludeSet){
+      excludeSet = excludeSet || new Set();
+      var pool = fromArr.filter(function(x){ return !excludeSet.has(x); });
       return shuffle(pool).slice(0, n);
     }
 
-    function updateUI(){
-      roundEl.textContent = round;
-      scoreEl.textContent = score;
-      hitsEl.textContent = hits;
-      fpEl.textContent = falsePositives;
-
-      const acc = totalSelections > 0 ? Math.round((hits / totalSelections) * 100) : null;
-      accEl.textContent = acc === null ? "—" : (acc + "%");
+    function updateHud(){
+      hudRound.textContent = round + '/' + ROUNDS_MAX;
+      if (session){
+        hudScore.textContent = session.state.score;
+        hudStreak.textContent = session.state.streak;
+        hudLevel.textContent = session.state.level.name;
+        hudLevel.className = 'gp-badge ' + (
+          session.state.level.id === 4 ? 'gp-badge-comandante' :
+          session.state.level.id === 3 ? 'gp-badge-oro' :
+          session.state.level.id === 2 ? 'gp-badge-plata' : 'gp-badge-bronce'
+        );
+      }
     }
 
-    function resetAll(){
-      round = 0; score = 0; hits = 0; totalSelections = 0; falsePositives = 0;
-      currentCorrect = []; currentOptions = [];
-      revealed = false;
-      if(timer){ clearInterval(timer); timer = null; }
-      btnNext.disabled = true;
-      stagePick.classList.add("hidden");
-      stageShow.classList.remove("hidden");
-      feedback.classList.add("hidden");
-      checklistList.innerHTML = "";
-      optionsGrid.innerHTML = "";
-      updateUI();
+    function pulseStreak(){
+      hudStreakChip.classList.remove('is-up');
+      void hudStreakChip.offsetWidth;
+      hudStreakChip.classList.add('is-up');
     }
 
-    function renderShowList(items){
-      checklistList.innerHTML = "";
-      items.forEach(it=>{
-        const li = document.createElement("li");
-        li.className = "flex items-center gap-2";
-        li.innerHTML = `
-          <span class="w-5 h-5 rounded-md bg-white border border-gray-200 inline-flex items-center justify-center text-inst-blue font-black">✓</span>
-          <span>${it}</span>
-        `;
+    function setStatus(pillText, isReady, focusText, progressPct){
+      statusPill.textContent = pillText;
+      statusPill.classList.toggle('is-ready', !!isReady);
+      statusFocus.textContent = focusText;
+      statusFill.style.width = progressPct + '%';
+    }
+
+    function renderShowList(category, items){
+      checklistList.innerHTML = '';
+      showCatChip.textContent = category.icon + ' ' + category.label;
+      items.forEach(function(it){
+        var li = document.createElement('li');
+        li.className = 'cockpit-item';
+        li.innerHTML = '<span class="lamp" aria-hidden="true"></span><span>' + it + '</span>';
         checklistList.appendChild(li);
       });
     }
 
     function renderOptions(options){
-      optionsGrid.innerHTML = "";
-      options.forEach(opt=>{
-        const id = "opt-" + Math.random().toString(16).slice(2);
-        const wrap = document.createElement("label");
-        wrap.className = "bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-inst-sky transition";
-        wrap.innerHTML = `
-          <input type="checkbox" class="mt-1 accent-[${'#2563eb'}]" data-opt="${opt}" aria-label="${opt}">
-          <span class="text-sm font-semibold text-inst-navy leading-snug">${opt}</span>
-        `;
-        optionsGrid.appendChild(wrap);
+      optionsGrid.innerHTML = '';
+      options.forEach(function(opt){
+        var row = document.createElement('label');
+        row.className = 'toggle-row';
+        row.innerHTML =
+          '<span class="toggle-label">' + opt + '</span>' +
+          '<input type="checkbox" data-opt="' + opt.replace(/"/g,'&quot;') + '" aria-label="' + opt + '">' +
+          '<span class="toggle-switch" aria-hidden="true"></span>';
+        var input = row.querySelector('input');
+        input.addEventListener('change', function(){
+          row.classList.toggle('is-on', input.checked);
+        });
+        optionsGrid.appendChild(row);
       });
     }
 
-    function startRound(){
-      if(timer){ clearInterval(timer); timer = null; }
-      feedback.classList.add("hidden");
-      btnNext.disabled = true;
+    function startGame(selectedMode){
+      mode = selectedMode;
+      cfg = MODE_CONFIG[mode];
+      round = 0; hits = 0; falsePositives = 0; totalSelections = 0;
+
+      session = GP.createSession({
+        onLevelUp: function(){ pulseStreak(); },
+        onStreak: function(){ pulseStreak(); }
+      });
+
+      screenIntro.hidden = true;
+      screenFinal.hidden = true;
+      hud.hidden = false;
+      statusBar.hidden = false;
+
+      updateHud();
+      nextRound();
+    }
+
+    function nextRound(){
+      if (timer){ clearInterval(timer); timer = null; }
+      feedback.style.display = 'none';
+      stageShow.classList.remove('is-complete-green', 'is-complete-blue');
 
       round += 1;
-      if(round > ROUNDS_MAX){
-        // Final simple
-        stagePick.classList.add("hidden");
-        stageShow.classList.remove("hidden");
-        checklistList.innerHTML = `
-          <li class="text-inst-gray font-semibold">
-            Fin del juego. Puntaje: <span class="text-inst-navy">${score}</span> · Precisión: <span class="text-inst-navy">${accEl.textContent}</span>
-          </li>
-        `;
-        btnStart.disabled = false;
+      if (round > ROUNDS_MAX){
+        finishGame();
         return;
       }
 
-      // Elegir 5 correctos
-      currentCorrect = pickUnique(BANK, ITEMS_PER_ROUND);
-      const correctSet = new Set(currentCorrect);
+      currentCategory = CATEGORIES[round - 1];
+      currentCorrect = pickUnique(currentCategory.items, cfg.itemsPerRound);
+      var correctSet = new Set(currentCorrect);
 
-      // Elegir 5 distractores
-      const distractors = pickUnique(BANK, OPTIONS_PER_ROUND - ITEMS_PER_ROUND, correctSet);
+      var distractorPool = currentCategory.items.filter(function(x){ return !correctSet.has(x); });
+      var otherItems = [];
+      CATEGORIES.forEach(function(c){ if (c.key !== currentCategory.key) otherItems = otherItems.concat(c.items); });
+      distractorPool = distractorPool.concat(shuffle(otherItems));
 
-      currentOptions = shuffle([...currentCorrect, ...distractors]);
+      var distractors = pickUnique(distractorPool, cfg.optionsPerRound - cfg.itemsPerRound, correctSet);
+      currentOptions = shuffle(currentCorrect.concat(distractors));
 
-      // Mostrar 4s
-      revealed = true;
-      stageShow.classList.remove("hidden");
-      stagePick.classList.add("hidden");
-      renderShowList(currentCorrect);
-      updateUI();
+      stageShow.hidden = false;
+      stagePick.hidden = true;
+      renderShowList(currentCategory, currentCorrect);
+      updateHud();
 
-      let sec = SHOW_SECONDS;
+      setStatus('PRE-FLIGHT', false, 'Categoría: ' + currentCategory.icon + ' ' + currentCategory.label, ((round - 1) / ROUNDS_MAX) * 100);
+
+      var sec = cfg.showSeconds;
       showSecEl.textContent = sec;
-
-      timer = setInterval(()=>{
+      timer = setInterval(function(){
         sec -= 1;
-        showSecEl.textContent = Math.max(sec,0);
-        if(sec <= 0){
+        showSecEl.textContent = Math.max(sec, 0);
+        if (sec <= 0){
           clearInterval(timer);
           timer = null;
           goPick();
@@ -304,95 +449,115 @@
     }
 
     function goPick(){
-      revealed = false;
-      stageShow.classList.add("hidden");
-      stagePick.classList.remove("hidden");
+      stageShow.hidden = true;
+      stagePick.hidden = false;
       renderOptions(currentOptions);
-      feedback.classList.add("hidden");
-      btnNext.disabled = true;
+      feedback.style.display = 'none';
+      pickStartTime = Date.now();
+      setStatus('EN VUELO', false, 'Categoría: ' + currentCategory.icon + ' ' + currentCategory.label, ((round - 0.5) / ROUNDS_MAX) * 100);
     }
 
     function clearSelection(){
-      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(cb=> cb.checked = false);
+      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+        cb.checked = false;
+        cb.closest('.toggle-row').classList.remove('is-on');
+      });
     }
 
     function evaluate(){
-      const chosen = [];
-      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
-        if(cb.checked) chosen.push(cb.getAttribute("data-opt"));
+      var chosen = [];
+      optionsGrid.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+        if (cb.checked) chosen.push(cb.getAttribute('data-opt'));
       });
 
-      const correctSet = new Set(currentCorrect);
-      const chosenSet = new Set(chosen);
+      var correctSet = new Set(currentCorrect);
+      var chosenSet = new Set(chosen);
+      var roundHits = 0, roundFP = 0;
 
-      let roundHits = 0;
-      let roundFP = 0;
-
-      chosen.forEach(x=>{
+      chosen.forEach(function(x){
         totalSelections += 1;
-        if(correctSet.has(x)){
-          hits += 1;
-          roundHits += 1;
-        } else {
-          falsePositives += 1;
-          roundFP += 1;
-        }
+        if (correctSet.has(x)){ hits += 1; roundHits += 1; }
+        else { falsePositives += 1; roundFP += 1; }
       });
 
-      // Puntaje: +2 por acierto, -1 por falso positivo.
-      score += (roundHits * 2) - (roundFP * 1);
-      if(score < 0) score = 0;
+      var missed = currentCorrect.filter(function(x){ return !chosenSet.has(x); });
+      var fast = (Date.now() - pickStartTime) < 12000;
+      var net = roundHits - roundFP;
+      var perfect = (roundHits === currentCorrect.length) && roundFP === 0;
 
-      updateUI();
+      var result;
+      if (net > 0){
+        result = session.registerHit(net, { fast: fast });
+        stageShow.classList.add(perfect ? 'is-complete-green' : 'is-complete-blue');
+        if (perfect) GP.chime('win');
+      } else {
+        result = session.registerMiss(0);
+      }
+      updateHud();
+      pulseStreak();
 
-      // Feedback
-      const missed = currentCorrect.filter(x => !chosenSet.has(x));
+      var readyPct = (round / ROUNDS_MAX) * 100;
+      setStatus(round === ROUNDS_MAX ? 'READY FOR TAKEOFF' : 'CHECK COMPLETO', round === ROUNDS_MAX, 'Categoría: ' + currentCategory.icon + ' ' + currentCategory.label, readyPct);
 
-      feedback.classList.remove("hidden");
-      feedback.innerHTML = `
-        <div class="text-sm text-inst-gray">
-          <p class="font-semibold text-inst-navy">Resultado de la ronda</p>
-          <p class="mt-1">✅ Aciertos: <strong>${roundHits}</strong> · ⚠️ Falsos positivos: <strong>${roundFP}</strong> · ❓ Olvidados: <strong>${missed.length}</strong></p>
-          <div class="mt-3 grid md:grid-cols-2 gap-3">
-            <div class="bg-white border border-gray-200 rounded-xl p-3">
-              <p class="text-xs uppercase tracking-wider text-inst-gray">Ítems correctos</p>
-              <p class="mt-1 text-sm font-semibold text-inst-navy">${currentCorrect.join(" · ")}</p>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-3">
-              <p class="text-xs uppercase tracking-wider text-inst-gray">Tu selección</p>
-              <p class="mt-1 text-sm font-semibold text-inst-navy">${chosen.length ? chosen.join(" · ") : "—"}</p>
-            </div>
-          </div>
-          <p class="mt-3">
-            <strong>Tip:</strong> probá agrupar mentalmente (instrumentos / combustible / comunicaciones / seguridad).
-          </p>
-        </div>
-      `;
+      feedback.style.display = 'block';
+      feedback.classList.add('gp-fade-in');
+      feedback.innerHTML =
+        '<p style="font-weight:800; color:var(--gp-navy); margin:0 0 6px;">' + (result.message || '') + '</p>' +
+        '<p style="margin:0 0 8px;">✅ Aciertos: <strong>' + roundHits + '</strong> · 🛠️ A revisar: <strong>' + roundFP + '</strong> · 🧭 Olvidados: <strong>' + missed.length + '</strong></p>' +
+        '<p style="margin:0;"><strong>Ítems de la categoría:</strong> ' + currentCorrect.join(' · ') + '</p>';
 
-      btnNext.disabled = false;
-      btnStart.disabled = true;
+      btnEval.disabled = true;
+      btnEval.textContent = (round < ROUNDS_MAX) ? 'Siguiente ronda →' : 'Ver resultado final →';
+      btnEval.disabled = false;
+      btnEval.onclick = function(){
+        btnEval.onclick = evaluate;
+        btnEval.textContent = 'Evaluar';
+        nextRound();
+      };
     }
 
-    // Eventos
-    btnStart.addEventListener("click", ()=>{
-      btnStart.disabled = true;
-      startRound();
-    });
+    function finishGame(){
+      stageShow.hidden = true;
+      stagePick.hidden = true;
+      statusBar.hidden = true;
+      hud.hidden = true;
+      screenFinal.hidden = false;
+      screenFinal.classList.add('gp-flip-in');
 
-    btnNext.addEventListener("click", ()=>{
-      startRound();
-    });
+      var summary = session.summary();
+      var medal = summary.medal;
+      var medalIcon = medal.id === 'comandante' ? '🎖️' : medal.id === 'oro' ? '🥇' : medal.id === 'plata' ? '🥈' : '🥉';
 
-    btnReset.addEventListener("click", ()=>{
-      btnStart.disabled = false;
-      resetAll();
-    });
+      document.getElementById('finalMedalIcon').textContent = medalIcon;
+      document.getElementById('finalTitle').textContent = medal.name + ' · ' + summary.level.name;
+      document.getElementById('finalMessage').textContent = FINAL_MSGS[Math.floor(Math.random() * FINAL_MSGS.length)];
+      document.getElementById('finalScore').textContent = summary.score;
+      document.getElementById('finalLevel').textContent = summary.level.id;
+      document.getElementById('finalStreak').textContent = summary.maxStreak;
+      document.getElementById('finalAcc').textContent = (summary.accuracy === null) ? '—' : (summary.accuracy + '%');
 
-    btnEval.addEventListener("click", evaluate);
-    btnClear.addEventListener("click", clearSelection);
+      GP.chime('win');
+    }
 
-    // init
-    resetAll();
+    function resetToIntro(){
+      screenFinal.hidden = true;
+      screenIntro.hidden = false;
+    }
+
+    // ── Eventos ──
+    document.getElementById('btnModeRapido').addEventListener('click', function(){ startGame('rapido'); });
+    document.getElementById('btnModeCompleto').addEventListener('click', function(){ startGame('completo'); });
+    btnEval.addEventListener('click', evaluate);
+    btnClear.addEventListener('click', clearSelection);
+    btnPlayAgain.addEventListener('click', resetToIntro);
+
+    function refreshSoundBtn(){
+      var muted = GP.isMuted();
+      btnSound.textContent = muted ? '🔇 Sonido silenciado' : '🔊 Sonido activado';
+      btnSound.setAttribute('aria-pressed', String(muted));
+    }
+    btnSound.addEventListener('click', function(){ GP.toggleMuted(); refreshSoundBtn(); });
+    refreshSoundBtn();
   </script>
 </body>
 </html>
