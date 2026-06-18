@@ -98,9 +98,40 @@
   ];
   function randomOf(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
+  // ---- Mensajes neutros (para juegos legados sin temática aeronáutica:
+  // atención, memoria, lenguaje). Mismo tono motivador y no invasivo,
+  // sin jerga de cabina/torre. ----
+  var MSG_HIT_NEUTRAL = [
+    "Respuesta correcta.",
+    "Bien identificado.",
+    "Buena observación.",
+    "Coincidencia exacta.",
+    "Seguís en buen ritmo."
+  ];
+  var MSG_MISS_NEUTRAL = [
+    "No es esa. Probemos otra vez.",
+    "Revisemos con calma.",
+    "Casi. Intentemos de nuevo.",
+    "Tomate un segundo y reintentá.",
+    "Ajustemos la respuesta."
+  ];
+  var MSG_FINAL_NEUTRAL = [
+    "Ejercicio completado. Buen trabajo.",
+    "Sesión finalizada. Seguís entrenando.",
+    "Recorrido completo. Cada práctica suma.",
+    "Ejercicio terminado. Podés repetirlo cuando quieras."
+  ];
+
   // ---- Sesión de juego ----
+  // opts.messages permite reemplazar los bancos de frases por juego
+  // (p.ej. GP.neutralMessages para juegos sin temática aeronáutica),
+  // sin afectar a otras sesiones ni a los juegos que no lo usan.
   function createSession(opts){
     opts = opts || {};
+    var msgs = opts.messages || {};
+    var msgHit   = msgs.hit   || MSG_HIT;
+    var msgMiss  = msgs.miss  || MSG_MISS;
+    var msgFinal = msgs.final || MSG_FINAL;
     var s = {
       score: 0,
       streak: 0,
@@ -138,7 +169,7 @@
       if (s.streak > 0 && s.streak % 3 === 0){ chime("streak"); onStreak(s.streak); }
       else { chime("ok"); }
 
-      return { points: pts, streak: s.streak, level: s.level, message: randomOf(MSG_HIT) };
+      return { points: pts, streak: s.streak, level: s.level, message: randomOf(msgHit) };
     }
 
     // penalty: penalización SUAVE (por defecto 0 = no resta, solo corta racha)
@@ -149,7 +180,7 @@
       s.score = Math.max(0, s.score - penalty);
       applyLevel();
       chime("error");
-      return { score: s.score, level: s.level, message: randomOf(MSG_MISS) };
+      return { score: s.score, level: s.level, message: randomOf(msgMiss) };
     }
 
     function getMedal(){ return medalFor(s.score); }
@@ -166,7 +197,7 @@
         accuracy: acc,
         medal: getMedal(),
         durationSec: Math.round((Date.now() - s.startedAt) / 1000),
-        message: randomOf(MSG_FINAL)
+        message: randomOf(msgFinal)
       };
     }
 
@@ -191,6 +222,13 @@
     createSession: createSession,
     msgHit: function(){ return randomOf(MSG_HIT); },
     msgMiss: function(){ return randomOf(MSG_MISS); },
-    msgFinal: function(){ return randomOf(MSG_FINAL); }
+    msgFinal: function(){ return randomOf(MSG_FINAL); },
+    // Banco de frases neutro para juegos legados (atención, memoria,
+    // lenguaje) sin temática aeronáutica. Uso: GP.createSession({messages: GP.neutralMessages})
+    neutralMessages: {
+      hit: MSG_HIT_NEUTRAL,
+      miss: MSG_MISS_NEUTRAL,
+      final: MSG_FINAL_NEUTRAL
+    }
   };
 })();

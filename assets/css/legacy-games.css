@@ -96,10 +96,85 @@
   border-radius: var(--gs-radius); border: 1px solid var(--gs-border);
   background: var(--gs-light); padding: clamp(18px, 4vw, 28px); text-align: center;
 }
+.game-result-medal{ font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
+.game-result-title{ font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: var(--gs-navy); margin: 0 0 6px; }
+.game-result-message{ color: var(--gs-muted); margin: 0 0 18px; line-height: 1.55; }
+.game-result-stats{ display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+.game-result-stat{
+  background: #fff; border: 1px solid var(--gs-border); border-radius: 14px;
+  padding: 10px 16px; min-width: 110px;
+}
+.game-result-stat-label{ font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--gs-muted); }
+.game-result-stat-value{ font-size: 20px; font-weight: 800; color: var(--gs-navy); margin-top: 2px; }
+
+/* ── Pantalla de inicio (versión institucional, clara) ──────── */
+.game-intro-screen{
+  border-radius: var(--gs-radius); border: 1px solid var(--gs-border);
+  background: var(--gs-card); padding: clamp(22px, 5vw, 40px) clamp(18px, 5vw, 32px);
+  text-align: center; box-shadow: var(--gs-shadow);
+}
+.game-intro-eyebrow{
+  font-size: 12px; font-weight: 800; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--gs-blue); margin: 0 0 10px;
+}
+.game-intro-title{ font-size: clamp(22px, 5vw, 30px); font-weight: 800; color: var(--gs-navy); margin: 0 0 10px; line-height: 1.2; }
+.game-intro-subtitle{ font-size: clamp(14px, 2.2vw, 16px); color: var(--gs-muted); margin: 0 auto 18px; max-width: 56ch; line-height: 1.55; }
+.game-intro-objective{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gs-light); border: 1px solid var(--gs-border);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700;
+  color: var(--gs-navy); margin: 0 0 22px;
+}
+.game-intro-brief{
+  max-width: 620px; margin: 0 auto 26px; text-align: left;
+  background: var(--gs-light); border: 1px solid var(--gs-border);
+  border-radius: 16px; padding: 16px 18px; font-size: 14px; line-height: 1.6;
+  color: var(--gs-text);
+}
+.game-intro-brief strong{ color: var(--gs-navy); }
+
+/* ── Insignias / medallas (tonos institucionales) ───────────── */
+.game-medal{
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 800;
+  letter-spacing: .02em; border: 1px solid transparent;
+}
+.game-medal-bronce{ background: rgba(180,83,9,.12); color: #92400e; border-color: rgba(180,83,9,.32); }
+.game-medal-plata{ background: rgba(100,116,139,.14); color: #334155; border-color: rgba(100,116,139,.32); }
+.game-medal-oro{ background: var(--gs-amber-soft); color: #8a4f16; border-color: rgba(196,122,43,.4); }
+.game-medal-comandante{ background: rgba(27,61,99,.12); color: var(--gs-blue); border-color: rgba(27,61,99,.32); }
+
+/* ── Racha y retroalimentación suave ────────────────────────── */
+.game-streak{ transition: transform .25s ease; }
+.game-streak.is-up{ animation: gameStreakPulse .5s ease; }
+@keyframes gameStreakPulse{
+  0%{ transform: scale(1); }
+  40%{ transform: scale(1.2); }
+  100%{ transform: scale(1); }
+}
+.game-feedback-ok{ animation: gameBurst .45s ease; }
+@keyframes gameBurst{
+  0%{ box-shadow: 0 0 0 0 var(--gs-ok-soft); }
+  100%{ box-shadow: 0 0 0 14px rgba(34,197,94,0); }
+}
+.game-feedback-retry{ animation: gameShake .4s ease; }
+@keyframes gameShake{
+  0%, 100%{ transform: translateX(0); }
+  25%{ transform: translateX(-4px); }
+  75%{ transform: translateX(4px); }
+}
+.game-fade-in{ animation: gameFadeIn .35s ease; }
+@keyframes gameFadeIn{
+  from{ opacity: 0; transform: translateY(6px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
 
 /* ── Responsive ──────────────────────────────────────────────  */
 @media (max-width: 560px){
   .game-header{ flex-direction: column; }
+  .game-intro-screen{ text-align: left; }
+  .game-result-stats{ gap: 8px; }
+  .game-result-stat{ min-width: 96px; padding: 8px 12px; }
 }
 
 /* ── Movimiento seguro ───────────────────────────────────────  */
