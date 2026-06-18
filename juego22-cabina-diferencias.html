@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Sistema visual común para juegos legados (FASE 1) -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -154,7 +158,7 @@
     footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
   </style>
 </head>
-<body>
+<body class="gs-scope">
 
 <header class="topbar" role="banner">
   <div>
@@ -164,11 +168,10 @@
   <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
+<main class="game-shell">
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active card">
-    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">🔍</div>
+  <div id="screen-intro" class="screen active card game-card">
     <h1>Cabina: encontrá las diferencias</h1>
     <p class="subtitle">Atención sostenida + memoria visual — Juego 22</p>
     <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
@@ -183,17 +186,22 @@
       <button class="level-pill" data-level="2" aria-pressed="false">Nivel 3 · Aterrizaje</button>
     </div>
     <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
     </div>
   </div>
 
   <!-- GAME -->
   <div id="screen-game" class="screen">
-    <div class="card" style="padding:16px;">
-      <div class="status-bar">
+    <div class="card game-card" style="padding:16px;">
+      <div class="status-bar game-status-bar">
         <span class="found-badge" id="found-badge">Encontraste 0 de 5</span>
         <span style="font-size:13px; color:var(--muted);" id="level-label">Nivel 1 · Embarque</span>
-        <button class="hint-btn" id="btn-hint" aria-label="Mostrar una pista">💡 Pista</button>
+        <button class="hint-btn" id="btn-hint" aria-label="Mostrar una pista">Pista</button>
+      </div>
+      <div class="game-status-group" style="margin-bottom:14px;">
+        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+        <span class="game-chip" id="scorePill">Puntaje: 0</span>
+        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
       </div>
       <div class="cabins-wrapper">
         <div class="cabin-panel" id="panel-orig">
@@ -210,13 +218,14 @@
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card result-center">
-    <div class="result-big" aria-hidden="true">🏅</div>
+  <div id="screen-result" class="screen card result-center game-card">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 10px;"></div>
     <div class="result-title">¡Cabina inspeccionada!</div>
     <div class="result-sub" id="res-sub">Encontraste las 5 diferencias.</div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Otro nivel</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="game-result-stats" id="res-stats"></div>
+    <div class="btn-row game-actions">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Otro nivel</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
     </div>
   </div>
 
@@ -225,6 +234,9 @@
 <footer role="contentinfo">
   Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
 </footer>
+
+<!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+<script src="assets/js/gamification.js"></script>
 
 <script>
 (function () {
@@ -413,9 +425,17 @@
   let currentLevel = 0;
   let found = new Set();
   let hintUsed = 0;
+  let session = null;
   const TOTAL_DIFFS = 5;
 
   const $ = id => document.getElementById(id);
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
 
   function showScreen(id) {
     ['screen-intro','screen-game','screen-result'].forEach(s => $(s).classList.remove('active'));
@@ -449,6 +469,8 @@
   function startGame() {
     found = new Set();
     hintUsed = 0;
+    session = window.GP.createSession({messages: window.GP.neutralMessages});
+    updateGPChips();
     const scene = SCENES[currentLevel];
     $('level-label').textContent = scene.label;
     $('found-badge').textContent = `Encontraste 0 de ${TOTAL_DIFFS}`;
@@ -497,13 +519,19 @@
       if (otherSvg) markDiff(hit, otherPanel, otherSvg, otherSvg.getBoundingClientRect(), vb);
 
       $('found-badge').textContent = `Encontraste ${found.size} de ${TOTAL_DIFFS}`;
-      showMsg(`✓ ¡Diferencia encontrada: ${hit.desc}!`, 'ok');
+      session.registerHit(2);
+      $('streakPill').classList.add('is-up');
+      setTimeout(()=>$('streakPill').classList.remove('is-up'), 500);
+      updateGPChips();
+      showMsg(`Diferencia encontrada: ${hit.desc}.`, 'ok');
 
       if (found.size === TOTAL_DIFFS) {
         setTimeout(showResult, 900);
       }
     } else {
       // Miss
+      session.registerMiss(0);
+      updateGPChips();
       showMsg('No hay diferencia ahí. Seguí mirando.', 'err');
       setTimeout(() => { $('msg-bar').className = 'msg-bar empty'; $('msg-bar').textContent = ''; }, 1500);
     }
@@ -534,11 +562,20 @@
     if (remaining.length === 0) return;
     const hint = remaining[0];
     hintUsed++;
-    showMsg(`💡 Pista: buscá en la zona de "${hint.desc}".`, 'ok');
+    showMsg(`Pista: buscá en la zona de "${hint.desc}".`, 'ok');
   });
 
   function showResult() {
-    $('res-sub').textContent = `Encontraste las ${TOTAL_DIFFS} diferencias en la escena "${SCENES[currentLevel].label}". ¡Excelente observación!`;
+    const summary = session.summary();
+    const medal = summary.medal;
+    $('res-sub').textContent = `Encontraste las ${TOTAL_DIFFS} diferencias en la escena "${SCENES[currentLevel].label}". ${summary.message}`;
+    $('res-medal').className = `game-medal game-medal-${medal.id}`;
+    $('res-medal').textContent = medal.name;
+    $('res-stats').innerHTML = `
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Pistas usadas</div><div class="game-result-stat-value">${hintUsed}</div></div>
+    `;
     showScreen('screen-result');
   }
 

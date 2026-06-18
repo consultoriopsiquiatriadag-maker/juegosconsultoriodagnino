@@ -39,10 +39,13 @@
       -webkit-tap-highlight-color: transparent;
     }
   </style>
+
+  <!-- Sistema visual común para juegos legados (FASE 1) -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased">
-  <main>
+<body class="bg-inst-light text-inst-navy antialiased gs-scope">
+  <main class="game-shell">
     <!-- HERO -->
     <section class="bg-inst-navy text-white">
       <div class="max-w-5xl mx-auto px-6 py-12">
@@ -78,8 +81,8 @@
     <section class="max-w-5xl mx-auto px-6 py-10">
       <div class="grid lg:grid-cols-5 gap-6">
         <!-- Panel de juego -->
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5 game-status-bar">
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-inst-navy/5">
                 <svg class="w-5 h-5 text-inst-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,6 +105,12 @@
                 <p class="text-xl font-semibold"><span id="elapsed">0</span>s</p>
               </div>
             </div>
+
+            <div class="game-status-group">
+              <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+              <span class="game-chip" id="scorePill">Puntaje: 0</span>
+              <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+            </div>
           </div>
 
           <div class="rounded-2xl border border-gray-200 bg-inst-light p-5 md:p-6">
@@ -113,11 +122,11 @@
                   <span class="text-inst-gray font-medium text-base ml-2">(tocá el objetivo)</span>
                 </p>
               </div>
-              <div class="flex items-center gap-2">
-                <button id="startBtn" class="anim bg-inst-blue text-white px-5 py-3 rounded-lg font-semibold hover:opacity-95">
+              <div class="flex items-center gap-2 game-actions">
+                <button id="startBtn" class="anim bg-inst-blue text-white px-5 py-3 rounded-lg font-semibold hover:opacity-95 game-btn game-btn-primary">
                   Iniciar
                 </button>
-                <button id="resetBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky">
+                <button id="resetBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
                   Reiniciar
                 </button>
               </div>
@@ -157,6 +166,9 @@
     </section>
   </main>
 
+  <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+  <script src="assets/js/gamification.js"></script>
+
   <script>
     const SYMBOLS = ["◆","●","■","▲","✦","✶","⬟","⬢","⬣","⬤","⬥","⬧","⬨","⬦"];
     const gridEl = document.getElementById("grid");
@@ -167,6 +179,11 @@
     const feedbackEl = document.getElementById("feedback");
     const startBtn = document.getElementById("startBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const gpLevelPill = document.getElementById("gpLevelPill");
+    const scorePill = document.getElementById("scorePill");
+    const streakPill = document.getElementById("streakPill");
+
+    let session = null;
 
     const state = {
       running:false,
@@ -178,6 +195,13 @@
       gridSize:9, // 3x3 inicial
       targetIndex:0
     };
+
+    function updateGPChips(){
+      const s = session.state;
+      gpLevelPill.textContent = s.level.name;
+      scorePill.textContent = "Puntaje: " + s.score;
+      streakPill.textContent = "Racha: " + s.streak;
+    }
 
     function updateUI(){
       levelEl.textContent = state.level;
@@ -231,18 +255,23 @@
       if(!state.running) return;
       if(idx === state.targetIndex){
         state.hits += 1;
+        session.registerHit(2);
+        streakPill.classList.add("is-up");
+        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
         // sube nivel cada 3 aciertos
         if(state.hits % 3 === 0){
           state.level += 1;
-          feedbackEl.textContent = "✔ Bien. Subimos un nivel.";
+          feedbackEl.textContent = "Bien. Subimos un nivel.";
         } else {
-          feedbackEl.textContent = "✔ Bien.";
+          feedbackEl.textContent = "Bien.";
         }
         buildRound();
       } else {
         // penalidad suave: no baja nivel, solo feedback
-        feedbackEl.textContent = "✖ No pasa nada. Volvé a buscar el objetivo.";
+        session.registerMiss(0);
+        feedbackEl.textContent = "No pasa nada. Volvé a buscar el objetivo.";
       }
+      updateGPChips();
       updateUI();
     }
 
@@ -252,6 +281,8 @@
       state.level = 1;
       state.hits = 0;
       state.startTime = Date.now();
+      session = window.GP.createSession({messages: window.GP.neutralMessages});
+      updateGPChips();
       if(state.timerId) clearInterval(state.timerId);
       state.timerId = setInterval(tick, 500);
       buildRound();

@@ -31,10 +31,13 @@
     body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
     @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
   </style>
+
+  <!-- Sistema visual común para juegos legados (FASE 1) -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased">
-  <main class="max-w-5xl mx-auto px-6 py-10">
+<body class="bg-inst-light text-inst-navy antialiased gs-scope">
+  <main class="max-w-5xl mx-auto px-6 py-10 game-shell">
     <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
       <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
         ← Volver a Juegos
@@ -44,7 +47,7 @@
       </a>
     </div>
 
-    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8 game-card">
       <div class="flex items-start justify-between gap-4 flex-wrap">
         <div class="min-w-0">
           <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Juego 7 · Semáforo (Go / No-Go)</h1>
@@ -54,22 +57,25 @@
           </p>
         </div>
 
-        <div class="flex gap-2 flex-wrap">
-          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition">Iniciar</button>
-          <button id="btnPause" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition" disabled>Pausar</button>
-          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition">Reiniciar</button>
+        <div class="flex gap-2 flex-wrap game-actions">
+          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition game-btn game-btn-primary">Iniciar</button>
+          <button id="btnPause" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition game-btn" disabled>Pausar</button>
+          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition game-btn">Reiniciar</button>
         </div>
       </div>
 
-      <div class="mt-6 grid md:grid-cols-3 gap-4">
+      <div class="mt-6 game-status-bar">
+        <div class="game-status-group">
+          <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="game-chip" id="scorePill">Puntaje: 0</span>
+          <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+        </div>
+      </div>
+
+      <div class="mt-4 grid md:grid-cols-2 gap-4">
         <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
           <p class="text-xs uppercase tracking-wider text-inst-gray">Tiempo</p>
           <p class="text-2xl font-semibold"><span id="timeLeft">60</span>s</p>
-        </div>
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Puntaje</p>
-          <p class="text-2xl font-semibold"><span id="score">0</span></p>
-          <p class="text-sm text-inst-gray mt-1">Racha: <span id="streak">0</span></p>
         </div>
         <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
           <p class="text-xs uppercase tracking-wider text-inst-gray">Errores</p>
@@ -118,6 +124,9 @@
     </section>
   </main>
 
+  <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+  <script src="assets/js/gamification.js"></script>
+
   <script>
     // Config
     const TOTAL_TIME = 60;         // segundos
@@ -130,20 +139,19 @@
     let running = false;
     let paused = false;
     let timeLeft = TOTAL_TIME;
-    let score = 0, errors = 0, misses = 0, streak = 0;
+    let errors = 0, misses = 0;
     let timerInterval = null;
     let phaseTimeout = null;
 
     let phase = "idle"; // red | yellow | green | idle
     let greenStartAt = 0;
     let greenTouched = false;
+    let session = null;
 
     // UI
     const timeEl = document.getElementById("timeLeft");
-    const scoreEl = document.getElementById("score");
     const errorsEl = document.getElementById("errors");
     const missesEl = document.getElementById("misses");
-    const streakEl = document.getElementById("streak");
 
     const btnStart = document.getElementById("btnStart");
     const btnPause = document.getElementById("btnPause");
@@ -153,6 +161,17 @@
     const lightRed = document.getElementById("lightRed");
     const lightYellow = document.getElementById("lightYellow");
     const lightGreen = document.getElementById("lightGreen");
+
+    const gpLevelPill = document.getElementById("gpLevelPill");
+    const scorePill = document.getElementById("scorePill");
+    const streakPill = document.getElementById("streakPill");
+
+    function updateGPChips(){
+      const s = session.state;
+      gpLevelPill.textContent = s.level.name;
+      scorePill.textContent = "Puntaje: " + s.score;
+      streakPill.textContent = "Racha: " + s.streak;
+    }
 
     function setLights(r, y, g){
       lightRed.style.opacity = r ? "1" : "0.25";
@@ -164,10 +183,8 @@
 
     function updateUI(){
       timeEl.textContent = timeLeft;
-      scoreEl.textContent = score;
       errorsEl.textContent = errors;
       missesEl.textContent = misses;
-      streakEl.textContent = streak;
     }
 
     function clearTimers(){
@@ -190,7 +207,7 @@
     function resetGame(){
       stopGame();
       timeLeft = TOTAL_TIME;
-      score = 0; errors = 0; misses = 0; streak = 0;
+      errors = 0; misses = 0;
       updateUI();
     }
 
@@ -209,7 +226,8 @@
       // Si se terminó una ventana verde y NO tocó, cuenta como "miss"
       if(phase === "green" && !greenTouched){
         misses += 1;
-        streak = 0;
+        session.registerMiss(0);
+        updateGPChips();
         updateUI();
       }
 
@@ -258,6 +276,8 @@
       btnStart.disabled = true;
       btnPause.disabled = false;
       tapBtn.disabled = false;
+      session = window.GP.createSession({messages: window.GP.neutralMessages});
+      updateGPChips();
 
       // inicio
       setLights(true, false, false);
@@ -287,8 +307,10 @@
       if(phase === "green"){
         const rt = performance.now() - greenStartAt;
         greenTouched = true;
-        score += (rt <= GREEN_WINDOW) ? 2 : 1; // bonus por rapidez suave
-        streak += 1;
+        session.registerHit(rt <= GREEN_WINDOW ? 2 : 1); // bonus por rapidez suave
+        streakPill.classList.add("is-up");
+        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        updateGPChips();
         updateUI();
 
         // Después de tocar en verde, pasamos a rojo rápido
@@ -297,7 +319,8 @@
       } else {
         // tocó en rojo o amarillo = error
         errors += 1;
-        streak = 0;
+        session.registerMiss(0);
+        updateGPChips();
         updateUI();
       }
     });

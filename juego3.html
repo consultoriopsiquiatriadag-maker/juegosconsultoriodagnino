@@ -34,9 +34,12 @@
       .card-hover:hover { transform: none; box-shadow: none; }
     }
   </style>
+
+  <!-- Sistema visual común para juegos legados (FASE 1) -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
 </head>
 
-<body class="bg-inst-light font-sans text-inst-navy antialiased">
+<body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
 
   <!-- HEADER -->
   <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -63,7 +66,7 @@
         <button id="audioToggle"
           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
           aria-pressed="true">
-          🔊 Audio activo
+          Audio activo
         </button>
 
         <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
@@ -87,11 +90,11 @@
     </div>
   </section>
 
-  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12 game-shell">
     <div class="grid lg:grid-cols-12 gap-6">
 
       <!-- Panel -->
-      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card">
         <h2 class="text-xl font-semibold mb-2">Panel</h2>
         <p class="text-inst-gray text-sm leading-relaxed mb-5">
           Objetivo: entrenar atención y discriminación simple. Duración sugerida: 1–3 minutos.
@@ -116,7 +119,7 @@
           </div>
         </div>
 
-        <div class="mt-5 space-y-3">
+        <div class="mt-5 space-y-3 game-actions" style="flex-direction:column;">
           <label class="block">
             <span class="text-sm text-inst-gray font-medium">Cantidad de ítems</span>
             <select id="length"
@@ -128,12 +131,12 @@
           </label>
 
           <button id="start"
-            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95">
+            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 game-btn game-btn-primary">
             Iniciar ronda
           </button>
 
           <button id="skip"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
             disabled>
             Pasar palabra
           </button>
@@ -150,11 +153,17 @@
       </section>
 
       <!-- Juego -->
-      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 game-status-bar">
           <div>
             <p class="text-sm text-inst-gray">Estado</p>
             <p class="text-lg font-semibold" id="state">Listo</p>
+          </div>
+
+          <div class="game-status-group">
+            <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="game-chip" id="scorePill">Puntaje: 0</span>
+            <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
           </div>
 
           <div class="w-full sm:w-72">
@@ -177,15 +186,15 @@
 
         <div class="grid sm:grid-cols-2 gap-4 mt-6">
           <button id="btnAero"
-            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30"
+            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30 game-btn"
             disabled>
-            ✈️ Aviación
+            Aviación
           </button>
 
           <button id="btnNo"
-            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30"
+            class="rounded-2xl bg-white border border-gray-200 hover:bg-inst-light px-5 py-6 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-inst-blue/30 game-btn"
             disabled>
-            🧺 No aviación
+            No aviación
           </button>
         </div>
 
@@ -194,20 +203,7 @@
           <p class="text-base font-semibold mt-1" id="feedback">—</p>
         </div>
 
-        <div id="finish" class="hidden mt-6 rounded-2xl border border-gray-100 bg-inst-light p-6">
-          <h3 class="text-lg font-semibold mb-2">Ronda finalizada ✅</h3>
-          <p class="text-inst-gray text-sm mb-4" id="summary"></p>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button id="again"
-              class="w-full sm:w-auto rounded-xl bg-inst-blue text-white font-semibold px-5 py-2.5 hover:opacity-95">
-              Nueva ronda
-            </button>
-            <a href="juegos.html"
-              class="w-full sm:w-auto rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold px-5 py-2.5 hover:bg-white text-center">
-              Volver a juegos
-            </a>
-          </div>
-        </div>
+        <div id="finish" class="hidden mt-6 game-result-card"></div>
 
         <p class="text-xs text-inst-gray mt-6">
           Este recurso es de estimulación cognitiva general y no constituye evaluación diagnóstica.
@@ -252,6 +248,9 @@
     <source src="audio/premio_excelente.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
+  <script src="assets/js/gamification.js"></script>
+
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -264,7 +263,7 @@
 
       function setAudioUI(){
         audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
-        audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+        audioToggle.textContent = audioEnabled ? "Audio activo" : "Audio silenciado";
       }
 
       function getVol(){
@@ -329,8 +328,10 @@
       const btnNo = document.getElementById("btnNo");
 
       const boxFinish = document.getElementById("finish");
-      const elSummary = document.getElementById("summary");
-      const btnAgain = document.getElementById("again");
+
+      const gpLevelPill = document.getElementById("gpLevelPill");
+      const scorePill = document.getElementById("scorePill");
+      const streakPill = document.getElementById("streakPill");
 
       // Audios
       const audioChime = document.getElementById("audioAirportChime");
@@ -345,6 +346,14 @@
       let miss = 0;
       let running = false;
       let welcomePlayedThisRound = false;
+      let session = null;
+
+      function updateGPChips(){
+        const s = session.state;
+        gpLevelPill.textContent = s.level.name;
+        scorePill.textContent = "Puntaje: " + s.score;
+        streakPill.textContent = "Racha: " + s.streak;
+      }
 
       function shuffle(arr){
         const a = arr.slice();
@@ -406,8 +415,11 @@
         hits = 0;
         miss = 0;
         running = true;
+        session = window.GP.createSession({messages: window.GP.neutralMessages});
+        updateGPChips();
 
         boxFinish.classList.add("hidden");
+        boxFinish.innerHTML = "";
         elFeedback.textContent = "—";
         setEnabled(true);
         btnStart.textContent = "Reiniciar ronda";
@@ -417,9 +429,9 @@
 
       function gentleFeedback(ok, it){
         if(ok){
-          elFeedback.textContent = "✅ Correcto. Seguimos.";
+          elFeedback.textContent = "Correcto. Seguimos.";
         } else {
-          elFeedback.textContent = `🙂 Casi. “${it.t}” se considera ${it.a ? "aviación" : "no aviación"}.`;
+          elFeedback.textContent = `Casi. “${it.t}” se considera ${it.a ? "aviación" : "no aviación"}.`;
         }
       }
 
@@ -427,8 +439,17 @@
         if(!running) return;
         const it = items[i];
         const ok = (isAero === it.a);
-        if(ok) hits++; else miss++;
+        if(ok){
+          hits++;
+          session.registerHit(2);
+          streakPill.classList.add("is-up");
+          setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        } else {
+          miss++;
+          session.registerMiss(0);
+        }
         gentleFeedback(ok, it);
+        updateGPChips();
         i++;
         setTimeout(showItem, 280);
         render();
@@ -443,6 +464,32 @@
         render();
       }
 
+      function renderResult(){
+        const summary = session.summary();
+        const medal = summary.medal;
+        const total = items.length || 0;
+        const acc = total ? Math.round((hits/total)*100) : 0;
+
+        boxFinish.innerHTML = `
+          <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
+          <h3 class="game-result-title mt-3">Ronda finalizada</h3>
+          <p class="game-result-message">
+            ${hits} aciertos, ${miss} errores. Precisión aproximada: ${acc}%.
+            Si te sentiste cansado/a, lo ideal es dejarlo acá y volver otro día.
+          </p>
+          <div class="game-result-stats">
+            <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+            <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+            <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${acc}%</div></div>
+          </div>
+          <div class="game-actions" style="justify-content:center;">
+            <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
+            <a href="juegos.html" class="game-btn">Volver a juegos</a>
+          </div>
+        `;
+        document.getElementById("again").addEventListener("click", startRound);
+      }
+
       function finish(){
         running = false;
         setEnabled(false);
@@ -450,18 +497,12 @@
         // Premio al finalizar
         playPrizeSound();
 
-        elState.textContent = "Finalizado ✅";
+        elState.textContent = "Finalizado";
         elWord.textContent = "Ronda terminada";
         elHint.textContent = "Buen trabajo. Si querés, podés hacer otra ronda.";
         elBar.style.width = "100%";
 
-        const total = items.length || 0;
-        const acc = total ? Math.round((hits/total)*100) : 0;
-
-        elSummary.textContent =
-          `Resultados: ${hits} aciertos, ${miss} errores. Precisión aproximada: ${acc}%. ` +
-          `Si te sentiste cansado/a, lo ideal es dejarlo acá y volver otro día.`;
-
+        renderResult();
         boxFinish.classList.remove("hidden");
 
         round++;
@@ -475,7 +516,6 @@
       btnSkip.addEventListener("click", skip);
       btnAero.addEventListener("click", () => answer(true));
       btnNo.addEventListener("click", () => answer(false));
-      btnAgain.addEventListener("click", startRound);
 
       window.addEventListener("keydown", (e) => {
         if(!running) return;
