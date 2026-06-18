@@ -54,9 +54,12 @@
       .shake { animation: none; }
     }
   </style>
+
+  <!-- Sistema visual común para juegos legados (FASE 1) -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
 </head>
 
-<body class="bg-inst-light font-sans text-inst-navy antialiased">
+<body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
 
   <!-- OVERLAY INICIO / COUNTDOWN -->
   <div id="overlay" class="fixed inset-0 z-[9999] bg-inst-navy/90 backdrop-blur-sm flex items-center justify-center px-6">
@@ -131,11 +134,11 @@
   </section>
 
   <!-- CONTENIDO -->
-  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12">
+  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12 game-shell">
     <div class="grid lg:grid-cols-12 gap-6">
 
       <!-- Panel -->
-      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7">
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card">
         <h2 class="text-xl font-semibold mb-2">Panel</h2>
         <p class="text-inst-gray text-sm leading-relaxed mb-5">
           Elegí dificultad y empezá. Guardamos tu mejor marca en este dispositivo.
@@ -160,7 +163,7 @@
           </div>
         </div>
 
-        <div class="mt-5 space-y-3">
+        <div class="mt-5 space-y-3 game-actions" style="flex-direction:column;">
           <label class="block">
             <span class="text-sm text-inst-gray font-medium">Dificultad</span>
             <select id="difficulty"
@@ -172,23 +175,23 @@
           </label>
 
           <button id="newGame"
-            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95">
+            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 game-btn game-btn-primary">
             Nueva partida (con cuenta regresiva)
           </button>
 
           <button id="reveal"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light">
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn">
             Vista previa (3 s)
           </button>
 
           <button id="audioToggle"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
             aria-pressed="true">
             🔊 Sonido: Activado
           </button>
 
           <button id="voiceToggle"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light"
+            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
             aria-pressed="true">
             🗣️ Voz: Activada (3–2–1)
           </button>
@@ -205,14 +208,14 @@
       </section>
 
       <!-- Tablero -->
-      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 game-status-bar">
           <div>
             <p class="text-sm text-inst-gray">Estado</p>
             <p class="text-lg font-semibold" id="stateText">Listo</p>
           </div>
 
-          <div class="inline-flex items-center gap-2 rounded-xl bg-inst-light border border-gray-100 px-4 py-2">
+          <div class="inline-flex items-center gap-2 rounded-xl bg-inst-light border border-gray-100 px-4 py-2 game-chip">
             <span class="text-sm text-inst-gray">Objetivo:</span>
             <span class="text-sm font-semibold" id="goalText">Encontrá todos los pares.</span>
           </div>
