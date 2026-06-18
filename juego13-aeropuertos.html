@@ -127,9 +127,16 @@
     .tower-hero{
       position: relative; overflow: hidden; border-radius: 24px;
       background: radial-gradient(circle at 18% 20%, rgba(76,201,240,.18), transparent 55%),
+                  radial-gradient(circle at 90% 88%, rgba(217,164,65,.12), transparent 48%),
                   linear-gradient(160deg, var(--casino-navy, #061936) 0%, var(--casino-blue, #0b2f63) 70%, #03101f 100%);
       color: #fff; padding: clamp(20px, 4vw, 36px); box-shadow: 0 24px 60px rgba(0,0,0,.32);
     }
+    .tower-hero::before{
+      content: ""; position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px);
+      opacity: .5; pointer-events: none;
+    }
+    .tower-hero > .wrap{ position: relative; z-index: 1; }
     .tower-pill{
       display:inline-flex; align-items:center; gap:8px; background: rgba(76,201,240,.14);
       border: 1px solid rgba(125,211,252,.35); border-radius:999px; padding:6px 14px;

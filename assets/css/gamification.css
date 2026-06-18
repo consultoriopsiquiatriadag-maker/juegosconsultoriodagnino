@@ -25,7 +25,9 @@
   border-radius: 24px;
   border: 1px solid var(--gp-gold-soft);
   background:
-    linear-gradient(180deg, rgba(6,25,54,0.86), rgba(6,25,54,0.93)),
+    radial-gradient(circle at 14% 10%, rgba(76,201,240,0.18), transparent 42%),
+    radial-gradient(circle at 88% 86%, rgba(217,164,65,0.12), transparent 46%),
+    linear-gradient(180deg, rgba(6,25,54,0.88), rgba(6,25,54,0.94)),
     var(--gp-mission-bg, linear-gradient(135deg, #041225 0%, #082b57 48%, #031020 100%));
   background-size: cover;
   background-position: center;
@@ -34,6 +36,14 @@
   box-shadow: 0 30px 80px rgba(0,0,0,0.35), 0 0 22px rgba(76,201,240,0.14);
   text-align: center;
 }
+.gp-mission-screen::before{
+  content: "";
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+  opacity: .5;
+  pointer-events: none;
+}
+.gp-mission-screen > *{ position: relative; z-index: 1; }
 .gp-mission-eyebrow{
   font-size: 12px; font-weight: 800; letter-spacing: 0.26em;
   text-transform: uppercase; color: #7dd3fc; margin: 0 0 10px;
