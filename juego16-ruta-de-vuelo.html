@@ -1,360 +1,205 @@
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juego 16 · Ruta de vuelo — Sala de espera virtual</title>
-  <meta name="description" content="Memoria visuoespacial: observá la secuencia de aeropuertos iluminados y repetila en el mismo orden." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Juego 16 · Ruta de vuelo — Sala de espera virtual</title>
+<meta name="description" content="Memoria visuoespacial: seguí la ruta que ilumina el radar y repetila tocando los aeropuertos en el mismo orden." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css?v=1">
+<link rel="stylesheet" href="assets/css/casino.css?v=1">
+<link rel="stylesheet" href="assets/css/gamification.css?v=1">
+<style>
+  .radar-status{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    background: var(--casino-card, rgba(255,255,255,0.96));
+    border: 1px solid var(--casino-line, rgba(147,197,253,0.38));
+    border-radius: 14px; padding: 10px 16px; margin: 0 0 14px;
+  }
+  .radar-status-pill{
+    display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:800;
+    color: var(--casino-navy, #061936); letter-spacing:.02em;
+  }
+  .radar-status-pill .dot{ width:8px; height:8px; border-radius:50%; background:#94a3b8; }
+  .radar-status-pill.is-watch .dot{ background:#f59e0b; box-shadow:0 0 8px rgba(245,158,11,.7); }
+  .radar-status-pill.is-input .dot{ background:#22c55e; box-shadow:0 0 8px rgba(34,197,94,.7); animation: gpStreakPulse 1.1s infinite; }
 
-    :root {
-      --bg: #f0f4f8;
-      --dark: #0e2239;
-      --blue: #0e6cc4;
-      --muted: #475569;
-      --white: #ffffff;
-      --border: rgba(14,34,57,0.10);
-      --radius: 16px;
-    }
+  .radar-panel{
+    position: relative; overflow: hidden; border-radius: 22px;
+    border: 1px solid rgba(76,201,240,0.35);
+    background: radial-gradient(circle at 50% 38%, #0c2e57 0%, #061936 62%, #030f22 100%);
+    padding: clamp(18px, 4vw, 30px); box-shadow: 0 24px 60px rgba(0,0,0,.35), 0 0 30px rgba(76,201,240,.12);
+  }
+  .radar-rings{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      repeating-radial-gradient(circle at 50% 38%,
+        rgba(125,211,252,0.10) 0px, rgba(125,211,252,0.10) 1px,
+        transparent 1px, transparent 54px);
+    opacity:.7;
+  }
+  .radar-sweep{
+    position:absolute; inset:-20%; pointer-events:none; opacity:.22;
+    background: conic-gradient(from 0deg at 50% 38%, rgba(76,201,240,.55), transparent 28%, transparent 100%);
+    animation: radarSpin 6s linear infinite;
+  }
+  @keyframes radarSpin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  .radar-stage{ position:relative; z-index:1; }
+  .radar-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 3vw, 18px);
+    margin: 6px 0 4px; position:relative; z-index:2;
+  }
+  .radar-node{
+    aspect-ratio:1; border-radius:50%; border:2px solid rgba(125,211,252,0.4);
+    background: rgba(8,33,67,0.7); display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:2px; cursor:pointer; font-family:inherit; padding:6px; position:relative;
+    transition: background .2s, border-color .2s, transform .15s, box-shadow .25s;
+  }
+  .radar-node:hover:not(:disabled){ border-color:#7dd3fc; transform: translateY(-2px); }
+  .radar-node:active:not(:disabled){ transform: scale(.95); }
+  .radar-node:disabled{ cursor:not-allowed; }
+  .radar-code{ font-size: clamp(14px, 3vw, 18px); font-weight:800; color:#e0f2fe; letter-spacing:.04em; }
+  .radar-city{ font-size: clamp(8px, 1.8vw, 10px); color: rgba(224,242,254,.65); text-align:center; line-height:1.15; }
 
-    /* HEADER */
-    .topbar {
-      background: var(--dark);
-      color: #fff;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .topbar-brand { font-weight: 700; font-size: 15px; line-height: 1.3; }
-    .topbar-sub { font-size: 12px; opacity: .8; }
-    .btn-back {
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.25);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-family: inherit;
-      cursor: pointer;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background .2s;
-    }
-    .btn-back:hover { background: rgba(255,255,255,.25); }
+  .radar-node.lit{ background:#0e6cc4; border-color:#7dd3fc; box-shadow:0 0 0 6px rgba(76,201,240,.28), 0 0 26px rgba(76,201,240,.55); }
+  .radar-node.lit .radar-code{ color:#fff; }
+  .radar-node.correct{ background: rgba(34,197,94,.22); border-color:#22c55e; box-shadow:0 0 18px rgba(34,197,94,.4); }
+  .radar-node.wrong{ background: rgba(248,113,113,.18); border-color:#f87171; }
+  .radar-node.hint{ background: rgba(217,164,65,.22); border-color: var(--casino-gold, #d9a441); }
 
-    /* MAIN */
-    main {
-      flex: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
-      width: 100%;
-    }
+  .plane-marker{
+    position:absolute; font-size:22px; line-height:1; z-index:5; opacity:0;
+    transform: translate(-50%,-50%); transition: left .55s cubic-bezier(.4,.0,.2,1), top .55s cubic-bezier(.4,.0,.2,1), opacity .25s ease;
+    filter: drop-shadow(0 0 8px rgba(76,201,240,.8));
+  }
+  .plane-marker.is-visible{ opacity:1; }
 
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 16px;
-    }
+  .radar-feedback{
+    border-radius: 12px; padding: 12px 16px; font-size: 14px; font-weight:600; text-align:center;
+    margin: 14px 0 4px; min-height: 46px; display:flex; align-items:center; justify-content:center;
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,.88); border:1px solid rgba(255,255,255,.12);
+    position:relative; z-index:2;
+  }
+  .radar-feedback.is-ok{ background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.4); color:#d1fae5; }
+  .radar-feedback.is-retry{ background: rgba(217,164,65,.14); border-color: rgba(217,164,65,.4); color:#fef3c7; }
 
-    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+  .radar-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; position:relative; z-index:2; }
 
-    /* BUTTONS */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      min-height: 44px;
-      padding: 10px 22px;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: opacity .2s, transform .15s;
-    }
-    .btn:active { transform: scale(.97); }
-    .btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-primary { background: var(--blue); color: #fff; }
-    .btn-primary:hover:not(:disabled) { opacity: .88; }
-    .btn-secondary {
-      background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--dark);
-    }
-    .btn-secondary:hover:not(:disabled) { background: var(--bg); }
+  .mode-pick{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin: 6px 0 4px; }
+  .gp-btn-start.alt{ background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04)); border-color: rgba(255,255,255,.32); }
 
-    /* STATUS BAR */
-    .status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .badge {
-      background: rgba(14,108,196,.12);
-      color: var(--blue);
-      border-radius: 999px;
-      padding: 4px 12px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .badge-muted {
-      background: rgba(14,34,57,.07);
-      color: var(--muted);
-    }
-
-    /* MUSIC TOGGLE */
-    .music-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(14,34,57,.06);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-family: inherit;
-      cursor: pointer;
-      color: var(--muted);
-      transition: background .2s;
-    }
-    .music-btn:hover { background: rgba(14,34,57,.10); }
-    .music-btn.active { color: var(--blue); border-color: rgba(14,108,196,.3); }
-
-    /* GRID */
-    .airport-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .airport-btn {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      border: 2px solid var(--border);
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .2s, border-color .2s, transform .15s, box-shadow .2s;
-      padding: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    .airport-btn:hover:not(:disabled) {
-      border-color: var(--blue);
-      background: rgba(14,108,196,.05);
-    }
-    .airport-btn:active:not(:disabled) { transform: scale(.95); }
-    .airport-btn:disabled { cursor: not-allowed; }
-
-    .airport-code {
-      font-size: clamp(15px, 3.5vw, 20px);
-      font-weight: 800;
-      color: var(--dark);
-      letter-spacing: .04em;
-    }
-    .airport-city {
-      font-size: clamp(9px, 2vw, 11px);
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    /* States */
-    .airport-btn.lit {
-      background: #0e6cc4;
-      border-color: #0e6cc4;
-      box-shadow: 0 0 0 4px rgba(14,108,196,.3);
-    }
-    .airport-btn.lit .airport-code { color: #fff; }
-    .airport-btn.lit .airport-city { color: rgba(255,255,255,.8); }
-
-    .airport-btn.correct {
-      background: #d1fae5;
-      border-color: #10b981;
-    }
-    .airport-btn.correct .airport-code { color: #065f46; }
-
-    .airport-btn.wrong {
-      background: #fee2e2;
-      border-color: #ef4444;
-    }
-    .airport-btn.wrong .airport-code { color: #991b1b; }
-
-    .airport-btn.hint {
-      background: #fef3c7;
-      border-color: #f59e0b;
-    }
-    .airport-btn.hint .airport-code { color: #92400e; }
-
-    /* INSTRUCTION SCREEN */
-    #screen-intro .intro-icon {
-      font-size: 48px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    #screen-intro ul {
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-
-    /* RESULT SCREEN */
-    .result-icon { font-size: 64px; text-align: center; margin-bottom: 12px; }
-    .result-title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 8px; }
-    .result-sub { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 24px; }
-    .result-score {
-      background: rgba(14,108,196,.08);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .result-score .score-num { font-size: 42px; font-weight: 900; color: var(--blue); }
-    .result-score .score-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
-    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-
-    /* SCREENS */
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    /* MESSAGE */
-    .msg-box {
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: center;
-      margin: 12px 0;
-      min-height: 44px;
-    }
-    .msg-box.success { background: #d1fae5; color: #065f46; }
-    .msg-box.error { background: #fee2e2; color: #991b1b; }
-    .msg-box.info { background: rgba(14,108,196,.10); color: var(--blue); }
-    .msg-box.hidden { visibility: hidden; }
-
-    /* FOOTER */
-    footer {
-      text-align: center;
-      padding: 20px 16px;
-      font-size: 12px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-  </style>
+  @media (max-width: 560px){
+    .radar-grid{ grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .radar-status{ flex-direction:column; align-items:flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .radar-sweep{ animation:none; opacity:.1; }
+    .plane-marker{ transition:none; }
+    .radar-status-pill.is-input .dot{ animation:none; }
+  }
+</style>
 </head>
-<body>
+<body class="casino-page">
 
-<!-- HEADER -->
-<header class="topbar" role="banner">
+<header class="brand-header" role="banner">
+  <div class="brand-badge" aria-hidden="true">DPD</div>
   <div>
-    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
-    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+    <div class="brand-title">Dr. Pedro Nicolás Dagnino</div>
+    <div class="brand-sub">Consultorio · Sala de espera virtual</div>
   </div>
-  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
-  <!-- INTRO SCREEN -->
-  <div id="screen-intro" class="screen active card">
-    <div class="intro-icon" aria-hidden="true">✈️</div>
-    <h1>Ruta de vuelo</h1>
-    <p class="subtitle">Memoria visuoespacial — Juego 16</p>
-    <ul>
-      <li>El juego iluminará aeropuertos en secuencia.</li>
-      <li>Memorizá el orden y repetilo tocando los aeropuertos.</li>
-      <li>Comenzás con 3 aeropuertos. Cada acierto suma uno más.</li>
-    </ul>
-    <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar juego">Comenzar</button>
+<main class="wrap gp-scope">
+  <nav class="topbar-back" aria-label="Navegación de juego">
+    <a href="juegos.html" class="btn-secondary" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+    <a href="index.html" class="btn-secondary">Inicio</a>
+  </nav>
+
+  <!-- PANTALLA DE MISIÓN -->
+  <section id="screenIntro" class="gp-mission-screen gp-fade-in">
+    <p class="gp-mission-eyebrow">📡 Radar activo</p>
+    <h1 class="gp-mission-title">Ruta de vuelo</h1>
+    <p class="gp-mission-subtitle">Memoria visuoespacial — seguí con la vista la ruta que se ilumina en el radar y repetila tocando los aeropuertos en el mismo orden.</p>
+    <div class="gp-mission-objective">🎯 Objetivo cognitivo: atención sostenida y memoria de secuencia</div>
+    <div class="gp-mission-brief">
+      <strong>Briefing de la misión:</strong> el radar va a iluminar una serie de aeropuertos, uno por uno. Memorizá el recorrido y, cuando el radar te ceda el control, tocá los mismos aeropuertos en el mismo orden. Cada ruta correcta suma una escala más. Elegí tu modo de vuelo para comenzar.
     </div>
+    <div class="mode-pick">
+      <button class="gp-btn-start" id="btnModeEntrenamiento">Modo entrenamiento →</button>
+      <button class="gp-btn-start alt" id="btnModeDesafio">Modo desafío →</button>
+    </div>
+    <div style="margin-top:14px;">
+      <button class="gp-sound-toggle" id="btnSound" type="button" aria-label="Activar o silenciar sonido">🔈 Sonido: activado</button>
+    </div>
+  </section>
+
+  <!-- HUD -->
+  <div id="hud" class="gp-hud" style="display:none;">
+    <div class="gp-hud-group">
+      <span class="gp-hud-chip">📡 <span id="hudSeq" class="gp-hud-chip-value">3</span> escalas</span>
+      <span class="gp-hud-chip">⭐ <span id="hudScore" class="gp-hud-chip-value">0</span> pts</span>
+      <span class="gp-hud-chip gp-streak" id="hudStreakChip">🔥 Racha <span id="hudStreak" class="gp-hud-chip-value">0</span></span>
+    </div>
+    <span class="gp-hud-chip" id="hudLevel">Nivel 1 · Entrenamiento</span>
   </div>
 
-  <!-- GAME SCREEN -->
-  <div id="screen-game" class="screen">
-    <div class="status-bar">
-      <span class="badge" id="level-badge">Secuencia: 3</span>
-      <span class="badge badge-muted" id="phase-badge">Observá</span>
-      <button class="music-btn" id="music-toggle" aria-label="Activar música de fondo" title="Música binaural suave">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M9 18V5l12-2v13"></path>
-          <circle cx="6" cy="18" r="3"></circle>
-          <circle cx="18" cy="16" r="3"></circle>
-        </svg>
-        Música: OFF
-      </button>
-    </div>
-
-    <div class="airport-grid" id="airport-grid" role="group" aria-label="Grid de aeropuertos"></div>
-
-    <div class="msg-box hidden" id="msg-box" role="status" aria-live="polite"></div>
-
-    <div id="retry-controls" style="display:none; text-align:center; margin-top:12px;">
-      <div class="btn-row">
-        <button class="btn btn-primary" id="btn-retry-same" aria-label="Reintentar el mismo nivel">Reintentar nivel</button>
-        <button class="btn btn-secondary" id="btn-retry-down" aria-label="Bajar un nivel">Bajar un nivel</button>
-      </div>
-    </div>
+  <!-- ESTADO -->
+  <div id="statusBar" class="radar-status" style="display:none;">
+    <span class="radar-status-pill" id="statusPill"><span class="dot"></span><span id="statusText">Observá el radar</span></span>
+    <span class="radar-status-pill" id="modeChip">Modo entrenamiento</span>
   </div>
 
-  <!-- RESULT SCREEN -->
-  <div id="screen-result" class="screen card">
-    <div class="result-icon" aria-hidden="true" id="result-icon">🏆</div>
-    <div class="result-title" id="result-title">¡Excelente!</div>
-    <div class="result-sub" id="result-sub">Completaste el desafío</div>
-    <div class="result-score">
-      <div class="score-num" id="score-num">6</div>
-      <div class="score-label">aeropuertos en secuencia máxima</div>
+  <!-- JUEGO -->
+  <section id="screenGame" class="radar-panel" style="display:none;">
+    <div class="radar-rings" aria-hidden="true"></div>
+    <div class="radar-sweep" aria-hidden="true"></div>
+    <div class="radar-stage">
+      <div class="radar-grid" id="radarGrid" role="group" aria-label="Grid de aeropuertos del radar"></div>
+      <span class="plane-marker" id="planeMarker" aria-hidden="true">✈️</span>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-play-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="radar-feedback" id="feedback" role="status" aria-live="polite">Preparando ruta…</div>
+    <div class="radar-actions" id="retryControls" style="display:none;">
+      <button class="casino-action-btn" id="btnRetrySame">Reintentar ruta</button>
+      <button class="casino-action-btn" id="btnRetryDown">Bajar una escala</button>
     </div>
-  </div>
+  </section>
+
+  <!-- PANTALLA FINAL -->
+  <section id="screenFinal" class="gp-final-screen" style="display:none;">
+    <div class="gp-final-medal" id="finalMedalIcon">🥉</div>
+    <h2 class="gp-final-title" id="finalTitle">Ruta completada</h2>
+    <p class="gp-final-message" id="finalMessage">Aterrizaje exitoso. Tu entrenamiento avanza.</p>
+    <div class="gp-final-stats">
+      <div class="gp-final-stat"><div class="gp-final-stat-label">Puntaje</div><div class="gp-final-stat-value" id="finalScore">0</div></div>
+      <div class="gp-final-stat"><div class="gp-final-stat-label">Nivel</div><div class="gp-final-stat-value" id="finalLevel">1</div></div>
+      <div class="gp-final-stat"><div class="gp-final-stat-label">Racha máxima</div><div class="gp-final-stat-value" id="finalStreak">0</div></div>
+      <div class="gp-final-stat"><div class="gp-final-stat-label">Escala máxima</div><div class="gp-final-stat-value" id="finalSeq">3</div></div>
+    </div>
+    <div class="gp-final-actions">
+      <button class="gp-btn-start" id="btnPlayAgain">Jugar otra vez</button>
+      <a href="juegos.html" class="casino-action-btn">Volver a juegos</a>
+      <a href="index.html" class="casino-action-btn">Volver a inicio</a>
+    </div>
+  </section>
+
+  <p class="casino-aviso">Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.</p>
 </main>
 
 <footer role="contentinfo">
-  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+  <div class="wrap" style="text-align:center; padding:18px 16px; font-size:12px; color:rgba(255,255,255,.6);">
+    <a href="index.html">Inicio</a> · <a href="juegos.html">Central de Turnos</a> · <a href="aviso-legal.html">Aviso legal</a>
+  </div>
 </footer>
 
+<script src="assets/js/gamification.js?v=1"></script>
 <script>
 (function () {
   'use strict';
 
-  const AIRPORTS = [
+  var AIRPORTS = [
     { code: 'EZE', city: 'Buenos Aires' },
     { code: 'GRU', city: 'São Paulo' },
     { code: 'SCL', city: 'Santiago' },
@@ -366,270 +211,285 @@
     { code: 'JFK', city: 'Nueva York' }
   ];
 
-  let sequence = [];
-  let userInput = [];
-  let currentLevel = 3;
-  let maxLevel = 3;
-  let phase = 'watch'; // 'watch' | 'input' | 'feedback'
-  let audioCtx = null;
-  let musicNode = null;
-  let musicOn = false;
+  var MODE_CONFIG = {
+    entrenamiento: { startLevel: 3, revealMs: 720, gapMs: 260, label: 'Modo entrenamiento' },
+    desafio:        { startLevel: 4, revealMs: 480, gapMs: 150, label: 'Modo desafío' }
+  };
+  var LEVEL_CAP = 9;
 
-  // DOM refs
-  const screenIntro = document.getElementById('screen-intro');
-  const screenGame = document.getElementById('screen-game');
-  const screenResult = document.getElementById('screen-result');
-  const grid = document.getElementById('airport-grid');
-  const levelBadge = document.getElementById('level-badge');
-  const phaseBadge = document.getElementById('phase-badge');
-  const msgBox = document.getElementById('msg-box');
-  const retryControls = document.getElementById('retry-controls');
-  const musicToggle = document.getElementById('music-toggle');
+  var screenIntro = document.getElementById('screenIntro');
+  var hud = document.getElementById('hud');
+  var statusBar = document.getElementById('statusBar');
+  var screenGame = document.getElementById('screenGame');
+  var screenFinal = document.getElementById('screenFinal');
+  var grid = document.getElementById('radarGrid');
+  var plane = document.getElementById('planeMarker');
+  var feedback = document.getElementById('feedback');
+  var retryControls = document.getElementById('retryControls');
+  var statusPill = document.getElementById('statusPill');
+  var statusText = document.getElementById('statusText');
+  var modeChip = document.getElementById('modeChip');
 
-  // Build grid
-  function buildGrid() {
+  var hudSeq = document.getElementById('hudSeq');
+  var hudScore = document.getElementById('hudScore');
+  var hudStreak = document.getElementById('hudStreak');
+  var hudStreakChip = document.getElementById('hudStreakChip');
+  var hudLevel = document.getElementById('hudLevel');
+
+  var mode = 'entrenamiento';
+  var cfg = MODE_CONFIG.entrenamiento;
+  var sequence = [];
+  var userInput = [];
+  var currentLevel = 3;
+  var maxLevel = 3;
+  var phase = 'idle';
+  var session = null;
+  var pickStartTime = 0;
+
+  function shuffleIdx(){
+    var arr = AIRPORTS.map(function(_, i){ return i; });
+    for (var i = arr.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function buildGrid(){
     grid.innerHTML = '';
-    AIRPORTS.forEach((ap, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'airport-btn';
+    AIRPORTS.forEach(function(ap, idx){
+      var btn = document.createElement('button');
+      btn.className = 'radar-node';
       btn.dataset.idx = idx;
-      btn.setAttribute('aria-label', `Aeropuerto ${ap.code} — ${ap.city}`);
-      btn.innerHTML = `<span class="airport-code">${ap.code}</span><span class="airport-city">${ap.city}</span>`;
-      btn.addEventListener('click', () => onAirportClick(idx));
+      btn.setAttribute('aria-label', 'Aeropuerto ' + ap.code + ' — ' + ap.city);
+      btn.innerHTML = '<span class="radar-code">' + ap.code + '</span><span class="radar-city">' + ap.city + '</span>';
+      btn.addEventListener('click', function(){ onNodeClick(idx); });
       grid.appendChild(btn);
     });
   }
 
-  function getBtn(idx) {
-    return grid.querySelector(`[data-idx="${idx}"]`);
-  }
+  function getNode(idx){ return grid.querySelector('[data-idx="' + idx + '"]'); }
 
-  function clearAllStates() {
-    grid.querySelectorAll('.airport-btn').forEach(b => {
+  function clearStates(){
+    grid.querySelectorAll('.radar-node').forEach(function(b){
       b.classList.remove('lit', 'correct', 'wrong', 'hint');
     });
   }
 
-  // Generate sequence
-  function generateSequence(len) {
-    const seq = [];
-    let prev = -1;
-    for (let i = 0; i < len; i++) {
-      let next;
-      do { next = Math.floor(Math.random() * 9); } while (next === prev);
+  function disableGrid(disabled){
+    grid.querySelectorAll('.radar-node').forEach(function(b){ b.disabled = disabled; });
+  }
+
+  function movePlaneTo(idx, visible){
+    var node = getNode(idx);
+    var stageRect = node.closest('.radar-stage').getBoundingClientRect();
+    var nodeRect = node.getBoundingClientRect();
+    var left = (nodeRect.left - stageRect.left) + nodeRect.width / 2;
+    var top = (nodeRect.top - stageRect.top) + nodeRect.height / 2;
+    plane.style.left = left + 'px';
+    plane.style.top = top + 'px';
+    plane.classList.toggle('is-visible', !!visible);
+  }
+
+  function generateSequence(len){
+    var pool = shuffleIdx();
+    var seq = [];
+    var prev = -1;
+    for (var i = 0; i < len; i++){
+      var next;
+      var tries = 0;
+      do { next = pool[Math.floor(Math.random() * pool.length)]; tries++; } while (next === prev && tries < 12);
       seq.push(next);
       prev = next;
     }
     return seq;
   }
 
-  // Play sequence animation
-  async function playSequence(seq) {
+  function setPhase(p){
+    phase = p;
+    statusPill.classList.remove('is-watch', 'is-input');
+    if (p === 'watch'){ statusPill.classList.add('is-watch'); statusText.textContent = 'Observá el radar'; }
+    else if (p === 'input'){ statusPill.classList.add('is-input'); statusText.textContent = 'Tu turno, navegante'; }
+    else { statusText.textContent = 'Procesando ruta…'; }
+  }
+
+  function setFeedback(text, kind){
+    feedback.textContent = text;
+    feedback.className = 'radar-feedback' + (kind === 'ok' ? ' is-ok' : kind === 'retry' ? ' is-retry' : '');
+  }
+
+  function delay(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+
+  function updateHud(){
+    hudSeq.textContent = currentLevel;
+    hudScore.textContent = session ? session.state.score : 0;
+    hudStreak.textContent = session ? session.state.streak : 0;
+    hudLevel.textContent = session ? session.state.level.name : 'Nivel 1 · Entrenamiento';
+  }
+
+  function pulseStreak(){
+    hudStreakChip.classList.remove('is-up');
+    void hudStreakChip.offsetWidth;
+    hudStreakChip.classList.add('is-up');
+  }
+
+  async function playSequence(seq){
     setPhase('watch');
+    setFeedback('El radar está trazando la ruta…');
     disableGrid(true);
-    clearAllStates();
-    await delay(600);
-    for (let i = 0; i < seq.length; i++) {
-      const btn = getBtn(seq[i]);
-      btn.classList.add('lit');
-      await delay(700);
-      btn.classList.remove('lit');
-      await delay(200);
+    clearStates();
+    plane.classList.remove('is-visible');
+    await delay(500);
+    for (var i = 0; i < seq.length; i++){
+      var node = getNode(seq[i]);
+      movePlaneTo(seq[i], true);
+      node.classList.add('lit');
+      await delay(cfg.revealMs);
+      node.classList.remove('lit');
+      await delay(cfg.gapMs);
     }
-    await delay(300);
+    plane.classList.remove('is-visible');
+    await delay(250);
     setPhase('input');
     disableGrid(false);
-    showMsg('¡Tu turno! Tocá los aeropuertos en el mismo orden.', 'info');
+    pickStartTime = Date.now();
+    setFeedback('Tu turno: tocá los aeropuertos en el mismo orden.');
   }
 
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  function disableGrid(disabled) {
-    grid.querySelectorAll('.airport-btn').forEach(b => { b.disabled = disabled; });
-  }
-
-  function setPhase(p) {
-    phase = p;
-    const labels = { watch: 'Observá', input: 'Tu turno', feedback: '' };
-    phaseBadge.textContent = labels[p] || '';
-  }
-
-  function showMsg(text, type) {
-    msgBox.textContent = text;
-    msgBox.className = `msg-box ${type}`;
-  }
-
-  function hideMsg() {
-    msgBox.textContent = '';
-    msgBox.className = 'msg-box hidden';
-  }
-
-  async function onAirportClick(idx) {
+  function onNodeClick(idx){
     if (phase !== 'input') return;
-
-    const pos = userInput.length;
-    const btn = getBtn(idx);
+    var pos = userInput.length;
+    var node = getNode(idx);
     userInput.push(idx);
 
-    if (idx === sequence[pos]) {
-      btn.classList.add('correct');
-      await delay(350);
-      btn.classList.remove('correct');
+    if (idx === sequence[pos]){
+      node.classList.add('correct');
+      setTimeout(function(){ node.classList.remove('correct'); }, 320);
 
-      if (userInput.length === sequence.length) {
-        // Full sequence correct!
-        setPhase('feedback');
+      if (userInput.length === sequence.length){
+        setPhase('done');
         disableGrid(true);
-        showMsg('¡Secuencia correcta! 🎉', 'success');
+        var elapsed = Date.now() - pickStartTime;
+        var fast = elapsed < sequence.length * 1500;
+        var result = session.registerHit(currentLevel, { fast: fast });
+        updateHud();
+        pulseStreak();
+        setFeedback(result.message, 'ok');
         if (currentLevel > maxLevel) maxLevel = currentLevel;
-        await delay(1200);
 
-        if (currentLevel >= 9) {
-          // Won the game!
-          showResult();
+        if (currentLevel >= LEVEL_CAP){
+          setTimeout(finishGame, 1100);
           return;
         }
-        currentLevel++;
-        levelBadge.textContent = `Secuencia: ${currentLevel}`;
-        sequence = generateSequence(currentLevel);
-        userInput = [];
-        retryControls.style.display = 'none';
-        hideMsg();
-        await delay(400);
-        playSequence(sequence);
+        setTimeout(function(){
+          currentLevel++;
+          userInput = [];
+          retryControls.style.display = 'none';
+          sequence = generateSequence(currentLevel);
+          updateHud();
+          playSequence(sequence);
+        }, 1100);
       }
     } else {
-      // Wrong!
-      setPhase('feedback');
+      setPhase('done');
       disableGrid(true);
-      btn.classList.add('wrong');
-      showMsg('Secuencia incorrecta. Así era la ruta correcta:', 'error');
+      node.classList.add('wrong');
+      var missResult = session.registerMiss(0);
+      updateHud();
+      setFeedback(missResult.message, 'retry');
 
-      // Show correct sequence as hint
-      await delay(600);
-      clearAllStates();
-      for (let i = 0; i < sequence.length; i++) {
-        getBtn(sequence[i]).classList.add('hint');
-        await delay(500);
-      }
-      await delay(500);
-
-      if (currentLevel > maxLevel) maxLevel = currentLevel;
-      retryControls.style.display = 'block';
+      (async function(){
+        await delay(550);
+        clearStates();
+        for (var i = 0; i < sequence.length; i++){
+          getNode(sequence[i]).classList.add('hint');
+          movePlaneTo(sequence[i], true);
+          await delay(420);
+        }
+        plane.classList.remove('is-visible');
+        if (currentLevel > maxLevel) maxLevel = currentLevel;
+        retryControls.style.display = 'flex';
+      })();
     }
   }
 
-  function startLevel(lvl) {
+  function startLevel(lvl){
     currentLevel = lvl;
     userInput = [];
-    levelBadge.textContent = `Secuencia: ${currentLevel}`;
     retryControls.style.display = 'none';
-    hideMsg();
-    clearAllStates();
+    clearStates();
+    updateHud();
     sequence = generateSequence(currentLevel);
     playSequence(sequence);
   }
 
-  function showResult() {
-    showScreen(screenResult);
-    const icon = document.getElementById('result-icon');
-    const title = document.getElementById('result-title');
-    const sub = document.getElementById('result-sub');
-    const scoreNum = document.getElementById('score-num');
-
-    scoreNum.textContent = maxLevel;
-    if (maxLevel >= 9) {
-      icon.textContent = '🏆';
-      title.textContent = '¡Increíble! ¡Ruta perfecta!';
-      sub.textContent = 'Dominaste las 9 escalas.';
-    } else if (maxLevel >= 6) {
-      icon.textContent = '🌟';
-      title.textContent = '¡Muy bien hecho!';
-      sub.textContent = `¡Llegaste a secuencias de ${maxLevel} aeropuertos!`;
-    } else if (maxLevel >= 4) {
-      icon.textContent = '✈️';
-      title.textContent = 'Buen vuelo';
-      sub.textContent = `Alcanzaste secuencias de ${maxLevel} aeropuertos.`;
-    } else {
-      icon.textContent = '🛫';
-      title.textContent = 'Comienzo del viaje';
-      sub.textContent = `Practicaste con secuencias de ${maxLevel} aeropuertos.`;
-    }
-  }
-
-  function showScreen(el) {
-    [screenIntro, screenGame, screenResult].forEach(s => s.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // Music (binaural-style gentle oscillator at ~40Hz)
-  function toggleMusic() {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (musicOn) {
-      if (musicNode) { try { musicNode.stop(); } catch(e) {} musicNode = null; }
-      musicOn = false;
-      musicToggle.textContent = '';
-      musicToggle.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg> Música: OFF`;
-      musicToggle.classList.remove('active');
-    } else {
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-      gain.connect(audioCtx.destination);
-
-      // Two oscillators slightly detuned for binaural-like effect
-      const osc1 = audioCtx.createOscillator();
-      osc1.type = 'sine';
-      osc1.frequency.value = 200;
-      osc1.connect(gain);
-      osc1.start();
-
-      const osc2 = audioCtx.createOscillator();
-      osc2.type = 'sine';
-      osc2.frequency.value = 240;
-      osc2.connect(gain);
-      osc2.start();
-
-      musicNode = { stop: () => { osc1.stop(); osc2.stop(); gain.disconnect(); } };
-      musicOn = true;
-      musicToggle.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg> Música: ON`;
-      musicToggle.classList.add('active');
-    }
-  }
-
-  // Event listeners
-  document.getElementById('btn-start').addEventListener('click', () => {
-    showScreen(screenGame);
+  function startGame(selectedMode){
+    mode = selectedMode;
+    cfg = MODE_CONFIG[mode];
+    modeChip.textContent = cfg.label;
+    maxLevel = cfg.startLevel;
+    session = window.GP.createSession({
+      onLevelUp: function(){ updateHud(); },
+      onStreak: function(){ pulseStreak(); }
+    });
+    screenIntro.style.display = 'none';
+    hud.style.display = 'flex';
+    statusBar.style.display = 'flex';
+    screenGame.style.display = 'block';
+    screenFinal.style.display = 'none';
     buildGrid();
-    maxLevel = 3;
-    startLevel(3);
-  });
+    startLevel(cfg.startLevel);
+  }
 
-  document.getElementById('btn-retry-same').addEventListener('click', () => {
+  function finishGame(){
+    var summary = session.summary();
+    var medalIcons = { bronce: '🥉', plata: '🥈', oro: '🥇', comandante: '🎖️' };
+    document.getElementById('finalMedalIcon').textContent = medalIcons[summary.medal.id] || '🥉';
+    document.getElementById('finalTitle').textContent = currentLevel >= LEVEL_CAP ? 'Ruta completa: torre máxima alcanzada' : 'Misión interrumpida';
+    document.getElementById('finalMessage').textContent = summary.message;
+    document.getElementById('finalScore').textContent = summary.score;
+    document.getElementById('finalLevel').textContent = summary.level.name;
+    document.getElementById('finalStreak').textContent = summary.maxStreak;
+    document.getElementById('finalSeq').textContent = maxLevel;
+
+    hud.style.display = 'none';
+    statusBar.style.display = 'none';
+    screenGame.style.display = 'none';
+    screenFinal.style.display = 'block';
+    window.GP.chime('win');
+  }
+
+  function resetToIntro(){
+    screenFinal.style.display = 'none';
+    screenGame.style.display = 'none';
+    hud.style.display = 'none';
+    statusBar.style.display = 'none';
+    screenIntro.style.display = 'block';
+  }
+
+  document.getElementById('btnModeEntrenamiento').addEventListener('click', function(){ startGame('entrenamiento'); });
+  document.getElementById('btnModeDesafio').addEventListener('click', function(){ startGame('desafio'); });
+
+  document.getElementById('btnRetrySame').addEventListener('click', function(){
     userInput = [];
     retryControls.style.display = 'none';
-    hideMsg();
-    clearAllStates();
+    clearStates();
     sequence = generateSequence(currentLevel);
     playSequence(sequence);
   });
-
-  document.getElementById('btn-retry-down').addEventListener('click', () => {
-    const lvl = Math.max(3, currentLevel - 1);
+  document.getElementById('btnRetryDown').addEventListener('click', function(){
+    var lvl = Math.max(MODE_CONFIG[mode].startLevel, currentLevel - 1);
     startLevel(lvl);
   });
+  document.getElementById('btnPlayAgain').addEventListener('click', function(){ startGame(mode); });
 
-  document.getElementById('btn-play-again').addEventListener('click', () => {
-    showScreen(screenGame);
-    buildGrid();
-    maxLevel = 3;
-    startLevel(3);
-  });
-
-  musicToggle.addEventListener('click', toggleMusic);
+  var btnSound = document.getElementById('btnSound');
+  function syncSoundLabel(){
+    var muted = window.GP.isMuted();
+    btnSound.textContent = muted ? '🔇 Sonido: silenciado' : '🔈 Sonido: activado';
+  }
+  btnSound.addEventListener('click', function(){ window.GP.toggleMuted(); syncSoundLabel(); });
+  syncSoundLabel();
 
 })();
 </script>
