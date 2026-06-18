@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -261,7 +262,7 @@
     }
   </style>
 </head>
-<body>
+<body class="gs-scope">
 
 <header class="topbar" role="banner">
   <div>
@@ -271,11 +272,16 @@
   <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
+<main class="game-shell">
+
+  <div class="game-status-group" style="margin-bottom:14px; justify-content:center;">
+    <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+    <span class="game-chip" id="scorePill">Puntaje: 0</span>
+    <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+  </div>
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active card">
-    <div style="font-size:48px; margin-bottom:12px;" aria-hidden="true">🌬️</div>
+  <div id="screen-intro" class="screen active card game-card">
     <h1>Respiración y memoria</h1>
     <p class="subtitle" style="text-align:center;">Memoria de trabajo + anclaje atencional — Juego 19</p>
     <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
@@ -284,12 +290,12 @@
       <li>Al final te preguntaremos cuál ícono <strong>no</strong> apareciste.</li>
     </ul>
     <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar">Comenzar</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-start" aria-label="Comenzar">Comenzar</button>
     </div>
   </div>
 
   <!-- BREATHING SCREEN -->
-  <div id="screen-breath" class="screen card">
+  <div id="screen-breath" class="screen card game-card">
     <div class="progress-text" id="cycle-text">Ronda 1 de 3 · Ciclo 1 de 2</div>
     <div class="progress-bar"><div class="progress-fill" id="round-progress" style="width:0%"></div></div>
 
@@ -310,7 +316,7 @@
   </div>
 
   <!-- QUESTION SCREEN -->
-  <div id="screen-question" class="screen card">
+  <div id="screen-question" class="screen card game-card">
     <div class="progress-text" id="q-round-text">Ronda 1 de 3</div>
     <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:33%"></div></div>
 
@@ -320,22 +326,23 @@
     <div class="choices-grid" id="choices-grid"></div>
     <div id="q-feedback" class="msg" style="display:none;"></div>
     <div style="margin-top:16px; display:none;" id="q-next-wrap">
-      <button class="btn btn-primary" id="btn-next-round" aria-label="Siguiente ronda">Siguiente ronda →</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next-round" aria-label="Siguiente ronda">Siguiente ronda →</button>
     </div>
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card">
-    <div class="result-big" aria-hidden="true" id="result-icon">🌟</div>
+  <div id="screen-result" class="screen card game-card">
+    <div id="result-medal" class="game-medal" style="margin:0 auto 12px;"></div>
     <div class="result-title" id="result-title">¡Muy bien respirado!</div>
     <div class="result-sub" id="result-sub"></div>
     <div class="score-box">
       <div class="snum" id="result-score">3</div>
       <div class="slabel" id="result-score-label">respuestas correctas de 3</div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-play-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="game-result-stats" id="result-gp-stats" style="margin-bottom:16px;"></div>
+    <div class="btn-row game-actions" style="justify-content:center;">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-play-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
     </div>
   </div>
 
@@ -345,6 +352,7 @@
   Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
 </footer>
 
+<script src="assets/js/gamification.js"></script>
 <script>
 (function () {
   'use strict';
@@ -402,6 +410,26 @@
   let answered = false;
 
   const $ = id => document.getElementById(id);
+
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    const pill = $('streakPill');
+    pill.classList.add('is-up');
+    setTimeout(() => pill.classList.remove('is-up'), 500);
+  }
 
   function showScreen(id) {
     ['screen-intro','screen-breath','screen-question','screen-result']
@@ -530,11 +558,15 @@
     if (isCorrect) {
       score++;
       fb.className = 'msg success';
-      fb.textContent = '¡Correcto! Ese ícono no estaba. 🎉';
+      fb.textContent = '¡Correcto! Ese ícono no estaba.';
+      session.registerHit(3);
+      pulseStreak();
     } else {
       fb.className = 'msg info';
       fb.textContent = `No era ese. El ícono que no estaba era: ${distractor.emoji} ${distractor.name}.`;
+      session.registerMiss(0);
     }
+    updateGPChips();
     fb.style.display = 'block';
 
     const nextWrap = $('q-next-wrap');
@@ -551,7 +583,6 @@
   }
 
   function showResult() {
-    const icon = $('result-icon');
     const title = $('result-title');
     const sub = $('result-sub');
     const sc = $('result-score');
@@ -564,15 +595,22 @@
     title.textContent = '¡Muy bien respirado!';
 
     if (score === TOTAL_ROUNDS) {
-      icon.textContent = '🌟';
-      sub.textContent = `Además, acertaste las ${TOTAL_ROUNDS} preguntas de memoria. ¡Atención y calma van de la mano!`;
+      sub.textContent = `Además, acertaste las ${TOTAL_ROUNDS} preguntas de memoria. Atención y calma van de la mano.`;
     } else if (score >= 2) {
-      icon.textContent = '✈️';
       sub.textContent = 'Excelente práctica de respiración. La memoria viene sola con la calma.';
     } else {
-      icon.textContent = '🌬️';
       sub.textContent = 'Lo más importante es que respiraste. La memoria se entrena con la práctica.';
     }
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('result-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('result-gp-stats').innerHTML = `
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+    `;
 
     showScreen('screen-result');
   }
@@ -589,6 +627,7 @@
     clearInterval(countInterval);
     score = 0;
     answered = false;
+    startSession();
   }
 
   $('btn-start').addEventListener('click', () => {
@@ -600,6 +639,8 @@
     resetGame();
     startRound(0);
   });
+
+  startSession();
 
 })();
 </script>

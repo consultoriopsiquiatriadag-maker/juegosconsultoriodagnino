@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -211,7 +212,7 @@
     }
   </style>
 </head>
-<body>
+<body class="gs-scope">
 
 <header class="topbar" role="banner">
   <div>
@@ -221,11 +222,16 @@
   <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
+<main class="game-shell">
+
+  <div class="game-status-group" style="margin-bottom:14px; justify-content:center;">
+    <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+    <span class="game-chip" id="scorePill">Puntaje: 0</span>
+    <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+  </div>
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active card">
-    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">📖</div>
+  <div id="screen-intro" class="screen active card game-card">
     <h1 style="text-align:center;">Historia de vuelo</h1>
     <p class="subtitle" style="text-align:center; margin-bottom:20px;">Memoria episódica narrativa — Juego 20</p>
     <ul style="padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
@@ -234,19 +240,19 @@
       <li>Sin cronómetro. El relato es el destino.</li>
     </ul>
     <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-to-pick" aria-label="Elegir historia">Elegir historia</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-to-pick" aria-label="Elegir historia">Elegir historia</button>
     </div>
   </div>
 
   <!-- STORY PICKER -->
-  <div id="screen-pick" class="screen card">
+  <div id="screen-pick" class="screen card game-card">
     <h1>Elegí tu historia</h1>
     <p class="subtitle" style="margin-bottom:4px;">Cinco relatos. Cada uno, un vuelo tranquilo.</p>
     <div class="story-list" id="story-list"></div>
   </div>
 
   <!-- STORY READ -->
-  <div id="screen-story" class="screen card">
+  <div id="screen-story" class="screen card game-card">
     <div class="story-header">
       <div class="story-emoji" id="s-emoji" aria-hidden="true">✈️</div>
       <div>
@@ -256,12 +262,12 @@
     </div>
     <div class="story-text" id="s-body"></div>
     <div style="display:flex; justify-content:flex-end;">
-      <button class="btn btn-primary" id="btn-read-done" aria-label="Ya leí la historia, pasar a preguntas">Ya la leí →</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-read-done" aria-label="Ya leí la historia, pasar a preguntas">Ya la leí →</button>
     </div>
   </div>
 
   <!-- QUESTIONS -->
-  <div id="screen-questions" class="screen card">
+  <div id="screen-questions" class="screen card game-card">
     <div class="prog-wrap">
       <div class="prog-label" id="prog-label">Pregunta 1 de 5</div>
       <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:20%"></div></div>
@@ -270,22 +276,23 @@
     <div class="options-list" id="options-list"></div>
     <div class="fb-box" id="fb-box" style="display:none;"></div>
     <div style="display:none; text-align:right;" id="next-q-wrap">
-      <button class="btn btn-primary" id="btn-next-q" aria-label="Siguiente pregunta">Siguiente →</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next-q" aria-label="Siguiente pregunta">Siguiente →</button>
     </div>
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card result-center">
-    <div class="result-icon" id="res-icon" aria-hidden="true">🌟</div>
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
     <div class="result-title" id="res-title">¡Buen vuelo!</div>
     <div class="result-sub" id="res-sub"></div>
     <div class="score-box">
       <div class="snum" id="res-num">5</div>
       <div class="slabel">detalles recordados de 5</div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="game-result-stats" id="res-gp-stats" style="margin-bottom:16px; justify-content:center;"></div>
+    <div class="btn-row game-actions" style="justify-content:center;">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
     </div>
   </div>
 
@@ -295,6 +302,7 @@
   Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
 </footer>
 
+<script src="assets/js/gamification.js"></script>
 <script>
 (function () {
   'use strict';
@@ -379,6 +387,26 @@
 
   const $ = id => document.getElementById(id);
 
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    const pill = $('streakPill');
+    pill.classList.add('is-up');
+    setTimeout(() => pill.classList.remove('is-up'), 500);
+  }
+
   function showScreen(id) {
     ['screen-intro','screen-pick','screen-story','screen-questions','screen-result']
       .forEach(s => $(s).classList.remove('active'));
@@ -408,6 +436,7 @@
     currentStory = st;
     currentQ = 0;
     score = 0;
+    startSession();
     $('s-emoji').textContent = st.emoji;
     $('s-title').textContent = st.title;
     $('s-dest').textContent = st.dest;
@@ -455,12 +484,16 @@
       score++;
       btn.classList.add('correct');
       fb.className = 'fb-box ok';
-      fb.textContent = '✓ ¡Correcto!';
+      fb.textContent = '¡Correcto!';
+      session.registerHit(2);
+      pulseStreak();
     } else {
       btn.classList.add('wrong');
       fb.className = 'fb-box err';
       fb.textContent = `La respuesta correcta era: "${correct}"`;
+      session.registerMiss(0);
     }
+    updateGPChips();
     fb.style.display = 'block';
 
     const nw = $('next-q-wrap');
@@ -479,13 +512,23 @@
   function showResult() {
     const total = currentStory.questions.length;
     $('res-num').textContent = score;
-    $('res-icon').textContent = score === total ? '🏆' : score >= 3 ? '🌟' : '✈️';
     $('res-title').textContent = score === total
       ? '¡Memoria perfecta!'
       : score >= 3
         ? '¡Muy buen vuelo!'
         : 'Buen ejercicio';
-    $('res-sub').textContent = `Recordaste ${score} de ${total} detalle${score !== 1 ? 's' : ''} de la historia. ${score < total ? 'Podés releer el relato y volver a intentarlo.' : '¡Tu memoria episódica está en vuelo de crucero!'}`;
+    $('res-sub').textContent = `Recordaste ${score} de ${total} detalle${score !== 1 ? 's' : ''} de la historia. ${score < total ? 'Podés releer el relato y volver a intentarlo.' : 'Tu memoria episódica está en buena forma.'}`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+    `;
+
     showScreen('screen-result');
   }
 
@@ -493,6 +536,8 @@
   $('btn-to-pick').addEventListener('click', () => { buildPicker(); showScreen('screen-pick'); });
   $('btn-read-done').addEventListener('click', () => loadQuestion(0));
   $('btn-again').addEventListener('click', () => { buildPicker(); showScreen('screen-pick'); });
+
+  startSession();
 
 })();
 </script>

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -208,7 +209,7 @@
     }
   </style>
 </head>
-<body>
+<body class="gs-scope">
 
 <header class="topbar" role="banner">
   <div>
@@ -218,11 +219,16 @@
   <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
 </header>
 
-<main>
+<main class="game-shell">
+
+  <div class="game-status-group" style="margin-bottom:14px; justify-content:center;">
+    <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+    <span class="game-chip" id="scorePill">Puntaje: 0</span>
+    <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+  </div>
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active card">
-    <div style="font-size:48px; margin-bottom:12px; text-align:center;" aria-hidden="true">🧑‍✈️</div>
+  <div id="screen-intro" class="screen active card game-card">
     <h1>Pasajeros</h1>
     <p class="subtitle">Memoria asociativa — Juego 21</p>
     <ul style="text-align:left; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:22px;">
@@ -246,12 +252,12 @@
       </button>
     </div>
     <div style="display:flex; justify-content:center;">
-      <button class="btn btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-start" aria-label="Comenzar el juego">Comenzar</button>
     </div>
   </div>
 
   <!-- MEMORIZE SCREEN -->
-  <div id="screen-memo" class="screen card">
+  <div id="screen-memo" class="screen card game-card">
     <div class="timer-wrap">
       <div class="timer-label">
         <span>Conocé a tus compañeros de vuelo</span>
@@ -263,7 +269,7 @@
   </div>
 
   <!-- QUESTION SCREEN -->
-  <div id="screen-q" class="screen card">
+  <div id="screen-q" class="screen card game-card">
     <div class="prog-wrap">
       <div class="prog-label" id="prog-label">Pregunta 1 de 5</div>
       <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:20%"></div></div>
@@ -272,22 +278,23 @@
     <div class="opts-grid" id="opts-grid"></div>
     <div class="fb-box" id="fb-box" style="display:none;"></div>
     <div style="display:none; text-align:right;" id="next-q-wrap">
-      <button class="btn btn-primary" id="btn-next-q">Siguiente →</button>
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next-q">Siguiente →</button>
     </div>
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card result-center">
-    <div class="result-big" id="res-icon" aria-hidden="true">🌟</div>
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
     <div class="result-title" id="res-title">¡Buen vuelo!</div>
     <div class="result-sub" id="res-sub"></div>
     <div class="score-box">
       <div class="snum" id="res-num">5</div>
       <div class="slabel" id="res-label">respuestas correctas de 5</div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
-      <a href="juegos.html" class="btn btn-secondary">Volver al inicio</a>
+    <div class="game-result-stats" id="res-gp-stats" style="margin-bottom:16px; justify-content:center;"></div>
+    <div class="btn-row game-actions" style="justify-content:center;">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
     </div>
   </div>
 
@@ -297,6 +304,7 @@
   Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
 </footer>
 
+<script src="assets/js/gamification.js"></script>
 <script>
 (function () {
   'use strict';
@@ -328,6 +336,26 @@
   let timerLeft = 20;
 
   const $ = id => document.getElementById(id);
+
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    const pill = $('streakPill');
+    pill.classList.add('is-up');
+    setTimeout(() => pill.classList.remove('is-up'), 500);
+  }
 
   function showScreen(id) {
     ['screen-intro','screen-memo','screen-q','screen-result']
@@ -390,6 +418,7 @@
     buildQuestions();
     currentQ = 0;
     score = 0;
+    startSession();
 
     // Build passenger grid
     const grid = $('passengers-grid');
@@ -464,12 +493,16 @@
       score++;
       btn.classList.add('correct');
       fb.className = 'fb-box ok';
-      fb.textContent = '¡Correcto! 🎉';
+      fb.textContent = '¡Correcto!';
+      session.registerHit(2);
+      pulseStreak();
     } else {
       btn.classList.add('wrong');
       fb.className = 'fb-box err';
       fb.textContent = `La respuesta era: "${correct}"`;
+      session.registerMiss(0);
     }
+    updateGPChips();
     fb.style.display = 'block';
 
     const nw = $('next-q-wrap');
@@ -489,18 +522,30 @@
     const total = questions.length;
     $('res-num').textContent = score;
     $('res-label').textContent = `respuestas correctas de ${total}`;
-    $('res-icon').textContent = score === total ? '🏆' : score >= 3 ? '🌟' : '✈️';
     $('res-title').textContent = score === total ? '¡Memoria de élite!' : score >= 3 ? '¡Buen vuelo!' : 'Ejercicio completado';
     $('res-sub').textContent = score === total
-      ? '¡Recordaste a todos los pasajeros perfectamente!'
+      ? 'Recordaste a todos los pasajeros perfectamente.'
       : score >= 3
-        ? `${score} de ${total} asociaciones correctas. ¡Muy bien!`
+        ? `${score} de ${total} asociaciones correctas. Muy bien.`
         : `${score} de ${total} correctas. Cada práctica fortalece la memoria.`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+    `;
+
     showScreen('screen-result');
   }
 
   $('btn-start').addEventListener('click', startMemo);
   $('btn-again').addEventListener('click', () => { showScreen('screen-intro'); });
+
+  startSession();
 
 })();
 </script>
