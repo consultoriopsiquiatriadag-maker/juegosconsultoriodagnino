@@ -8,6 +8,7 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
 
   <script>
     tailwind.config = {
@@ -75,6 +76,8 @@
           <span class="text-sm text-white/90">Equipo profesional asociado</span>
         </div>
 
+        <a href="index.html" class="btn-ghost" style="margin-bottom:18px" aria-label="Volver a la página de inicio">← Volver a inicio</a>
+
         <h1 class="text-3xl md:text-5xl font-semibold mb-4">
           Otras Especialidades Médicas
         </h1>
@@ -83,11 +86,6 @@
           Profesionales asociados que complementan el abordaje integral del Consultorio
           de Psiquiatría y Medicina Aeronáutica.
         </p>
-
-        <a href="index.html"
-           class="inline-flex items-center gap-2 bg-white text-inst-navy px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky transition">
-          ← Volver al inicio
-        </a>
       </div>
     </div>
   </section>
@@ -194,8 +192,66 @@
       </div>
 
     </div>
+    <div class="max-w-6xl mx-auto mt-4">
+      <a href="index.html" class="btn-secondary" aria-label="Volver a la página de inicio">← Volver a inicio</a>
+    </div>
   </section>
 </main>
 
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <iframe class="map"
+        src="https://www.google.com/maps?q=Riobamba%20919%20Buenos%20Aires&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Mapa Riobamba 919, Buenos Aires"></iframe>
+
+      <div class="footer-links">
+        <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener noreferrer">Abrir en Maps</a>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer" class="footer-review">Dejar reseña (Google)</a>
+        <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        <a href="https://www.instagram.com/doctor.dagnino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.linkedin.com/in/pedronicolasdagnino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.tiktok.com/@doctor_dagnino" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </div>
+    </div>
+
+    <div>
+      <p class="footer-title">Ubicación y contacto</p>
+      <div>
+        Barrio Norte – Recoleta<br>
+        Ciudad Autónoma de Buenos Aires – Argentina
+      </div>
+
+      <div style="margin-top:12px">
+        <div><strong>Email administrativo</strong></div>
+        <div style="margin-top:6px">
+          <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a><br>
+          <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:14px">
+        <a class="review-callout" href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener noreferrer"
+           aria-label="Escribir una reseña del Consultorio de Psiquiatría Dagnino en Google">
+          <strong>Consultorio de Psiquiatría Dagnino:</strong> queremos saber tu opinión.
+          Nos ayuda mucho que escribas una reseña en nuestro perfil.
+        </a>
+      </div>
+
+      <div class="legal" id="legalBlock">
+        Copyright © <span id="yearNow"></span>
+        Todos los derechos reservados.<br>
+        Desarrollado por PETER-SOFT
+        Año automático.<br><br>
+        <span>
+          Cookies/analíticas: podemos usar analíticas para mejorar la experiencia. No utilizamos cookies de seguimiento publicitario.
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js?v=1"></script>
 </body>
 </html>
