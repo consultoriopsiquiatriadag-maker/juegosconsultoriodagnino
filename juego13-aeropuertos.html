@@ -16,6 +16,8 @@
 
   <!-- CSS institucional -->
   <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
+  <link rel="stylesheet" href="assets/css/gamification.css?v=1">
 
   <style>
     /* Overlay estilo "Juego 4" pero adaptado a app.css */
@@ -120,6 +122,73 @@
     .feedback strong{ font-weight:900; }
     .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
     .muted-note{ margin-top: 10px; color: var(--muted, #475569); line-height:1.6; }
+
+    /* ── Torre de control / boarding pass (FASE 5) ────────────────── */
+    .tower-hero{
+      position: relative; overflow: hidden; border-radius: 24px;
+      background: radial-gradient(circle at 18% 20%, rgba(76,201,240,.18), transparent 55%),
+                  linear-gradient(160deg, var(--casino-navy, #061936) 0%, var(--casino-blue, #0b2f63) 70%, #03101f 100%);
+      color: #fff; padding: clamp(20px, 4vw, 36px); box-shadow: 0 24px 60px rgba(0,0,0,.32);
+    }
+    .tower-pill{
+      display:inline-flex; align-items:center; gap:8px; background: rgba(76,201,240,.14);
+      border: 1px solid rgba(125,211,252,.35); border-radius:999px; padding:6px 14px;
+      font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:#7dd3fc;
+      margin-bottom:14px;
+    }
+    .tower-hero h1{ color:#fff; }
+    .tower-hero .hero-bridge, .tower-hero .hero-meta{ color: rgba(255,255,255,.85); }
+    .boarding-row{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;
+    }
+    .boarding-chip{
+      background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+      border-radius:12px; padding:8px 14px; font-size:12.5px; font-weight:700; color:#e0f2fe;
+      min-width: 96px;
+    }
+    .boarding-chip b{ display:block; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color: rgba(224,242,254,.6); margin-bottom:2px; }
+    .tower-hero .hero-side{ background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); }
+    .tower-hero .hero-side h3, .tower-hero .hero-side p{ color: rgba(255,255,255,.85); }
+    .tower-hero .hero-side a{ color:#7dd3fc; }
+
+    .tower-panel{
+      background: linear-gradient(180deg, #0c2545, #061936); color:#fff; border: 1px solid rgba(76,201,240,.28);
+      border-radius: 22px; box-shadow: 0 20px 50px rgba(0,0,0,.3);
+    }
+    .tower-panel .card-title, .tower-panel .card-sub, .tower-panel .question{ color:#fff; }
+    .tower-panel .chip{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color:#fff; }
+    .tower-panel .divider{ border-color: rgba(255,255,255,.14); }
+    .tower-panel .muted-note{ color: rgba(255,255,255,.65); }
+
+    .mode-pick{ display:flex; flex-wrap:wrap; gap:10px; margin: 14px 0 0; }
+    .mode-btn{
+      flex:1; min-width:160px; text-align:left; padding:12px 16px; border-radius:14px;
+      border:1px solid rgba(125,211,252,.35); background: rgba(255,255,255,.06); color:#fff;
+      cursor:pointer; font-family:inherit; transition: border-color .15s, transform .15s, background .15s;
+    }
+    .mode-btn:hover{ border-color:#7dd3fc; transform: translateY(-2px); }
+    .mode-btn.is-active{ background: rgba(76,201,240,.18); border-color:#7dd3fc; box-shadow:0 0 0 3px rgba(76,201,240,.18); }
+    .mode-btn .mt{ font-weight:800; font-size:13.5px; }
+    .mode-btn .ms{ font-size:12px; color: rgba(255,255,255,.7); margin-top:3px; }
+
+    .board-flicker{ animation: gpFlipIn .35s ease; }
+
+    .airportName.tower-board{
+      background: #07142a; border: 1px solid rgba(76,201,240,.35); color:#7dd3fc;
+      font-family: 'Inter', monospace; letter-spacing:.02em; box-shadow: inset 0 0 18px rgba(0,0,0,.4);
+    }
+    .code-badge.tower-code{ background: rgba(76,201,240,.16); border-color: rgba(125,211,252,.4); color:#e0f2fe; }
+
+    .opt.tower-opt{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.22); color:#fff; }
+    .opt.tower-opt:hover{ border-color:#7dd3fc; }
+    .opt.tower-opt.good{ background: rgba(34,197,94,.16); }
+    .opt.tower-opt.bad{ background: rgba(248,113,113,.14); }
+
+    .feedback.tower-feedback{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.18); color:#fff; }
+
+    @media (prefers-reduced-motion: reduce){
+      .board-flicker{ animation:none; }
+    }
   </style>
 </head>
 
@@ -282,24 +351,27 @@
   </div>
 
   <!-- Hero -->
-  <section class="hero" aria-label="Juego 13 — Aeropuertos por país">
+  <section class="hero tower-hero" aria-label="Juego 13 — Aeropuertos por país">
     <div class="wrap hero-inner">
       <div>
-        <div class="pill" aria-label="Tipo de juego">
-          <span class="dot" aria-hidden="true"></span>
-          <span>Trivia 4 opciones</span>
-        </div>
+        <div class="tower-pill" aria-label="Tipo de juego">🛫 Torre de control</div>
 
         <h1 class="hero-title">Juego 13 · Aeropuertos (¿de qué país?)</h1>
 
         <p class="hero-bridge">
-          Aparece el <strong>nombre de un aeropuerto</strong>. Elegí entre 4 opciones
-          el <strong>país al que pertenece</strong>.
+          La torre muestra el <strong>nombre de un aeropuerto</strong> en el tablero. Elegí entre 4 opciones
+          el <strong>país al que pertenece</strong> para confirmar el destino.
         </p>
 
         <p class="hero-meta">
-          Son <strong>10 preguntas</strong>. Ganás si acertás <strong>10/10</strong>.
+          Son <strong>10 verificaciones</strong>. Cerrás la torre con <strong>10/10</strong>.
         </p>
+
+        <div class="boarding-row" aria-label="Información de vuelo">
+          <div class="boarding-chip"><b>Objetivo</b>Atención y memoria geográfica</div>
+          <div class="boarding-chip"><b>Modo</b><span id="modeChipHero">Entrenamiento</span></div>
+          <div class="boarding-chip"><b>Estado</b>Esperando autorización</div>
+        </div>
       </div>
 
       <aside class="hero-side" aria-label="Accesos rápidos">
@@ -315,13 +387,13 @@
   </section>
 
   <!-- Main -->
-  <main class="wrap game-wrap" id="jugar" aria-label="Juego de aeropuertos por país">
+  <main class="wrap game-wrap gp-scope" id="jugar" aria-label="Juego de aeropuertos por país">
     <section class="section">
-      <div class="section-card hint-bg">
+      <div class="section-card tower-panel">
         <div class="card-head">
           <div>
             <h2 class="card-title" style="margin:0">Elegí el país correcto</h2>
-            <p class="card-sub" style="margin:8px 0 0 0">Objetivo: <strong>10 aciertos</strong>.</p>
+            <p class="card-sub" style="margin:8px 0 0 0">Objetivo: <strong>10 verificaciones</strong> de torre.</p>
           </div>
 
           <div class="btn-row" style="margin:0">
@@ -331,12 +403,25 @@
           </div>
         </div>
 
+        <div class="mode-pick" id="modePick" role="group" aria-label="Modo de juego">
+          <button class="mode-btn is-active" id="modeEntrenamientoBtn" type="button" data-mode="entrenamiento">
+            <div class="mt">✈️ Entrenamiento</div>
+            <div class="ms">Nombre + código visibles</div>
+          </button>
+          <button class="mode-btn" id="modeExigenteBtn" type="button" data-mode="exigente">
+            <div class="mt">🗼 Torre exigente</div>
+            <div class="ms">Solo el código IATA</div>
+          </button>
+        </div>
+
         <div class="divider" aria-hidden="true"></div>
 
         <div class="hud" aria-label="Progreso">
           <div class="chips">
-            <span class="chip" id="qChip">Pregunta: —</span>
+            <span class="chip" id="qChip">Verificación: —</span>
             <span class="chip" id="sChip">Aciertos: 0</span>
+            <span class="chip gp-streak" id="streakChipWrap">🔥 Racha <span id="streakChip">0</span></span>
+            <span class="chip" id="levelChip">Nivel 1 · Entrenamiento</span>
           </div>
           <span class="chip" id="statusChip" aria-live="polite">Listo para empezar</span>
         </div>
@@ -344,16 +429,16 @@
         <div class="qa" id="qa" hidden>
           <p class="question" id="questionText">—</p>
 
-          <div class="airportName" id="airportName">—</div>
+          <div class="airportName tower-board" id="airportName">—</div>
 
           <div class="codeRow" aria-label="Código del aeropuerto">
-            <span class="code-badge" id="codeBadge">---</span>
+            <span class="code-badge tower-code" id="codeBadge">---</span>
             <span class="chip" id="hintChip">Elegí el país</span>
           </div>
 
           <div class="options" id="options" aria-label="Opciones"></div>
 
-          <div class="feedback" id="feedback" hidden aria-live="polite"></div>
+          <div class="feedback tower-feedback" id="feedback" hidden aria-live="polite"></div>
 
           <div class="actions">
             <button class="btn-primary" id="nextBtn" type="button" disabled>Siguiente</button>
@@ -387,6 +472,7 @@
   <script src="assets/js/i18n.js?v=1"></script>
   <script src="assets/js/spa.js?v=1"></script>
   <script src="assets/js/app.js?v=1"></script>
+  <script src="assets/js/gamification.js?v=1"></script>
 
   <script>
     // ======= DATA =======
@@ -649,8 +735,14 @@
       idx: 0,
       score: 0,
       locked: false,
-      finished: false
+      finished: false,
+      mode: "entrenamiento"
     };
+
+    let session = (window.GP ? window.GP.createSession({
+      onLevelUp: function(level){ levelChip.textContent = level.name; },
+      onStreak: function(){ streakChipWrap.classList.add("is-up"); setTimeout(()=>streakChipWrap.classList.remove("is-up"), 500); }
+    }) : null);
 
     const startBtn = document.getElementById("startBtn");
     const restartBtn = document.getElementById("restartBtn");
@@ -661,6 +753,13 @@
     const qChip = document.getElementById("qChip");
     const sChip = document.getElementById("sChip");
     const statusChip = document.getElementById("statusChip");
+    const streakChip = document.getElementById("streakChip");
+    const streakChipWrap = document.getElementById("streakChipWrap");
+    const levelChip = document.getElementById("levelChip");
+    const modeChipHero = document.getElementById("modeChipHero");
+    const modePick = document.getElementById("modePick");
+    const modeEntrenamientoBtn = document.getElementById("modeEntrenamientoBtn");
+    const modeExigenteBtn = document.getElementById("modeExigenteBtn");
 
     const questionText = document.getElementById("questionText");
     const airportName = document.getElementById("airportName");
@@ -668,11 +767,25 @@
     const optionsWrap = document.getElementById("options");
     const feedback = document.getElementById("feedback");
 
+    function setMode(mode){
+      state.mode = mode;
+      [modeEntrenamientoBtn, modeExigenteBtn].forEach(b => b && b.classList.remove("is-active"));
+      const activeBtn = mode === "exigente" ? modeExigenteBtn : modeEntrenamientoBtn;
+      if (activeBtn) activeBtn.classList.add("is-active");
+      if (modeChipHero) modeChipHero.textContent = mode === "exigente" ? "Torre exigente" : "Entrenamiento";
+    }
+    if (modeEntrenamientoBtn) modeEntrenamientoBtn.addEventListener("click", () => setMode("entrenamiento"));
+    if (modeExigenteBtn) modeExigenteBtn.addEventListener("click", () => setMode("exigente"));
+
     function setStatus(text){ statusChip.textContent = text; }
 
     function updateHUD(){
-      qChip.textContent = state.finished ? "Pregunta: —" : `Pregunta: ${state.idx + 1}/10`;
+      qChip.textContent = state.finished ? "Verificación: —" : `Verificación: ${state.idx + 1}/10`;
       sChip.textContent = `Aciertos: ${state.score}`;
+      if (session){
+        streakChip.textContent = session.state.streak;
+        levelChip.textContent = session.state.level.name;
+      }
     }
 
     function renderQuestion(){
@@ -683,8 +796,14 @@
       nextBtn.disabled = true;
 
       questionText.textContent = "¿A qué país pertenece este aeropuerto?";
-      airportName.textContent = item.name;
+      airportName.textContent = state.mode === "exigente" ? "—" : item.name;
       codeBadge.textContent = item.code;
+      airportName.classList.remove("board-flicker");
+      codeBadge.classList.remove("board-flicker");
+      // reflow para reiniciar la animación
+      void airportName.offsetWidth;
+      airportName.classList.add("board-flicker");
+      codeBadge.classList.add("board-flicker");
 
       const wrong = uniqueWrongCountries(item.country, 3);
       const opts = shuffle([item.country, ...wrong]);
@@ -693,7 +812,7 @@
       opts.forEach(country => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "opt";
+        btn.className = "opt tower-opt";
         btn.setAttribute("aria-label", country);
         btn.innerHTML = `<div style="font-weight:900">${escapeHtml(country)}</div>`;
         btn.addEventListener("click", () => handleAnswer(btn, country, item.country, item));
@@ -701,7 +820,7 @@
       });
 
       qa.hidden = false;
-      setStatus("Elegí una opción");
+      setStatus("Torre espera tu confirmación");
       updateHUD();
     }
 
@@ -724,16 +843,18 @@
       if (ok){
         btn.classList.add("good");
         state.score += 1;
-        setStatus("✅ Correcto");
+        if (session) session.registerHit(2);
+        setStatus("🛫 Destino identificado");
         feedback.hidden = false;
-        feedback.innerHTML = `<strong>¡Bien!</strong> <strong>${escapeHtml(item.name)}</strong> pertenece a <strong>${escapeHtml(correctCountry)}</strong>.`;
-        chime("ok");
+        feedback.innerHTML = `<strong>Destino identificado.</strong> <strong>${escapeHtml(item.name)}</strong> pertenece a <strong>${escapeHtml(correctCountry)}</strong>.`;
+        if (!session) chime("ok");
       } else {
         btn.classList.add("bad");
-        setStatus("❌ Incorrecto");
+        const missMsg = session ? session.registerMiss(0).message : "Torre solicita nueva verificación.";
+        setStatus("🗼 Torre solicita nueva verificación");
         feedback.hidden = false;
-        feedback.innerHTML = `La respuesta correcta era <strong>${escapeHtml(correctCountry)}</strong>.`;
-        chime("error");
+        feedback.innerHTML = `${escapeHtml(missMsg)} La respuesta correcta era <strong>${escapeHtml(correctCountry)}</strong>.`;
+        if (!session) chime("error");
       }
 
       updateHUD();
@@ -748,21 +869,31 @@
       nextBtn.disabled = true;
 
       const won = state.score >= 10;
-      setStatus(won ? "🏁 ¡Ganaste!" : "🏁 Fin del juego");
+      setStatus(won ? "🏁 ¡Torre cerrada con éxito!" : "🏁 Fin de la verificación");
+
+      const sum = session ? session.summary() : null;
+      const medalIcon = sum ? ({bronce:"🥉", plata:"🥈", oro:"🥇", comandante:"🎖️"})[sum.medal.id] || "🥉" : "🥉";
 
       feedback.hidden = false;
       feedback.innerHTML = `
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div><strong>Resultado:</strong> ${state.score}/10</div>
-          <div>${won
-            ? "✅ ¡Excelente! 10/10."
-            : "Podés repetir para intentar llegar a 10/10."}</div>
+        <div class="gp-final-screen" style="padding:18px;">
+          <div class="gp-final-medal">${medalIcon}</div>
+          <div class="gp-final-title">${won ? "¡Excelente, comandante!" : "Resultado final"}</div>
+          <p class="gp-final-message">${sum ? escapeHtml(sum.message) : (won ? "10/10 verificaciones confirmadas." : "Podés repetir para mejorar tu marca.")}</p>
+          <div class="gp-final-stats">
+            <div class="gp-final-stat"><div class="gp-final-stat-label">Resultado</div><div class="gp-final-stat-value">${state.score}/10</div></div>
+            ${sum ? `
+            <div class="gp-final-stat"><div class="gp-final-stat-label">Nivel</div><div class="gp-final-stat-value">${escapeHtml(sum.level.name.replace(/^Nivel \d+ · /,""))}</div></div>
+            <div class="gp-final-stat"><div class="gp-final-stat-label">Racha máx.</div><div class="gp-final-stat-value">${sum.maxStreak}</div></div>
+            <div class="gp-final-stat"><div class="gp-final-stat-label">Precisión</div><div class="gp-final-stat-value">${sum.accuracy ?? "—"}%</div></div>
+            ` : ""}
+          </div>
         </div>
       `;
 
       if (won){
         await playSafe(audioPremio);
-        chime("win");
+        if (!session) chime("win");
       }
 
       copyBtn.disabled = false;
@@ -782,13 +913,18 @@
       state.score = 0;
       state.locked = false;
       state.finished = false;
+      session = (window.GP ? window.GP.createSession({
+        onLevelUp: function(level){ levelChip.textContent = level.name; },
+        onStreak: function(){ streakChipWrap.classList.add("is-up"); setTimeout(()=>streakChipWrap.classList.remove("is-up"), 500); }
+      }) : null);
 
       startBtn.disabled = true;
       restartBtn.disabled = false;
       copyBtn.disabled = true;
+      if (modePick) modePick.querySelectorAll("button").forEach(b => b.disabled = true);
 
       renderQuestion();
-      setStatus("Comenzó la ronda");
+      setStatus("Torre abierta · comenzó la verificación");
     }
 
     function restart(){
@@ -802,6 +938,7 @@
       state.score = 0;
       state.locked = false;
       state.finished = false;
+      if (modePick) modePick.querySelectorAll("button").forEach(b => b.disabled = false);
 
       updateHUD();
       restartBtn.disabled = true;
