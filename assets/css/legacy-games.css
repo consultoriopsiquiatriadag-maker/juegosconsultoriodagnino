@@ -133,6 +133,36 @@
 }
 .game-intro-brief strong{ color: var(--gs-navy); }
 
+/* ── Bloque plegable de instrucciones secundarias (FASE 2) ──────
+   Para instrucciones largas que no necesitan estar siempre
+   abiertas: usa <details class="game-instructions"><summary>…
+   </summary>…</details>. No requiere JS. Cerrado por defecto para
+   acortar la primera vista en mobile sin ocultar la información
+   (sigue accesible con un toque). ──────────────────────────── */
+.game-instructions{
+  border: 1px solid var(--gs-border);
+  border-radius: var(--gs-radius-sm);
+  background: var(--gs-light);
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.game-instructions summary{
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--gs-blue);
+  list-style: none;
+}
+.game-instructions summary::-webkit-details-marker{ display: none; }
+.game-instructions summary::after{
+  content: "▾";
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform .2s ease;
+}
+.game-instructions[open] summary::after{ transform: rotate(180deg); }
+.game-instructions ul, .game-instructions p{ margin-top: 10px; }
+
 /* ── Insignias / medallas (tonos institucionales) ───────────── */
 .game-medal{
   display: inline-flex; align-items: center; gap: 6px;
@@ -193,10 +223,17 @@
     padding-bottom: 8px;
   }
 
-  /* Hero tipo Tailwind (section.bg-inst-navy) */
+  /* Hero tipo Tailwind (section.bg-inst-navy). El padding real vive
+     en el <div class="max-w-* px-6 py-10/12/14"> hijo de la sección
+     (Tailwind py-*), no en la sección misma: hay que pisar ese div,
+     si no el padding de Tailwind queda intacto. */
   .gs-scope section.bg-inst-navy{
-    padding-top: 18px;
-    padding-bottom: 18px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .gs-scope section.bg-inst-navy > div{
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
   .gs-scope section.bg-inst-navy h1{
     font-size: clamp(22px, 7vw, 28px);
@@ -206,6 +243,12 @@
   .gs-scope section.bg-inst-navy p{
     font-size: 14px;
     line-height: 1.4;
+  }
+  /* Insignia decorativa (punto pulsante + texto) sobre el título:
+     ocupa espacio sin aportar información nueva en mobile */
+  .gs-scope section.bg-inst-navy .rounded-full.mb-5{
+    margin-bottom: 10px;
+    padding: 6px 12px;
   }
   /* Grupo de botones embebido en el hero (Volver a juegos / Inicio):
      que ocupe el mínimo espacio posible al apilarse bajo el título */
@@ -223,6 +266,15 @@
     padding: 16px 14px;
   }
 
+  /* Fila título + botones de acción dentro de una tarjeta sin hero
+     propio (p.ej. Juego 7): que no sume filas extra al apilarse */
+  .gs-scope .game-card .flex.items-start.justify-between{
+    gap: 10px;
+  }
+  .gs-scope .game-card .flex.items-start.justify-between h1{
+    font-size: clamp(20px, 6vw, 24px);
+  }
+
   /* Barra de estado / chips */
   .gs-scope .game-status-bar{
     padding: 10px 12px;
@@ -233,6 +285,12 @@
   .gs-scope .game-actions{
     margin-top: 12px;
     gap: 8px;
+  }
+
+  /* Bloque plegable de instrucciones: un poco más compacto en mobile */
+  .game-instructions{
+    margin-bottom: 12px;
+    padding: 8px 12px;
   }
 }
 
