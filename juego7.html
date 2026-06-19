@@ -121,6 +121,8 @@
           No es un examen ni un diagnóstico.
         </p>
       </div>
+
+      <div id="result" class="hidden mt-6 game-result-card"></div>
     </section>
   </main>
 
@@ -165,6 +167,7 @@
     const gpLevelPill = document.getElementById("gpLevelPill");
     const scorePill = document.getElementById("scorePill");
     const streakPill = document.getElementById("streakPill");
+    const resultBox = document.getElementById("result");
 
     function updateGPChips(){
       const s = session.state;
@@ -208,7 +211,30 @@
       stopGame();
       timeLeft = TOTAL_TIME;
       errors = 0; misses = 0;
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
       updateUI();
+    }
+
+    function renderResult(){
+      const summary = session.summary();
+      const medal = summary.medal;
+      resultBox.classList.remove("hidden");
+      resultBox.innerHTML = `
+        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
+        <h3 class="game-result-title mt-3">Tiempo finalizado</h3>
+        <p class="game-result-message">${summary.message} ${errors} errores y ${misses} respuestas tardías.</p>
+        <div class="game-result-stats">
+          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
+        </div>
+        <div class="game-actions" style="justify-content:center;">
+          <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
+          <a href="juegos.html" class="game-btn">Volver a juegos</a>
+        </div>
+      `;
+      document.getElementById("again").addEventListener("click", startGame);
     }
 
     function tick(){
@@ -217,6 +243,7 @@
       updateUI();
       if(timeLeft <= 0){
         stopGame();
+        renderResult();
       }
     }
 
@@ -278,6 +305,8 @@
       tapBtn.disabled = false;
       session = window.GP.createSession({messages: window.GP.neutralMessages});
       updateGPChips();
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
 
       // inicio
       setLights(true, false, false);

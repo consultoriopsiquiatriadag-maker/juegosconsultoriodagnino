@@ -126,6 +126,9 @@
                 <button id="startBtn" class="anim bg-inst-blue text-white px-5 py-3 rounded-lg font-semibold hover:opacity-95 game-btn game-btn-primary">
                   Iniciar
                 </button>
+                <button id="finishBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
+                  Finalizar
+                </button>
                 <button id="resetBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
                   Reiniciar
                 </button>
@@ -133,7 +136,9 @@
             </div>
 
             <div id="grid" class="grid gap-2"></div>
-            <p id="feedback" class="mt-4 text-sm text-inst-gray text-center">Tocá “Iniciar” para comenzar.</p>
+            <p id="feedback" class="mt-4 text-sm text-inst-gray text-center">Tocá "Iniciar" para comenzar.</p>
+
+            <div id="result" class="hidden mt-6 game-result-card"></div>
           </div>
         </div>
 
@@ -178,10 +183,12 @@
     const elapsedEl = document.getElementById("elapsed");
     const feedbackEl = document.getElementById("feedback");
     const startBtn = document.getElementById("startBtn");
+    const finishBtn = document.getElementById("finishBtn");
     const resetBtn = document.getElementById("resetBtn");
     const gpLevelPill = document.getElementById("gpLevelPill");
     const scorePill = document.getElementById("scorePill");
     const streakPill = document.getElementById("streakPill");
+    const resultBox = document.getElementById("result");
 
     let session = null;
 
@@ -275,14 +282,45 @@
       updateUI();
     }
 
+    function renderResult(){
+      const summary = session.summary();
+      const medal = summary.medal;
+      resultBox.classList.remove("hidden");
+      resultBox.innerHTML = `
+        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
+        <h3 class="game-result-title mt-3">Ejercicio finalizado</h3>
+        <p class="game-result-message">${summary.message} Llegaste al nivel ${state.level} con ${state.hits} aciertos.</p>
+        <div class="game-result-stats">
+          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
+        </div>
+        <div class="game-actions" style="justify-content:center;">
+          <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
+          <a href="juegos.html" class="game-btn">Volver a juegos</a>
+        </div>
+      `;
+      document.getElementById("again").addEventListener("click", start);
+    }
+
+    function finish(){
+      if(!state.running) return;
+      state.running = false;
+      if(state.timerId) clearInterval(state.timerId);
+      state.timerId = null;
+      feedbackEl.textContent = "Ejercicio finalizado.";
+      renderResult();
+    }
+
     function start(){
-      if(state.running) return;
       state.running = true;
       state.level = 1;
       state.hits = 0;
       state.startTime = Date.now();
       session = window.GP.createSession({messages: window.GP.neutralMessages});
       updateGPChips();
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
       if(state.timerId) clearInterval(state.timerId);
       state.timerId = setInterval(tick, 500);
       buildRound();
@@ -300,11 +338,14 @@
       gridEl.innerHTML = "";
       targetEl.textContent = "★";
       elapsedEl.textContent = "0";
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
       updateUI();
       feedbackEl.textContent = "Tocá “Iniciar” para comenzar.";
     }
 
     startBtn.addEventListener("click", start);
+    finishBtn.addEventListener("click", finish);
     resetBtn.addEventListener("click", reset);
 
     reset();
