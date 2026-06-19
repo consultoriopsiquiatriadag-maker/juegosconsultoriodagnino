@@ -145,6 +145,57 @@ body.casino-page {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+/* ── FASE 1 (PLAN 3): patrón mobile compacto común ─────────────
+   Compacta hero/tablero/resultado en mobile. Usa el prefijo
+   .casino-page (ya presente en <body> de las 6 páginas de casino)
+   para ganar especificidad sobre los estilos definidos en el
+   <style> propio de cada página, sin necesidad de !important.
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 560px){
+  .casino-page .casino-shell{
+    padding: 8px 12px 28px;
+  }
+  .casino-page .casino-hero{
+    padding: 16px 14px;
+    margin-bottom: 12px;
+  }
+  .casino-page .casino-hero h1{
+    margin-bottom: 6px;
+  }
+  .casino-page .casino-hero-sub,
+  .casino-page .casino-hero-note{
+    margin-bottom: 8px;
+  }
+  .casino-page .casino-machine{
+    padding: 14px 12px;
+    margin-bottom: 12px;
+  }
+  .casino-page .casino-result-card{
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Utilidad opcional: barra de acciones fija al pie del juego.
+   No se aplica automáticamente a ningún juego: se agrega como
+   clase adicional (casino-actions-sticky) caso por caso en las
+   fases siguientes (5 y 6), solo donde no interfiera con el
+   tablero (carretes, rueda o cartón). */
+.casino-actions-sticky{
+  position: sticky;
+  bottom: 8px;
+  z-index: 20;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(6, 25, 54, .78);
+  backdrop-filter: blur(10px);
+}
+.casino-actions-sticky .casino-action-btn,
+.casino-actions-sticky .btn-girar,
+.casino-actions-sticky .btn-reiniciar{
+  min-height: 44px;
+}
+
 /* ── Movimiento seguro ── */
 @media (prefers-reduced-motion: reduce) {
   .casino-page *,

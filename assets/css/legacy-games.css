@@ -177,6 +177,80 @@
   .game-result-stat{ min-width: 96px; padding: 8px 12px; }
 }
 
+/* ── FASE 1 (PLAN 3): patrón mobile compacto común ─────────────
+   Compacta el header/hero/tarjeta de juego en mobile sin tocar el
+   HTML ni la lógica de cada juego. Usa selectores con .gs-scope
+   como ancla para ganar especificidad sobre las utilidades de
+   Tailwind (p-6, py-10, etc.) sin necesidad de !important.
+   No se aplica a Juego 12 (AeroCalma) ni Juego 18 (GeoFS): esas
+   páginas no cargan legacy-games.css / no tienen clase .gs-scope.
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 560px){
+  /* Header institucional sticky (cuando existe, antes del hero) */
+  .gs-scope > header,
+  .gs-scope header.sticky{
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  /* Hero tipo Tailwind (section.bg-inst-navy) */
+  .gs-scope section.bg-inst-navy{
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .gs-scope section.bg-inst-navy h1{
+    font-size: clamp(22px, 7vw, 28px);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .gs-scope section.bg-inst-navy p{
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  /* Grupo de botones embebido en el hero (Volver a juegos / Inicio):
+     que ocupe el mínimo espacio posible al apilarse bajo el título */
+  .gs-scope section.bg-inst-navy .flex.flex-wrap.items-center.justify-between{
+    gap: 10px;
+  }
+  .gs-scope section.bg-inst-navy a.px-5,
+  .gs-scope section.bg-inst-navy a.px-6{
+    padding: 8px 14px;
+    font-size: 13.5px;
+  }
+
+  /* Tarjeta principal del juego */
+  .gs-scope .game-card{
+    padding: 16px 14px;
+  }
+
+  /* Barra de estado / chips */
+  .gs-scope .game-status-bar{
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  /* Botones de acción */
+  .gs-scope .game-actions{
+    margin-top: 12px;
+    gap: 8px;
+  }
+}
+
+/* Utilidad opcional: barra de acciones fija al pie del juego.
+   No se aplica automáticamente a ningún juego: se agrega como
+   clase adicional (game-actions-sticky) caso por caso en las
+   fases siguientes, solo donde no interfiera con el tablero. */
+.game-actions-sticky{
+  position: sticky;
+  bottom: 8px;
+  z-index: 20;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, .78);
+  backdrop-filter: blur(10px);
+}
+.game-actions-sticky .game-btn{ min-height: 44px; }
+
 /* ── Movimiento seguro ───────────────────────────────────────  */
 @media (prefers-reduced-motion: reduce){
   .gs-scope *, .gs-scope *::before, .gs-scope *::after{
