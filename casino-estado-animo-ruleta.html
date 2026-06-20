@@ -123,7 +123,7 @@
       top: 50%;
       transform:
         rotate(var(--angle))
-        translateY(calc(var(--wsize) / -2 + 40px))
+        translateY(calc(var(--wsize) * -0.409))
         rotate(calc(-1 * var(--angle)));
       transform-origin: center;
       color: #fff;
@@ -164,6 +164,19 @@
     .roulette-side-panel .wheel-result{ margin: 12px 0 0; padding: 14px; }
     @media (max-width: 860px){
       .roulette-layout{ grid-template-columns: 1fr; gap: 18px; }
+    }
+    /* FASE 5 (PLAN 3): achica la rueda y el panel lateral en mobile
+       para que el botón "Girar ruleta" quede dentro de la primera
+       vista, sin perder la rueda como referencia visual del juego. */
+    @media (max-width: 560px){
+      .roulette-wheel{ --wsize: min(208px, 56vw); }
+      .roulette-stage{ padding-top: 2px; }
+      .roulette-pointer{ width: 24px; height: 38px; }
+      .roulette-label{ font-size: 0.52rem; width: 56px; margin-left: -28px; margin-top: -7px; }
+      .roulette-layout{ gap: 10px; }
+      .roulette-side-panel{ padding: 12px; }
+      .side-title{ margin-bottom: 4px; }
+      .side-line{ margin-bottom: 4px; }
     }
     @media (prefers-reduced-motion: reduce){
       .roulette-wheel{ transition: none; }

@@ -79,8 +79,15 @@
       gap: 8px;
       margin-bottom: 16px;
     }
+    /* FASE 5 (PLAN 3): 3 columnas en vez de 2 para reducir la cantidad
+       de filas (y por lo tanto la altura total) del cartón en mobile. */
     @media (max-width: 640px){
-      .bingo-grid{ grid-template-columns: repeat(2, 1fr); }
+      .bingo-grid{ grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .bingo-cell{ min-height: 60px; padding: 8px 6px; font-size: 11px; line-height: 1.25; }
+      .bingo-count{ margin-bottom: 10px; }
+    }
+    @media (max-width: 380px){
+      .bingo-cell{ min-height: 56px; font-size: 10.2px; }
     }
     .bingo-cell{
       min-height: 76px;
