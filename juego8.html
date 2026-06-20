@@ -94,6 +94,13 @@
       .cockpit-status{ flex-direction:column; align-items:stretch; }
       .status-progress{ order: 3; width:100%; }
     }
+
+    /* FASE 8 (PLAN 3): permitir que los dos botones de modo entren en
+       una sola fila en mobile, para acortar la pantalla de misión. */
+    @media (max-width: 480px){
+      .mode-pick{ gap: 8px; margin-bottom: 12px; }
+      .mode-pick button{ min-width: 0; flex: 1 1 140px; }
+    }
   </style>
 </head>
 
