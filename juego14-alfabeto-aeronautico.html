@@ -49,6 +49,16 @@
     .tts-range label{ font-weight:800; }
     .tts-range input{ width: 160px; }
 
+    /* Evita que los controles de voz se salgan del cuadro en mobile:
+       el card-head pasa a permitir wrap y la barra ocupa todo el ancho
+       disponible debajo del título cuando no entra en la misma fila. */
+    .card-head-tts{ flex-wrap: wrap; }
+    .card-head-tts .tts-bar{ width: 100%; }
+    @media (max-width: 480px){
+      .tts-range{ width: 100%; }
+      .tts-range input{ flex: 1 1 auto; width: auto; }
+    }
+
     .split{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
     @media (max-width: 900px){ .split{ grid-template-columns: 1fr; } }
 
@@ -227,7 +237,7 @@
   <main class="wrap wrap-narrow" aria-label="Contenido principal">
     <section class="section" id="aprender" aria-label="Aprender">
       <div class="section-card">
-        <div class="card-head">
+        <div class="card-head card-head-tts">
           <div>
             <h2 class="card-title" style="margin:0">1) Aprender</h2>
             <p class="card-sub" style="margin:8px 0 0 0">
