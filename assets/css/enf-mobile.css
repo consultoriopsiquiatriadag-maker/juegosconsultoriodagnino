@@ -1,0 +1,35 @@
+/* ============================================================
+   ENF-MOBILE.CSS — Compactación mobile para los ejercicios de
+   Entrenamiento Neurocognitivo Funcional (ENF):
+   Foco 90 · Cambiá la Regla · Stop Rumiación · Plan en 3 Pasos
+   (FASE 9, PLAN 3 — optimización mobile de juegos internos)
+
+   Estas páginas usan Tailwind CDN sin hojas de estilo propias del
+   sitio. La fila de estadísticas (Tiempo/Puntaje/Precisión, etc.)
+   solo tenía columnas en desktop (md:grid-cols-N); en mobile caía a
+   una sola columna y apilaba 3-4 tarjetas completas antes de llegar
+   al área de juego. Este archivo fuerza esa fila a verse en una
+   sola línea también en mobile, para que la primera vista sea más
+   corta.
+   ============================================================ */
+
+@media (max-width: 480px){
+  .enf-stat-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    gap: 6px;
+  }
+  .enf-stat-grid > div{
+    padding: 8px 10px;
+  }
+  .enf-stat-grid .text-2xl{
+    font-size: 17px;
+  }
+  .enf-stat-grid .text-xs{
+    font-size: 9.5px;
+  }
+  .enf-stat-grid .text-sm{
+    font-size: 10.5px;
+    line-height: 1.3;
+  }
+}
