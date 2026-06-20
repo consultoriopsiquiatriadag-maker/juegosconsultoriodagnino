@@ -237,6 +237,7 @@
 
           <div class="tts-bar" aria-label="Controles de voz">
             <button class="btn-secondary" id="ttsToggle" type="button" aria-pressed="true">🔊 TTS: Activado</button>
+            <button class="btn-secondary" id="icaoLangToggle" type="button" aria-pressed="false">🌐 Voz: Inglés (ICAO)</button>
             <div class="tts-range">
               <label for="rateRange">Velocidad</label>
               <input id="rateRange" type="range" min="70" max="120" step="1" value="95" />
@@ -416,9 +417,11 @@
     // --- TTS state ---
     let ttsEnabled = true;
     let ttsRate = 0.95; // 0.70 .. 1.20
+    let icaoLang = "en-US"; // idioma de voz para pronunciar las palabras ICAO (Alpha, Bravo...)
     const rateRange = document.getElementById("rateRange");
     const rateLabel = document.getElementById("rateLabel");
     const ttsToggle = document.getElementById("ttsToggle");
+    const icaoLangToggle = document.getElementById("icaoLangToggle");
 
     function setRateFromUI() {
       const v = Number(rateRange.value || 95);
@@ -434,6 +437,13 @@
       if(!ttsEnabled) {
         try { window.speechSynthesis.cancel(); } catch(e) {}
       }
+    }
+    function setIcaoLang(next) {
+      icaoLang = next === "es-AR" ? "es-AR" : "en-US";
+      const isSpanish = icaoLang === "es-AR";
+      icaoLangToggle.setAttribute("aria-pressed", isSpanish ? "true" : "false");
+      icaoLangToggle.textContent = isSpanish ? "🌐 Voz: Español" : "🌐 Voz: Inglés (ICAO)";
+      localStorage.setItem("icaoLang", icaoLang);
     }
 
     function speak(text, opts={}) {
@@ -499,7 +509,7 @@
           <div class="mini">Tocar · Escuchar</div>
         `;
         btn.addEventListener("click", () => {
-          speak(`${item.ch}. ${item.word}`, {lang:"en-US"});
+          speak(`${item.ch}. ${item.word}`, {lang:icaoLang});
         });
         el.appendChild(btn);
       });
@@ -507,7 +517,7 @@
 
     function demoLVPND() {
       const seq = ["Lima", "Victor", "dash", "Papa", "November", "Delta"];
-      speakSequence(seq, {lang:"en-US"});
+      speakSequence(seq, {lang:icaoLang});
     }
 
     // --- QUIZ ---
@@ -572,7 +582,7 @@
       quiz.current = item;
 
       heardTag.innerHTML = `<span class="dot"></span>Audio: <span class="mono">${item.word}</span>`;
-      speak(item.word, {lang:"en-US"});
+      speak(item.word, {lang:icaoLang});
 
       const opts = buildQuizOptions(item);
       quizOptions.innerHTML = "";
@@ -682,7 +692,7 @@
 
     function quizRepeatAudio() {
       if (!quiz.current) return;
-      speak(quiz.current.word, {lang:"en-US"});
+      speak(quiz.current.word, {lang:icaoLang});
     }
 
     async function quizCopyResult() {
@@ -717,7 +727,7 @@
         speak("Escribí una palabra o matrícula primero.", {lang:"es-AR"});
         return;
       }
-      speakSequence(tokens.map(t => t === "guion" ? "dash" : t), {lang:"en-US"});
+      speakSequence(tokens.map(t => t === "guion" ? "dash" : t), {lang:icaoLang});
     }
 
     async function copyMap() {
@@ -766,11 +776,15 @@
     quizCopy.addEventListener("click", quizCopyResult);
 
     ttsToggle.addEventListener("click", () => setTtsEnabled(!ttsEnabled));
+    icaoLangToggle.addEventListener("click", () => setIcaoLang(icaoLang === "en-US" ? "es-AR" : "en-US"));
     rateRange.addEventListener("input", setRateFromUI);
 
     (function initTts() {
       const savedEnabled = localStorage.getItem("ttsEnabled");
       if (savedEnabled === "0") setTtsEnabled(false);
+
+      const savedIcaoLang = localStorage.getItem("icaoLang");
+      if (savedIcaoLang === "es-AR" || savedIcaoLang === "en-US") setIcaoLang(savedIcaoLang);
 
       const savedRate = Number(localStorage.getItem("ttsRate"));
       if (Number.isFinite(savedRate) && savedRate >= 0.7 && savedRate <= 1.2) {
