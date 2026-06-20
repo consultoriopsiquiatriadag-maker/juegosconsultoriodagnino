@@ -185,15 +185,17 @@
   </header>
 
   <main class="wrap game-shell">
-    <section class="section-card game-card">
+    <section class="section-card game-card game-main-panel">
       <div class="game-head">
         <div>
+          <p class="game-category">Memoria y aprendizaje · Memoria de trabajo</p>
           <h1 class="card-title" style="margin:0">Dígitos directos / inversos</h1>
           <p class="card-sub" style="margin-top:6px">
             Memoria de trabajo: mirá la secuencia y repetila <b>igual</b> (directo) o <b>al revés</b> (inverso).
           </p>
+          <span class="game-objective" style="margin-top:8px;">Objetivo: repetir correctamente la secuencia de dígitos</span>
         </div>
-        <div class="row">
+        <div class="row game-actions game-toolbar">
           <button class="btn-primary game-btn game-btn-primary" id="btnStart" type="button">Iniciar</button>
           <button class="btn btn-ghost game-btn" id="btnStop" type="button" disabled>Terminar</button>
         </div>
@@ -257,9 +259,9 @@
             </div>
           </div>
 
-          <div class="note">
-            Esto es un <b>ejercicio breve</b> para entrenar atención y memoria de trabajo. No es diagnóstico.
-          </div>
+          <p class="game-safety-note">
+            Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
+          </p>
         </div>
 
         <aside class="section-card game-card" style="margin:0">

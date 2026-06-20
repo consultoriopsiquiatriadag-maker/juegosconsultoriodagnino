@@ -56,23 +56,24 @@ tailwind.config = {
   </div>
 </header>
 
-<!-- HERO -->
-<section class="bg-inst-navy text-white">
-  <div class="max-w-7xl mx-auto px-6 py-10">
-    <h1 class="text-3xl md:text-4xl font-light mb-2">Juego 2 — Categorías</h1>
-    <p class="text-white/80 max-w-3xl">
+<!-- CONTENIDO -->
+<main class="max-w-7xl mx-auto px-6 py-10 game-shell">
+
+  <!-- Encabezado del juego (reemplaza el hero institucional genérico) -->
+  <div class="mb-6">
+    <p class="game-category">Memoria y aprendizaje · Fluidez verbal</p>
+    <h1 class="game-title">Categorías</h1>
+    <p class="game-subtitle">
       Ejercicio de fluidez verbal y memoria semántica. No es un examen.
       Jugá a tu ritmo y pausá si aparece cansancio o frustración.
     </p>
   </div>
-</section>
 
-<!-- CONTENIDO -->
-<main class="max-w-7xl mx-auto px-6 py-10 game-shell">
+  <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm card-hover game-card game-main-panel">
 
-  <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm card-hover game-card">
+    <span class="game-objective">Objetivo: decir palabras de la categoría que empiecen con la letra indicada</span>
 
-    <p class="text-inst-gray leading-relaxed mb-4">
+    <p class="text-inst-gray leading-relaxed mt-3 mb-4">
       Elegí palabras que pertenezcan a la <strong>categoría</strong> indicada y comiencen con la <strong>letra</strong> asignada.
       Si una categoría no te resulta familiar, tocá <strong>Nueva ronda</strong>.
     </p>
@@ -91,7 +92,7 @@ tailwind.config = {
     </div>
 
     <!-- CONTROLES -->
-    <div class="flex flex-wrap gap-2 mb-6 game-actions" style="margin-top:0;">
+    <div class="flex flex-wrap gap-2 mb-6 game-actions game-toolbar" style="margin-top:0;">
       <button id="newRoundBtn" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold game-btn">Nueva ronda</button>
       <button id="startBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Iniciar</button>
       <button id="pauseBtn" disabled class="px-4 py-2 rounded-lg border bg-inst-light text-sm font-semibold game-btn">Pausar</button>
@@ -152,8 +153,8 @@ tailwind.config = {
 
     </div>
 
-    <p class="text-xs text-inst-gray mt-6">
-      Este recurso es de estimulación cognitiva general y no constituye una evaluación diagnóstica.
+    <p class="game-safety-note">
+      Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
     </p>
 
   </div>
