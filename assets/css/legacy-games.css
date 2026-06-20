@@ -374,6 +374,25 @@
   .game-safety-note{ padding: 10px 12px; margin-top: 14px; }
 }
 
+/* ============================================================
+   PLAN 4 — FASE 2: optimización mobile transversal
+   En layouts de 2 columnas (panel lateral + tablero) armados con
+   Tailwind `grid lg:grid-cols-12` + `lg:col-span-4`/`lg:col-span-8`,
+   el grid colapsa a una sola columna por debajo de 1024px y el
+   panel lateral —que en el HTML va primero— queda mostrándose
+   completo antes del tablero, obligando a scrollear de más para
+   llegar a la acción principal.
+   Estas dos clases (agregadas solo en juego3.html y juego4.html,
+   donde se detectó el patrón) reordenan visualmente el contenido
+   por debajo de 1024px sin tocar el DOM ni la lógica: el tablero
+   se muestra primero y el panel queda después. En desktop (≥1024px)
+   no tienen efecto, así que el layout de columnas original no cambia.
+   No se aplica a ningún otro juego. */
+@media (max-width: 1023px){
+  .game-board-primary{ order: 1; }
+  .game-panel-secondary{ order: 2; }
+}
+
 /* Utilidad opcional: barra de acciones fija al pie del juego.
    No se aplica automáticamente a ningún juego: se agrega como
    clase adicional (game-actions-sticky) caso por caso en las
