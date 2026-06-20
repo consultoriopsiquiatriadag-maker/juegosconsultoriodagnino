@@ -363,7 +363,7 @@ let session = null;
 function setLevelUI(){
   lvlPill.textContent = "Dificultad: " + LEVELS[levelKey].name;
 
-  document.querySelectorAll(".levelBtn").forEach(b=>{
+  document.querySelectorAll(".levelBtn:not(.levelBtnStart)").forEach(b=>{
     const isActive = b.dataset.level === levelKey;
     // activo: bg-white + borde gris
     b.classList.toggle("bg-white", isActive);
