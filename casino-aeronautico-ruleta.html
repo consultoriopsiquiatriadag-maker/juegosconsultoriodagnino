@@ -560,6 +560,7 @@
         if (esFinal){
           resultMain.textContent = 'Llegaste a ' + AEROPUERTOS[idx] + '.';
           resultText.textContent = pick(FRASES_FINAL);
+          if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.35 });
           btn.disabled = true;
           btnReiniciar.hidden = false;
         } else {
@@ -572,6 +573,7 @@
 
       function girar(){
         if (destinoIdx < 0) return;
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.35 });
         btn.disabled = true;
         resultBox.hidden = true;
 

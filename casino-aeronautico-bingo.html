@@ -553,6 +553,7 @@
 
       function sortear(){
         if (!bolillero.length || cartonCompleto()) return;
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.3 });
 
         var n = bolillero.pop();
         sorteados.push(n);
@@ -575,12 +576,14 @@
           resultBox.classList.add('is-carton');
           resultBox.hidden = false;
           btnSortear.disabled = true;
+          if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.45 });
         } else if (nuevasLineas > 0){
           resultTitle.textContent = lineasAhora === 1 ? 'Línea completada' : 'Línea completada (' + lineasAhora + ' en total)';
           resultText.textContent = FRASES_LINEA[fraseLineaIdx % FRASES_LINEA.length];
           fraseLineaIdx++;
           resultBox.classList.remove('is-carton');
           resultBox.hidden = false;
+          if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.3 });
         }
 
         lineasCompletas = lineasAhora;

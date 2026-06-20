@@ -493,6 +493,7 @@
         if (triple){
           resultTitle.textContent = "Tres aeropuertos alineados: " + finales[0].nombre;
           resultText.textContent = pick(FRASES_AYUDA);
+          if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.35 });
         } else {
           resultTitle.textContent = "Sin coincidencia en este giro";
           resultText.textContent = FRASE_ESPERA;
@@ -502,6 +503,7 @@
       }
 
       function girar(){
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.35 });
         btn.disabled = true;
         resultBox.hidden = true;
         cols.forEach(function(c){ c.classList.remove('has-match'); });
