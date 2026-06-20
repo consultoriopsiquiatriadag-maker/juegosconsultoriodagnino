@@ -25,6 +25,9 @@
   <link rel="stylesheet" href="assets/css/app.css?v=1">
   <link rel="stylesheet" href="assets/css/casino.css?v=1">
 
+  <!-- Sistema de sonido opcional (suave, ver criterios clínicos en assets/js/casino-sound.js) -->
+  <script src="assets/js/casino-sound.js?v=1" defer></script>
+
   <!-- Estilos SOLO de esta página -->
   <style>
     :root{
@@ -278,6 +281,7 @@
 
     <nav class="topbar-back" aria-label="Navegación">
       <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+      <button type="button" class="casino-sound-toggle" id="soundToggle" aria-pressed="true">🔊 Sonido: Activado</button>
     </nav>
 
     <div class="casino-hero">
@@ -369,6 +373,14 @@
       </div>
     </div>
   </footer>
+
+  <!-- Audio opcional, suave y no automático (ver assets/js/casino-sound.js) -->
+  <audio id="airportDing" preload="auto">
+    <source src="audio/airport_chime.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="casinoConfirm" preload="auto">
+    <source src="audio/premio_excelente.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     /* Año automático */

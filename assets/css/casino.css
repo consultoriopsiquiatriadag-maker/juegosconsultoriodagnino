@@ -145,6 +145,46 @@ body.casino-page {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+/* ── FASE: sonido aeronáutico opcional ─────────────────────────
+   La barra de navegación superior pasa a alojar, además del link
+   "Volver", el botón de sonido — en una fila que envuelve si no
+   entra (mobile), sin agregar alto extra cuando no hace falta. ── */
+.casino-page .topbar-back {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.casino-page .casino-sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(226, 232, 240, 0.92);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background .15s ease, opacity .15s ease;
+}
+.casino-page .casino-sound-toggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.casino-page .casino-sound-toggle:focus-visible {
+  outline: 3px solid rgba(125, 211, 252, 0.55);
+  outline-offset: 2px;
+}
+.casino-page .casino-sound-toggle[aria-pressed="false"] {
+  opacity: 0.66;
+}
+
 /* ── FASE 1 (PLAN 3): patrón mobile compacto común ─────────────
    Compacta hero/tablero/resultado en mobile. Usa el prefijo
    .casino-page (ya presente en <body> de las 6 páginas de casino)
