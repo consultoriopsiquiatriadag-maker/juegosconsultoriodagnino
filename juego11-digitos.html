@@ -6,6 +6,7 @@
   <title>Juego 11 · Dígitos directos / inversos — Sala de espera virtual</title>
   <meta name="description" content="Memoria de trabajo: repetí secuencias de dígitos en orden directo o inverso. Puntaje, racha y registro copiable." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
   <meta name="theme-color" content="#0e2239" />
 
   <style>
@@ -164,11 +165,11 @@
   </style>
 </head>
 
-<body>
+<body class="gs-scope">
   <header class="topbar" role="banner">
     <div class="wrap topbar-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">🔢</div>
+        <div class="logo" aria-hidden="true"><img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;"></div>
         <div class="brand-text" style="min-width:0">
           <div class="brand-title">Sala de espera virtual</div>
           <div class="brand-sub">Juego 11 · Dígitos directos / inversos</div>
@@ -178,13 +179,13 @@
         <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
         <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
         <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
-        <span class="pill" id="pillMode" title="Configuración actual">🎛️</span>
+        <span class="pill" id="pillMode" title="Configuración actual">—</span>
       </div>
     </div>
   </header>
 
   <main class="wrap game-shell">
-    <section class="section-card">
+    <section class="section-card game-card">
       <div class="game-head">
         <div>
           <h1 class="card-title" style="margin:0">Dígitos directos / inversos</h1>
@@ -193,9 +194,15 @@
           </p>
         </div>
         <div class="row">
-          <button class="btn-primary" id="btnStart" type="button">Iniciar</button>
-          <button class="btn btn-ghost" id="btnStop" type="button" disabled>Terminar</button>
+          <button class="btn-primary game-btn game-btn-primary" id="btnStart" type="button">Iniciar</button>
+          <button class="btn btn-ghost game-btn" id="btnStop" type="button" disabled>Terminar</button>
         </div>
+      </div>
+
+      <div class="game-status-group" style="margin-top:10px;">
+        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+        <span class="game-chip" id="scorePill">Puntaje: 0</span>
+        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
       </div>
 
       <div class="kpiwrap" aria-label="Indicadores">
@@ -234,9 +241,9 @@
               <div class="entry">
                 <div class="val" id="entryVal"> </div>
                 <div class="mini">
-                  <button class="btn btn-ghost" id="btnBack" type="button" disabled>⌫</button>
-                  <button class="btn btn-ghost" id="btnClear" type="button" disabled>Limpiar</button>
-                  <button class="btn" id="btnSubmit" type="button" disabled>Enviar</button>
+                  <button class="btn btn-ghost game-btn" id="btnBack" type="button" disabled>⌫</button>
+                  <button class="btn btn-ghost game-btn" id="btnClear" type="button" disabled>Limpiar</button>
+                  <button class="btn game-btn game-btn-primary" id="btnSubmit" type="button" disabled>Enviar</button>
                 </div>
               </div>
 
@@ -255,7 +262,7 @@
           </div>
         </div>
 
-        <aside class="section-card" style="margin:0">
+        <aside class="section-card game-card" style="margin:0">
           <h2 class="card-title" style="margin:0">Configuración</h2>
           <p class="card-sub" style="margin-top:6px">Ajustá antes de iniciar.</p>
 
@@ -299,10 +306,12 @@
 
           <div class="result-box" id="resultBox" style="display:none">
             <h3 class="card-title" style="margin:0">Resultado</h3>
+            <div id="resMedal" class="game-medal" style="margin:8px 0;"></div>
             <p class="card-sub" id="resultText" style="margin-top:8px"></p>
+            <div class="game-result-stats" id="resStats" style="margin-top:10px"></div>
             <div class="row" style="margin-top:10px">
-              <button class="btn" id="btnCopy" type="button">Copiar</button>
-              <button class="btn btn-ghost" id="btnRestart" type="button">Reiniciar</button>
+              <button class="btn game-btn" id="btnCopy" type="button">Copiar</button>
+              <button class="btn btn-ghost game-btn" id="btnRestart" type="button">Reiniciar</button>
             </div>
           </div>
         </aside>
@@ -311,6 +320,7 @@
     </section>
   </main>
 
+  <script src="assets/js/gamification.js"></script>
   <script>
     // Accesibilidad: tamaño de texto (persistente)
     (function(){
@@ -354,8 +364,33 @@
 
     const resultBox = $("resultBox");
     const resultText= $("resultText");
+    const resMedal = $("resMedal");
+    const resStats = $("resStats");
     const btnCopy = $("btnCopy");
     const btnRestart = $("btnRestart");
+
+    const gpLevelPill = $("gpLevelPill");
+    const scorePill = $("scorePill");
+    const streakPill = $("streakPill");
+
+    let session = null;
+
+    function startSession(){
+      session = window.GP.createSession({ messages: window.GP.neutralMessages });
+      updateGPChips();
+    }
+
+    function updateGPChips(){
+      const s = session.state;
+      gpLevelPill.textContent = s.level.name;
+      scorePill.textContent = "Puntaje: " + s.score;
+      streakPill.textContent = "Racha: " + s.streak;
+    }
+
+    function pulseStreak(){
+      streakPill.classList.add("is-up");
+      setTimeout(()=> streakPill.classList.remove("is-up"), 500);
+    }
 
     const speeds = { slow: 1000, normal: 750, fast: 550 };
 
@@ -387,7 +422,7 @@
       const m = modeSel.value === "forward" ? "Directo" : "Inverso";
       const sp = speedSel.value;
       const lim = parseInt(limitSel.value,10)===0 ? "∞" : (limitSel.value+"s");
-      pillMode.textContent = `🎛️ ${m} · ${itemsNum.value} ítems · ${lim}`;
+      pillMode.textContent = `${m} · ${itemsNum.value} ítems · ${lim}`;
       pillMode.title = `Modo: ${m} | Ítems: ${itemsNum.value} | Velocidad: ${sp} | Límite: ${lim}`;
     }
     ["change","input"].forEach(ev=>{
@@ -566,14 +601,19 @@
         ok++;
         streak++;
         maxSpan = Math.max(maxSpan, len);
-        statusEl.innerHTML = `✅ <b>Correcto</b>. (${mode==="forward"?"Directo":"Inverso"})`;
+        statusEl.innerHTML = `<b>Correcto</b>. (${mode==="forward"?"Directo":"Inverso"})`;
         len = Math.min(12, len + 1);
+        session.registerHit(2);
+        pulseStreak();
+        updateGPChips();
       } else {
         streak = 0;
         const expShow = expected.split("").join(" ");
-        const gotShow = (isTimeout ? "⏱️ Tiempo" : (raw ? raw.split("").join(" ") : "—"));
-        statusEl.innerHTML = `❌ <b>Incorrecto</b>. Esperado: <b>${expShow}</b> · Tu respuesta: <b>${gotShow}</b>`;
+        const gotShow = (isTimeout ? "Tiempo agotado" : (raw ? raw.split("").join(" ") : "—"));
+        statusEl.innerHTML = `<b>Incorrecto</b>. Esperado: <b>${expShow}</b> · Tu respuesta: <b>${gotShow}</b>`;
         len = Math.max(minLen, len - 1);
+        session.registerMiss(0);
+        updateGPChips();
       }
 
       rts.push(rt);
@@ -631,8 +671,18 @@
       const m = (mode==="forward") ? "Directo" : "Inverso";
       const txt = `Resultado: ${level}. Modo: ${m}. Aciertos: ${ok}/${total} (${Math.round(acc*100)}%). Span máximo: ${maxSpan || minLen}. Tiempo medio de respuesta: ${Math.round(avgRT)} ms.`;
       resultText.textContent = txt;
+
+      const summary = session.summary();
+      const medal = summary.medal;
+      resMedal.className = `game-medal game-medal-${medal.id}`;
+      resMedal.textContent = medal.name;
+      resStats.innerHTML = `
+        <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+        <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      `;
+
       resultBox.style.display="block";
-      statusEl.innerHTML = `📌 <b>${level}</b> · Probá otra vez cambiando modo o velocidad.`;
+      statusEl.innerHTML = `<b>${level}</b> · Probá otra vez cambiando modo o velocidad.`;
     }
 
     function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
@@ -650,6 +700,7 @@
       rts = [];
       state="idle";
       setRunning(true);
+      startSession();
       nextItem();
     });
 
@@ -667,6 +718,7 @@
       kpiItem.textContent="—"; kpiLen.textContent="—"; kpiOk.textContent="—"; kpiMax.textContent="—"; kpiStreak.textContent="—";
       resultBox.style.display="none";
       updatePill();
+      startSession();
     });
 
     btnCopy.addEventListener("click", async ()=>{
@@ -676,9 +728,9 @@
       const text = `Juego 11 · Dígitos (${m}) | Aciertos: ${ok}/${total} (${Math.round(acc*100)}%) | Span max: ${maxSpan || minLen} | RT medio: ${Math.round(avgRT)} ms`;
       try{
         await navigator.clipboard.writeText(text);
-        statusEl.innerHTML = "✅ Copiado al portapapeles.";
+        statusEl.innerHTML = "Copiado al portapapeles.";
       }catch(e){
-        statusEl.innerHTML = "⚠️ No se pudo copiar automáticamente.";
+        statusEl.innerHTML = "No se pudo copiar automáticamente.";
       }
     });
 
@@ -686,6 +738,7 @@
     setPadEnabled(false);
     // init KPIs
     kpiItem.textContent="—"; kpiLen.textContent="—"; kpiOk.textContent="—"; kpiMax.textContent="—"; kpiStreak.textContent="—";
+    startSession();
   </script>
 </body>
 </html>

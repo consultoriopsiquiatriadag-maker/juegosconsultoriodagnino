@@ -294,6 +294,86 @@
   }
 }
 
+/* ============================================================
+   PLAN 4 — FASE 1: capa de componentes "estilo juego8"
+   Agrega las piezas que le faltaban a este sistema para alinear
+   la estructura de los juegos legados (Tailwind + legacy-games.css)
+   con el patrón de referencia de juego8 (gp-mission-screen → gp-hud
+   → área principal con barra de estado → gp-final-screen → aviso).
+   Solo AGREGA clases nuevas: no modifica ni reemplaza ninguna regla
+   existente, así que no afecta a los juegos que ya están en
+   producción usando este archivo.
+   ============================================================ */
+
+/* ── Categoría / contexto (chip discreto sobre el título) ───── */
+.game-category{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gs-blue); background: var(--gs-light);
+  border: 1px solid var(--gs-border); border-radius: 999px;
+  padding: 4px 12px; margin: 0 0 8px;
+}
+
+/* ── Objetivo (alias genérico, usable fuera de la intro) ─────
+   Mismo aspecto que .game-intro-objective, pero sin depender de
+   estar dentro de .game-intro-screen: se puede usar en cualquier
+   parte del juego (cabecera de la tarjeta, panel principal, etc). */
+.game-objective{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gs-light); border: 1px solid var(--gs-border);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700;
+  color: var(--gs-navy); margin: 0 0 14px;
+}
+
+/* ── Misión / instrucción breve (alias genérico) ─────────────
+   Mismo aspecto que .game-intro-brief, pero reutilizable también
+   dentro del panel principal del juego, no solo en la intro. */
+.game-mission{
+  max-width: 620px; text-align: left;
+  background: var(--gs-light); border: 1px solid var(--gs-border);
+  border-radius: 16px; padding: 16px 18px; font-size: 14px; line-height: 1.6;
+  color: var(--gs-text); margin: 0 0 18px;
+}
+.game-mission strong{ color: var(--gs-navy); }
+
+/* ── Barra de herramientas (modo de juego / dificultad + sonido) ──
+   Fila de botones de selección (modo/dificultad) + toggles, igual
+   en espíritu al .mode-pick + .gp-sound-toggle de juego8, pero
+   genérico para cualquier juego de la familia legada. */
+.game-toolbar{
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  margin: 0 0 16px;
+}
+.game-toolbar .game-btn{ min-width: 140px; }
+
+/* ── Panel principal de juego (alias semántico de .game-card) ───
+   Distingue visualmente el área donde ocurre la acción principal
+   del resto del layout. Mismo aspecto que .game-card/.game-panel. */
+.game-main-panel{
+  background: var(--gs-card);
+  border: 1px solid var(--gs-border);
+  border-radius: var(--gs-radius);
+  box-shadow: var(--gs-shadow);
+}
+
+/* ── Aviso psicoeducativo institucional ───────────────────────
+   Unifica el disclaimer de cierre que hoy cada juego escribe con
+   estilos sueltos. Mismo tono que .casino-aviso (usado en juego8 y
+   los casinos), pero con las variables de legacy-games.css para
+   que funcione también en páginas que no cargan casino.css. */
+.game-safety-note{
+  font-size: 12.5px; color: var(--gs-muted); line-height: 1.55;
+  background: var(--gs-light); border: 1px solid var(--gs-border);
+  border-radius: 12px; padding: 12px 16px; margin-top: 18px;
+}
+
+@media (max-width: 560px){
+  .game-toolbar{ gap: 8px; margin-bottom: 12px; }
+  .game-toolbar .game-btn{ min-width: 0; flex: 1 1 130px; }
+  .game-mission{ padding: 12px 14px; font-size: 13.5px; }
+  .game-safety-note{ padding: 10px 12px; margin-top: 14px; }
+}
+
 /* Utilidad opcional: barra de acciones fija al pie del juego.
    No se aplica automáticamente a ningún juego: se agrega como
    clase adicional (game-actions-sticky) caso por caso en las

@@ -8,6 +8,7 @@
 <!-- Tailwind + Inter -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
 
 <script>
 tailwind.config = {
@@ -33,7 +34,7 @@ tailwind.config = {
 </style>
 </head>
 
-<body class="bg-inst-light text-inst-navy font-sans antialiased">
+<body class="bg-inst-light text-inst-navy font-sans antialiased gs-scope">
 
 <!-- HEADER -->
 <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -67,9 +68,9 @@ tailwind.config = {
 </section>
 
 <!-- CONTENIDO -->
-<main class="max-w-7xl mx-auto px-6 py-10">
+<main class="max-w-7xl mx-auto px-6 py-10 game-shell">
 
-  <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm card-hover">
+  <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm card-hover game-card">
 
     <p class="text-inst-gray leading-relaxed mb-4">
       Elegí palabras que pertenezcan a la <strong>categoría</strong> indicada y comiencen con la <strong>letra</strong> asignada.
@@ -77,17 +78,23 @@ tailwind.config = {
     </p>
 
     <!-- STATUS -->
-    <div class="flex flex-wrap gap-2 mb-4">
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill" id="catLabel">Categoría: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill" id="letterLabel">Letra: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill" id="timeLabel">Tiempo: —</span>
+    <div class="flex flex-wrap gap-2 mb-2 game-status-bar">
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="catLabel">Categoría: —</span>
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="letterLabel">Letra: —</span>
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="timeLabel">Tiempo: —</span>
+    </div>
+
+    <div class="game-status-group" style="margin-bottom:14px;">
+      <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+      <span class="game-chip" id="scorePill">Puntaje: 0</span>
+      <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
     </div>
 
     <!-- CONTROLES -->
-    <div class="flex flex-wrap gap-2 mb-6">
-      <button id="newRoundBtn" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold">Nueva ronda</button>
-      <button id="startBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold">Iniciar</button>
-      <button id="pauseBtn" disabled class="px-4 py-2 rounded-lg border bg-inst-light text-sm font-semibold">Pausar</button>
+    <div class="flex flex-wrap gap-2 mb-6 game-actions" style="margin-top:0;">
+      <button id="newRoundBtn" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold game-btn">Nueva ronda</button>
+      <button id="startBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Iniciar</button>
+      <button id="pauseBtn" disabled class="px-4 py-2 rounded-lg border bg-inst-light text-sm font-semibold game-btn">Pausar</button>
     </div>
 
     <!-- GRID -->
@@ -99,7 +106,7 @@ tailwind.config = {
 
         <div class="flex gap-2 mb-2">
           <input id="wordInput" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej.: Manzana / Madrid…" />
-          <button id="addBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold">Agregar</button>
+          <button id="addBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Agregar</button>
         </div>
 
         <div id="warnBox" class="hidden mb-2 text-sm font-semibold text-amber-700 bg-amber-100 border border-amber-200 rounded-lg p-2"></div>
@@ -109,14 +116,12 @@ tailwind.config = {
         <div class="flex justify-between items-center mt-4">
           <span class="text-sm text-inst-gray"><strong id="countLabel">0</strong> ítems</span>
           <div class="flex gap-2">
-            <button id="clearBtn" class="px-3 py-2 rounded-lg border text-sm font-semibold">Borrar</button>
-            <button id="finishBtn" class="px-3 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold">Finalizar</button>
+            <button id="clearBtn" class="px-3 py-2 rounded-lg border text-sm font-semibold game-btn">Borrar</button>
+            <button id="finishBtn" class="px-3 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Finalizar</button>
           </div>
         </div>
 
-        <div id="doneBox" class="hidden mt-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm font-semibold text-green-800">
-          ✅ Ronda completada. Se habilitó el Juego 3.
-        </div>
+        <div id="doneBox" class="hidden mt-4"></div>
       </div>
 
       <!-- OPCIONES -->
@@ -136,8 +141,8 @@ tailwind.config = {
         </select>
 
         <p class="text-sm text-inst-gray leading-relaxed">
-          ✔️ No se evalúa correcto/incorrecto.<br>
-          ✔️ Se entrena fluidez, atención y registro.
+          • No se evalúa correcto/incorrecto.<br>
+          • Se entrena fluidez, atención y registro.
         </p>
 
         <div class="mt-4 text-xs text-inst-gray muted">
@@ -162,8 +167,30 @@ tailwind.config = {
   </div>
 </footer>
 
+<script src="assets/js/gamification.js"></script>
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // ========= Gamificación =========
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    document.getElementById("gpLevelPill").textContent = s.level.name;
+    document.getElementById("scorePill").textContent = "Puntaje: " + s.score;
+    document.getElementById("streakPill").textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    const pill = document.getElementById("streakPill");
+    pill.classList.add("is-up");
+    setTimeout(()=> pill.classList.remove("is-up"), 500);
+  }
 
   // ========= Progreso =========
   function getProgress(){
@@ -256,7 +283,7 @@ tailwind.config = {
         renderTime();
         if(remaining <= 0){
           stopTimer();
-          showWarn("⏱️ Tiempo finalizado. Podés finalizar o iniciar una nueva ronda.");
+          showWarn("Tiempo finalizado. Podés finalizar o iniciar una nueva ronda.");
         }
       }, 1000);
       return;
@@ -273,7 +300,7 @@ tailwind.config = {
       renderTime();
       if(remaining <= 0){
         stopTimer();
-        showWarn("⏱️ Tiempo finalizado. Podés finalizar o iniciar una nueva ronda.");
+        showWarn("Tiempo finalizado. Podés finalizar o iniciar una nueva ronda.");
       }
     }, 1000);
   }
@@ -288,7 +315,7 @@ tailwind.config = {
     running = false;
     pauseBtn.disabled = true;
     startBtn.disabled = false;
-    showWarn("⏸️ Pausado. Podés reanudar con Iniciar.");
+    showWarn("Pausado. Podés reanudar con Iniciar.");
   }
 
   // ========= Lista =========
@@ -337,18 +364,26 @@ tailwind.config = {
     const first = w[0].toUpperCase();
     if(first !== currentLetter){
       showWarn(`Debe comenzar con la letra “${currentLetter}”.`);
+      session.registerMiss(0);
+      updateGPChips();
       return;
     }
 
     const key = w.toLowerCase();
     if(items.map(x=>x.toLowerCase()).includes(key)){
       showWarn("Ya agregaste esa palabra.");
+      session.registerMiss(0);
+      updateGPChips();
       return;
     }
 
     items.unshift(w);
     wordInput.value = "";
     renderList();
+
+    session.registerHit(1);
+    pulseStreak();
+    updateGPChips();
   }
 
   // ========= Finalizar (con audio premio) =========
@@ -362,11 +397,29 @@ tailwind.config = {
     p.game2Completed = true;
     setProgress(p);
 
-    // 🔊 Audio premio (si el navegador bloquea autoplay, se ignora sin romper)
+    // Audio premio (si el navegador bloquea autoplay, se ignora sin romper)
     document.getElementById("successSound")?.play().catch(()=>{});
 
+    renderDone();
+    showWarn("Ronda completada. Juego 3 habilitado.");
+  }
+
+  function renderDone(){
+    const summary = session.summary();
+    const medal = summary.medal;
+    doneBox.innerHTML = `
+      <div class="game-result-card game-fade-in">
+        <div class="game-medal game-medal-${medal.id}" style="margin:0 auto 10px;">${medal.name}</div>
+        <p class="game-result-title">Ronda completada</p>
+        <p class="game-result-message">Se habilitó el Juego 3. ${summary.message}</p>
+        <div class="game-result-stats">
+          <div class="game-result-stat"><div class="game-result-stat-label">Palabras</div><div class="game-result-stat-value">${items.length}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
+          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+        </div>
+      </div>
+    `;
     doneBox.classList.remove("hidden");
-    showWarn("✅ Ronda completada. Juego 3 habilitado.");
   }
 
   // ========= Nueva ronda =========
@@ -375,9 +428,11 @@ tailwind.config = {
     items = [];
     renderList();
     doneBox.classList.add("hidden");
+    doneBox.innerHTML = "";
     stopTimer();
     remaining = parseInt(durationSel.value, 10);
     renderTime();
+    startSession();
   }
 
   // ========= Eventos =========
@@ -413,6 +468,7 @@ tailwind.config = {
   remaining = parseInt(durationSel.value, 10);
   renderTime();
   renderList();
+  startSession();
 </script>
 
 <!-- AUDIO PREMIO -->

@@ -94,7 +94,10 @@
   <main class="py-10 md:py-12">
     <div class="max-w-7xl mx-auto px-6 game-shell">
 
-      <div class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm card-hover game-card">
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm card-hover game-card game-main-panel">
+
+        <p class="game-category">Atención y memoria · Juego 1</p>
+        <span class="game-objective">Objetivo: identificar la categoría correcta entre varias opciones</span>
 
         <!-- Barra superior del juego -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4 game-status-bar">
@@ -117,13 +120,13 @@
           </button>
         </div>
 
-        <p class="text-inst-gray leading-relaxed">
+        <p class="game-mission">
           <strong class="text-inst-navy">Tu tarea:</strong> tocá solo las palabras que pertenezcan a la categoría indicada.
           <br><span class="text-inst-gray/80">No es un examen. Es un ejercicio breve de atención.</span>
         </p>
 
         <!-- Niveles -->
-        <div class="flex flex-wrap gap-2 mt-5 game-actions" aria-label="Niveles">
+        <div class="flex flex-wrap gap-2 mt-5 game-actions game-toolbar" aria-label="Niveles">
           <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white game-btn"
                   data-level="easy" type="button">Fácil</button>
           <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light game-btn"
@@ -162,7 +165,7 @@
           </a>
         </div>
 
-        <p class="text-xs text-inst-gray mt-6 leading-relaxed">
+        <p class="game-safety-note">
           Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
         </p>
       </div>
