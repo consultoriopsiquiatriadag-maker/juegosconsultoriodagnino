@@ -167,10 +167,26 @@
         inset 0 0 22px rgba(0,0,0,0.45),
         0 0 28px rgba(180,83,9,0.40);
     }
+    /* FASE 6 (PLAN 3): en mobile se mantienen los 3 carretes en fila
+       (en vez de apilarlos) para que el botón "Girar" quede visible
+       en la primera vista, sin perder el efecto de máquina de slots. */
     @media (max-width: 760px){
-      .slot-reels{ grid-template-columns: 1fr; gap: 14px; }
-      .reel-window{ min-height: 190px; }
-      .reel-items{ height: 190px; gap: 12px; padding: 14px; }
+      .slot-reels{ gap: 10px; }
+      .reel-window{ min-height: 176px; border-radius: 16px; }
+      .reel-items{ height: 176px; gap: 10px; padding: 10px 6px; }
+      .slot-label{ font-size: 10.5px; margin-bottom: 6px; }
+      .reel-item{ min-height: 42px; }
+      .reel-item.muted{ font-size: 13px; letter-spacing: 1px; }
+      .slot-iata{ font-size: clamp(17px, 5vw, 21px); }
+      .slot-nombre{ font-size: 9.5px; }
+    }
+    @media (max-width: 420px){
+      .reel-window{ min-height: 148px; }
+      .reel-items{ height: 148px; gap: 8px; padding: 8px 4px; }
+      .reel-item{ min-height: 36px; }
+      .reel-item.muted{ font-size: 11px; }
+      .slot-iata{ font-size: clamp(15px, 5vw, 18px); }
+      .slot-nombre{ font-size: 8.5px; }
     }
 
     .slots-controls{

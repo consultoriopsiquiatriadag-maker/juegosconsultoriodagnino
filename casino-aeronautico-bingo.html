@@ -225,6 +225,15 @@
       .bingo-layout{ grid-template-columns: 1fr; gap: 16px; }
       .bingo-cell{ font-size: 17px; border-radius: 12px; }
     }
+    /* FASE 6 (PLAN 3): compacta el estado, la bolilla sorteada y el
+       cartón en mobile para acortar la primera vista. */
+    @media (max-width: 560px){
+      .bingo-status{ margin-bottom: 8px; gap: 6px 14px; font-size: 12.5px; }
+      .bingo-sorteo{ margin-bottom: 8px; }
+      .bingo-bolilla{ min-width: 48px; min-height: 48px; font-size: 18px; }
+      .bingo-grid{ gap: 6px; }
+      .bingo-cell{ min-height: 0; font-size: 15px; border-radius: 12px; }
+    }
     @media (prefers-reduced-motion: reduce){
       .bingo-cell{ transition: none; }
     }
