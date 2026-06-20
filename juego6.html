@@ -81,8 +81,9 @@
     <section class="max-w-5xl mx-auto px-6 py-10">
       <div class="grid lg:grid-cols-5 gap-6">
         <!-- Panel de juego -->
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-5 game-status-bar">
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card game-main-panel">
+          <span class="game-objective">Objetivo: encontrar el símbolo objetivo lo más rápido posible</span>
+          <div class="flex flex-wrap items-center justify-between gap-3 mt-3 mb-5 game-status-bar">
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-inst-navy/5">
                 <svg class="w-5 h-5 text-inst-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +123,7 @@
                   <span class="text-inst-gray font-medium text-base ml-2">(tocá el objetivo)</span>
                 </p>
               </div>
-              <div class="flex items-center gap-2 game-actions">
+              <div class="flex items-center gap-2 game-actions game-toolbar">
                 <button id="startBtn" class="anim bg-inst-blue text-white px-5 py-3 rounded-lg font-semibold hover:opacity-95 game-btn game-btn-primary">
                   Iniciar
                 </button>
@@ -140,6 +141,10 @@
 
             <div id="result" class="hidden mt-6 game-result-card"></div>
           </div>
+
+          <p class="game-safety-note">
+            Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
+          </p>
         </div>
 
         <!-- Panel info -->

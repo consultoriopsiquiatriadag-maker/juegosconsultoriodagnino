@@ -77,27 +77,26 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="bg-inst-navy text-white">
-    <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
-      <div class="max-w-3xl">
-        <h1 class="text-3xl md:text-4xl font-light mb-3">Juego 3 · Atención Aeronáutica</h1>
-        <p class="text-white/80 leading-relaxed">
-          Aparecen palabras. Elegí si pertenece a la aviación o no. Es un juego simple, breve y sin presión.
-          Si te equivocás, no pasa nada: seguí con la siguiente.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <main class="max-w-7xl mx-auto px-6 py-10 md:py-12 game-shell">
+
+    <!-- Encabezado del juego (reemplaza el hero institucional genérico) -->
+    <div class="mb-6">
+      <p class="game-category">Atención y velocidad · Discriminación verbal</p>
+      <h1 class="game-title">Atención Aeronáutica</h1>
+      <p class="game-subtitle">
+        Aparecen palabras. Elegí si pertenece a la aviación o no. Es un juego simple, breve y sin presión.
+        Si te equivocás, no pasa nada: seguí con la siguiente.
+      </p>
+    </div>
+
     <div class="grid lg:grid-cols-12 gap-6">
 
       <!-- Panel -->
-      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-panel-secondary">
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-main-panel game-panel-secondary">
         <h2 class="text-xl font-semibold mb-2">Panel</h2>
-        <p class="text-inst-gray text-sm leading-relaxed mb-5">
-          Objetivo: entrenar atención y discriminación simple. Duración sugerida: 1–3 minutos.
+        <span class="game-objective">Objetivo: entrenar atención y discriminación simple</span>
+        <p class="text-inst-gray text-sm leading-relaxed mt-2 mb-5">
+          Duración sugerida: 1–3 minutos.
         </p>
 
         <div class="grid grid-cols-2 gap-3">
@@ -119,7 +118,7 @@
           </div>
         </div>
 
-        <div class="mt-5 space-y-3 game-actions" style="flex-direction:column;">
+        <div class="mt-5 space-y-3 game-actions game-toolbar" style="flex-direction:column;">
           <label class="block">
             <span class="text-sm text-inst-gray font-medium">Cantidad de ítems</span>
             <select id="length"
@@ -205,8 +204,8 @@
 
         <div id="finish" class="hidden mt-6 game-result-card"></div>
 
-        <p class="text-xs text-inst-gray mt-6">
-          Este recurso es de estimulación cognitiva general y no constituye evaluación diagnóstica.
+        <p class="game-safety-note">
+          Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
         </p>
       </section>
     </div>
