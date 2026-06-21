@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>21 de Cabina — Casino Aeronáutico | Dr. Pedro Nicolas Dagnino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego psicoeducativo de cartas de regulación para el temor a volar: elegí recursos concretos y acercate a una zona de calma, sin apuestas ni dinero real." />
+  <meta name="theme-color" content="#0e2239">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8S3P8P2WY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8S3P8P2WY');
+  </script>
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1">
+  <link rel="stylesheet" href="assets/css/casino.css?v=1">
+
+  <!-- Sistema de sonido opcional (aeronáutico sutil) -->
+  <script src="assets/js/casino-sound.js?v=1" defer></script>
+
+  <!-- Estilos SOLO de esta página -->
+  <style>
+    :root{
+      --caer-accent: #0c4a6e;
+      --caer-accent-soft: rgba(12,74,110,0.08);
+      --caer-gold: #b45309;
+      --caer-gold-soft: rgba(180,83,9,0.10);
+    }
+
+    .casino-hero{
+      background: linear-gradient(135deg, #0e2239 0%, #0c4a6e 60%, #0e2239 100%);
+      border: 1px solid rgba(180,83,9,0.40);
+      border-radius: 20px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+    }
+    .casino-hero-eyebrow{
+      font-size: 11px; font-weight: 600; letter-spacing: 0.7px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 0 0 8px;
+    }
+    .casino-hero h1{
+      font-size: clamp(21px, 5vw, 28px); font-weight: 800;
+      color: #fff; margin: 0 0 8px; line-height: 1.2;
+    }
+    .casino-hero-sub{
+      font-size: 14.5px; color: rgba(255,255,255,0.80);
+      margin: 0 0 10px; line-height: 1.55; max-width: 640px;
+    }
+    .casino-hero-note{
+      font-size: 12.5px; color: rgba(255,255,255,0.55);
+      margin: 0; line-height: 1.5; max-width: 660px;
+    }
+
+    /* ── Tablero ── */
+    .cabina-board{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-radius: 18px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow, 0 10px 30px rgba(14,34,57,0.08));
+      margin-bottom: 16px;
+    }
+
+    /* Pantalla inicial */
+    .cabina-intro{
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 12px 4px 4px;
+    }
+    .cabina-intro p{
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }
+
+    /* Layout juego + panel lateral */
+    .cabina-layout{
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(250px, 0.62fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .cabina-mesa{
+      text-align: center;
+    }
+
+    .cabina-status{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #475569;
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .cabina-status strong{ color: var(--caer-accent); }
+
+    /* Mazo */
+    .cabina-mazo-wrap{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .cabina-mazo{
+      position: relative;
+      width: 96px;
+      height: 132px;
+    }
+    .cabina-mazo::before,
+    .cabina-mazo::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #0f5fa8, #052f66);
+      border: 1px solid rgba(217,164,65,.55);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+    }
+    .cabina-mazo::before{ transform: translate(4px, 4px); opacity: .55; }
+    .cabina-mazo::after{ transform: translate(2px, 2px); opacity: .8; }
+    .cabina-mazo-card{
+      position: relative;
+      z-index: 2;
+      width: 96px;
+      height: 132px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(160deg, #0f5fa8, #052f66);
+      border: 1px solid rgba(217,164,65,.7);
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,.85);
+      font-size: 26px;
+      box-shadow: 0 14px 30px rgba(8,47,103,.32);
+    }
+    .cabina-mazo-restantes{
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Carta revelada */
+    .cabina-carta-actual{
+      max-width: 380px;
+      margin: 0 auto 18px;
+      min-height: 96px;
+      border-radius: 16px;
+      border: 1px solid rgba(76, 201, 240, 0.4);
+      background: linear-gradient(180deg, #ffffff, #eff6ff);
+      padding: 16px 18px;
+      box-shadow: 0 14px 30px rgba(15,23,42,.10);
+    }
+    .cabina-carta-actual[hidden]{ display: none; }
+    .cabina-carta-nombre{
+      font-size: 16px; font-weight: 800; color: #08224a; margin: 0 0 4px;
+    }
+    .cabina-carta-nombre .pts{
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: var(--caer-gold-soft);
+      color: var(--caer-gold);
+      font-size: 12.5px;
+      font-weight: 800;
+      vertical-align: middle;
+    }
+    .cabina-carta-desc{
+      font-size: 13.5px; color: #475569; margin: 0; line-height: 1.5;
+    }
+    .cabina-carta-placeholder{
+      font-size: 13.5px;
+      color: #94a3b8;
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .cabina-controls{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .btn-tomar{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 14px;
+      background: var(--caer-accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-tomar:hover{ background: #093a57; }
+    .btn-tomar:focus-visible{ outline: 3px solid rgba(12,74,110,0.4); outline-offset: 2px; }
+    .btn-tomar:disabled{ opacity: .5; cursor: default; }
+    .btn-plantarse{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 24px;
+      border: 1px solid rgba(180,83,9,0.4);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--caer-gold);
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-plantarse:hover{ background: var(--caer-gold-soft); }
+    .btn-plantarse:disabled{ opacity: .5; cursor: default; }
+    .btn-nuevo{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 24px;
+      border: 1px solid rgba(14,34,57,0.16);
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #0e2239;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn-nuevo:hover{ background: #eef2f7; }
+
+    /* Panel lateral */
+    .cabina-side-panel{
+      border-radius: 24px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(147,197,253,.42);
+      padding: 18px;
+      box-shadow: 0 18px 45px rgba(15,23,42,.14);
+      text-align: left;
+    }
+    .side-title{
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--caer-accent);
+      margin: 0 0 10px;
+    }
+    .cabina-suma-grande{
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 0 0 4px;
+    }
+    .cabina-suma-grande strong{
+      font-size: 32px;
+      font-weight: 900;
+      color: #08224a;
+    }
+    .cabina-suma-grande span{
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .cabina-zona-objetivo{
+      font-size: 12.5px;
+      color: #475569;
+      margin: 0 0 14px;
+    }
+    .cabina-elegidas{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 4px;
+      min-height: 32px;
+    }
+    .cabina-chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #082b57;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 6px 14px rgba(8,43,87,.22);
+    }
+    .cabina-chip.is-sobrecontrol{
+      background: linear-gradient(180deg, #d9a441, #92611a);
+    }
+    .cabina-chip-vacio{
+      font-size: 12.5px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 860px){
+      .cabina-layout{ grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (max-width: 560px){
+      .cabina-status{ margin-bottom: 10px; gap: 6px 14px; font-size: 12.5px; }
+      .cabina-mazo, .cabina-mazo-card{ width: 78px; height: 108px; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .cabina-mazo-card{ transition: none; }
+    }
+
+    /* Resultado */
+    .cabina-result{
+      background: var(--surface-2, #fff);
+      border: 1px solid var(--border, rgba(14,34,57,0.12));
+      border-left: 4px solid var(--caer-accent);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .cabina-result[hidden]{ display: none; }
+    .cabina-result.is-zona{
+      border-left-color: #0e9f6e;
+      background: linear-gradient(135deg, #fff 70%, rgba(14,159,110,0.06) 100%);
+    }
+    .cabina-result.is-exceso{
+      border-left-color: var(--caer-gold);
+      background: linear-gradient(135deg, #fff 70%, rgba(180,83,9,0.06) 100%);
+    }
+    .cabina-result.is-plantarse{
+      border-left-color: #475569;
+    }
+    .cabina-result-title{
+      font-size: 13px; font-weight: 700; letter-spacing: 0.4px;
+      text-transform: uppercase; color: var(--caer-accent); margin: 0 0 8px;
+    }
+    .cabina-result.is-zona .cabina-result-title{ color: #0e9f6e; }
+    .cabina-result.is-exceso .cabina-result-title{ color: var(--caer-gold); }
+    .cabina-result.is-plantarse .cabina-result-title{ color: #475569; }
+    .cabina-result-text{
+      font-size: 15px; color: #1e293b; margin: 0; line-height: 1.6;
+    }
+
+    /* Botones de recursos */
+    .cabina-links{
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+    }
+    .cabina-links .btn-primary,
+    .cabina-links .btn-secondary{ min-height: 44px; }
+
+    .topbar-back{ margin: 14px 0; }
+
+    .casino-aviso{
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 4px 0 18px;
+      max-width: 72ch;
+    }
+  </style>
+</head>
+
+<body class="casino-page">
+
+  <!-- ── Header institucional ──────────────────────────── -->
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Sala de espera virtual</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ───────────────────────────── -->
+  <main class="wrap" aria-label="21 de Cabina">
+
+    <nav class="topbar-back" aria-label="Navegación">
+      <a class="btn-secondary" href="juegos.html">← Volver a juegos</a>
+      <button type="button" class="casino-sound-toggle" id="soundToggle" aria-pressed="true">🔊 Sonido: Activado</button>
+    </nav>
+
+    <div class="casino-hero">
+      <p class="casino-hero-eyebrow">Casino Aeronáutico · Recurso psicoeducativo</p>
+      <h1>21 de Cabina</h1>
+      <p class="casino-hero-sub">
+        Elegí cartas de regulación para acercarte a una zona de calma antes del vuelo.
+      </p>
+      <p class="casino-hero-note" role="note">
+        Enfrentar el temor a volar no significa controlar todo: significa elegir recursos
+        de regulación concretos. Este juego es psicoeducativo, no implica apuestas,
+        dinero ni premios reales.
+      </p>
+    </div>
+
+    <!-- Tablero -->
+    <section class="cabina-board casino-machine" aria-label="Mesa de 21 de Cabina">
+
+      <!-- Pantalla inicial -->
+      <div class="cabina-intro" id="introPanel">
+        <p>
+          Vas a ir sumando cartas de regulación —respirar, apoyarte en algo estable,
+          pedir ayuda, soltar el control— hasta acercarte a una zona de calma de
+          18 a 21 puntos. Algunas cartas representan el exceso de control: suman
+          mucho, pero no ayudan a regularte mejor.
+        </p>
+        <button type="button" class="casino-action-btn" id="btnComenzar">Comenzar</button>
+      </div>
+
+      <!-- Pantalla de juego -->
+      <div id="gamePanel" hidden>
+        <p class="cabina-status" aria-live="polite">
+          <span>Cartas en el mazo: <strong id="restantesNum">0</strong></span>
+          <span>Cartas elegidas: <strong id="elegidasNum">0</strong></span>
+        </p>
+
+        <div class="cabina-layout">
+          <div class="cabina-mesa">
+            <div class="cabina-mazo-wrap">
+              <div class="cabina-mazo">
+                <div class="cabina-mazo-card" aria-hidden="true">✈</div>
+              </div>
+              <p class="cabina-mazo-restantes"><span id="restantesNum2">0</span> cartas disponibles</p>
+            </div>
+
+            <div class="cabina-carta-actual" id="cartaActual" hidden>
+              <p class="cabina-carta-nombre" id="cartaNombre">
+                <span class="pts" id="cartaPuntos"></span>
+              </p>
+              <p class="cabina-carta-desc" id="cartaDesc"></p>
+            </div>
+            <p class="cabina-carta-placeholder" id="cartaPlaceholder">
+              Tocá "Tomar carta" para elegir tu primer recurso de regulación.
+            </p>
+
+            <div class="cabina-controls">
+              <button type="button" class="btn-tomar casino-action-btn" id="btnTomar">Tomar carta</button>
+              <button type="button" class="btn-plantarse" id="btnPlantarse">Plantarse</button>
+              <button type="button" class="btn-nuevo" id="btnNuevo">Nuevo juego</button>
+            </div>
+          </div>
+
+          <aside class="cabina-side-panel">
+            <p class="side-title">Tu regulación</p>
+            <p class="cabina-suma-grande">
+              <strong id="sumaNum">0</strong>
+              <span>puntos</span>
+            </p>
+            <p class="cabina-zona-objetivo">Zona de regulación: 18 a 21 puntos</p>
+            <p class="side-title" style="margin-top:14px;">Cartas elegidas</p>
+            <div class="cabina-elegidas" id="listaElegidas">
+              <span class="cabina-chip-vacio">Todavía no elegiste ninguna carta.</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Devolución -->
+    <section class="cabina-result casino-result-card" id="resultBox" hidden aria-live="polite">
+      <p class="cabina-result-title" id="resultTitle"></p>
+      <p class="cabina-result-text" id="resultText"></p>
+    </section>
+
+    <!-- Recursos -->
+    <nav class="cabina-links" aria-label="Recursos relacionados">
+      <a class="btn-primary"   href="fobia-al-vuelo.html" data-spa="0">Ver recurso miedo a volar</a>
+      <a class="btn-secondary" href="juegos.html" data-spa="0">Volver a juegos</a>
+    </nav>
+
+    <p class="casino-aviso" role="note">
+      Este recurso es psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.
+      Si el temor a volar genera un malestar importante o limita tus actividades, puede ser útil
+      solicitar una evaluación profesional.
+    </p>
+
+  </main>
+
+  <!-- ── Footer institucional ──────────────────────────── -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="turnos.html">Central de Turnos</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Ubicación y contacto</p>
+        <div>Barrio Norte – Recoleta<br>Ciudad Autónoma de Buenos Aires – Argentina</div>
+        <div class="legal" style="margin-top:14px">
+          Copyright © <span id="yearNow"></span> Todos los derechos reservados.<br>
+          Desarrollado por PETER-SOFT
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Audio opcional, sutil y no automático (ver assets/js/casino-sound.js) -->
+  <audio id="airportDing" preload="auto">
+    <source src="audio/airport_chime.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="casinoConfirm" preload="auto">
+    <source src="audio/premio_excelente.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    /* Año automático */
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    (function(){
+      var REGULACION = [
+        { n: "Respirar lento",                          p: 4,  d: "Bajar el ritmo de la respiración ayuda a calmar la activación física antes de embarcar." },
+        { n: "Apoyar los pies",                         p: 3,  d: "Sentir el contacto con el piso ayuda a anclarte en el presente." },
+        { n: "Mirar un punto fijo",                     p: 2,  d: "Fijar la mirada un momento reduce la sobrecarga sensorial." },
+        { n: "Tomar agua",                               p: 2,  d: "Un gesto simple que regula el cuerpo y corta el piloto automático de la ansiedad." },
+        { n: "Leer información del vuelo",              p: 3,  d: "Informarte con datos reales ayuda a diferenciar el miedo de un riesgo real." },
+        { n: "Ordenar el bolso",                         p: 2,  d: "Una acción concreta y pequeña que devuelve sensación de control posible." },
+        { n: "Hablar con alguien de confianza",         p: 5,  d: "Compartir lo que sentís con otra persona reduce la intensidad emocional." },
+        { n: "Escuchar una guía breve",                 p: 4,  d: "Una guía de relajación corta ayuda a acompañar el cuerpo durante la espera." },
+        { n: "Aceptar una sensación corporal",          p: 5,  d: "Permitir que una sensación esté, sin pelear contra ella, baja su intensidad." },
+        { n: "Recordar que la ansiedad sube y baja",    p: 4,  d: "La ansiedad tiene un pico y luego desciende: no se queda para siempre." },
+        { n: "Evitar revisar en exceso",                p: 5,  d: "Frenar la revisión compulsiva de información evita alimentar la alarma." },
+        { n: "Elegir una acción pequeña",               p: 3,  d: "Dar un paso concreto y posible, en lugar de intentar resolverlo todo de una vez." },
+        { n: "Soltar la necesidad de certeza total",    p: 6,  d: "Aceptar que no se puede controlar todo es, paradójicamente, regulador." }
+      ];
+
+      var SOBRECONTROL = [
+        { n: "Revisar todo diez veces",   p: 9,  d: "Revisar una y otra vez no agrega seguridad real: solo alimenta la alarma.", sobre: true },
+        { n: "Buscar certeza absoluta",    p: 10, d: "No existe el 100% de certeza en ningún vuelo ni en la vida: perseguirla agota.", sobre: true },
+        { n: "Evitar sentir ansiedad",     p: 8,  d: "Pelear para que la ansiedad no aparezca suele intensificarla en lugar de calmarla.", sobre: true }
+      ];
+
+      var introPanel   = document.getElementById('introPanel');
+      var gamePanel    = document.getElementById('gamePanel');
+      var btnComenzar  = document.getElementById('btnComenzar');
+      var btnTomar     = document.getElementById('btnTomar');
+      var btnPlantarse = document.getElementById('btnPlantarse');
+      var btnNuevo     = document.getElementById('btnNuevo');
+
+      var restantesNum  = document.getElementById('restantesNum');
+      var restantesNum2 = document.getElementById('restantesNum2');
+      var elegidasNum   = document.getElementById('elegidasNum');
+      var sumaNum       = document.getElementById('sumaNum');
+      var listaElegidas = document.getElementById('listaElegidas');
+
+      var cartaActual       = document.getElementById('cartaActual');
+      var cartaNombre       = document.getElementById('cartaNombre');
+      var cartaPuntos       = document.getElementById('cartaPuntos');
+      var cartaDesc         = document.getElementById('cartaDesc');
+      var cartaPlaceholder  = document.getElementById('cartaPlaceholder');
+
+      var resultBox   = document.getElementById('resultBox');
+      var resultTitle = document.getElementById('resultTitle');
+      var resultText  = document.getElementById('resultText');
+
+      var deck = [];
+      var elegidas = [];
+      var suma = 0;
+      var terminado = false;
+      var zonaSonidoReproducido = false;
+
+      function barajar(arr){
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--){
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+      }
+
+      function sonar(id, vol){
+        if (window.CasinoSound) window.CasinoSound.play(id, { volume: vol });
+      }
+
+      function renderElegidas(){
+        if (!elegidas.length){
+          listaElegidas.innerHTML = '<span class="cabina-chip-vacio">Todavía no elegiste ninguna carta.</span>';
+          return;
+        }
+        listaElegidas.innerHTML = elegidas.map(function(c){
+          return '<span class="cabina-chip' + (c.sobre ? ' is-sobrecontrol' : '') + '">' +
+            c.n + ' · ' + c.p + '</span>';
+        }).join('');
+      }
+
+      function render(){
+        restantesNum.textContent = deck.length;
+        restantesNum2.textContent = deck.length;
+        elegidasNum.textContent = elegidas.length;
+        sumaNum.textContent = suma;
+        renderElegidas();
+        btnTomar.disabled = terminado || !deck.length;
+        btnPlantarse.disabled = terminado;
+      }
+
+      function mostrarFeedback(tipo){
+        resultBox.classList.remove('is-zona', 'is-exceso', 'is-plantarse');
+        if (tipo === 'falta'){
+          resultTitle.textContent = 'Todavía falta sumar recursos.';
+          resultText.textContent = 'Todavía podés sumar un recurso más. La regulación se construye con pequeñas acciones.';
+        } else if (tipo === 'zona'){
+          resultBox.classList.add('is-zona');
+          resultTitle.textContent = 'Zona de regulación alcanzada.';
+          resultText.textContent = 'Zona de regulación alcanzada. No necesitás eliminar toda ansiedad para poder avanzar.';
+        } else if (tipo === 'exceso'){
+          resultBox.classList.add('is-exceso');
+          resultTitle.textContent = 'Exceso de control.';
+          resultText.textContent = 'Te pasaste de control. A veces querer controlar todo aumenta la ansiedad. Probá con menos recursos, pero mejor sostenidos.';
+        } else if (tipo === 'plantarse'){
+          resultBox.classList.add('is-plantarse');
+          resultTitle.textContent = 'Decidiste detenerte.';
+          resultText.textContent = 'Elegiste detenerte. También regularse implica saber cuándo alcanza.';
+        }
+        resultBox.hidden = false;
+      }
+
+      function nuevoJuego(){
+        deck = barajar(REGULACION.concat(SOBRECONTROL));
+        elegidas = [];
+        suma = 0;
+        terminado = false;
+        zonaSonidoReproducido = false;
+        cartaActual.hidden = true;
+        cartaPlaceholder.hidden = false;
+        resultBox.hidden = true;
+        render();
+      }
+
+      function tomarCarta(){
+        if (terminado || !deck.length) return;
+        sonar('airportDing', 0.22);
+
+        var carta = deck.pop();
+        elegidas.push(carta);
+        suma += carta.p;
+
+        cartaPlaceholder.hidden = true;
+        cartaActual.hidden = false;
+        cartaNombre.innerHTML = carta.n + ' <span class="pts">+' + carta.p + '</span>';
+        cartaDesc.textContent = carta.d;
+
+        render();
+
+        if (suma > 21){
+          terminado = true;
+          render();
+          mostrarFeedback('exceso');
+        } else if (suma >= 18){
+          if (!zonaSonidoReproducido){
+            zonaSonidoReproducido = true;
+            sonar('casinoConfirm', 0.3);
+          }
+          mostrarFeedback('zona');
+          if (!deck.length){ terminado = true; render(); }
+        } else {
+          mostrarFeedback('falta');
+          if (!deck.length){ terminado = true; render(); }
+        }
+      }
+
+      function plantarse(){
+        if (terminado) return;
+        sonar('casinoConfirm', 0.25);
+        terminado = true;
+        render();
+        mostrarFeedback('plantarse');
+      }
+
+      btnComenzar.addEventListener('click', function(){
+        sonar('airportDing', 0.28);
+        introPanel.hidden = true;
+        gamePanel.hidden = false;
+        nuevoJuego();
+      });
+
+      btnTomar.addEventListener('click', tomarCarta);
+      btnPlantarse.addEventListener('click', plantarse);
+      btnNuevo.addEventListener('click', nuevoJuego);
+    })();
+  </script>
+
+</body>
+</html>
