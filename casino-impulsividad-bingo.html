@@ -349,6 +349,7 @@
       }
 
       btnReiniciar.addEventListener('click', function(){
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.2 });
         celdas.forEach(function(c){ c.setAttribute('aria-pressed', 'false'); });
         actualizar();
       });

@@ -484,6 +484,7 @@
       }
 
       function girar(){
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.22 });
         btn.disabled = true;
         resultBox.hidden = true;
 
@@ -521,6 +522,7 @@
       function mostrarResultado(){
         actionText.textContent = pick(ACCIONES);
         resultBox.hidden = false;
+        if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.2 });
       }
 
       btn.addEventListener('click', girar);

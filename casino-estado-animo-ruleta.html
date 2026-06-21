@@ -442,9 +442,11 @@
         btn.disabled = false;
         historiaGiros.push(CATEGORIAS[idx].cat);
         ultimosGiros.textContent = historiaGiros.slice(-3).join(' · ');
+        if (window.CasinoSound) window.CasinoSound.play('casinoConfirm', { volume: 0.2 });
       }
 
       function girar(){
+        if (window.CasinoSound) window.CasinoSound.play('airportDing', { volume: 0.22 });
         btn.disabled = true;
         resultBox.hidden = true;
 
