@@ -1,0 +1,293 @@
+<!--
+  PLANTILLA COMÚN — Página de "Tema de Salud Mental"
+  Consultorio Dr. Pedro Nicolas Dagnino
+
+  UBICACIÓN EN EL REPO: usar este archivo como base y guardarlo con el
+  nombre final del tema (ej.: depresion.html, panico.html, bipolar.html).
+  No publicar este archivo tal cual con el nombre "plantilla-tema.html".
+
+  CÓMO USARLA (Fase 4, 5 y 6):
+  1. Duplicar este archivo y renombrarlo (ej.: depresion.html).
+  2. Reemplazar todo lo que está entre [CORCHETES].
+  3. Completar los 6 zócalos de contenido. Mantener párrafos de 2-4 líneas.
+  4. Si el tema tiene riesgo de autolesión/suicidio (depresión, bipolar,
+     crisis), cambiar la clase del aviso a "topic-safety-note topic-safety-note--risk"
+     y usar el texto de riesgo correspondiente (ver Fase 4 del plan maestro).
+  5. Completar "Recursos relacionados" con los enlaces reales que correspondan
+     a ese tema (Fase 9 del plan maestro deja la lista sugerida por tema).
+  6. Agregar la imagen de portada en assets/img/ y actualizar el src del hero.
+  7. Verificar que el archivo quede agregado en temas-salud-mental.html con
+     su tarjeta correspondiente (botón "Abrir", no "Próximamente").
+
+  Esta plantilla reutiliza las clases ya existentes del sitio (section,
+  card-title, card-sub, note, btn-primary, btn-secondary, wrap, topbar,
+  footer) más las clases nuevas definidas en assets/css/topics.css
+  (topic-hero, topic-card, topic-grid, topic-actions, topic-copy-btn,
+  topic-safety-note). No se usan emojis en ningún texto visible.
+-->
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>[Nombre del tema] — Consultorio Dr. Pedro Nicolas Dagnino</title>
+  <meta name="description" content="[Descripción breve del tema: qué es, señales frecuentes y cuándo consultar.]" />
+  <meta name="theme-color" content="#0e2239" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estética del ecosistema -->
+  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <!-- Plantilla común de temas (Fase 1) — debe cargarse después de app.css -->
+  <link rel="stylesheet" href="assets/css/topics.css?v=1" />
+  <link rel="manifest" href="manifest.webmanifest" />
+</head>
+<body>
+
+  <!-- HEADER institucional (igual en todas las páginas del sitio) -->
+  <header class="topbar" role="banner">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>&#x2708;&#xFE0E;</span></div>
+        <div class="brand-text">
+          <div class="brand-title">Consultorio Dr. Pedro Nicolas Dagnino</div>
+          <div class="brand-sub">Tema · [Nombre del tema]</div>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Controles">
+        <a class="btn btn-ghost" href="temas-salud-mental.html" data-spa="0" aria-label="Volver a temas">&larr; Temas</a>
+        <a class="btn btn-ghost" href="index.html" data-spa="0" aria-label="Inicio">Inicio</a>
+        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
+        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- Portada compacta del tema -->
+    <section class="section">
+      <div class="topic-hero">
+        <!-- Reemplazar por la imagen real del tema (relación 16:9) -->
+        <img src="assets/img/[nombre-tema]-portada.webp?v=1" alt="" />
+        <div class="overlay"></div>
+        <div class="titlebox">
+          <h1>[Nombre del tema]</h1>
+          <p>[Bajada de una sola línea: qué va a encontrar el lector en esta página.]</p>
+        </div>
+      </div>
+
+      <!-- Aviso obligatorio. Usar variante --risk si el tema lo requiere. -->
+      <div class="topic-safety-note" role="note">
+        Información psicoeducativa. No reemplaza una consulta profesional ni está destinada a urgencias.
+      </div>
+
+      <!--
+        Si el tema tiene riesgo de autolesión/suicidio, agregar además este
+        bloque con la clase --risk y el texto de riesgo correspondiente:
+
+        <div class="topic-safety-note topic-safety-note--risk" role="note">
+          Si aparecen ideas de muerte, autolesión o riesgo inmediato, no esperes
+          una consulta programada: buscá ayuda urgente en una guardia,
+          emergencias locales o una persona de confianza.
+        </div>
+      -->
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Zócalo 1: Qué es -->
+    <section class="section" id="que-es">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Qué es</h2>
+            <p class="card-sub">
+              [2 a 4 líneas explicando el tema en lenguaje claro, sin jerga.]
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo 2: Señales frecuentes -->
+    <section class="section" id="senales">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Señales frecuentes</h2>
+            <p class="card-sub">[Una línea de contexto antes de la lista.]</p>
+          </div>
+        </div>
+        <ul>
+          <li>[Señal 1]</li>
+          <li>[Señal 2]</li>
+          <li>[Señal 3]</li>
+          <li>[Señal 4]</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Zócalo 3: Cuándo consultar -->
+    <section class="section" id="cuando-consultar">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Cuándo consultar</h2>
+            <p class="card-sub">[En qué situaciones conviene pedir una consulta, sin alarmismo.]</p>
+          </div>
+        </div>
+        <ul>
+          <li>[Situación 1]</li>
+          <li>[Situación 2]</li>
+          <li>[Situación 3]</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Zócalo 4: Qué podés hacer hoy -->
+    <section class="section" id="que-hacer-hoy">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Qué podés hacer hoy</h2>
+            <p class="card-sub">[Acciones simples y realistas, sin indicar medicación ni tratamiento personalizado.]</p>
+          </div>
+        </div>
+        <ul>
+          <li>[Acción 1]</li>
+          <li>[Acción 2]</li>
+          <li>[Acción 3]</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Zócalo 5: Plan breve -->
+    <section class="section" id="plan-breve">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Plan breve</h2>
+            <p class="card-sub">[Resumen en 3-4 pasos ordenados, pensado para releer rápido.]</p>
+          </div>
+        </div>
+        <ol>
+          <li>[Paso 1]</li>
+          <li>[Paso 2]</li>
+          <li>[Paso 3]</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Zócalo 6: Recursos relacionados -->
+    <section class="section" id="recursos">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Recursos relacionados</h2>
+            <p class="card-sub">Otros materiales del sitio que pueden complementar este tema.</p>
+          </div>
+        </div>
+        <ul>
+          <li><a href="[recurso-1].html" data-spa="0">[Nombre del recurso 1]</a></li>
+          <li><a href="[recurso-2].html" data-spa="0">[Nombre del recurso 2]</a></li>
+          <li><a href="turnos.html" data-spa="0">Central de Turnos</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA final + acciones -->
+    <section class="section">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title" style="margin:0">¿Querés orientación profesional?</h3>
+            <p class="card-sub">Si esto te resuena, la Central de Turnos puede ayudarte a coordinar una consulta.</p>
+          </div>
+        </div>
+
+        <div class="topic-actions">
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+          <button class="btn-secondary topic-copy-btn" id="btnCopiarResumen" type="button">Copiar resumen</button>
+          <a class="btn-secondary" href="temas-salud-mental.html" data-spa="0">Volver a temas</a>
+        </div>
+
+        <div class="topic-copy-ok" id="copyOk" role="status">
+          Copiado. Podés pegarlo en WhatsApp, enviarlo a tu profesional o traerlo a consulta.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER institucional (igual en todas las páginas del sitio) -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        <span>&middot;</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud mental</a>
+        <span>&middot;</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolas Dagnino</div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema (no rompe si existen) -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+  <!--
+    "Copiar resumen": arma un texto corto a partir de "Qué es" y "Plan breve"
+    y lo copia al portapapeles. No requiere tocar nada salvo los textos de
+    arriba: toma el contenido directamente de los zócalos #que-es y
+    #plan-breve, así que siempre queda sincronizado con lo que se lee en
+    pantalla.
+  -->
+  <script>
+    (function(){
+      const btn = document.getElementById("btnCopiarResumen");
+      const copyOk = document.getElementById("copyOk");
+      if(!btn) return;
+
+      function textoDe(selector){
+        const el = document.querySelector(selector);
+        return el ? el.textContent.trim().replace(/\s+/g, " ") : "";
+      }
+
+      btn.addEventListener("click", async () => {
+        const titulo = document.querySelector(".topic-hero h1");
+        const queEs = textoDe("#que-es .card-sub");
+        const plan = Array.from(document.querySelectorAll("#plan-breve li"))
+          .map((li, i) => `${i + 1}. ${li.textContent.trim()}`)
+          .join(" ");
+
+        const txt =
+          `${titulo ? titulo.textContent.trim() : "Tema"} — Qué es: ${queEs} | Plan breve: ${plan}`;
+
+        try{
+          await navigator.clipboard.writeText(txt);
+        }catch(e){
+          const ta = document.createElement("textarea");
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        if(copyOk){
+          copyOk.style.display = "block";
+          setTimeout(() => { copyOk.style.display = "none"; }, 3500);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

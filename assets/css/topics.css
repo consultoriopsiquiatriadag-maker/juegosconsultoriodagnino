@@ -1,0 +1,180 @@
+/* ============================================================
+   topics.css — Plantilla común para páginas de "Temas de Salud Mental"
+   Consultorio Dr. Pedro Nicolas Dagnino
+
+   UBICACIÓN EN EL REPO: copiar este archivo a assets/css/topics.css
+
+   Qué es este archivo:
+   Centraliza el CSS que hoy está duplicado (copiado y pegado) dentro
+   del <style> de cada página de tema (adicciones.html, insomnio-cbt-i...,
+   amigdala-cerebral.html, etc.), en particular ".topic-hero". A partir
+   de ahora, toda página de tema nueva debe enlazar este archivo en vez
+   de redefinir su propio bloque de estilos para estas clases.
+
+   Depende de los tokens (variables) definidos en assets/css/app.css
+   (--inst-navy, --surface-2, --border, --radius, --shadow, --muted,
+   --text, --max-w, --text-scale). Por eso este archivo debe cargarse
+   SIEMPRE después de app.css.
+
+   Principios mobile-first aplicados en todo el archivo:
+   - Tipografía con clamp() para que el título nunca sea gigante en celular.
+   - Párrafos limitados en ancho (max-width en "ch") para evitar líneas
+     interminables incluso en pantallas anchas.
+   - Grillas que colapsan a 1 columna por debajo de 720px.
+   - Botones grandes y con buen espaciado táctil (min-height 44px).
+   - Nada de scroll horizontal: todo el contenido se apila en vertical.
+   ============================================================ */
+
+/* ── Portada compacta del tema (hero) ──────────────────────── */
+.topic-hero{
+  overflow:hidden;
+  border-radius: var(--radius, 18px);
+  position: relative;
+}
+.topic-hero img{
+  width: 100%;
+  height: auto;
+  display:block;
+  object-fit: cover;
+  border-radius: var(--radius, 18px);
+  aspect-ratio: 16 / 9;
+}
+.topic-hero .overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(14,34,57,.15) 0%, rgba(14,34,57,.65) 70%, rgba(14,34,57,.78) 100%);
+  border-radius: var(--radius, 18px);
+  pointer-events:none;
+}
+.topic-hero .titlebox{
+  position:absolute; left:16px; right:16px; bottom:14px;
+  color:#fff;
+}
+.topic-hero h1{
+  margin:0;
+  font-size: clamp(22px, 5vw, 34px);
+  line-height:1.15;
+}
+.topic-hero p{
+  margin:8px 0 0 0;
+  opacity:.92;
+  max-width: 60ch;
+  font-size: clamp(14px, 2.6vw, 16px);
+}
+
+/* ── Aviso psicoeducativo / de seguridad ────────────────────
+   Bloque obligatorio en toda página de tema. Debe ir apenas
+   después de la bajada del hero, antes de los zócalos.
+   Usar .topic-safety-note--risk para temas con riesgo de
+   autolesión/suicidio (depresión, bipolar, crisis), que necesita
+   más contraste para no pasar inadvertido. */
+.topic-safety-note{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  background:rgba(27,61,99,.06);
+  border:1px solid rgba(27,61,99,.18);
+  color:var(--text, #0f172a);
+  font-size: calc(13.5px * var(--text-scale, 1));
+  line-height:1.5;
+}
+.topic-safety-note strong{ font-weight:700; }
+.topic-safety-note--risk{
+  background:rgba(196,122,43,.12);
+  border-color:rgba(196,122,43,.38);
+  color:rgba(90,45,8,.95);
+}
+
+/* ── Zócalo de tema (envoltorio de cada bloque temático) ────
+   Es una variante de .section-card pensada para lectura rápida:
+   título corto, bajada de 2-4 líneas, listas breves. */
+.topic-card{
+  background:var(--surface-2, #fbfdff);
+  border:1px solid var(--border, rgba(15,23,42,.08));
+  border-radius:var(--radius, 18px);
+  padding:20px;
+  box-shadow:var(--shadow, 0 10px 28px rgba(2,6,23,.06));
+}
+.topic-card + .topic-card{ margin-top:16px; }
+.topic-card h2.card-title{
+  font-size: calc(17px * var(--text-scale, 1));
+}
+.topic-card .card-sub{
+  max-width: 62ch;
+}
+.topic-card ul, .topic-card ol{
+  margin: 10px 0 0;
+  padding-left: 1.2em;
+}
+.topic-card li{
+  margin-bottom: 6px;
+  font-size: calc(14px * var(--text-scale, 1));
+  line-height:1.5;
+}
+.topic-card li:last-child{ margin-bottom:0; }
+
+/* ── Grilla de zócalos cortos (p. ej. "Señales frecuentes" en
+   dos columnas en desktop). En mobile siempre 1 columna. ──── */
+.topic-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:14px;
+  margin-top:10px;
+}
+@media (max-width:720px){
+  .topic-grid{ grid-template-columns:1fr; }
+}
+
+/* ── Fila de acciones (Central de Turnos, Copiar resumen,
+   Volver a temas). Se apilan en columna en mobile angosto
+   para que ningún botón quede recortado. ───────────────────── */
+.topic-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+.topic-actions .btn-primary,
+.topic-actions .btn-secondary{
+  min-height:44px;
+}
+@media (max-width:480px){
+  .topic-actions{ flex-direction:column; }
+  .topic-actions a, .topic-actions button{ width:100%; }
+}
+
+/* ── Botón "Copiar resumen" + confirmación visual ───────────── */
+.topic-copy-btn{ min-height:44px; }
+.topic-copy-ok{
+  display:none;
+  margin-top:10px;
+  padding:10px 14px;
+  border-radius:12px;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.35);
+  color:#14532d;
+  font-size: calc(13px * var(--text-scale, 1));
+}
+
+/* ── Etiquetas de estado en el índice de temas
+   (temas-salud-mental.html): tarjetas sin página propia
+   todavía deben mostrar esto en vez de "Abrir". ─────────────── */
+.topic-status-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  background:rgba(100,116,139,.14);
+  color:var(--muted, #64748b);
+  border:1px solid rgba(100,116,139,.28);
+}
+
+/* ── Mobile: separar más los zócalos para que no se note como
+   "pared de texto" al hacer scroll. ─────────────────────────── */
+@media (max-width:560px){
+  .topic-card{ padding:16px; }
+  .topic-card + .topic-card{ margin-top:14px; }
+  .topic-hero .titlebox{ left:12px; right:12px; bottom:12px; }
+}
