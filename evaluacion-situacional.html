@@ -703,39 +703,38 @@
       .how-step { padding: 12px 12px; }
       .evs-audio-heading { font-size: 1.1rem; }
     }
+
+    /* 11. Header institucional homogéneo: permitir wrap en mobile (sin scroll horizontal) */
+    @media (max-width: 640px) {
+      .controls { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+    }
   </style>
 
 </head>
 
 <body>
 
-  <!-- ===== Header (reusa estilo del ecosistema) ===== -->
-  <header class="topbar" role="banner">
-    <div class="wrap topbar-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true"></div>
+  <!-- ===== Header institucional (homogéneo con el resto del sitio) ===== -->
+  <header role="banner">
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" />
+        </div>
         <div class="brand-text">
           <div class="brand-title">Dr. Pedro Nicolas Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
-          <div class="brand-sub">Sala de espera virtual</div>
+          <div class="brand-sub">Evaluación Psiquiátrica Situacional</div>
         </div>
       </div>
 
-      <div class="topbar-actions" role="navigation" aria-label="Acciones">
-        <button class="btn-chip" id="btnAminus" type="button" title="Disminuir tamaño de letra">A-</button>
-        <button class="btn-chip" id="btnAplus" type="button" title="Aumentar tamaño de letra">A+</button>
-        <button class="btn-chip" id="btnSettings" type="button" title="Ajustes">
-          <span aria-hidden="true">⚙️</span> Ajustes
-        </button>
-
-        <button class="btn-chip btn-chip-primary" id="btnSound" type="button" title="Activar/desactivar sonidos">
-          Activar sonidos
-        </button>
-
-        <div class="vol" aria-label="Volumen">
-          <span class="vol-label">Volumen</span>
-          <input id="volRange" type="range" min="0" max="100" value="60" />
-        </div>
-      </div>
+      <nav class="controls" role="navigation" aria-label="Navegación principal">
+        <a class="btn-ghost" href="index.html" data-spa="0">Inicio</a>
+        <a class="btn-ghost" href="index.html" data-spa="0">Sala de espera</a>
+        <a class="btn-ghost" href="psicoeducacion.html" data-spa="0">Psicoeducación</a>
+        <a class="btn-ghost" href="turnos.html" data-spa="0">Central de Turnos</a>
+        <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+        <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+      </nav>
     </div>
   </header>
 
