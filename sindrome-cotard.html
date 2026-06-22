@@ -52,12 +52,12 @@
       flex-wrap: wrap;
     }
     .range-row label{
-      min-width: 220px;
+      min-width: 160px;
       font-weight: 600;
     }
     .range-row input[type="range"]{
       flex: 1;
-      min-width: 220px;
+      min-width: 140px;
     }
     .pill-val{
       padding: 6px 10px;
@@ -92,6 +92,16 @@
       border: 1px solid rgba(16,185,129,.28);
     }
     .longread{ line-height: 1.65; }
+
+    /* Aviso de alto contraste para señales de riesgo vital */
+    .note-risk{
+      background: rgba(220,38,38,.14);
+      border: 1.5px solid rgba(220,38,38,.45);
+      color: #7f1d1d;
+      font-weight: 600;
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
   </style>
 </head>
 
@@ -295,7 +305,7 @@
           <li>La persona no toma medicación o abandona el tratamiento en curso.</li>
         </ul>
 
-        <div class="note" style="margin-top:12px">
+        <div class="note note-risk" style="margin-top:12px" role="note">
           El síndrome de Cotard con rechazo a la alimentación es una urgencia médica. No esperar a que "se le pase".
           Buscá asistencia local inmediata.
         </div>

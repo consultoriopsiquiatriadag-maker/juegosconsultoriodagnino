@@ -52,12 +52,12 @@
       flex-wrap: wrap;
     }
     .range-row label{
-      min-width: 220px;
+      min-width: 160px;
       font-weight: 600;
     }
     .range-row input[type="range"]{
       flex: 1;
-      min-width: 220px;
+      min-width: 140px;
     }
     .pill-val{
       padding: 6px 10px;
@@ -113,6 +113,17 @@
       vertical-align: top;
     }
     .compare-table tr:last-child td{ border-bottom: none; }
+
+    /* Contenedor con scroll horizontal para tablas anchas en mobile */
+    .table-scroll{
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+    }
+    .table-scroll .compare-table{
+      min-width: 480px;
+    }
   </style>
 </head>
 
@@ -204,6 +215,7 @@
           </div>
         </div>
 
+        <div class="table-scroll">
         <table class="compare-table" aria-label="Comparación entre síndrome de Capgras y síndrome de Fregoli">
           <thead>
             <tr>
@@ -245,6 +257,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="note" style="margin-top:14px">
           Pueden coexistir en el mismo paciente, junto con otras variantes como el síndrome de intermetamorfosis
