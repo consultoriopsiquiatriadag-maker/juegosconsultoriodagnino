@@ -211,6 +211,71 @@
       </div>
     </section>
 
+    <!-- Zócalo: Podcast (audio) -->
+    <section class="section" id="audio">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Escuchá el resumen</h2>
+            <p class="card-sub">Una versión en audio de este tema, para escuchar cuando no es momento de leer.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+          <audio controls preload="metadata" style="width:100%; border-radius:12px;">
+            <source src="audio/control-impulsos-podcast.m4a" type="audio/mp4" />
+            <source src="audio/control-impulsos-podcast.m4a" type="audio/x-m4a" />
+            Tu navegador no admite la reproducción de audio.
+          </audio>
+          <div class="topic-actions" style="margin-top:0;">
+            <a class="btn-secondary" href="audio/control-impulsos-podcast.m4a" download>Descargar audio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Video resumen -->
+    <section class="section" id="video">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Mirá el resumen en video</h2>
+            <p class="card-sub">Un repaso breve de las ideas principales de este tema.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+          <video controls preload="metadata" playsinline style="width:100%; border-radius:12px; background:#000;">
+            <source src="assets/videos/control-impulsos-resumen.mp4" type="video/mp4" />
+            Tu navegador no admite la reproducción de video.
+          </video>
+          <div class="topic-actions" style="margin-top:0;">
+            <a class="btn-secondary" href="assets/videos/control-impulsos-resumen.mp4" download>Descargar video</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zócalo: Infografía descargable -->
+    <section class="section" id="infografia">
+      <div class="topic-card">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Infografía descargable</h2>
+            <p class="card-sub">Un resumen visual para guardar, compartir o llevar a una consulta.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px; align-items:flex-start;">
+          <img
+            src="assets/img/control-impulsos-infografia.png"
+            alt="Infografía: factores que afectan el control de los impulsos (eje orgánico y neurológico, sustancias y desinhibición, entorno con sobrecarga), evaluación del sistema completo (cuerpo y salud, estilo de vida, vínculos) y acciones útiles."
+            style="width:100%; max-width:420px; border-radius:12px; border:1px solid var(--border, rgba(15,23,42,.08));"
+          />
+          <div class="topic-actions" style="margin-top:0;">
+            <a class="btn-secondary" href="assets/img/control-impulsos-infografia.png" download>Descargar infografía</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Zócalo 8: Recursos relacionados -->
     <section class="section" id="recursos">
       <div class="topic-card">
