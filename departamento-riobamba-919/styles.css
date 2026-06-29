@@ -1,0 +1,414 @@
+/* ============================================================
+   departamento-riobamba-919 — styles.css
+   Landing oculta, independiente del resto del sitio.
+   Mobile-first. Estética inmobiliaria sobria/premium.
+   Todas las clases usan el prefijo .riobamba- para no chocar
+   con el CSS del sitio principal.
+   ============================================================ */
+
+:root{
+  --riobamba-navy: #0e2239;
+  --riobamba-navy-soft: rgba(14,34,57,.85);
+  --riobamba-gold: #a9824c;
+  --riobamba-gold-dark: #8a6a3c;
+  --riobamba-bg: #f7f5f1;
+  --riobamba-surface: #ffffff;
+  --riobamba-border: rgba(14,34,57,.10);
+  --riobamba-text: #20242b;
+  --riobamba-muted: #5b6472;
+  --riobamba-shadow: 0 12px 30px rgba(14,34,57,.10);
+  --riobamba-radius: 18px;
+  --riobamba-whatsapp: #25D366;
+  --riobamba-max-w: 1080px;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--riobamba-bg);
+  color:var(--riobamba-text);
+  font-family:'Inter', system-ui, -apple-system, sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', 'Inter', serif;
+  color:var(--riobamba-navy);
+  margin:0 0 12px;
+  line-height:1.2;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+
+.riobamba-wrap{
+  max-width:var(--riobamba-max-w);
+  margin:0 auto;
+  padding:0 20px;
+}
+
+.riobamba-section{ padding:48px 0; }
+.riobamba-section-alt{ background:var(--riobamba-surface); }
+.riobamba-section h2{ font-size:clamp(22px, 4vw, 30px); }
+.riobamba-section-sub{ color:var(--riobamba-muted); margin-top:-6px; margin-bottom:20px; }
+
+/* ── Botones ───────────────────────────────────────────────── */
+.riobamba-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:46px;
+  padding:0 20px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:14.5px;
+  text-decoration:none;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.riobamba-btn:hover{ transform:translateY(-1px); }
+.riobamba-btn-primary{
+  background:var(--riobamba-whatsapp);
+  color:#fff;
+  box-shadow:0 8px 20px rgba(37,211,102,.30);
+}
+.riobamba-btn-primary:hover{ background:#1fb858; }
+.riobamba-btn-secondary{
+  background:var(--riobamba-navy);
+  color:#fff;
+}
+.riobamba-btn-secondary:hover{ background:#16314f; }
+.riobamba-btn-ghost{
+  background:transparent;
+  color:var(--riobamba-navy);
+  border-color:var(--riobamba-border);
+}
+.riobamba-btn-ghost:hover{ background:rgba(14,34,57,.05); }
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.riobamba-hero{
+  padding:64px 0 48px;
+  background:
+    linear-gradient(180deg, rgba(14,34,57,.04) 0%, rgba(14,34,57,0) 60%),
+    var(--riobamba-bg);
+  border-bottom:1px solid var(--riobamba-border);
+}
+.riobamba-eyebrow{
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--riobamba-gold-dark);
+  margin:0 0 10px;
+}
+.riobamba-hero h1{ font-size:clamp(28px, 6vw, 44px); max-width:18ch; }
+.riobamba-subtitle{
+  font-size:clamp(15px, 2.6vw, 18px);
+  color:var(--riobamba-navy-soft);
+  font-weight:500;
+  max-width:48ch;
+  margin:0 0 14px;
+}
+.riobamba-hero-text{
+  color:var(--riobamba-muted);
+  max-width:60ch;
+  margin:0 0 26px;
+}
+.riobamba-hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+@media (max-width:480px){
+  .riobamba-hero-actions{ flex-direction:column; }
+  .riobamba-hero-actions .riobamba-btn{ width:100%; }
+}
+
+/* ── Ficha rápida (chips) ──────────────────────────────────── */
+.riobamba-ficha-rapida{ padding-top:28px; padding-bottom:28px; }
+.riobamba-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.riobamba-chip{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--riobamba-surface);
+  border:1px solid var(--riobamba-border);
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--riobamba-navy);
+  box-shadow:var(--riobamba-shadow);
+}
+
+/* ── Prosa (descripción general, etc.) ─────────────────────── */
+.riobamba-prose p{
+  max-width:70ch;
+  color:var(--riobamba-text);
+  margin:0 0 14px;
+}
+.riobamba-prose p:last-child{ margin-bottom:0; }
+
+/* ── Galería ───────────────────────────────────────────────── */
+.riobamba-gallery{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:14px;
+}
+@media (min-width:680px){
+  .riobamba-gallery{ grid-template-columns:repeat(3, 1fr); }
+}
+.riobamba-photo{
+  margin:0;
+  position:relative;
+  aspect-ratio:4/3;
+  border-radius:var(--riobamba-radius);
+  overflow:hidden;
+  background:#eceae5;
+  box-shadow:var(--riobamba-shadow);
+  cursor:pointer;
+}
+.riobamba-photo img{
+  width:100%; height:100%;
+  object-fit:cover;
+  transition:transform .25s ease;
+}
+.riobamba-photo:hover img{ transform:scale(1.04); }
+
+/* Placeholder elegante cuando la imagen no existe */
+.riobamba-placeholder{
+  position:absolute; inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:14px;
+  background:
+    repeating-linear-gradient(45deg, rgba(14,34,57,.05) 0 10px, rgba(14,34,57,.02) 10px 20px),
+    linear-gradient(160deg, #eef0f3, #e3e7eb);
+  color:var(--riobamba-navy);
+  font-weight:600;
+  font-size:13.5px;
+  border:1px dashed rgba(14,34,57,.25);
+  border-radius:var(--riobamba-radius);
+}
+
+/* ── Características (grid de tarjetas/lista) ─────────────── */
+.riobamba-feature-grid{
+  list-style:none;
+  margin:0; padding:0;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+@media (min-width:680px){
+  .riobamba-feature-grid{ grid-template-columns:repeat(2, 1fr); }
+}
+.riobamba-feature-grid li{
+  background:var(--riobamba-surface);
+  border:1px solid var(--riobamba-border);
+  border-radius:14px;
+  padding:14px 16px;
+  font-size:14.5px;
+  box-shadow:var(--riobamba-shadow);
+}
+
+/* ── Acordeón ──────────────────────────────────────────────── */
+.riobamba-accordion{ display:flex; flex-direction:column; gap:10px; }
+.riobamba-accordion-item{
+  background:var(--riobamba-surface);
+  border:1px solid var(--riobamba-border);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:var(--riobamba-shadow);
+}
+.riobamba-accordion-item summary{
+  cursor:pointer;
+  list-style:none;
+  padding:16px 18px;
+  font-weight:700;
+  color:var(--riobamba-navy);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.riobamba-accordion-item summary::-webkit-details-marker{ display:none; }
+.riobamba-accordion-item summary::after{
+  content:"+";
+  font-size:20px;
+  font-weight:400;
+  color:var(--riobamba-gold-dark);
+  transition:transform .2s ease;
+}
+.riobamba-accordion-item[open] summary::after{ content:"–"; }
+.riobamba-accordion-body{
+  padding:0 18px 18px;
+  color:var(--riobamba-text);
+}
+.riobamba-accordion-body p{ margin:0 0 12px; max-width:70ch; }
+.riobamba-accordion-body ul{ margin:0 0 12px; padding-left:1.2em; }
+.riobamba-accordion-body .riobamba-btn{ margin-top:6px; }
+
+/* ── Datos generales (ficha) ──────────────────────────────── */
+.riobamba-datos{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin:0;
+}
+@media (min-width:680px){
+  .riobamba-datos{ grid-template-columns:repeat(2, 1fr); }
+}
+.riobamba-datos > div{
+  background:var(--riobamba-surface);
+  border:1px solid var(--riobamba-border);
+  border-radius:14px;
+  padding:14px 16px;
+  box-shadow:var(--riobamba-shadow);
+}
+.riobamba-datos dt{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--riobamba-gold-dark);
+  font-weight:700;
+  margin:0 0 4px;
+}
+.riobamba-datos dd{ margin:0; font-weight:600; }
+
+/* ── Cierre ───────────────────────────────────────────────── */
+.riobamba-cierre{
+  text-align:center;
+  background:var(--riobamba-navy);
+  color:#fff;
+}
+.riobamba-cierre h2{ color:#fff; }
+.riobamba-cierre p{ color:rgba(255,255,255,.82); max-width:56ch; margin:0 auto 22px; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+.riobamba-footer{
+  padding:22px 0 40px;
+  text-align:center;
+  color:var(--riobamba-muted);
+  font-size:12.5px;
+  background:var(--riobamba-navy);
+}
+.riobamba-footer p{ margin:0; opacity:.7; color:#fff; }
+
+/* ── Botón flotante de WhatsApp ──────────────────────────── */
+.riobamba-fab-whatsapp{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:56px; height:56px;
+  border-radius:50%;
+  background:var(--riobamba-whatsapp);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 24px rgba(37,211,102,.45);
+  z-index:60;
+  text-decoration:none;
+}
+.riobamba-fab-whatsapp:hover{ background:#1fb858; }
+
+/* ── Toast ────────────────────────────────────────────────── */
+.riobamba-toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%, 12px);
+  background:var(--riobamba-navy);
+  color:#fff;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:13.5px;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease;
+  z-index:80;
+  box-shadow:0 10px 24px rgba(14,34,57,.35);
+}
+.riobamba-toast.riobamba-toast-visible{
+  opacity:1;
+  transform:translate(-50%, 0);
+}
+
+/* ── Lightbox ─────────────────────────────────────────────── */
+.riobamba-lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(10,16,24,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:24px;
+}
+.riobamba-lightbox.riobamba-lightbox-open{ display:flex; }
+.riobamba-lightbox-content{
+  max-width:min(900px, 92vw);
+  max-height:84vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+.riobamba-lightbox-content img{
+  max-width:100%;
+  max-height:70vh;
+  border-radius:12px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.riobamba-lightbox-placeholder{
+  width:min(640px, 90vw);
+  aspect-ratio:4/3;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  background:linear-gradient(160deg, #eef0f3, #e3e7eb);
+  color:var(--riobamba-navy);
+  font-weight:600;
+  border:1px dashed rgba(255,255,255,.4);
+}
+.riobamba-lightbox-caption{
+  color:#fff;
+  font-size:14px;
+  margin:0;
+  text-align:center;
+}
+.riobamba-lightbox-close,
+.riobamba-lightbox-nav{
+  position:absolute;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:44px; height:44px;
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.riobamba-lightbox-close{ top:18px; right:18px; }
+.riobamba-lightbox-prev{ left:18px; top:50%; transform:translateY(-50%); }
+.riobamba-lightbox-next{ right:18px; top:50%; transform:translateY(-50%); }
+.riobamba-lightbox-close:hover,
+.riobamba-lightbox-nav:hover{ background:rgba(255,255,255,.24); }
+
+@media (max-width:560px){
+  .riobamba-hero{ padding:48px 0 36px; }
+  .riobamba-section{ padding:36px 0; }
+}
