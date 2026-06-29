@@ -27,12 +27,10 @@ html{ scroll-behavior:smooth; }
 body{
   margin:0;
   /* Imagen de fondo sutil: se mezcla con el color de base mediante un velo
-     semitransparente (gradiente) para que no genere contraste con el texto.
-     El archivo tiene un espacio en el nombre ("fondo web.png"); las comillas
-     en url() son necesarias para que funcione correctamente. */
+     semitransparente (gradiente) para que no genere contraste con el texto. */
   background-image:
     linear-gradient(rgba(247,245,241,.93), rgba(247,245,241,.93)),
-    url("img/fondo web small.png");
+    url("img/fondo_web_small.png");
   background-color:var(--riobamba-bg);
   background-size:cover;
   background-position:top center;
