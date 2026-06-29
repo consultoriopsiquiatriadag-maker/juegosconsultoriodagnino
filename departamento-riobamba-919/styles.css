@@ -32,7 +32,7 @@ body{
      en url() son necesarias para que funcione correctamente. */
   background-image:
     linear-gradient(rgba(247,245,241,.93), rgba(247,245,241,.93)),
-    url("img/fondo web.png");
+    url("img/fondo web small.png");
   background-color:var(--riobamba-bg);
   background-size:cover;
   background-position:top center;
