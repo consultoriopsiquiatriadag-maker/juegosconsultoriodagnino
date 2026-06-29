@@ -5,8 +5,8 @@
    ============================================================ */
 
 /* EDITAR ACÁ: número de WhatsApp con código de país, sin "+" ni espacios. */
-const WHATSAPP_NUMBER = "549XXXXXXXXXX";
-const WHATSAPP_MESSAGE = "Hola, quisiera consultar por el departamento en alquiler de Riobamba 919, Barrio Norte.";
+const WHATSAPP_NUMBER = "5491160473562";
+const WHATSAPP_MESSAGE = "Hola, te contacto por el alquiler del inmueble de Riobamba 919, Barrio Norte.";
 
 (function () {
   "use strict";
@@ -128,23 +128,37 @@ const WHATSAPP_MESSAGE = "Hola, quisiera consultar por el departamento en alquil
     });
   }
 
+  /* ── Audio (podcast): si el archivo no existe, mostrar placeholder ── */
+  function setupAudioFallback() {
+    const audio = document.getElementById("riobambaAudio");
+    const placeholder = document.getElementById("riobambaAudioPlaceholder");
+    if (!audio || !placeholder) return;
+    audio.addEventListener("error", function () {
+      audio.hidden = true;
+      placeholder.hidden = false;
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     setWhatsAppLinks();
     setupCopyLink();
     setupLightbox();
+    setupAudioFallback();
   });
 })();
 
 /* ── Detección de imagen faltante (llamado desde el atributo onerror del <img>) ──
    Si la foto real no existe (404), se oculta la imagen y se muestra el
-   placeholder elegante que ya está en el HTML, marcando la figura como
-   "riobamba-img-missing" para que el lightbox también muestre el placeholder. */
+   placeholder elegante que ya está junto a ella en el HTML (mismo padre).
+   Funciona tanto para las fotos de la galería como para la imagen de portada
+   del hero, porque ambas comparten la misma estructura: <img> + .riobamba-placeholder
+   dentro de un contenedor común. */
 function riobambaImgError(imgEl) {
   imgEl.onerror = null;
   imgEl.hidden = true;
-  const figure = imgEl.closest(".riobamba-photo");
-  if (!figure) return;
-  figure.classList.add("riobamba-img-missing");
-  const placeholder = figure.querySelector(".riobamba-placeholder");
+  const container = imgEl.parentElement;
+  if (!container) return;
+  container.classList.add("riobamba-img-missing");
+  const placeholder = container.querySelector(".riobamba-placeholder");
   if (placeholder) placeholder.hidden = false;
 }

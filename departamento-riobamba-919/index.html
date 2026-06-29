@@ -65,6 +65,12 @@
           <a class="riobamba-btn riobamba-btn-secondary" href="https://www.google.com/maps/search/?api=1&query=Riobamba%20919%2C%20CABA" target="_blank" rel="noopener">Ver ubicación</a>
           <button class="riobamba-btn riobamba-btn-ghost" type="button" id="riobambaCopyLink">Copiar link</button>
         </div>
+
+        <!-- Reemplazar por: img/portada.jpg -->
+        <div class="riobamba-hero-media">
+          <img src="img/portada.jpg" alt="Vista principal del departamento" onerror="riobambaImgError(this)">
+          <div class="riobamba-placeholder" hidden><span>Foto a reemplazar: Portada</span></div>
+        </div>
       </div>
     </header>
 
@@ -99,6 +105,26 @@
         <p>Es una unidad ideal para una persona sola, pareja o profesional que busque vivir en un entorno urbano, cómodo, seguro y tranquilo.</p>
         <p>El departamento se ubica en primer piso, contrafrente. La planta baja del edificio se distribuye entre el hall de ingreso y el estacionamiento, por lo que la unidad no se encuentra directamente sobre la calle. Esto le aporta mayor privacidad, buena tranquilidad interior y muy baja exposición al ruido urbano.</p>
         <p>Cuenta con aproximadamente 34 m² cubiertos y un amplio patio descubierto de alrededor de 35 m², generando una superficie total muy aprovechable tanto para vivir como para trabajar desde casa.</p>
+      </div>
+    </section>
+
+    <!-- ============ AUDIO: RESUMEN EN PODCAST ============ -->
+    <section class="riobamba-section riobamba-section-alt">
+      <div class="riobamba-wrap">
+        <h2>Escuchá el resumen en audio</h2>
+        <p class="riobamba-section-sub">Un repaso breve del departamento, narrado en formato podcast.</p>
+
+        <!-- Reemplazar por: audio/podcast-riobamba-919.m4a -->
+        <div class="riobamba-audio-wrap">
+          <audio id="riobambaAudio" controls preload="metadata">
+            <source src="audio/podcast-riobamba-919.m4a" type="audio/mp4">
+            <source src="audio/podcast-riobamba-919.mp3" type="audio/mpeg">
+            Tu navegador no admite la reproducción de audio.
+          </audio>
+          <div class="riobamba-audio-placeholder" id="riobambaAudioPlaceholder" hidden>
+            Audio a reemplazar: resumen en podcast del departamento
+          </div>
+        </div>
       </div>
     </section>
 
@@ -305,6 +331,21 @@
           <div><dt>Condiciones de alquiler</dt><dd>A convenir.</dd></div>
           <div><dt>Contrato</dt><dd>Escrito, con firma ante escribano público.</dd></div>
         </dl>
+      </div>
+    </section>
+
+    <!-- ============ MAPA ============ -->
+    <section class="riobamba-section">
+      <div class="riobamba-wrap">
+        <h2>Ubicación en el mapa</h2>
+        <div class="riobamba-map-embed">
+          <iframe
+            src="https://www.google.com/maps?q=Riobamba%20919%2C%20Buenos%20Aires&output=embed"
+            width="100%" height="320" style="border:0"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación: Riobamba 919, Barrio Norte, CABA">
+          </iframe>
+        </div>
       </div>
     </section>
 
