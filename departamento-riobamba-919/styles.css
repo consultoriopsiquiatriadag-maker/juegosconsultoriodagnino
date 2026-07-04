@@ -307,7 +307,69 @@ a{ color:inherit; }
 .riobamba-accordion-body ul{ margin:0 0 12px; padding-left:1.2em; }
 .riobamba-accordion-body .riobamba-btn{ margin-top:6px; }
 
-/* ── Datos generales (ficha) ──────────────────────────────── */
+/* ── Zócalos acordeón: datos y gastos ────────────────────── */
+.riobamba-info-section{
+  padding-top:30px;
+  padding-bottom:30px;
+}
+.riobamba-info-drawer{
+  border:1px solid rgba(169,130,76,.24);
+  border-radius:var(--riobamba-radius);
+  background:linear-gradient(135deg, rgba(255,248,238,.96), rgba(255,255,255,.95));
+  box-shadow:var(--riobamba-shadow);
+  overflow:hidden;
+}
+.riobamba-info-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px 20px;
+  cursor:pointer;
+  list-style:none;
+}
+.riobamba-info-summary::-webkit-details-marker{ display:none; }
+.riobamba-info-summary-copy{
+  min-width:0;
+  display:grid;
+  gap:5px;
+}
+.riobamba-info-title{
+  font-family:'Playfair Display', 'Inter', serif;
+  color:var(--riobamba-navy);
+  font-size:clamp(21px, 4vw, 28px);
+  font-weight:700;
+  line-height:1.15;
+}
+.riobamba-info-preview{
+  color:var(--riobamba-muted);
+  font-size:14.5px;
+  font-weight:600;
+}
+.riobamba-info-toggle{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:0 14px;
+  border-radius:999px;
+  background:var(--riobamba-navy);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+}
+.riobamba-info-drawer[open] .riobamba-info-toggle{
+  font-size:0;
+}
+.riobamba-info-drawer[open] .riobamba-info-toggle::before{
+  content:'Ocultar detalle';
+  font-size:13px;
+}
+.riobamba-info-body{
+  border-top:1px solid rgba(14,34,57,.08);
+  padding:20px;
+}
 .riobamba-datos{
   display:grid;
   grid-template-columns:1fr;
@@ -322,7 +384,7 @@ a{ color:inherit; }
   border:1px solid var(--riobamba-border);
   border-radius:14px;
   padding:14px 16px;
-  box-shadow:var(--riobamba-shadow);
+  box-shadow:0 8px 22px rgba(14,34,57,.08);
 }
 .riobamba-datos dt{
   font-size:12px;
@@ -333,85 +395,26 @@ a{ color:inherit; }
   margin:0 0 4px;
 }
 .riobamba-datos dd{ margin:0; font-weight:600; }
-
+@media (max-width:560px){
+  .riobamba-info-summary{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .riobamba-info-toggle{ width:100%; }
+}
 /* ── Servicios mensuales aproximados ─────────────────────── */
 .riobamba-services{
   scroll-margin-top:90px;
   padding-top:30px;
   padding-bottom:30px;
 }
-.riobamba-services-drawer{
-  border:1px solid rgba(169,130,76,.24);
-  border-radius:var(--riobamba-radius);
-  background:linear-gradient(135deg, rgba(255,248,238,.96), rgba(255,255,255,.95));
-  box-shadow:var(--riobamba-shadow);
-  overflow:hidden;
-}
-.riobamba-services-summary{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  padding:18px 20px;
-  cursor:pointer;
-  list-style:none;
-}
-.riobamba-services-summary::-webkit-details-marker{ display:none; }
-.riobamba-services-summary-copy{
-  min-width:0;
-  display:grid;
-  gap:4px;
-}
-.riobamba-kicker{
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  font-size:12px;
-  font-weight:800;
-  color:var(--riobamba-gold-dark);
-  margin:0;
-}
-.riobamba-services-title{
-  font-family:'Playfair Display', 'Inter', serif;
-  color:var(--riobamba-navy);
-  font-size:clamp(21px, 4vw, 28px);
-  font-weight:700;
-  line-height:1.15;
-}
-.riobamba-services-preview{
-  color:var(--riobamba-muted);
-  font-size:14.5px;
-  font-weight:600;
-}
-.riobamba-services-toggle{
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:38px;
-  padding:0 14px;
-  border-radius:999px;
-  background:var(--riobamba-navy);
-  color:#fff;
-  font-size:13px;
-  font-weight:700;
-}
-.riobamba-services-drawer[open] .riobamba-services-toggle::before{
-  content:'Ocultar detalle';
-}
-.riobamba-services-drawer[open] .riobamba-services-toggle{
-  font-size:0;
-}
-.riobamba-services-drawer[open] .riobamba-services-toggle::before{
-  font-size:13px;
-}
 .riobamba-services-body{
-  border-top:1px solid rgba(14,34,57,.08);
-  padding:0 20px 20px;
+  padding-top:0;
 }
 .riobamba-services-intro{
   max-width:760px;
   color:var(--riobamba-muted);
-  margin:18px 0 0;
+  margin:0;
 }
 .riobamba-service-grid{
   display:grid;
@@ -471,13 +474,7 @@ a{ color:inherit; }
   .riobamba-service-card{ padding:16px; }
   .riobamba-service-amount{ font-size:16.5px; }
 }
-@media (max-width:560px){
-  .riobamba-services-summary{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-  .riobamba-services-toggle{ width:100%; }
-}
+
 /* ── Cierre ───────────────────────────────────────────────── */
 .riobamba-cierre{
   text-align:center;
