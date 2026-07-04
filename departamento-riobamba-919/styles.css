@@ -334,6 +334,85 @@ a{ color:inherit; }
 }
 .riobamba-datos dd{ margin:0; font-weight:600; }
 
+/* ── Servicios mensuales aproximados ─────────────────────── */
+.riobamba-services{
+  scroll-margin-top:90px;
+}
+.riobamba-section-header{
+  max-width:760px;
+  margin-bottom:22px;
+}
+.riobamba-kicker{
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:12px;
+  font-weight:800;
+  color:var(--riobamba-gold-dark);
+  margin:0 0 8px;
+}
+.riobamba-section-header p{
+  color:var(--riobamba-muted);
+  margin:0;
+}
+.riobamba-service-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin-top:22px;
+}
+.riobamba-service-card{
+  padding:18px;
+  border-radius:var(--riobamba-radius);
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--riobamba-border);
+  box-shadow:var(--riobamba-shadow);
+}
+.riobamba-service-card h3{
+  margin:0 0 10px;
+  font-family:'Inter', system-ui, -apple-system, sans-serif;
+  font-size:15.5px;
+  line-height:1.25;
+}
+.riobamba-service-amount{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:800;
+  color:var(--riobamba-navy);
+}
+.riobamba-service-note{
+  margin:0;
+  font-size:14px;
+  line-height:1.45;
+  color:var(--riobamba-muted);
+}
+.riobamba-cost-summary{
+  margin-top:18px;
+  padding:20px;
+  border-radius:var(--riobamba-radius);
+  background:linear-gradient(135deg, rgba(255,248,238,.96), rgba(255,255,255,.94));
+  border:1px solid rgba(169,130,76,.26);
+  box-shadow:0 12px 30px rgba(14,34,57,.08);
+}
+.riobamba-cost-summary h3{
+  margin:0 0 8px;
+  font-family:'Inter', system-ui, -apple-system, sans-serif;
+  font-size:16px;
+}
+.riobamba-cost-summary p{
+  margin:8px 0 0;
+  color:var(--riobamba-muted);
+}
+.riobamba-cost-summary strong{
+  color:var(--riobamba-navy);
+}
+@media (min-width:720px){
+  .riobamba-service-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width:1040px){
+  .riobamba-service-grid{ grid-template-columns:repeat(5, minmax(0, 1fr)); }
+  .riobamba-service-card{ padding:16px; }
+  .riobamba-service-amount{ font-size:16.5px; }
+}
 /* ── Cierre ───────────────────────────────────────────────── */
 .riobamba-cierre{
   text-align:center;
