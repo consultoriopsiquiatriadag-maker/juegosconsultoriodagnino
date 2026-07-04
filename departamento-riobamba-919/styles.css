@@ -337,10 +337,30 @@ a{ color:inherit; }
 /* ── Servicios mensuales aproximados ─────────────────────── */
 .riobamba-services{
   scroll-margin-top:90px;
+  padding-top:30px;
+  padding-bottom:30px;
 }
-.riobamba-section-header{
-  max-width:760px;
-  margin-bottom:22px;
+.riobamba-services-drawer{
+  border:1px solid rgba(169,130,76,.24);
+  border-radius:var(--riobamba-radius);
+  background:linear-gradient(135deg, rgba(255,248,238,.96), rgba(255,255,255,.95));
+  box-shadow:var(--riobamba-shadow);
+  overflow:hidden;
+}
+.riobamba-services-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px 20px;
+  cursor:pointer;
+  list-style:none;
+}
+.riobamba-services-summary::-webkit-details-marker{ display:none; }
+.riobamba-services-summary-copy{
+  min-width:0;
+  display:grid;
+  gap:4px;
 }
 .riobamba-kicker{
   text-transform:uppercase;
@@ -348,11 +368,50 @@ a{ color:inherit; }
   font-size:12px;
   font-weight:800;
   color:var(--riobamba-gold-dark);
-  margin:0 0 8px;
-}
-.riobamba-section-header p{
-  color:var(--riobamba-muted);
   margin:0;
+}
+.riobamba-services-title{
+  font-family:'Playfair Display', 'Inter', serif;
+  color:var(--riobamba-navy);
+  font-size:clamp(21px, 4vw, 28px);
+  font-weight:700;
+  line-height:1.15;
+}
+.riobamba-services-preview{
+  color:var(--riobamba-muted);
+  font-size:14.5px;
+  font-weight:600;
+}
+.riobamba-services-toggle{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:0 14px;
+  border-radius:999px;
+  background:var(--riobamba-navy);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+}
+.riobamba-services-drawer[open] .riobamba-services-toggle::before{
+  content:'Ocultar detalle';
+}
+.riobamba-services-drawer[open] .riobamba-services-toggle{
+  font-size:0;
+}
+.riobamba-services-drawer[open] .riobamba-services-toggle::before{
+  font-size:13px;
+}
+.riobamba-services-body{
+  border-top:1px solid rgba(14,34,57,.08);
+  padding:0 20px 20px;
+}
+.riobamba-services-intro{
+  max-width:760px;
+  color:var(--riobamba-muted);
+  margin:18px 0 0;
 }
 .riobamba-service-grid{
   display:grid;
@@ -365,7 +424,7 @@ a{ color:inherit; }
   border-radius:var(--riobamba-radius);
   background:rgba(255,255,255,.92);
   border:1px solid var(--riobamba-border);
-  box-shadow:var(--riobamba-shadow);
+  box-shadow:0 8px 22px rgba(14,34,57,.08);
 }
 .riobamba-service-card h3{
   margin:0 0 10px;
@@ -387,11 +446,10 @@ a{ color:inherit; }
 }
 .riobamba-cost-summary{
   margin-top:18px;
-  padding:20px;
+  padding:18px;
   border-radius:var(--riobamba-radius);
-  background:linear-gradient(135deg, rgba(255,248,238,.96), rgba(255,255,255,.94));
-  border:1px solid rgba(169,130,76,.26);
-  box-shadow:0 12px 30px rgba(14,34,57,.08);
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(169,130,76,.22);
 }
 .riobamba-cost-summary h3{
   margin:0 0 8px;
@@ -412,6 +470,13 @@ a{ color:inherit; }
   .riobamba-service-grid{ grid-template-columns:repeat(5, minmax(0, 1fr)); }
   .riobamba-service-card{ padding:16px; }
   .riobamba-service-amount{ font-size:16.5px; }
+}
+@media (max-width:560px){
+  .riobamba-services-summary{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .riobamba-services-toggle{ width:100%; }
 }
 /* ── Cierre ───────────────────────────────────────────────── */
 .riobamba-cierre{
