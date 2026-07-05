@@ -532,6 +532,57 @@ a{ color:inherit; }
   .riobamba-footer-link{ width:100%; }
 }
 
+/* ── Menú flotante interno ───────────────────────────────── */
+.riobamba-floating-menu{
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  z-index:58;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:8px;
+  border:1px solid rgba(14,34,57,.12);
+  border-radius:18px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 12px 30px rgba(14,34,57,.16);
+  backdrop-filter:blur(10px);
+}
+.riobamba-floating-menu a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:76px;
+  min-height:34px;
+  padding:0 12px;
+  border-radius:999px;
+  color:var(--riobamba-navy);
+  font-size:12.5px;
+  font-weight:750;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.riobamba-floating-menu a:hover,
+.riobamba-floating-menu a:focus-visible{
+  background:rgba(14,34,57,.07);
+  outline:none;
+}
+@media (max-width:560px){
+  .riobamba-floating-menu{
+    left:10px;
+    right:76px;
+    bottom:12px;
+    flex-direction:row;
+    overflow-x:auto;
+    border-radius:999px;
+    padding:7px;
+  }
+  .riobamba-floating-menu a{
+    min-width:auto;
+    min-height:32px;
+    padding:0 10px;
+  }
+}
 /* ── Botón flotante de WhatsApp ──────────────────────────── */
 .riobamba-fab-whatsapp{
   position:fixed;

@@ -32,6 +32,15 @@
     </svg>
   </a>
 
+
+  <!-- Menú flotante interno de esta landing privada -->
+  <nav class="riobamba-floating-menu" aria-label="Accesos rápidos de la landing">
+    <a href="#inicio">Inicio</a>
+    <a href="#riobamba-galeria">Galería</a>
+    <a href="#datos-generales">Datos</a>
+    <a href="#servicios-aproximados">Gastos</a>
+    <a href="#ubicacion-mapa">Mapa</a>
+  </nav>
   <!-- Toast de confirmación (copiar link) -->
   <div class="riobamba-toast" id="riobambaToast" role="status" aria-live="polite"></div>
 
@@ -50,7 +59,7 @@
   <main>
 
     <!-- ============ 1. HERO ============ -->
-    <header class="riobamba-hero">
+    <header class="riobamba-hero" id="inicio">
       <div class="riobamba-wrap">
         <p class="riobamba-eyebrow">Barrio Norte · CABA</p>
         <h1>Departamento en alquiler en Barrio Norte</h1>
@@ -137,9 +146,9 @@
             <div class="riobamba-placeholder" hidden><span>Foto a reemplazar: Portada</span></div>
           </figure>
 
-          <!-- Reemplazar por: img/living.jpg -->
+          <!-- Foto real agregada: img/Living_con_futon.jpg. Reemplazar este archivo si luego se actualiza la imagen del living. -->
           <figure class="riobamba-photo" data-caption="Living" data-placeholder-text="Foto a reemplazar: Living">
-            <img src="img/living.jpg" alt="Living del departamento" loading="lazy" onerror="riobambaImgError(this)">
+            <img src="img/Living_con_futon.jpg" alt="Living del departamento con futón" loading="lazy" onerror="riobambaImgError(this)">
             <div class="riobamba-placeholder" hidden><span>Foto a reemplazar: Living</span></div>
           </figure>
 
@@ -155,9 +164,9 @@
             <div class="riobamba-placeholder" hidden><span>Foto a reemplazar: Baño</span></div>
           </figure>
 
-          <!-- Reemplazar por: img/patio-1.jpg -->
+          <!-- Foto real agregada: img/Patio-plantas.png. Reemplazar este archivo si luego se actualiza la imagen del patio. -->
           <figure class="riobamba-photo" data-caption="Patio" data-placeholder-text="Foto a reemplazar: Patio">
-            <img src="img/patio-1.jpg" alt="Patio propio del departamento" loading="lazy" onerror="riobambaImgError(this)">
+            <img src="img/Patio-plantas.png" alt="Patio propio con plantas" loading="lazy" onerror="riobambaImgError(this)">
             <div class="riobamba-placeholder" hidden><span>Foto a reemplazar: Patio</span></div>
           </figure>
 
@@ -313,7 +322,7 @@
     </section>
 
     <!-- ============ 12. DATOS GENERALES ============ -->
-    <section class="riobamba-section riobamba-info-section">
+    <section class="riobamba-section riobamba-info-section" id="datos-generales">
       <div class="riobamba-wrap">
         <details class="riobamba-info-drawer">
           <summary class="riobamba-info-summary">
@@ -397,7 +406,7 @@
       </div>
     </section>
     <!-- ============ MAPA ============ -->
-    <section class="riobamba-section">
+    <section class="riobamba-section" id="ubicacion-mapa">
       <div class="riobamba-wrap">
         <h2>Ubicación en el mapa</h2>
         <div class="riobamba-map-embed">
