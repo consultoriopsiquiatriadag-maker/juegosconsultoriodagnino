@@ -36,58 +36,48 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 </head>
 
 <body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
 
-  <!-- HEADER -->
-  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
-          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
-        </div>
-        <div class="leading-tight">
-          <p class="text-sm text-inst-gray font-medium">
-            Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino
-          </p>
-          <p class="text-xs text-inst-gray/70">Sala de Espera Virtual · Juego 3</p>
-        </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
       </div>
-
-      <div class="flex items-center gap-2">
-        <a href="juegos.html"
-          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          ← Volver
-        </a>
-
-        <!-- Audio controls -->
-        <button id="audioToggle"
-          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
-          aria-pressed="true">
-          Audio activo
-        </button>
-
-        <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
-          <span class="text-xs text-inst-gray">Vol</span>
-          <input id="audioVolume" type="range" min="0" max="100" value="25" class="w-28">
-        </div>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 3 · Atención aeronáutica</div>
       </div>
+    </div>
+    <div class="gs-header-actions">
+      <button id="audioToggle" class="gs-btn-sound-hdr" aria-pressed="true">Audio activo</button>
+      <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12 game-shell">
+  <!-- Slider de volumen oculto en header; accesible desde JS -->
+  <div style="display:none"><input id="audioVolume" type="range" min="0" max="100" value="25"></div>
 
-    <!-- Encabezado del juego (reemplaza el hero institucional genérico) -->
-    <div class="mb-6">
-      <p class="game-category">Atención y velocidad · Discriminación verbal</p>
-      <h1 class="game-title">Atención Aeronáutica</h1>
-      <p class="game-subtitle">
-        Aparecen palabras. Elegí si pertenece a la aviación o no. Es un juego simple, breve y sin presión.
-        Si te equivocás, no pasa nada: seguí con la siguiente.
-      </p>
+  <main class="gs-shell-wrap">
+
+    <!-- Pantalla de misión (nueva en FASE 1) -->
+    <div id="introScreen3" class="gs-intro game-fade-in">
+      <p class="gs-intro-eyebrow">Atención y velocidad · Juego 3</p>
+      <h1 class="gs-intro-title">Atención Aeronáutica</h1>
+      <p class="gs-intro-subtitle">Aparecen palabras. Decidí si pertenecen a la aviación o no. Simple, breve, sin presión.</p>
+      <p class="gs-intro-objective">Objetivo: clasificar palabras de aviación entre opciones mezcladas</p>
+      <div class="gs-intro-brief"><strong>Tu tarea:</strong> cuando aparezca una palabra, tocá "Aviación" o "No aviación". Si dudás, podés pasar. Si te equivocás, no pasa nada.</div>
+      <div class="gs-intro-actions">
+        <button id="btnEmpezar3" class="gs-btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
     </div>
+
+    <!-- Área de juego (oculta hasta que el usuario inicia) -->
+    <div id="gameArea3" class="hidden game-fade-in">
 
     <div class="grid lg:grid-cols-12 gap-6">
 
@@ -202,13 +192,15 @@
           <p class="text-base font-semibold mt-1" id="feedback">—</p>
         </div>
 
-        <div id="finish" class="hidden mt-6 game-result-card"></div>
+        <div id="finish" class="hidden gs-final"></div>
 
         <p class="game-safety-note">
           Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
         </p>
       </section>
     </div>
+
+    </div><!-- /gameArea3 -->
   </main>
 
   <!-- FOOTER -->
@@ -470,18 +462,14 @@
         const acc = total ? Math.round((hits/total)*100) : 0;
 
         boxFinish.innerHTML = `
-          <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
-          <h3 class="game-result-title mt-3">Ronda finalizada</h3>
-          <p class="game-result-message">
-            ${hits} aciertos, ${miss} errores. Precisión aproximada: ${acc}%.
-            Si te sentiste cansado/a, lo ideal es dejarlo acá y volver otro día.
-          </p>
-          <div class="game-result-stats">
-            <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-            <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
-            <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${acc}%</div></div>
+          <h3 class="gs-final-title">Ronda finalizada</h3>
+          <p class="gs-final-msg">${hits} aciertos, ${miss} errores. Precisión: ${acc}%.<br>Si te sentiste cansado/a, lo ideal es dejarlo acá y volver otro día.</p>
+          <div class="gs-final-stats">
+            <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+            <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+            <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${acc}%</div></div>
           </div>
-          <div class="game-actions" style="justify-content:center;">
+          <div class="gs-final-actions">
             <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
             <a href="juegos.html" class="game-btn">Volver a juegos</a>
           </div>
@@ -527,6 +515,12 @@
       render();
       setEnabled(false);
     })();
+
+    // Transición intro → juego (FASE 1)
+    document.getElementById("btnEmpezar3").addEventListener("click", function(){
+      document.getElementById("introScreen3").classList.add("hidden");
+      document.getElementById("gameArea3").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>

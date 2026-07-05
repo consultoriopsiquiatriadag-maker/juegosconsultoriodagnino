@@ -40,63 +40,42 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 </head>
 
 <body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
 
-  <!-- HEADER (homogéneo con index) -->
-  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
-          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
-        </div>
-        <div class="leading-tight">
-          <p class="text-sm text-inst-gray font-medium">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
-          <p class="text-xs text-inst-gray/70">Juegos cognitivos · Juego 1</p>
-        </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
       </div>
-
-      <div class="flex items-center gap-2">
-        <!-- Botón de sonido (se muestra solo si el navegador bloquea autoplay) -->
-        <button id="soundBtn" type="button" style="display:none"
-          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          Activar sonido
-        </button>
-
-        <a href="juegos.html"
-          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          ← Juegos
-        </a>
-
-        <a href="index.html"
-          class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-          Inicio
-        </a>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 1 · Atención y memoria</div>
       </div>
+    </div>
+    <div class="gs-header-actions">
+      <button id="soundBtn" type="button" class="gs-btn-sound-hdr" style="display:none">Sonido</button>
+      <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
     </div>
   </header>
 
-  <!-- CONTENIDO -->
-  <main class="py-10 md:py-12">
-    <div class="max-w-7xl mx-auto px-6 game-shell">
+  <main>
+    <div class="gs-shell-wrap">
 
-      <!-- Pantalla de inicio / misión (estilo juego8) -->
-      <div id="introScreen" class="game-intro-screen game-fade-in">
-        <p class="game-intro-eyebrow">Atención y memoria · Juego 1</p>
-        <h1 class="game-intro-title">Mnésico</h1>
-        <p class="game-intro-subtitle">
-          Ejercicio breve de atención. No es un examen. Si te genera tensión o frustración, pausá y retomá más tarde.
-        </p>
-        <span class="game-intro-objective">Objetivo: identificar la categoría correcta entre varias opciones</span>
-        <p class="game-intro-brief">
-          <strong>Tu tarea:</strong> tocá solo las palabras que pertenezcan a la categoría indicada.
-        </p>
-        <div class="flex flex-wrap gap-2 game-toolbar" style="justify-content:center;" aria-label="Elegir dificultad y comenzar">
-          <button class="levelBtn levelBtnStart game-btn game-btn-primary" data-level="easy" type="button">Fácil</button>
-          <button class="levelBtn levelBtnStart game-btn game-btn-primary" data-level="medium" type="button">Medio</button>
-          <button class="levelBtn levelBtnStart game-btn game-btn-primary" data-level="hard" type="button">Difícil</button>
+      <!-- Pantalla de misión -->
+      <div id="introScreen" class="gs-intro game-fade-in">
+        <p class="gs-intro-eyebrow">Atención y memoria · Juego 1</p>
+        <h1 class="gs-intro-title">Mnésico</h1>
+        <p class="gs-intro-subtitle">Ejercicio breve de atención. No es un examen. Si te genera tensión o frustración, pausá y retomá más tarde.</p>
+        <p class="gs-intro-objective">Objetivo: identificar la categoría correcta entre varias opciones</p>
+        <div class="gs-intro-brief"><strong>Tu tarea:</strong> tocá solo las palabras que pertenezcan a la categoría indicada.</div>
+        <div class="gs-intro-actions" aria-label="Elegir dificultad y comenzar">
+          <button class="gs-btn-start levelBtn levelBtnStart" data-level="easy" type="button">Fácil</button>
+          <button class="gs-btn-start levelBtn levelBtnStart" data-level="medium" type="button">Medio</button>
+          <button class="gs-btn-start alt levelBtn levelBtnStart" data-level="hard" type="button">Difícil</button>
         </div>
       </div>
 
@@ -144,7 +123,7 @@
         <div id="options" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6"></div>
 
         <!-- Resultado -->
-        <div id="result" class="hidden mt-5 game-result-card"></div>
+        <div id="result" class="hidden gs-final"></div>
 
         <!-- Acciones -->
         <div class="flex flex-wrap gap-2 mt-6 game-actions">
@@ -422,13 +401,12 @@ function renderResult(title, message){
   const medal = summary.medal;
   resultBox.classList.remove("hidden");
   resultBox.innerHTML = `
-    <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
-    <h3 class="game-result-title mt-3">${title}</h3>
-    <p class="game-result-message">${message}</p>
-    <div class="game-result-stats">
-      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
-      <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
+    <h3 class="gs-final-title">${title}</h3>
+    <p class="gs-final-msg">${message}</p>
+    <div class="gs-final-stats">
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
     </div>
   `;
 }

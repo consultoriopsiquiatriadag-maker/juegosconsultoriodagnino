@@ -37,42 +37,46 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 </head>
 
 <body class="bg-inst-light text-inst-navy antialiased gs-scope">
-  <main class="game-shell">
-    <!-- HERO -->
-    <section class="bg-inst-navy text-white">
-      <div class="max-w-5xl mx-auto px-6 py-12">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div class="max-w-2xl">
-            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-5">
-              <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span class="text-white/90 text-sm">Juego 5 · Atención e inhibición</span>
-            </div>
-            <h1 class="text-3xl md:text-5xl font-semibold tracking-wide mb-3">
-              COLORES Y ATENCIÓN
-            </h1>
-            <p class="text-white/85 text-lg leading-relaxed">
-              Elegí el <span class="font-semibold">color de la tinta</span> (no la palabra). Duración sugerida: 2 a 4 minutos.
-            </p>
-          </div>
 
-          <div class="flex gap-3">
-            <a href="juegos.html"
-              class="anim inline-flex items-center gap-2 bg-white text-inst-navy px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky">
-              ← Volver a juegos
-            </a>
-            <a href="index.html"
-              class="anim inline-flex items-center gap-2 bg-white/15 text-white px-5 py-3 rounded-lg font-semibold hover:bg-white/25">
-              Inicio
-            </a>
-          </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+      </div>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 5 · Colores y atención</div>
+      </div>
+    </div>
+    <div class="gs-header-actions">
+      <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
+    </div>
+  </header>
+
+  <main class="game-shell">
+
+    <!-- Pantalla de misión -->
+    <div id="introScreen5" class="gs-shell-wrap">
+      <div class="gs-intro game-fade-in">
+        <p class="gs-intro-eyebrow">Atención e inhibición · Juego 5</p>
+        <h1 class="gs-intro-title">Colores y atención</h1>
+        <p class="gs-intro-subtitle">Elegí el <strong style="color:#fff;">color de la tinta</strong>, no la palabra. Duración sugerida: 2 a 4 minutos.</p>
+        <p class="gs-intro-objective">Objetivo: responder según el color de la tinta, no la palabra</p>
+        <div class="gs-intro-brief"><strong>Cómo funciona:</strong> ignorá la palabra y tocá el botón con el color de su tinta. La interferencia entre palabra y color es normal: entrenar eso es exactamente el ejercicio.</div>
+        <div class="gs-intro-actions">
+          <button id="btnEmpezar5" class="gs-btn-start" type="button">Comenzar</button>
+          <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
         </div>
       </div>
-    </section>
+    </div>
 
+    <!-- Área de juego (oculta hasta inicio) -->
+    <div id="gameArea5" class="hidden game-fade-in">
     <!-- CONTENIDO -->
     <section class="max-w-5xl mx-auto px-6 py-10">
       <div class="grid lg:grid-cols-5 gap-6">
@@ -142,7 +146,7 @@
             Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
           </p>
 
-          <div id="result" class="hidden mt-6 game-result-card"></div>
+          <div id="result" class="hidden gs-final"></div>
         </div>
 
         <!-- Panel info -->
@@ -172,6 +176,7 @@
         </div>
       </div>
     </section>
+    </div><!-- /gameArea5 -->
   </main>
 
   <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
@@ -220,15 +225,14 @@
       const medal = summary.medal;
       resultBox.classList.remove("hidden");
       resultBox.innerHTML = `
-        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
-        <h3 class="game-result-title mt-3">Tiempo finalizado</h3>
-        <p class="game-result-message">${summary.message} Si querés, repetí 1 vez más.</p>
-        <div class="game-result-stats">
-          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
+        <h3 class="gs-final-title">Tiempo finalizado</h3>
+        <p class="gs-final-msg">${summary.message} Si querés, repetí 1 vez más.</p>
+        <div class="gs-final-stats">
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
         </div>
-        <div class="game-actions" style="justify-content:center;">
+        <div class="gs-final-actions">
           <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
           <a href="juegos.html" class="game-btn">Volver a juegos</a>
         </div>
@@ -346,6 +350,12 @@
     resetBtn.addEventListener("click", resetGame);
 
     resetGame();
+
+    // Transición intro → juego (FASE 1)
+    document.getElementById("btnEmpezar5").addEventListener("click", function(){
+      document.getElementById("introScreen5").classList.add("hidden");
+      document.getElementById("gameArea5").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>
