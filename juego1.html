@@ -5,45 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Juego 1 – Mnésico | Consultorio Dr. Dagnino</title>
 
-  <!-- Tailwind + tipografía -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#f8fafc',
-            'inst-gray': '#64748b'
-          },
-          fontFamily: {
-            'sans': ['Inter', 'system-ui', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
     html { scroll-behavior: smooth; }
-    .card-hover { transition: all .25s ease; }
-    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card-hover { transition: none !important; }
-      .card-hover:hover { transform: none !important; }
-    }
   </style>
 
-  <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
+  <!-- Sistema visual común para juegos legados -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
+<body class="gs-page gs-scope">
 
   <header class="gs-header">
     <div class="gs-header-brand">
@@ -80,7 +55,7 @@
       </div>
 
       <div id="gameArea" class="hidden game-fade-in">
-      <div class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm card-hover game-card game-main-panel">
+      <div class="gs-panel game-card game-main-panel">
 
         <!-- HUD en partida (FASE 2) -->
         <div class="gs-hud">
@@ -92,8 +67,7 @@
             <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
           </div>
 
-          <button id="finishEarly" type="button"
-            class="inline-flex justify-center text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light game-btn">
+          <button id="finishEarly" type="button" class="game-btn">
             Finalizar
           </button>
         </div>
@@ -104,43 +78,29 @@
         </div>
 
         <!-- Niveles (también sirve para cambiar de dificultad sin volver a la pantalla de inicio) -->
-        <div class="flex flex-wrap gap-2 mt-5 game-actions game-toolbar" aria-label="Niveles">
-          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white game-btn"
-                  data-level="easy" type="button">Fácil</button>
-          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light game-btn"
-                  data-level="medium" type="button">Medio</button>
-          <button class="levelBtn inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white game-btn"
-                  data-level="hard" type="button">Difícil</button>
+        <div class="game-actions game-toolbar" role="group" aria-label="Niveles">
+          <button class="levelBtn game-btn" data-level="easy" type="button">Fácil</button>
+          <button class="levelBtn game-btn is-active" data-level="medium" type="button">Medio</button>
+          <button class="levelBtn game-btn" data-level="hard" type="button">Difícil</button>
         </div>
 
         <!-- KPI -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-5">
-          <div class="font-semibold" id="kpi">Aciertos: 0 | Objetivo en curso</div>
-          <div class="text-inst-gray" id="hint">Buscá y tocá: <strong id="catStrong">—</strong></div>
+        <div class="gs-kpi-row">
+          <div class="gs-kpi-strong" id="kpi" aria-live="polite">Aciertos: 0 | Objetivo en curso</div>
+          <div class="gs-muted" id="hint">Buscá y tocá: <strong id="catStrong">—</strong></div>
         </div>
 
         <!-- Grid opciones -->
-        <div id="options" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6"></div>
+        <div id="options" class="gs-options-grid"></div>
 
         <!-- Resultado -->
-        <div id="result" class="hidden gs-final"></div>
+        <div id="result" class="hidden gs-final" role="status" aria-live="polite"></div>
 
         <!-- Acciones -->
-        <div class="flex flex-wrap gap-2 mt-6 game-actions">
-          <button id="restart" type="button"
-            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white game-btn">
-            Reiniciar
-          </button>
-
-          <a href="juego2.html"
-            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-inst-blue text-white hover:opacity-90 game-btn game-btn-primary">
-            Ir a Juego 2 →
-          </a>
-
-          <a href="index.html"
-            class="inline-flex text-sm font-semibold px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-inst-light game-btn">
-            Volver a la sala de espera
-          </a>
+        <div class="game-actions">
+          <button id="restart" type="button" class="game-btn">Reiniciar</button>
+          <a href="juego2.html" class="game-btn game-btn-primary" style="text-decoration:none;">Ir a Juego 2 →</a>
+          <a href="index.html" class="game-btn" style="text-decoration:none;">Volver a la sala de espera</a>
         </div>
 
         <p class="game-safety-note">
@@ -153,37 +113,27 @@
   </main>
 
   <!-- FOOTER (mobile-first homogéneo) -->
-  <footer class="bg-inst-navy text-white">
-    <div class="max-w-7xl mx-auto px-6 py-8">
-
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+  <footer class="gs-footer">
+    <div class="gs-footer-inner">
+      <div class="gs-footer-top">
         <div>
-          <p class="font-semibold">Dr. Dagnino</p>
-          <p class="text-white/80 text-sm">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
-
-          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
-            <a href="mailto:consultoriopsiquiatriadag@gmail.com" class="underline hover:text-white">
-              consultoriopsiquiatriadag@gmail.com
-            </a>
-            <a href="mailto:secretaria.dr.dagnino@gmail.com" class="underline hover:text-white">
-              secretaria.dr.dagnino@gmail.com
-            </a>
+          <p class="gs-footer-name">Dr. Dagnino</p>
+          <p class="gs-footer-sub">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
+          <div class="gs-footer-links">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
           </div>
         </div>
 
-        <div class="flex flex-wrap gap-3 text-sm text-white/80">
-          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener" class="underline hover:text-white">
-            Ubicación (Maps)
-          </a>
-          <a href="aviso-legal.html" class="underline hover:text-white">
-            Aviso legal / Privacidad
-          </a>
+        <div class="gs-footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9NDEo9" target="_blank" rel="noopener">Ubicación (Maps)</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
         </div>
       </div>
 
-      <div class="border-t border-white/10 mt-8 pt-4 text-center text-xs text-white/60">
+      <div class="gs-footer-bottom">
         Copyright © <span id="year"></span> Todos los derechos reservados ·
-        Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+        Desarrollado por <strong>PETER-SOFT</strong>
       </div>
     </div>
   </footer>
@@ -344,9 +294,8 @@ function setLevelUI(){
 
   document.querySelectorAll(".levelBtn:not(.levelBtnStart)").forEach(b=>{
     const isActive = b.dataset.level === levelKey;
-    // activo: bg-white + borde gris
-    b.classList.toggle("bg-white", isActive);
-    b.classList.toggle("bg-inst-light", !isActive);
+    b.classList.toggle("is-active", isActive);
+    b.setAttribute("aria-pressed", isActive ? "true" : "false");
   });
 }
 
@@ -394,8 +343,9 @@ function renderBoard(){
   optionsBox.innerHTML = "";
   const board = buildBoard();
   board.forEach(word=>{
-    const el = document.createElement("div");
-    el.className = "option rounded-xl border border-gray-100 bg-inst-light px-4 py-3 text-center font-semibold cursor-pointer hover:bg-white select-none";
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "option gs-option";
     el.textContent = word;
     el.addEventListener("click", ()=>selectWord(word, el));
     optionsBox.appendChild(el);
@@ -403,7 +353,7 @@ function renderBoard(){
 }
 
 function lockOptions(){
-  document.querySelectorAll(".option").forEach(o=>o.classList.add("pointer-events-none"));
+  document.querySelectorAll(".option").forEach(o=>o.classList.add("gs-locked"));
 }
 
 function renderResult(title, message){
@@ -434,7 +384,7 @@ async function finish(success){
     // El desbloqueo se hace únicamente al terminar (ended) el audio premio.
     if(!started){
       resultBox.innerHTML += `
-        <div class="text-inst-gray mt-3 leading-relaxed">
+        <div class="gs-muted" style="margin-top:12px; line-height:1.6;">
           Para recibir el premio simbólico, tocá <strong>“Activar sonido”</strong> y luego reiniciá o repetí el juego.
         </div>
       `;
@@ -453,18 +403,18 @@ function selectWord(word, el){
 
   if(correctInThisGame.has(word)){
     hits++;
-    el.classList.add("border-green-200","bg-green-50","text-green-800","game-feedback-ok");
+    el.classList.add("is-ok","game-feedback-ok");
     session.registerHit(2);
     [scorePill, streakPill].forEach(p=>{
       p.classList.add("is-up");
       setTimeout(()=>p.classList.remove("is-up"), 500);
     });
   }else{
-    el.classList.add("opacity-50","game-feedback-retry");
+    el.classList.add("is-off","game-feedback-retry");
     session.registerMiss(0);
   }
 
-  el.classList.add("pointer-events-none");
+  el.classList.add("gs-locked");
   updateKPI();
   updateGPChips();
 
