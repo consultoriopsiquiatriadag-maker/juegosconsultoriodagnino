@@ -113,6 +113,33 @@ a{ color:inherit; }
   margin:0 0 10px;
 }
 .riobamba-hero h1{ font-size:clamp(28px, 6vw, 44px); max-width:18ch; }
+.riobamba-hero-head{
+  display:grid;
+  gap:22px;
+  align-items:start;
+}
+.riobamba-hero-copy{ min-width:0; }
+.riobamba-hero-thumb{
+  width:min(180px, 48vw);
+  min-width:132px;
+  justify-self:start;
+  aspect-ratio:1/1;
+  cursor:pointer;
+  border:4px solid rgba(255,255,255,.86);
+  transform:rotate(-1deg);
+}
+.riobamba-hero-thumb:hover{
+  transform:rotate(0deg) translateY(-2px);
+}
+@media (min-width:760px){
+  .riobamba-hero-head{
+    grid-template-columns:minmax(0, 1fr) 190px;
+  }
+  .riobamba-hero-thumb{
+    justify-self:end;
+    width:180px;
+  }
+}
 .riobamba-subtitle{
   font-size:clamp(15px, 2.6vw, 18px);
   color:var(--riobamba-navy-soft);
@@ -232,6 +259,15 @@ a{ color:inherit; }
   transition:transform .25s ease;
 }
 .riobamba-photo:hover img{ transform:scale(1.04); }
+.riobamba-photo:not(.riobamba-img-missing) .riobamba-placeholder{
+  display:none;
+}
+.riobamba-photo.riobamba-img-missing img{
+  display:none;
+}
+.riobamba-photo.riobamba-img-missing .riobamba-placeholder{
+  display:flex;
+}
 
 /* Placeholder elegante cuando la imagen no existe */
 .riobamba-placeholder{
