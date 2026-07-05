@@ -6,18 +6,10 @@
   <title>Juego 17 · Secuencias lógicas — Sala de espera virtual</title>
   <meta name="description" content="Razonamiento: completá secuencias numéricas, de letras o patrones simples. Puntaje, racha y resultado copiable." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4" />
   <meta name="theme-color" content="#0e2239" />
 
   <style>
-    .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
-    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .brand .logo{ width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
-    .brand-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brand-sub{ opacity:.9; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .controls{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-
     .game-shell{ margin-top:16px; }
     .game-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
     .row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
@@ -153,24 +145,41 @@
 </head>
 
 <body class="gs-scope">
-  <header class="topbar" role="banner">
-    <div class="wrap topbar-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;"></div>
-        <div class="brand-text" style="min-width:0">
-          <div class="brand-title">Sala de espera virtual</div>
-          <div class="brand-sub">Juego 17 · Secuencias lógicas</div>
-        </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
       </div>
-      <div class="controls" role="group" aria-label="Controles">
-        <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
-        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
-        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
-        <span class="pill" id="pillMode" title="Configuración actual">—</span>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 17 · Secuencias lógicas</div>
       </div>
+    </div>
+    <div class="gs-header-actions">
+      <span class="game-chip" id="pillMode" title="Configuración actual">—</span>
+      <button id="btnAminus" class="gs-btn-back" type="button" aria-label="Reducir texto">A−</button>
+      <button id="btnAplus" class="gs-btn-back" type="button" aria-label="Aumentar texto">A+</button>
+      <a href="juegos.html" class="gs-btn-back" data-spa="0">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
     </div>
   </header>
 
+  <!-- Pantalla de misión (FASE 1) -->
+  <div id="introScreen17" class="gs-shell-wrap">
+    <div class="gs-intro game-fade-in">
+      <p class="gs-intro-eyebrow">Razonamiento lógico · Juego 17</p>
+      <h1 class="gs-intro-title">Secuencias lógicas</h1>
+      <p class="gs-intro-subtitle">Completá secuencias de números, letras o patrones simples eligiendo la opción que sigue.</p>
+      <p class="gs-intro-objective">Objetivo: descubrir el patrón y completar cada secuencia</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> se muestra una secuencia incompleta (ej: 2, 4, 6, ...) y varias opciones. Tocá la que continúa el patrón. Configurá dificultad, ítems y tiempo antes de iniciar.</div>
+      <div class="gs-intro-actions">
+        <button id="btnEmpezar17" class="gs-btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="gameArea17" class="hidden game-fade-in">
   <main class="wrap game-shell">
     <section class="section-card game-card game-main-panel">
       <div class="game-head">
@@ -287,6 +296,7 @@
 
     </section>
   </main>
+  </div><!-- /gameArea17 -->
 
   <script src="assets/js/gamification.js"></script>
 
@@ -667,9 +677,12 @@
       resMedal.className = `game-medal game-medal-${medal.id}`;
       resMedal.textContent = medal.name;
       resMedal.style.display = "inline-flex";
+      resStats.className = "gs-final-stats";
+      resStats.style.justifyContent = "flex-start";
       resStats.innerHTML = `
-        <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-        <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${Math.round(acc*100)}%</div></div>
       `;
 
       updateKPIs();
@@ -712,6 +725,12 @@
     disableChoices(true);
     updateKPIs();
     startSession();
+
+    // Transición intro → juego (FASE 1)
+    document.getElementById("btnEmpezar17").addEventListener("click", function(){
+      document.getElementById("introScreen17").classList.add("hidden");
+      document.getElementById("gameArea17").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>
