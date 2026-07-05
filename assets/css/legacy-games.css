@@ -648,6 +648,19 @@
   color: var(--gs-muted);
   font-weight: 600;
 }
+/* Feedback al puntuar: agregar/quitar .is-up via JS */
+.gs-hud-chip.is-up{
+  animation: gs-chip-up .45s ease;
+  border-color: var(--gs-blue);
+}
+@keyframes gs-chip-up{
+  0%{ transform: scale(1); }
+  40%{ transform: scale(1.12); background: var(--gs-sky, #e0f2fe); }
+  100%{ transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce){
+  .gs-hud-chip.is-up{ animation: none; }
+}
 
 /* ── Pantalla final (resultado) ─────────────────────────────── */
 .gs-final{
