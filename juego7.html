@@ -33,7 +33,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 </head>
 
 <body class="bg-inst-light text-inst-navy antialiased gs-scope">
@@ -90,12 +90,18 @@
         </div>
       </div>
 
-      <div class="mt-6 game-status-bar">
-        <div class="game-status-group">
-          <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-          <span class="game-chip" id="scorePill">Puntaje: 0</span>
-          <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+      <!-- HUD en partida (FASE 2) -->
+      <div class="gs-hud" style="margin-top:20px;">
+        <div class="gs-hud-chips">
+          <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+          <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
         </div>
+      </div>
+
+      <!-- Barra de tiempo restante -->
+      <div class="gs-progress-bar" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="progressBar">
+        <div class="gs-progress-fill" id="progressFill" style="width:100%"></div>
       </div>
 
       <div class="mt-4 grid md:grid-cols-2 gap-4">
@@ -216,10 +222,16 @@
 
     function rand(min, max){ return Math.floor(min + Math.random()*(max-min+1)); }
 
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+
     function updateUI(){
       timeEl.textContent = timeLeft;
       errorsEl.textContent = errors;
       missesEl.textContent = misses;
+      const pct = Math.max(0, Math.min(100, Math.round((timeLeft / TOTAL_TIME) * 100)));
+      progressFill.style.width = pct + "%";
+      progressBar.setAttribute("aria-valuenow", pct);
     }
 
     function clearTimers(){
@@ -368,8 +380,10 @@
         const rt = performance.now() - greenStartAt;
         greenTouched = true;
         session.registerHit(rt <= GREEN_WINDOW ? 2 : 1); // bonus por rapidez suave
-        streakPill.classList.add("is-up");
-        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        [scorePill, streakPill].forEach(p=>{
+          p.classList.add("is-up");
+          setTimeout(()=>p.classList.remove("is-up"), 500);
+        });
         updateGPChips();
         updateUI();
 

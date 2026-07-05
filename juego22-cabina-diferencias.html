@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -209,15 +209,21 @@
   <!-- GAME -->
   <div id="screen-game" class="screen">
     <div class="card game-card" style="padding:16px;">
-      <div class="status-bar game-status-bar">
-        <span class="found-badge" id="found-badge">Encontraste 0 de 5</span>
-        <span style="font-size:13px; color:var(--muted);" id="level-label">Nivel 1 · Embarque</span>
+      <!-- HUD en partida (FASE 2) -->
+      <div class="gs-hud">
+        <div class="gs-hud-chips">
+          <span class="found-badge" id="found-badge">Encontraste 0 de 5</span>
+          <span class="gs-hud-chip" id="level-label">Nivel 1 · Embarque</span>
+          <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+          <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+        </div>
         <button class="hint-btn" id="btn-hint" aria-label="Mostrar una pista">Pista</button>
       </div>
-      <div class="game-status-group" style="margin-bottom:14px;">
-        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-        <span class="game-chip" id="scorePill">Puntaje: 0</span>
-        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+
+      <!-- Barra de progreso de diferencias encontradas -->
+      <div class="gs-progress-bar" role="progressbar" aria-label="Diferencias encontradas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+        <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
       </div>
       <div class="cabins-wrapper">
         <div class="cabin-panel" id="panel-orig">
@@ -904,6 +910,12 @@
     return `<svg viewBox="${scene.viewBox}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${isModified ? 'Cabina modificada' : 'Cabina original'}">${svgStr}</svg>`;
   }
 
+  function updateDiffProgress() {
+    const pct = Math.min(100, Math.round((found.size / TOTAL_DIFFS) * 100));
+    $('progressFill').style.width = pct + '%';
+    $('progressBar').setAttribute('aria-valuenow', pct);
+  }
+
   function startGame() {
     found = new Set();
     hintUsed = 0;
@@ -912,6 +924,7 @@
     const scene = SCENES[currentLevel];
     $('level-label').textContent = scene.label;
     $('found-badge').textContent = `Encontraste 0 de ${TOTAL_DIFFS}`;
+    updateDiffProgress();
     $('msg-bar').className = 'msg-bar empty';
     $('msg-bar').textContent = '';
 
@@ -957,9 +970,12 @@
       if (otherSvg) markDiff(hit, otherPanel, otherSvg, otherSvg.getBoundingClientRect(), vb);
 
       $('found-badge').textContent = `Encontraste ${found.size} de ${TOTAL_DIFFS}`;
+      updateDiffProgress();
       session.registerHit(2);
-      $('streakPill').classList.add('is-up');
-      setTimeout(()=>$('streakPill').classList.remove('is-up'), 500);
+      ['scorePill','streakPill'].forEach(id=>{
+        $(id).classList.add('is-up');
+        setTimeout(()=>$(id).classList.remove('is-up'), 500);
+      });
       updateGPChips();
       showMsg(`Diferencia encontrada: ${hit.desc}.`, 'ok');
 

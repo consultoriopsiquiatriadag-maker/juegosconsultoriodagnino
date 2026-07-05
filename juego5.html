@@ -37,7 +37,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 </head>
 
 <body class="bg-inst-light text-inst-navy antialiased gs-scope">
@@ -83,25 +83,19 @@
         <!-- Panel de juego -->
         <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card game-main-panel">
           <span class="game-objective">Objetivo: responder según el color de la tinta, no la palabra</span>
-          <div class="flex flex-wrap items-center justify-between gap-3 mt-3 mb-5 game-status-bar">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-inst-navy/5">
-                <svg class="w-5 h-5 text-inst-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6l4 2" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </span>
-              <div>
-                <p class="text-sm text-inst-gray">Tiempo</p>
-                <p class="text-xl font-semibold"><span id="timeLeft">60</span>s</p>
-              </div>
+          <!-- HUD en partida (FASE 2) -->
+          <div class="gs-hud" style="margin-top:12px;">
+            <div class="gs-hud-chips">
+              <span class="gs-hud-chip"><span class="gs-hud-chip-label">Tiempo:</span> <span><span id="timeLeft">60</span>s</span></span>
+              <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+              <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+              <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
             </div>
+          </div>
 
-            <div class="game-status-group">
-              <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-              <span class="game-chip" id="scorePill">Puntaje: 0</span>
-              <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
-            </div>
+          <!-- Barra de tiempo restante -->
+          <div class="gs-progress-bar" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="progressBar">
+            <div class="gs-progress-fill" id="progressFill" style="width:100%"></div>
           </div>
 
           <div class="rounded-2xl border border-gray-200 bg-inst-light p-6 md:p-8">
@@ -260,8 +254,14 @@
       elFeedback.textContent = "Elegí el color de la tinta.";
     }
 
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+
     function updateUI(){
       elTime.textContent = state.timeLeft;
+      const pct = Math.max(0, Math.min(100, Math.round((state.timeLeft / 60) * 100)));
+      progressFill.style.width = pct + "%";
+      progressBar.setAttribute("aria-valuenow", pct);
       pauseBtn.disabled = !state.running;
       startBtn.disabled = state.running;
       pauseBtn.textContent = state.paused ? "Reanudar" : "Pausar";
@@ -330,8 +330,10 @@
       const ok = colorKey === state.correctColorKey;
       if (ok){
         session.registerHit(2);
-        streakPill.classList.add("is-up");
-        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        [scorePill, streakPill].forEach(p=>{
+          p.classList.add("is-up");
+          setTimeout(()=>p.classList.remove("is-up"), 500);
+        });
         elFeedback.textContent = "Bien.";
       } else {
         session.registerMiss(0);

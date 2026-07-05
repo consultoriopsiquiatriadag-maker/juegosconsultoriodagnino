@@ -6,7 +6,7 @@
   <title>Juego 11 · Dígitos directos / inversos — Sala de espera virtual</title>
   <meta name="description" content="Memoria de trabajo: repetí secuencias de dígitos en orden directo o inverso. Puntaje, racha y registro copiable." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3" />
   <meta name="theme-color" content="#0e2239" />
 
   <style>
@@ -202,10 +202,18 @@
         </div>
       </div>
 
-      <div class="game-status-group" style="margin-top:10px;">
-        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-        <span class="game-chip" id="scorePill">Puntaje: 0</span>
-        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+      <!-- HUD en partida (FASE 2) -->
+      <div class="gs-hud" style="margin-top:10px;">
+        <div class="gs-hud-chips">
+          <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+          <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+        </div>
+      </div>
+
+      <!-- Barra de progreso de ítems -->
+      <div class="gs-progress-bar" role="progressbar" aria-label="Progreso de ítems" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+        <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
       </div>
 
       <div class="kpiwrap" aria-label="Indicadores">
@@ -392,8 +400,10 @@
     }
 
     function pulseStreak(){
-      streakPill.classList.add("is-up");
-      setTimeout(()=> streakPill.classList.remove("is-up"), 500);
+      [scorePill, streakPill].forEach(p=>{
+        p.classList.add("is-up");
+        setTimeout(()=> p.classList.remove("is-up"), 500);
+      });
     }
 
     const speeds = { slow: 1000, normal: 750, fast: 550 };
@@ -563,7 +573,16 @@
 
     function wait(ms){ return new Promise(res=>setTimeout(res, ms)); }
 
+    const itemProgressBar = document.getElementById("progressBar");
+    const itemProgressFill = document.getElementById("progressFill");
+    function updateItemProgress(){
+      const pct = total ? Math.min(100, Math.round((idx / total) * 100)) : 0;
+      itemProgressFill.style.width = pct + "%";
+      itemProgressBar.setAttribute("aria-valuenow", pct);
+    }
+
     function nextItem(){
+      updateItemProgress();
       if(idx>=total){ endGame(); return; }
       // update KPIs
       kpiItem.textContent = `${idx+1} / ${total}`;

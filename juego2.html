@@ -8,7 +8,7 @@
 <!-- Tailwind + Inter -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+<link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 
 <script>
 tailwind.config = {
@@ -75,17 +75,21 @@ tailwind.config = {
 
   <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm game-card game-main-panel">
 
-    <!-- STATUS -->
-    <div class="flex flex-wrap gap-2 mb-3 game-status-bar">
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="catLabel">Categoría: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="letterLabel">Letra: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="timeLabel">Tiempo: —</span>
+    <!-- HUD en partida (FASE 2) -->
+    <div class="gs-hud">
+      <div class="gs-hud-chips">
+        <span class="gs-hud-chip" id="catLabel">Categoría: —</span>
+        <span class="gs-hud-chip" id="letterLabel">Letra: —</span>
+        <span class="gs-hud-chip" id="timeLabel">Tiempo: —</span>
+        <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+        <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+        <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+      </div>
     </div>
 
-    <div class="game-status-group" style="margin-bottom:14px;">
-      <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-      <span class="game-chip" id="scorePill">Puntaje: 0</span>
-      <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+    <!-- Barra de tiempo restante -->
+    <div class="gs-progress-bar" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="progressBar">
+      <div class="gs-progress-fill" id="progressFill" style="width:100%"></div>
     </div>
 
     <!-- CONTROLES -->
@@ -172,9 +176,11 @@ tailwind.config = {
   }
 
   function pulseStreak(){
-    const pill = document.getElementById("streakPill");
-    pill.classList.add("is-up");
-    setTimeout(()=> pill.classList.remove("is-up"), 500);
+    ["scorePill","streakPill"].forEach(id=>{
+      const pill = document.getElementById(id);
+      pill.classList.add("is-up");
+      setTimeout(()=> pill.classList.remove("is-up"), 500);
+    });
   }
 
   // ========= Progreso =========
@@ -232,12 +238,21 @@ tailwind.config = {
     return `${m}:${String(s).padStart(2,"0")}`;
   }
 
+  const progressBar = document.getElementById("progressBar");
+  const progressFill = document.getElementById("progressFill");
+
   function renderTime(){
     if(!timedToggle.checked){
       timeLabel.textContent = "Tiempo: sin límite";
+      progressBar.style.display = "none";
       return;
     }
+    progressBar.style.display = "";
     timeLabel.textContent = "Tiempo: " + fmt(remaining);
+    const total = parseInt(durationSel.value, 10) || 1;
+    const pct = Math.max(0, Math.min(100, Math.round((remaining / total) * 100)));
+    progressFill.style.width = pct + "%";
+    progressBar.setAttribute("aria-valuenow", pct);
   }
 
   function stopTimer(){

@@ -41,7 +41,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 </head>
 
 <body class="bg-inst-light text-inst-navy antialiased gs-scope">
@@ -87,35 +87,21 @@
         <!-- Panel de juego -->
         <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card game-main-panel">
           <span class="game-objective">Objetivo: encontrar el símbolo objetivo lo más rápido posible</span>
-          <div class="flex flex-wrap items-center justify-between gap-3 mt-3 mb-5 game-status-bar">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-inst-navy/5">
-                <svg class="w-5 h-5 text-inst-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-              </span>
-              <div>
-                <p class="text-sm text-inst-gray">Nivel</p>
-                <p class="text-xl font-semibold"><span id="level">1</span></p>
-              </div>
+          <!-- HUD en partida (FASE 2) -->
+          <div class="gs-hud" style="margin-top:12px;">
+            <div class="gs-hud-chips">
+              <span class="gs-hud-chip"><span class="gs-hud-chip-label">Nivel:</span> <span id="level">1</span></span>
+              <span class="gs-hud-chip"><span class="gs-hud-chip-label">Aciertos:</span> <span id="hits">0</span></span>
+              <span class="gs-hud-chip"><span class="gs-hud-chip-label">Tiempo:</span> <span><span id="elapsed">0</span>s</span></span>
+              <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+              <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+              <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
             </div>
+          </div>
 
-            <div class="flex items-center gap-4">
-              <div class="text-right">
-                <p class="text-sm text-inst-gray">Aciertos</p>
-                <p class="text-xl font-semibold"><span id="hits">0</span></p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm text-inst-gray">Tiempo</p>
-                <p class="text-xl font-semibold"><span id="elapsed">0</span>s</p>
-              </div>
-            </div>
-
-            <div class="game-status-group">
-              <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-              <span class="game-chip" id="scorePill">Puntaje: 0</span>
-              <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
-            </div>
+          <!-- Barra de progreso hacia el próximo nivel -->
+          <div class="gs-progress-bar" role="progressbar" aria-label="Progreso hacia el próximo nivel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+            <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
           </div>
 
           <div class="rounded-2xl border border-gray-200 bg-inst-light p-5 md:p-6">
@@ -220,11 +206,17 @@
       streakPill.textContent = "Racha: " + s.streak;
     }
 
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+
     function updateUI(){
       levelEl.textContent = state.level;
       hitsEl.textContent = state.hits;
       const t = state.running ? Math.floor((Date.now()-state.startTime)/1000) : 0;
       elapsedEl.textContent = t;
+      const pct = Math.round(((state.hits % 3) / 3) * 100);
+      progressFill.style.width = pct + "%";
+      progressBar.setAttribute("aria-valuenow", pct);
     }
 
     function tick(){
@@ -273,8 +265,10 @@
       if(idx === state.targetIndex){
         state.hits += 1;
         session.registerHit(2);
-        streakPill.classList.add("is-up");
-        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        [scorePill, streakPill].forEach(p=>{
+          p.classList.add("is-up");
+          setTimeout(()=>p.classList.remove("is-up"), 500);
+        });
         // sube nivel cada 3 aciertos
         if(state.hits % 3 === 0){
           state.level += 1;

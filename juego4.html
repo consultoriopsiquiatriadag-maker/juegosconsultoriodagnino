@@ -56,7 +56,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 </head>
 
 <body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
@@ -200,21 +200,20 @@
 
       <!-- Tablero -->
       <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-board-primary">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 game-status-bar">
-          <div>
-            <p class="text-sm text-inst-gray">Estado</p>
-            <p class="text-lg font-semibold" id="stateText">Listo</p>
+        <!-- HUD en partida (FASE 2) -->
+        <div class="gs-hud">
+          <div class="gs-hud-chips">
+            <span class="gs-hud-chip"><span class="gs-hud-chip-label">Estado:</span> <span id="stateText">Listo</span></span>
+            <span class="gs-hud-chip"><span class="gs-hud-chip-label">Objetivo:</span> <span id="goalText">Encontrá todos los pares.</span></span>
+            <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+            <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
           </div>
+        </div>
 
-          <div class="game-status-group">
-            <span class="game-chip">
-              <span class="text-inst-gray">Objetivo:</span>
-              <span id="goalText">Encontrá todos los pares.</span>
-            </span>
-            <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-            <span class="game-chip" id="scorePill">Puntaje: 0</span>
-            <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
-          </div>
+        <!-- Barra de progreso de pares encontrados -->
+        <div class="gs-progress-bar" role="progressbar" aria-label="Pares encontrados" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+          <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
         </div>
 
         <div id="grid" class="grid gap-3 sm:gap-4"></div>
@@ -342,6 +341,15 @@
       gpLevelPill.textContent = s.level.name;
       scorePill.textContent = "Puntaje: " + s.score;
       streakPill.textContent = "Racha: " + s.streak;
+    }
+
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+    function updateProgress(){
+      const target = (DIFF[elDifficulty.value] || 8);
+      const pct = Math.min(100, Math.round((matches / target) * 100));
+      progressFill.style.width = pct + "%";
+      progressBar.setAttribute("aria-valuenow", pct);
     }
 
     // ======= AUDIO STATE =======
@@ -670,9 +678,12 @@
 
         chime("match");
         session.registerHit(2);
-        streakPill.classList.add("is-up");
-        setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+        [scorePill, streakPill].forEach(p=>{
+          p.classList.add("is-up");
+          setTimeout(()=>p.classList.remove("is-up"), 500);
+        });
         updateGPChips();
+        updateProgress();
 
         first = null; second = null;
 
@@ -779,6 +790,7 @@
       resultBox.classList.add("hidden");
       resultBox.innerHTML = "";
       updateGPChips();
+      updateProgress();
     }
 
     // ======= UI EVENTS =======

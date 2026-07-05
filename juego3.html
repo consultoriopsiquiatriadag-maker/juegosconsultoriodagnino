@@ -36,7 +36,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
 </head>
 
 <body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
@@ -143,24 +143,19 @@
 
       <!-- Juego -->
       <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-board-primary">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 game-status-bar">
-          <div>
-            <p class="text-sm text-inst-gray">Estado</p>
-            <p class="text-lg font-semibold" id="state">Listo</p>
+        <!-- HUD en partida (FASE 2) -->
+        <div class="gs-hud">
+          <div class="gs-hud-chips">
+            <span class="gs-hud-chip" id="statePill"><span class="gs-hud-chip-label">Estado:</span> <span id="state">Listo</span></span>
+            <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+            <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
           </div>
+        </div>
 
-          <div class="game-status-group">
-            <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-            <span class="game-chip" id="scorePill">Puntaje: 0</span>
-            <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
-          </div>
-
-          <div class="w-full sm:w-72">
-            <div class="h-2 rounded-full bg-inst-light border border-gray-100 overflow-hidden">
-              <div id="bar" class="h-full bg-inst-blue" style="width:0%"></div>
-            </div>
-            <p class="text-xs text-inst-gray mt-2">Progreso de la ronda</p>
-          </div>
+        <!-- Barra de progreso de la ronda -->
+        <div class="gs-progress-bar" role="progressbar" aria-label="Progreso de la ronda" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+          <div class="gs-progress-fill" id="bar" style="width:0%"></div>
         </div>
 
         <div class="rounded-2xl border border-gray-100 bg-inst-light p-6 md:p-8 text-center">
@@ -369,6 +364,7 @@
         elIdx.textContent = String(Math.min(i, items.length));
         const pct = items.length ? (i / items.length) * 100 : 0;
         elBar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+        document.getElementById("progressBar").setAttribute("aria-valuenow", Math.round(pct));
       }
 
       function showItem(){
@@ -433,8 +429,10 @@
         if(ok){
           hits++;
           session.registerHit(2);
-          streakPill.classList.add("is-up");
-          setTimeout(()=>streakPill.classList.remove("is-up"), 500);
+          [scorePill, streakPill].forEach(p=>{
+            p.classList.add("is-up");
+            setTimeout(()=>p.classList.remove("is-up"), 500);
+          });
         } else {
           miss++;
           session.registerMiss(0);
