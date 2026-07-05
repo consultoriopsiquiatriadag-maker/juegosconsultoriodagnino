@@ -5,36 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Juego 2 — Categorías | Consultorio Dr. Dagnino</title>
 
-<!-- Tailwind + Inter -->
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
-
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        'inst-navy': '#0f1e33',
-        'inst-blue': '#2563eb',
-        'inst-light':'#f8fafc',
-        'inst-gray': '#64748b'
-      },
-      fontFamily:{ 'sans':['Inter','system-ui','sans-serif'] }
-    }
-  }
-}
-</script>
-
-<style>
-  .card-hover{transition:.25s ease}
-  .card-hover:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(15,30,51,.12)}
-  .pill{display:inline-flex;align-items:center;gap:.4rem}
-  .muted{opacity:.8}
-</style>
+<link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light text-inst-navy font-sans antialiased gs-scope">
+<body class="gs-page gs-scope">
 
 <header class="gs-header">
   <div class="gs-header-brand">
@@ -73,7 +51,7 @@ tailwind.config = {
   <div id="gameArea2" class="hidden game-fade-in">
   <div class="gs-shell-wrap">
 
-  <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm game-card game-main-panel">
+  <div class="gs-panel game-card game-main-panel">
 
     <!-- HUD en partida (FASE 2) -->
     <div class="gs-hud">
@@ -93,49 +71,49 @@ tailwind.config = {
     </div>
 
     <!-- CONTROLES -->
-    <div class="flex flex-wrap gap-2 mb-5 game-actions game-toolbar" style="margin-top:0;">
-      <button id="newRoundBtn" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold game-btn">Nueva ronda</button>
-      <button id="startBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Iniciar</button>
-      <button id="pauseBtn" disabled class="px-4 py-2 rounded-lg border bg-inst-light text-sm font-semibold game-btn">Pausar</button>
+    <div class="game-actions game-toolbar" style="margin-top:0; margin-bottom:20px;">
+      <button id="newRoundBtn" class="game-btn">Nueva ronda</button>
+      <button id="startBtn" class="game-btn game-btn-primary">Iniciar</button>
+      <button id="pauseBtn" disabled class="game-btn">Pausar</button>
     </div>
 
     <!-- LISTA -->
-    <div class="border rounded-xl p-4 bg-inst-light mb-4">
-      <h3 class="font-semibold mb-3">Tu lista</h3>
+    <div class="gs-box" style="margin-bottom:16px;">
+      <h3 style="font-weight:600; margin:0 0 12px;">Tu lista</h3>
 
-      <div class="flex gap-2 mb-2">
-        <input id="wordInput" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej.: Manzana / Madrid…" />
-        <button id="addBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Agregar</button>
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <input id="wordInput" class="gs-input" style="flex:1;" placeholder="Ej.: Manzana / Madrid…" />
+        <button id="addBtn" class="game-btn game-btn-primary">Agregar</button>
       </div>
 
-      <div id="warnBox" class="hidden mb-2 text-sm font-semibold text-amber-700 bg-amber-100 border border-amber-200 rounded-lg p-2"></div>
+      <div id="warnBox" class="hidden gs-warn" style="margin-bottom:8px;" role="alert"></div>
 
-      <div id="list" class="space-y-2"></div>
+      <div id="list" style="display:flex; flex-direction:column; gap:8px;"></div>
 
-      <div class="flex justify-between items-center mt-4">
-        <span class="text-sm text-inst-gray"><strong id="countLabel">0</strong> ítems</span>
-        <div class="flex gap-2">
-          <button id="clearBtn" class="px-3 py-2 rounded-lg border text-sm font-semibold game-btn">Borrar lista</button>
-          <button id="finishBtn" class="px-3 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Finalizar</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:8px;">
+        <span class="gs-muted" style="font-size:14px;"><strong id="countLabel">0</strong> ítems</span>
+        <div style="display:flex; gap:8px;">
+          <button id="clearBtn" class="game-btn">Borrar lista</button>
+          <button id="finishBtn" class="game-btn game-btn-primary">Finalizar</button>
         </div>
       </div>
 
-      <div id="doneBox" class="hidden mt-4"></div>
+      <div id="doneBox" class="hidden" style="margin-top:16px;"></div>
     </div>
 
     <!-- OPCIONES COMPACTAS (no requiere scroll por panel separado) -->
-    <div class="flex flex-wrap items-center gap-3 border rounded-xl p-3 bg-inst-light text-sm mb-4">
-      <label class="flex items-center gap-2 font-medium cursor-pointer">
+    <div class="gs-box" style="display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:12px; font-size:14px; margin-bottom:16px;">
+      <label style="display:flex; align-items:center; gap:8px; font-weight:500; cursor:pointer;">
         <input id="timedToggle" type="checkbox" checked>
         Con tiempo:
       </label>
-      <select id="durationSel" class="px-3 py-2 border rounded-lg bg-white">
+      <select id="durationSel" class="gs-select">
         <option value="60">1 minuto</option>
         <option value="120" selected>2 minutos</option>
         <option value="180">3 minutos</option>
         <option value="300">5 minutos</option>
       </select>
-      <span class="text-inst-gray text-xs">No se evalúa correcto/incorrecto — se entrena fluidez.</span>
+      <span class="gs-muted" style="font-size:12px;">No se evalúa correcto/incorrecto — se entrena fluidez.</span>
     </div>
 
     <p class="game-safety-note">
@@ -149,10 +127,10 @@ tailwind.config = {
 </main>
 
 <!-- FOOTER -->
-<footer class="bg-inst-navy text-white">
-  <div class="max-w-7xl mx-auto px-6 py-6 text-center text-xs">
+<footer class="gs-footer">
+  <div class="gs-footer-inner" style="padding:24px; text-align:center; font-size:12px;">
     © <span id="year"></span> Dr. Dagnino · Desarrollado por <strong>PETER-SOFT</strong> ·
-    <a href="aviso-legal.html" class="underline">Aviso legal</a>
+    <a href="aviso-legal.html" style="color:rgba(255,255,255,.8); text-decoration:underline;">Aviso legal</a>
   </div>
 </footer>
 
@@ -341,10 +319,10 @@ tailwind.config = {
     list.innerHTML = "";
     items.forEach((w, idx)=>{
       const row = document.createElement("div");
-      row.className = "flex items-center justify-between gap-2 bg-white border border-gray-100 rounded-lg px-3 py-2";
+      row.className = "gs-row";
       row.innerHTML = `
-        <span class="font-semibold text-sm">${w}</span>
-        <button class="text-xs font-semibold px-2 py-1 rounded-md border bg-inst-light hover:bg-white">Quitar</button>
+        <span style="font-weight:600; font-size:14px;">${w}</span>
+        <button class="game-btn" style="min-height:32px; padding:4px 12px; font-size:12px;">Quitar</button>
       `;
       row.querySelector("button").addEventListener("click", ()=>{
         items.splice(idx,1);

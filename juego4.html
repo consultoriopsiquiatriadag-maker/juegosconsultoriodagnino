@@ -5,38 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juego 4 · Memory Aeronáutico | Consultorio de Psiquiatría Dagnino</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#f8fafc',
-            'inst-gray': '#64748b'
-          },
-          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
 
   <style>
     html { scroll-behavior: smooth; }
-    .card-hover { transition: all .25s ease; }
-    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(26, 54, 93, 0.12); }
     .no-select { user-select: none; }
 
-    /* Flip */
-    .flip { perspective: 1200px; }
+    /* Overlay de inicio */
+    .j4-overlay{
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(15,30,51,.9); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; padding: 0 24px;
+    }
+    .j4-overlay-card{
+      width: 100%; max-width: 560px; background: #fff;
+      border: 1px solid rgba(15,23,42,.08); border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(2,6,23,.3);
+      padding: clamp(24px, 5vw, 32px); text-align: center;
+    }
+    .j4-overlay-head{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px; }
+    .j4-overlay-logo{
+      width:44px; height:44px; border-radius:12px; background:#0f1e33;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .j4-countnum{
+      margin: 0 auto 16px; width: 112px; height: 112px; border-radius: 18px;
+      background: #f8fafc; border: 1px solid rgba(15,23,42,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; font-weight: 600;
+    }
+    .j4-overlay-btns{ display:flex; flex-direction:column; gap:12px; justify-content:center; }
+    @media (min-width:640px){ .j4-overlay-btns{ flex-direction:row; } }
+
+    /* Flip cards */
+    .flip { perspective: 1200px; position: relative; width: 100%; aspect-ratio: 1/1;
+      border-radius: 16px; border: 1px solid rgba(15,23,42,.08); background: rgba(248,250,252,.4);
+      cursor: pointer; padding: 0; font-family: inherit; }
+    .flip:hover{ background: #f8fafc; }
+    .flip:focus-visible{ outline: none; box-shadow: var(--gs-focus, 0 0 0 4px rgba(59,130,246,.2)); }
     .flip-inner { transform-style: preserve-3d; transition: transform .22s ease; }
     .flipped .flip-inner { transform: rotateY(180deg); }
-    .face { backface-visibility: hidden; }
-    .front { transform: rotateY(180deg); }
+    .face { backface-visibility: hidden; position: absolute; inset: 0; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center; }
+    .face.back{ background: #0f1e33; color: #fff; border: 1px solid rgba(255,255,255,.1); }
+    .face.front{ background: #fff; border: 1px solid rgba(15,23,42,.08); transform: rotateY(180deg); }
+    .flip.is-matched{ box-shadow: 0 0 0 2px rgba(52,211,153,.6); }
+    .j4-sym{
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 12px; background: #e0f2fe; color: #0f1e33;
+      font-weight: 600; padding: 8px 12px; font-size: 14px;
+    }
 
     @keyframes shake {
       0% { transform: translateX(0); }
@@ -48,55 +69,49 @@
     .shake { animation: shake .22s ease; }
 
     @media (prefers-reduced-motion: reduce){
-      .card-hover { transition: none; }
-      .card-hover:hover { transform: none; box-shadow: none; }
       .flip-inner { transition: none; }
       .shake { animation: none; }
     }
   </style>
 
-  <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
+  <!-- Sistema visual común para juegos legados -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
+<body class="gs-page gs-scope">
 
   <!-- OVERLAY INICIO / COUNTDOWN -->
-  <div id="overlay" class="fixed inset-0 z-[9999] bg-inst-navy/90 backdrop-blur-sm flex items-center justify-center px-6">
-    <div class="w-full max-w-xl bg-white rounded-2xl border border-gray-100 shadow-lg p-6 md:p-8 text-center">
-      <div class="flex items-center justify-center gap-3 mb-3">
-        <div class="w-11 h-11 rounded-xl bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
-          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
+  <div id="overlay" class="j4-overlay">
+    <div class="j4-overlay-card">
+      <div class="j4-overlay-head">
+        <div class="j4-overlay-logo" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:28px;height:28px;object-fit:contain;">
         </div>
-        <div class="text-left">
-          <p class="text-sm text-inst-gray font-medium">Consultorio Dr. Dagnino</p>
-          <p class="text-xs text-inst-gray/70">Juego 4 · Memory Aeronáutico</p>
+        <div style="text-align:left;">
+          <p class="gs-muted" style="font-size:14px; font-weight:500; margin:0;">Consultorio Dr. Dagnino</p>
+          <p class="gs-muted" style="font-size:12px; opacity:.7; margin:0;">Juego 4 · Memory Aeronáutico</p>
         </div>
       </div>
 
       <p class="game-category" style="justify-content:center;">Memoria visual · Aeronáutico</p>
-      <h2 class="text-2xl md:text-3xl font-light mb-2">Listo para empezar</h2>
+      <h2 style="font-size:clamp(24px,4vw,30px); font-weight:300; margin:0 0 8px;">Listo para empezar</h2>
       <span class="game-objective">Objetivo: encontrar todos los pares en el menor tiempo posible</span>
-      <p class="text-inst-gray text-sm leading-relaxed mb-6">
+      <p class="gs-muted" style="font-size:14px; line-height:1.6; margin:0 0 24px;">
         Al iniciar, verás una cuenta regresiva 3–2–1 y sonará “abrochar cinturones”.
         Luego comienza el Memory.
       </p>
 
       <div id="countdownBox" class="hidden">
-        <div class="mx-auto w-28 h-28 rounded-2xl bg-inst-light border border-gray-100 flex items-center justify-center text-5xl font-semibold mb-4" id="countdownNum">3</div>
-        <p class="text-inst-gray text-sm" id="countdownHint">Preparando…</p>
+        <div class="j4-countnum" id="countdownNum">3</div>
+        <p class="gs-muted" style="font-size:14px;" id="countdownHint">Preparando…</p>
       </div>
 
-      <div id="overlayBtns" class="flex flex-col sm:flex-row gap-3 justify-center">
-        <button id="overlayStart" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-inst-blue text-white font-semibold hover:opacity-95">
-          Iniciar
-        </button>
-        <button id="overlayNoSound" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold hover:bg-inst-light">
-          Iniciar sin sonido
-        </button>
+      <div id="overlayBtns" class="j4-overlay-btns">
+        <button id="overlayStart" class="game-btn game-btn-primary">Iniciar</button>
+        <button id="overlayNoSound" class="game-btn">Iniciar sin sonido</button>
       </div>
 
-      <p class="text-xs text-inst-gray mt-5">
+      <p class="gs-muted" style="font-size:12px; margin-top:20px;">
         Nota: algunos navegadores requieren una acción del usuario para reproducir audio.
       </p>
     </div>
@@ -121,72 +136,56 @@
   <main>
   <div class="gs-shell-wrap game-shell">
 
-    <div class="grid lg:grid-cols-12 gap-5">
+    <div class="gs-layout gs-layout-4-8">
 
       <!-- Panel -->
-      <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-main-panel game-panel-secondary">
-        <h2 class="text-xl font-semibold mb-2">Panel</h2>
+      <section class="gs-panel game-card game-main-panel game-panel-secondary">
+        <h2 class="gs-h2">Panel</h2>
         <span class="game-objective">Objetivo: encontrar todos los pares en el menor tiempo posible</span>
-        <p class="text-inst-gray text-sm leading-relaxed mb-5">
+        <p class="gs-muted" style="font-size:14px; line-height:1.6; margin:8px 0 20px;">
           Elegí dificultad y empezá. Guardamos tu mejor marca en este dispositivo.
         </p>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
-            <p class="text-xs text-inst-gray">Tiempo</p>
-            <p class="text-2xl font-semibold mt-1" id="time">00:00</p>
+        <div class="gs-stat-grid">
+          <div class="gs-stat-card">
+            <p class="gs-stat-label">Tiempo</p>
+            <p class="gs-stat-value" id="time">00:00</p>
           </div>
-          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
-            <p class="text-xs text-inst-gray">Movimientos</p>
-            <p class="text-2xl font-semibold mt-1" id="moves">0</p>
+          <div class="gs-stat-card">
+            <p class="gs-stat-label">Movimientos</p>
+            <p class="gs-stat-value" id="moves">0</p>
           </div>
-          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
-            <p class="text-xs text-inst-gray">Aciertos</p>
-            <p class="text-2xl font-semibold mt-1" id="matches">0</p>
+          <div class="gs-stat-card">
+            <p class="gs-stat-label">Aciertos</p>
+            <p class="gs-stat-value" id="matches">0</p>
           </div>
-          <div class="rounded-xl border border-gray-100 bg-inst-light p-4">
-            <p class="text-xs text-inst-gray">Mejor marca</p>
-            <p class="text-base font-semibold mt-2" id="best">—</p>
+          <div class="gs-stat-card">
+            <p class="gs-stat-label">Mejor marca</p>
+            <p style="font-size:15px; font-weight:600; margin:8px 0 0;" id="best">—</p>
           </div>
         </div>
 
-        <div class="mt-5 space-y-3 game-actions game-toolbar" style="flex-direction:column;">
-          <label class="block">
-            <span class="text-sm text-inst-gray font-medium">Dificultad</span>
-            <select id="difficulty"
-              class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-inst-blue/30">
+        <div class="game-actions game-toolbar" style="flex-direction:column; margin-top:20px;">
+          <label style="display:block; width:100%;">
+            <span class="gs-field-label">Dificultad</span>
+            <select id="difficulty" class="gs-select gs-select-block">
               <option value="easy">Fácil (6 pares)</option>
               <option value="medium" selected>Media (8 pares)</option>
               <option value="hard">Difícil (12 pares)</option>
             </select>
           </label>
 
-          <button id="newGame"
-            class="w-full rounded-xl bg-inst-blue text-white font-semibold py-2.5 hover:opacity-95 game-btn game-btn-primary">
+          <button id="newGame" class="game-btn game-btn-primary gs-btn-block">
             Nueva partida (con cuenta regresiva)
           </button>
-
-          <button id="reveal"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn">
-            Vista previa (3 s)
-          </button>
-
-          <button id="audioToggle"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
-            aria-pressed="true">
-            Sonido: Activado
-          </button>
-
-          <button id="voiceToggle"
-            class="w-full rounded-xl bg-white border border-gray-200 text-inst-navy font-semibold py-2.5 hover:bg-inst-light game-btn"
-            aria-pressed="true">
-            Voz: Activada (3–2–1)
-          </button>
+          <button id="reveal" class="game-btn gs-btn-block">Vista previa (3 s)</button>
+          <button id="audioToggle" class="game-btn gs-btn-block" aria-pressed="true">Sonido: Activado</button>
+          <button id="voiceToggle" class="game-btn gs-btn-block" aria-pressed="true">Voz: Activada (3–2–1)</button>
         </div>
 
-        <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-5">
-          <h3 class="font-semibold mb-2">Sugerencias</h3>
-          <ul class="list-disc pl-5 text-inst-gray text-sm space-y-1.5">
+        <div class="gs-box" style="background:#fff; margin-top:24px;">
+          <h3 style="font-weight:600; margin:0 0 8px;">Sugerencias</h3>
+          <ul class="gs-list" style="font-size:14px;">
             <li>Hacé el juego en un momento de calma.</li>
             <li>Si te frustrás, pausá: el objetivo es entrenar, no “rendir”.</li>
             <li>Podés repetir 2–3 veces por semana.</li>
@@ -199,7 +198,7 @@
       </section>
 
       <!-- Tablero -->
-      <section class="lg:col-span-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-board-primary">
+      <section class="gs-panel game-card game-board-primary">
         <!-- HUD en partida (FASE 2) -->
         <div class="gs-hud">
           <div class="gs-hud-chips">
@@ -216,14 +215,14 @@
           <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
         </div>
 
-        <div id="grid" class="grid gap-3 sm:gap-4"></div>
+        <div id="grid" style="display:grid; gap:14px;"></div>
 
-        <div class="mt-6 text-sm text-inst-gray">
-          Tip: podés jugar con teclado (<span class="font-semibold">Tab</span> para navegar y
-          <span class="font-semibold">Enter</span>/<span class="font-semibold">Espacio</span> para voltear).
+        <div class="gs-muted" style="font-size:14px; margin-top:24px;">
+          Tip: podés jugar con teclado (<strong>Tab</strong> para navegar y
+          <strong>Enter</strong>/<strong>Espacio</strong> para voltear).
         </div>
 
-        <div id="result" class="hidden mt-6 game-result-card"></div>
+        <div id="result" class="hidden game-result-card" style="margin-top:24px;" role="status" aria-live="polite"></div>
       </section>
     </div>
 
@@ -231,28 +230,26 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-inst-navy text-white">
-    <div class="max-w-7xl mx-auto px-6 py-8">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+  <footer class="gs-footer">
+    <div class="gs-footer-inner">
+      <div class="gs-footer-top">
         <div>
-          <p class="font-semibold">Dr. Dagnino</p>
-          <p class="text-white/80 text-sm">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
-
-          <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
-            <a href="mailto:consultoriopsiquiatriadag@gmail.com" class="underline hover:text-white">consultoriopsiquiatriadag@gmail.com</a>
-            <a href="mailto:secretaria.dr.dagnino@gmail.com" class="underline hover:text-white">secretaria.dr.dagnino@gmail.com</a>
+          <p class="gs-footer-name">Dr. Dagnino</p>
+          <p class="gs-footer-sub">Consultorio de Psiquiatría y Medicina Aeronáutica</p>
+          <div class="gs-footer-links">
+            <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a>
+            <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
           </div>
         </div>
-
-        <div class="flex flex-wrap gap-3 text-sm text-white/80">
-          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9bNDEo9" target="_blank" rel="noopener" class="underline hover:text-white">Ubicación (Maps)</a>
-          <a href="aviso-legal.html" class="underline hover:text-white">Aviso legal / Privacidad</a>
+        <div class="gs-footer-links">
+          <a href="https://maps.app.goo.gl/gDvHrjLcJUw9bNDEo9" target="_blank" rel="noopener">Ubicación (Maps)</a>
+          <a href="aviso-legal.html">Aviso legal / Privacidad</a>
         </div>
       </div>
 
-      <div class="border-t border-white/10 mt-8 pt-4 text-center text-xs text-white/60">
+      <div class="gs-footer-bottom">
         Copyright © <span id="year"></span> Todos los derechos reservados ·
-        Desarrollado por <span class="font-semibold">PETER-SOFT</span>
+        Desarrollado por <strong>PETER-SOFT</strong>
       </div>
     </div>
   </footer>
@@ -565,26 +562,24 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.dataset.id = card.id;
-        btn.className = "flip no-select relative w-full aspect-square rounded-2xl border border-gray-100 bg-inst-light/40 hover:bg-inst-light focus:outline-none focus:ring-2 focus:ring-inst-blue/30";
+        btn.className = "flip no-select";
         btn.setAttribute("aria-pressed","false");
         btn.setAttribute("aria-label", `Tarjeta ${i+1}`);
 
         btn.innerHTML = `
-          <div class="flip-inner absolute inset-0">
-            <div class="face back absolute inset-0 rounded-2xl bg-inst-navy text-white border border-white/10 flex items-center justify-center">
-              <div class="text-center px-3">
-                <div class="text-sm font-semibold tracking-wide">AERO · MEMORY</div>
-                <div class="text-white/70 text-xs mt-1">VOLTEAR</div>
+          <div class="flip-inner" style="position:absolute; inset:0;">
+            <div class="face back">
+              <div style="text-align:center; padding:0 12px;">
+                <div style="font-size:14px; font-weight:600; letter-spacing:.04em;">AERO · MEMORY</div>
+                <div style="color:rgba(255,255,255,.7); font-size:12px; margin-top:4px;">VOLTEAR</div>
               </div>
             </div>
 
-            <div class="face front absolute inset-0 rounded-2xl bg-white border border-gray-100 flex items-center justify-center">
-              <div class="text-center px-3">
-                <div class="inline-flex items-center justify-center rounded-xl bg-inst-sky text-inst-navy font-semibold px-3 py-2 text-sm">
-                  ${escapeHtml(card.sym)}
-                </div>
-                <div class="mt-3 text-sm font-semibold">${escapeHtml(card.pairKey)}</div>
-                <div class="mt-1 text-xs text-inst-gray">${escapeHtml(card.cat)}</div>
+            <div class="face front">
+              <div style="text-align:center; padding:0 12px;">
+                <div class="j4-sym">${escapeHtml(card.sym)}</div>
+                <div style="margin-top:12px; font-size:14px; font-weight:600;">${escapeHtml(card.pairKey)}</div>
+                <div style="margin-top:4px; font-size:12px; color:#64748b;">${escapeHtml(card.cat)}</div>
               </div>
             </div>
           </div>
@@ -670,8 +665,8 @@
         c1.matched = true;
         c2.matched = true;
 
-        first.btn.classList.add("ring-2", "ring-emerald-300/60", "game-feedback-ok");
-        second.btn.classList.add("ring-2", "ring-emerald-300/60", "game-feedback-ok");
+        first.btn.classList.add("is-matched", "game-feedback-ok");
+        second.btn.classList.add("is-matched", "game-feedback-ok");
 
         matches += 1;
         elMatches.textContent = String(matches);

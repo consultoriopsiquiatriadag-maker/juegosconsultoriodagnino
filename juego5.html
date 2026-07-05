@@ -5,42 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juego 5 · Colores y atención | Sala de Espera Virtual</title>
 
-  <!-- Tailwind + Inter (consistente con /juegos.html) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#eef2f7',
-            'inst-gray': '#475569'
-          },
-          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-
   <style>
-    :root { --base-font: 16px; }
-    html { font-size: var(--base-font); scroll-behavior: smooth; }
-    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) {
       .anim { animation: none !important; transition: none !important; }
     }
     .anim { transition: all .2s ease; }
+    .j5-stimulus{
+      font-size: clamp(36px, 6vw, 48px);
+      font-weight: 700;
+      letter-spacing: .04em;
+      user-select: none;
+    }
   </style>
 
-  <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
+  <!-- Sistema visual común para juegos legados -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased gs-scope">
+<body class="gs-page gs-scope">
 
   <header class="gs-header">
     <div class="gs-header-brand">
@@ -78,10 +66,10 @@
     <!-- Área de juego (oculta hasta inicio) -->
     <div id="gameArea5" class="hidden game-fade-in">
     <!-- CONTENIDO -->
-    <section class="max-w-5xl mx-auto px-6 py-10">
-      <div class="grid lg:grid-cols-5 gap-6">
+    <section class="gs-section">
+      <div class="gs-layout gs-layout-3-2">
         <!-- Panel de juego -->
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card game-main-panel">
+        <div class="gs-panel game-card game-main-panel">
           <span class="game-objective">Objetivo: responder según el color de la tinta, no la palabra</span>
           <!-- HUD en partida (FASE 2) -->
           <div class="gs-hud" style="margin-top:12px;">
@@ -98,42 +86,25 @@
             <div class="gs-progress-fill" id="progressFill" style="width:100%"></div>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 bg-inst-light p-6 md:p-8">
-            <p class="text-sm text-inst-gray mb-2">Indicá el color de la tinta:</p>
-            <div class="min-h-[120px] flex items-center justify-center">
-              <div id="stimulus"
-                   class="text-4xl md:text-5xl font-bold tracking-wide select-none">
-                —
-              </div>
+          <div class="gs-box" style="padding:28px;">
+            <p class="gs-muted" style="font-size:14px; margin:0 0 8px;">Indicá el color de la tinta:</p>
+            <div style="min-height:120px; display:flex; align-items:center; justify-content:center;">
+              <div id="stimulus" class="j5-stimulus" aria-live="polite">—</div>
             </div>
-            <p id="feedback" class="mt-3 text-sm text-inst-gray text-center">Tocá “Iniciar” para comenzar.</p>
+            <p id="feedback" class="gs-muted gs-center" style="font-size:14px; margin:12px 0 0;" role="status" aria-live="polite">Tocá “Iniciar” para comenzar.</p>
           </div>
 
-          <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <button data-color="rojo" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue game-btn">
-              Rojo
-            </button>
-            <button data-color="azul" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue game-btn">
-              Azul
-            </button>
-            <button data-color="verde" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue game-btn">
-              Verde
-            </button>
-            <button data-color="amarillo" class="anim w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue game-btn">
-              Amarillo
-            </button>
+          <div class="gs-grid-2-4" style="margin-top:24px;">
+            <button data-color="rojo" class="anim game-btn gs-btn-block">Rojo</button>
+            <button data-color="azul" class="anim game-btn gs-btn-block">Azul</button>
+            <button data-color="verde" class="anim game-btn gs-btn-block">Verde</button>
+            <button data-color="amarillo" class="anim game-btn gs-btn-block">Amarillo</button>
           </div>
 
-          <div class="mt-6 flex flex-wrap gap-3 game-actions">
-            <button id="startBtn" class="anim inline-flex items-center gap-2 bg-inst-blue text-white px-6 py-3 rounded-lg font-semibold hover:opacity-95 game-btn game-btn-primary">
-              Iniciar (60s)
-            </button>
-            <button id="pauseBtn" class="anim inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn" disabled>
-              Pausar
-            </button>
-            <button id="resetBtn" class="anim inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
-              Reiniciar
-            </button>
+          <div class="game-actions">
+            <button id="startBtn" class="anim game-btn game-btn-primary">Iniciar (60s)</button>
+            <button id="pauseBtn" class="anim game-btn" disabled>Pausar</button>
+            <button id="resetBtn" class="anim game-btn">Reiniciar</button>
           </div>
 
           <p class="game-safety-note">
@@ -144,26 +115,26 @@
         </div>
 
         <!-- Panel info -->
-        <div class="lg:col-span-2 space-y-6">
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Cómo funciona</h2>
-            <ul class="list-disc pl-5 text-inst-gray space-y-2">
+        <div class="gs-stack">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Cómo funciona</h2>
+            <ul class="gs-list">
               <li>Ignorá la palabra.</li>
-              <li>Elegí el <span class="font-semibold">color de la tinta</span>.</li>
+              <li>Elegí el <strong>color de la tinta</strong>.</li>
               <li>Es normal equivocarse: buscá ritmo, no perfección.</li>
             </ul>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Sugerencia breve</h2>
-            <p class="text-inst-gray leading-relaxed">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Sugerencia breve</h2>
+            <p class="gs-muted" style="line-height:1.6; margin:0;">
               Si aparece frustración, hacé una pausa de 10 segundos y retomá. La idea es entrenar atención e inhibición, no rendir examen.
             </p>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Accesibilidad</h2>
-            <p class="text-inst-gray leading-relaxed">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Accesibilidad</h2>
+            <p class="gs-muted" style="line-height:1.6; margin:0;">
               Botones grandes y contraste alto. Si el movimiento molesta, el sistema puede reducir animaciones (según configuración del dispositivo).
             </p>
           </div>

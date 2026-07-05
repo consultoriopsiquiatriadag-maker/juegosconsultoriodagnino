@@ -5,46 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juego 6 · Búsqueda visual | Sala de Espera Virtual</title>
 
-  <!-- Tailwind + Inter (consistente con /juegos.html) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#eef2f7',
-            'inst-gray': '#475569'
-          },
-          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-
   <style>
-    :root { --base-font: 16px; }
-    html { font-size: var(--base-font); scroll-behavior: smooth; }
-    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) {
       .anim { animation: none !important; transition: none !important; }
     }
     .anim { transition: all .2s ease; }
     .cell{
-      user-select:none;
+      user-select: none;
       -webkit-tap-highlight-color: transparent;
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: #fff;
+      font-family: inherit;
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 700;
+      color: inherit;
+      cursor: pointer;
     }
+    .cell:hover{ background: #e0f2fe; }
+    .cell:focus-visible{ outline: none; box-shadow: var(--gs-focus, 0 0 0 4px rgba(59,130,246,.2)); }
+    .j6-target{ font-size: clamp(22px, 4vw, 28px); font-weight: 700; letter-spacing: .04em; }
   </style>
 
-  <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
+  <!-- Sistema visual común para juegos legados -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased gs-scope">
+<body class="gs-page gs-scope">
 
   <header class="gs-header">
     <div class="gs-header-brand">
@@ -82,10 +77,10 @@
     <!-- Área de juego -->
     <div id="gameArea6" class="hidden game-fade-in">
     <!-- CONTENIDO -->
-    <section class="max-w-5xl mx-auto px-6 py-10">
-      <div class="grid lg:grid-cols-5 gap-6">
+    <section class="gs-section">
+      <div class="gs-layout gs-layout-3-2">
         <!-- Panel de juego -->
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7 game-card game-main-panel">
+        <div class="gs-panel game-card game-main-panel">
           <span class="game-objective">Objetivo: encontrar el símbolo objetivo lo más rápido posible</span>
           <!-- HUD en partida (FASE 2) -->
           <div class="gs-hud" style="margin-top:12px;">
@@ -104,32 +99,26 @@
             <div class="gs-progress-fill" id="progressFill" style="width:0%"></div>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 bg-inst-light p-5 md:p-6">
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="gs-box" style="padding:20px;">
+            <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;">
               <div>
-                <p class="text-sm text-inst-gray">Objetivo</p>
-                <p class="text-2xl font-bold tracking-wide">
+                <p class="gs-muted" style="font-size:14px; margin:0;">Objetivo</p>
+                <p class="j6-target" style="margin:2px 0 0;">
                   <span id="target">★</span>
-                  <span class="text-inst-gray font-medium text-base ml-2">(tocá el objetivo)</span>
+                  <span class="gs-muted" style="font-weight:500; font-size:15px; margin-left:8px;">(tocá el objetivo)</span>
                 </p>
               </div>
-              <div class="flex items-center gap-2 game-actions game-toolbar">
-                <button id="startBtn" class="anim bg-inst-blue text-white px-5 py-3 rounded-lg font-semibold hover:opacity-95 game-btn game-btn-primary">
-                  Iniciar
-                </button>
-                <button id="finishBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
-                  Finalizar
-                </button>
-                <button id="resetBtn" class="anim bg-white border border-gray-200 px-5 py-3 rounded-lg font-semibold hover:bg-inst-sky game-btn">
-                  Reiniciar
-                </button>
+              <div class="game-actions game-toolbar" style="margin-top:0;">
+                <button id="startBtn" class="anim game-btn game-btn-primary">Iniciar</button>
+                <button id="finishBtn" class="anim game-btn">Finalizar</button>
+                <button id="resetBtn" class="anim game-btn">Reiniciar</button>
               </div>
             </div>
 
-            <div id="grid" class="grid gap-2"></div>
-            <p id="feedback" class="mt-4 text-sm text-inst-gray text-center">Tocá "Iniciar" para comenzar.</p>
+            <div id="grid" style="display:grid; gap:8px;"></div>
+            <p id="feedback" class="gs-muted gs-center" style="font-size:14px; margin:16px 0 0;" role="status" aria-live="polite">Tocá "Iniciar" para comenzar.</p>
 
-            <div id="result" class="hidden gs-final"></div>
+            <div id="result" class="hidden gs-final" role="status" aria-live="polite"></div>
           </div>
 
           <p class="game-safety-note">
@@ -138,26 +127,26 @@
         </div>
 
         <!-- Panel info -->
-        <div class="lg:col-span-2 space-y-6">
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Cómo funciona</h2>
-            <ul class="list-disc pl-5 text-inst-gray space-y-2">
+        <div class="gs-stack">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Cómo funciona</h2>
+            <ul class="gs-list">
               <li>Hay un símbolo objetivo y varios distractores.</li>
               <li>Tocá el objetivo lo más rápido posible.</li>
               <li>La grilla crece con el nivel.</li>
             </ul>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Sugerencia breve</h2>
-            <p class="text-inst-gray leading-relaxed">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Sugerencia breve</h2>
+            <p class="gs-muted" style="line-height:1.6; margin:0;">
               Buscá ritmo y precisión. Si hay cansancio visual, hacé una pausa corta y retomá más tarde.
             </p>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-7">
-            <h2 class="text-xl font-semibold mb-2">Accesibilidad</h2>
-            <p class="text-inst-gray leading-relaxed">
+          <div class="gs-panel">
+            <h2 class="gs-h2">Accesibilidad</h2>
+            <p class="gs-muted" style="line-height:1.6; margin:0;">
               Letras grandes y botones amplios. Si el dispositivo reduce animaciones, el juego mantiene el funcionamiento.
             </p>
           </div>
@@ -250,7 +239,8 @@
       gridEl.innerHTML = "";
       items.forEach((sym, idx) => {
         const btn = document.createElement("button");
-        btn.className = "cell anim w-full aspect-square rounded-xl border border-gray-200 bg-white text-2xl md:text-3xl font-bold hover:bg-inst-sky focus:outline-none focus:ring-2 focus:ring-inst-blue";
+        btn.type = "button";
+        btn.className = "cell anim";
         btn.textContent = sym;
         btn.setAttribute("aria-label", sym === state.target ? "Objetivo" : "Símbolo");
         btn.addEventListener("click", () => onPick(idx));

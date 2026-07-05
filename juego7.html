@@ -5,38 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juego 7 · Semáforo (Go/No-Go) | Sala de Espera Virtual</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía (FASE 3: sin Tailwind CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-sky':  '#e0f2fe',
-            'inst-light':'#eef2f7',
-            'inst-gray': '#475569'
-          },
-          fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-
   <style>
-    :root { --base-font: 16px; }
-    html { font-size: var(--base-font); }
-    body { background: #eef2f7; font-family: Inter, system-ui, sans-serif; }
     @media (prefers-reduced-motion: reduce){ .anim { transition:none !important; } }
+    .anim{ transition: all .2s ease; }
+    .j7-semaforo{
+      width: 112px; background: #0f1e33; border-radius: 18px; padding: 16px;
+      box-shadow: 0 4px 12px rgba(2,6,23,.15);
+    }
+    .j7-light{
+      width: 48px; height: 48px; border-radius: 999px; margin: 0 auto 12px; opacity: .25;
+    }
+    .j7-light:last-child{ margin-bottom: 0; }
+    .j7-red{ background: #ef4444; }
+    .j7-yellow{ background: #facc15; }
+    .j7-green{ background: #22c55e; }
+    .j7-tap{
+      width: 100%; margin-top: 16px; padding: 24px; border-radius: 18px;
+      font-family: inherit; font-weight: 600; font-size: 18px; color: inherit;
+      border: 1px solid rgba(15,23,42,.12); background: #eef2f7; cursor: pointer;
+    }
+    .j7-tap:hover{ background: #e0f2fe; }
+    .j7-tap:disabled{ opacity: .6; cursor: not-allowed; }
+    .j7-tap:focus-visible{ outline: none; box-shadow: var(--gs-focus, 0 0 0 4px rgba(59,130,246,.2)); }
   </style>
 
-  <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=3">
+  <!-- Sistema visual común para juegos legados -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light text-inst-navy antialiased gs-scope">
+<body class="gs-page gs-scope">
 
   <header class="gs-header">
     <div class="gs-header-brand">
@@ -73,20 +75,20 @@
 
     <!-- Área de juego -->
     <div id="gameArea7" class="hidden game-fade-in">
-    <div class="max-w-5xl mx-auto px-6 py-10 game-shell">
+    <div class="gs-section game-shell" style="max-width:1024px;">
 
-    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8 game-card game-main-panel">
-      <div class="flex items-start justify-between gap-4 flex-wrap">
-        <div class="min-w-0">
+    <section class="gs-panel game-card game-main-panel">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+        <div style="min-width:0;">
           <p class="game-category">Atención y velocidad · Control de impulsos</p>
-          <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Semáforo (Go / No-Go)</h1>
-          <span class="game-objective mt-2">Objetivo: tocar solo en verde, el mayor número de veces posible</span>
+          <h1 style="font-size:clamp(24px,4vw,30px); font-weight:600; letter-spacing:.02em; margin:0;">Semáforo (Go / No-Go)</h1>
+          <span class="game-objective" style="margin-top:8px;">Objetivo: tocar solo en verde, el mayor número de veces posible</span>
         </div>
 
-        <div class="flex gap-2 flex-wrap game-actions game-toolbar">
-          <button id="btnStart" class="bg-inst-blue text-white px-4 py-2 rounded-lg font-semibold hover:opacity-95 transition game-btn game-btn-primary">Iniciar</button>
-          <button id="btnPause" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition game-btn" disabled>Pausar</button>
-          <button id="btnReset" class="bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-light transition game-btn">Reiniciar</button>
+        <div class="game-actions game-toolbar" style="margin-top:0;">
+          <button id="btnStart" class="game-btn game-btn-primary">Iniciar</button>
+          <button id="btnPause" class="game-btn" disabled>Pausar</button>
+          <button id="btnReset" class="game-btn">Reiniciar</button>
         </div>
       </div>
 
@@ -104,51 +106,48 @@
         <div class="gs-progress-fill" id="progressFill" style="width:100%"></div>
       </div>
 
-      <div class="mt-4 grid md:grid-cols-2 gap-4">
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Tiempo</p>
-          <p class="text-2xl font-semibold"><span id="timeLeft">60</span>s</p>
+      <div class="gs-stat-grid" style="margin-top:16px;">
+        <div class="gs-stat-card">
+          <p class="gs-stat-label" style="text-transform:uppercase; letter-spacing:.06em;">Tiempo</p>
+          <p class="gs-stat-value"><span id="timeLeft">60</span>s</p>
         </div>
-        <div class="bg-inst-light rounded-2xl border border-gray-200 p-4">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Errores</p>
-          <p class="text-2xl font-semibold"><span id="errors">0</span></p>
-          <p class="text-sm text-inst-gray mt-1">Tardíos (no tocó en verde): <span id="misses">0</span></p>
+        <div class="gs-stat-card">
+          <p class="gs-stat-label" style="text-transform:uppercase; letter-spacing:.06em;">Errores</p>
+          <p class="gs-stat-value"><span id="errors">0</span></p>
+          <p class="gs-muted" style="font-size:14px; margin:4px 0 0;">Tardíos (no tocó en verde): <span id="misses">0</span></p>
         </div>
       </div>
 
-      <div class="mt-6 grid md:grid-cols-2 gap-6 items-center">
+      <div class="gs-grid-2-4" style="grid-template-columns:1fr; margin-top:24px; gap:20px; align-items:center;" id="j7Row">
         <!-- Semáforo -->
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col items-center">
-          <div class="w-28 bg-inst-navy rounded-2xl p-4 shadow-sm">
-            <div id="lightRed" class="w-12 h-12 rounded-full mx-auto mb-3 opacity-25 bg-red-500"></div>
-            <div id="lightYellow" class="w-12 h-12 rounded-full mx-auto mb-3 opacity-25 bg-yellow-400"></div>
-            <div id="lightGreen" class="w-12 h-12 rounded-full mx-auto opacity-25 bg-green-500"></div>
+        <div class="gs-panel" style="display:flex; flex-direction:column; align-items:center; box-shadow:none;">
+          <div class="j7-semaforo">
+            <div id="lightRed" class="j7-light j7-red"></div>
+            <div id="lightYellow" class="j7-light j7-yellow"></div>
+            <div id="lightGreen" class="j7-light j7-green"></div>
           </div>
 
-          <p class="text-inst-gray mt-4 text-sm text-center">
+          <p class="gs-muted gs-center" style="font-size:14px; margin:16px 0 0;">
             Regla: <strong>VERDE = tocá</strong> · <strong>ROJO = no tocás</strong><br>
             (Amarillo: transición)
           </p>
         </div>
 
         <!-- Botón de respuesta -->
-        <div class="bg-white rounded-2xl border border-gray-200 p-6">
-          <p class="text-xs uppercase tracking-wider text-inst-gray">Acción</p>
-          <h2 class="text-xl font-semibold mt-1">Tocar</h2>
-          <button id="tapBtn"
-            class="anim mt-4 w-full py-6 rounded-2xl font-semibold text-lg border border-gray-200 bg-inst-light hover:bg-inst-sky transition"
-            disabled>
-            TOCAR
-          </button>
+        <div class="gs-panel" style="box-shadow:none;">
+          <p class="gs-stat-label" style="text-transform:uppercase; letter-spacing:.06em;">Acción</p>
+          <h2 class="gs-h2" style="margin-top:4px;">Tocar</h2>
+          <button id="tapBtn" class="anim j7-tap" disabled>TOCAR</button>
 
-          <div class="mt-4 text-sm text-inst-gray leading-relaxed">
+          <div class="gs-muted" style="font-size:14px; line-height:1.6; margin-top:16px;">
             Consejo: hacelo en calma. Si te frustra, pausá y retomá más tarde.
           </div>
         </div>
       </div>
+      <style>@media(min-width:768px){ #j7Row{ grid-template-columns:1fr 1fr !important; } }</style>
 
-      <div class="mt-6 bg-inst-light rounded-2xl border border-gray-200 p-4">
-        <p class="text-sm text-inst-gray">
+      <div class="gs-box" style="padding:16px; margin-top:24px;">
+        <p class="gs-muted" style="font-size:14px; margin:0;">
           <strong>Interpretación simple:</strong> más puntaje y menos errores suele reflejar mejor control atencional en este momento.
           No es un examen ni un diagnóstico.
         </p>

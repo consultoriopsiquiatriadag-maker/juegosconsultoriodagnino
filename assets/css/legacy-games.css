@@ -809,6 +809,53 @@
   text-align: center; font-size: 12px; color: rgba(255,255,255,.6);
 }
 
+/* ── FASE 3b: layouts y componentes para reemplazo total de Tailwind ── */
+.gs-layout{ display: grid; gap: 20px; align-items: start; }
+@media (min-width: 1024px){
+  .gs-layout-4-8{ grid-template-columns: 1fr 2fr; }
+  .gs-layout-3-2{ grid-template-columns: 3fr 2fr; }
+}
+.gs-stack > * + *{ margin-top: 20px; }
+.gs-section{ max-width: 1024px; margin: 0 auto; padding: 32px 24px; }
+.gs-h2{ font-size: 20px; font-weight: 600; color: var(--gs-navy); margin: 0 0 8px; }
+.gs-list{ padding-left: 20px; color: var(--gs-muted); margin: 8px 0 0; line-height: 1.55; }
+.gs-list li{ margin-top: 6px; }
+.gs-center{ text-align: center; }
+.gs-btn-block{ width: 100%; }
+
+.gs-stat-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.gs-stat-card{
+  border-radius: 14px; border: 1px solid var(--gs-border);
+  background: var(--gs-light); padding: 14px 16px;
+}
+.gs-stat-label{ font-size: 12px; color: var(--gs-muted); margin: 0; }
+.gs-stat-value{ font-size: 24px; font-weight: 600; color: var(--gs-navy); margin: 4px 0 0; }
+
+.gs-box{
+  border-radius: 14px; border: 1px solid var(--gs-border);
+  background: var(--gs-light); padding: 20px;
+}
+.gs-select, .gs-input{
+  border-radius: 12px; border: 1px solid var(--gs-border);
+  background: #fff; padding: 10px 12px; font: inherit; color: var(--gs-navy);
+}
+.gs-select:focus-visible, .gs-input:focus-visible{ outline: none; box-shadow: var(--gs-focus); }
+.gs-select-block{ width: 100%; margin-top: 8px; }
+.gs-field-label{ font-size: 14px; color: var(--gs-muted); font-weight: 500; }
+
+.gs-warn{
+  background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.3);
+  color: #92400e; border-radius: 10px; padding: 8px 10px;
+  font-size: 14px; font-weight: 600;
+}
+.gs-row{
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: #fff; border: 1px solid var(--gs-border);
+  border-radius: 10px; padding: 8px 12px;
+}
+.gs-grid-2-4{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 768px){ .gs-grid-2-4{ grid-template-columns: repeat(4, 1fr); } }
+
 /* ── Responsive (mobile ≤ 560px) ────────────────────────────── */
 @media (max-width: 560px){
   .gs-header{ padding: 8px 14px; }
