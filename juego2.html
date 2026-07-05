@@ -8,7 +8,7 @@
 <!-- Tailwind + Inter -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+<link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 
 <script>
 tailwind.config = {
@@ -36,53 +36,50 @@ tailwind.config = {
 
 <body class="bg-inst-light text-inst-navy font-sans antialiased gs-scope">
 
-<!-- HEADER -->
-<header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center">
-        <img src="logo-avion.png" class="w-7 h-7" alt="">
-      </div>
-      <div class="leading-tight">
-        <p class="text-sm text-inst-gray font-medium">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
-        <p class="text-xs text-inst-gray/70">Juegos cognitivos · Juego 2</p>
-      </div>
+<header class="gs-header">
+  <div class="gs-header-brand">
+    <div class="gs-header-logo" aria-hidden="true">
+      <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
     </div>
-
-    <div class="flex gap-2">
-      <a href="juegos.html" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold">← Juegos</a>
-      <a href="index.html" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold">Inicio</a>
+    <div>
+      <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+      <div class="gs-header-sub">Juego 2 · Categorías</div>
     </div>
+  </div>
+  <div class="gs-header-actions">
+    <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+    <a href="index.html" class="gs-btn-back">Inicio</a>
   </div>
 </header>
 
-<!-- CONTENIDO -->
-<main class="max-w-7xl mx-auto px-6 py-10 game-shell">
+<main>
 
-  <!-- Encabezado del juego (reemplaza el hero institucional genérico) -->
-  <div class="mb-6">
-    <p class="game-category">Memoria y aprendizaje · Fluidez verbal</p>
-    <h1 class="game-title">Categorías</h1>
-    <p class="game-subtitle">
-      Ejercicio de fluidez verbal y memoria semántica. No es un examen.
-      Jugá a tu ritmo y pausá si aparece cansancio o frustración.
-    </p>
+  <!-- Pantalla de misión / intro -->
+  <div id="introScreen2" class="gs-shell-wrap">
+    <div class="gs-intro game-fade-in">
+      <p class="gs-intro-eyebrow">Fluidez verbal · Juego 2</p>
+      <h1 class="gs-intro-title">Categorías</h1>
+      <p class="gs-intro-subtitle">Decí palabras de una <strong style="color:#fff;">categoría</strong> que empiecen con una <strong style="color:#fff;">letra</strong> asignada. Sin examen, sin presión.</p>
+      <p class="gs-intro-objective">Objetivo: decir el mayor número de palabras válidas posible</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> se sortean una categoría (ej: "Animales") y una letra (ej: "M"). Escribí palabras que cumplan ambos criterios y tocá Agregar. Podés jugar con o sin tiempo.</div>
+      <div class="gs-intro-actions">
+        <button id="btnEmpezar2" class="gs-btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
   </div>
 
-  <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm card-hover game-card game-main-panel">
+  <!-- Área de juego -->
+  <div id="gameArea2" class="hidden game-fade-in">
+  <div class="gs-shell-wrap">
 
-    <span class="game-objective">Objetivo: decir palabras de la categoría que empiecen con la letra indicada</span>
-
-    <p class="text-inst-gray leading-relaxed mt-3 mb-4">
-      Elegí palabras que pertenezcan a la <strong>categoría</strong> indicada y comiencen con la <strong>letra</strong> asignada.
-      Si una categoría no te resulta familiar, tocá <strong>Nueva ronda</strong>.
-    </p>
+  <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm game-card game-main-panel">
 
     <!-- STATUS -->
-    <div class="flex flex-wrap gap-2 mb-2 game-status-bar">
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="catLabel">Categoría: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="letterLabel">Letra: —</span>
-      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border pill game-chip" id="timeLabel">Tiempo: —</span>
+    <div class="flex flex-wrap gap-2 mb-3 game-status-bar">
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="catLabel">Categoría: —</span>
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="letterLabel">Letra: —</span>
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-inst-light border game-chip" id="timeLabel">Tiempo: —</span>
     </div>
 
     <div class="game-status-group" style="margin-bottom:14px;">
@@ -92,65 +89,49 @@ tailwind.config = {
     </div>
 
     <!-- CONTROLES -->
-    <div class="flex flex-wrap gap-2 mb-6 game-actions game-toolbar" style="margin-top:0;">
+    <div class="flex flex-wrap gap-2 mb-5 game-actions game-toolbar" style="margin-top:0;">
       <button id="newRoundBtn" class="px-4 py-2 rounded-lg border bg-inst-light hover:bg-white text-sm font-semibold game-btn">Nueva ronda</button>
       <button id="startBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Iniciar</button>
       <button id="pauseBtn" disabled class="px-4 py-2 rounded-lg border bg-inst-light text-sm font-semibold game-btn">Pausar</button>
     </div>
 
-    <!-- GRID -->
-    <div class="grid md:grid-cols-2 gap-6">
+    <!-- LISTA -->
+    <div class="border rounded-xl p-4 bg-inst-light mb-4">
+      <h3 class="font-semibold mb-3">Tu lista</h3>
 
-      <!-- LISTA -->
-      <div class="border rounded-xl p-4 bg-inst-light">
-        <h3 class="font-semibold mb-2">Tu lista</h3>
-
-        <div class="flex gap-2 mb-2">
-          <input id="wordInput" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej.: Manzana / Madrid…" />
-          <button id="addBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Agregar</button>
-        </div>
-
-        <div id="warnBox" class="hidden mb-2 text-sm font-semibold text-amber-700 bg-amber-100 border border-amber-200 rounded-lg p-2"></div>
-
-        <div id="list" class="space-y-2"></div>
-
-        <div class="flex justify-between items-center mt-4">
-          <span class="text-sm text-inst-gray"><strong id="countLabel">0</strong> ítems</span>
-          <div class="flex gap-2">
-            <button id="clearBtn" class="px-3 py-2 rounded-lg border text-sm font-semibold game-btn">Borrar</button>
-            <button id="finishBtn" class="px-3 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Finalizar</button>
-          </div>
-        </div>
-
-        <div id="doneBox" class="hidden mt-4"></div>
+      <div class="flex gap-2 mb-2">
+        <input id="wordInput" class="flex-1 px-3 py-2 border rounded-lg" placeholder="Ej.: Manzana / Madrid…" />
+        <button id="addBtn" class="px-4 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Agregar</button>
       </div>
 
-      <!-- OPCIONES -->
-      <div class="border rounded-xl p-4 bg-inst-light">
-        <h3 class="font-semibold mb-2">Opciones</h3>
+      <div id="warnBox" class="hidden mb-2 text-sm font-semibold text-amber-700 bg-amber-100 border border-amber-200 rounded-lg p-2"></div>
 
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input id="timedToggle" type="checkbox" checked>
-          Jugar con tiempo
-        </label>
+      <div id="list" class="space-y-2"></div>
 
-        <select id="durationSel" class="w-full px-3 py-2 border rounded-lg mb-4">
-          <option value="60">1 minuto</option>
-          <option value="120" selected>2 minutos</option>
-          <option value="180">3 minutos</option>
-          <option value="300">5 minutos</option>
-        </select>
-
-        <p class="text-sm text-inst-gray leading-relaxed">
-          • No se evalúa correcto/incorrecto.<br>
-          • Se entrena fluidez, atención y registro.
-        </p>
-
-        <div class="mt-4 text-xs text-inst-gray muted">
-          Recomendación: intentá 6–12 palabras (sin exigencia).
+      <div class="flex justify-between items-center mt-4">
+        <span class="text-sm text-inst-gray"><strong id="countLabel">0</strong> ítems</span>
+        <div class="flex gap-2">
+          <button id="clearBtn" class="px-3 py-2 rounded-lg border text-sm font-semibold game-btn">Borrar lista</button>
+          <button id="finishBtn" class="px-3 py-2 rounded-lg bg-inst-blue text-white text-sm font-semibold game-btn game-btn-primary">Finalizar</button>
         </div>
       </div>
 
+      <div id="doneBox" class="hidden mt-4"></div>
+    </div>
+
+    <!-- OPCIONES COMPACTAS (no requiere scroll por panel separado) -->
+    <div class="flex flex-wrap items-center gap-3 border rounded-xl p-3 bg-inst-light text-sm mb-4">
+      <label class="flex items-center gap-2 font-medium cursor-pointer">
+        <input id="timedToggle" type="checkbox" checked>
+        Con tiempo:
+      </label>
+      <select id="durationSel" class="px-3 py-2 border rounded-lg bg-white">
+        <option value="60">1 minuto</option>
+        <option value="120" selected>2 minutos</option>
+        <option value="180">3 minutos</option>
+        <option value="300">5 minutos</option>
+      </select>
+      <span class="text-inst-gray text-xs">No se evalúa correcto/incorrecto — se entrena fluidez.</span>
     </div>
 
     <p class="game-safety-note">
@@ -158,6 +139,9 @@ tailwind.config = {
     </p>
 
   </div>
+
+  </div><!-- /gs-shell-wrap -->
+  </div><!-- /gameArea2 -->
 </main>
 
 <!-- FOOTER -->
@@ -407,20 +391,23 @@ tailwind.config = {
 
   function renderDone(){
     const summary = session.summary();
-    const medal = summary.medal;
     doneBox.innerHTML = `
-      <div class="game-result-card game-fade-in">
-        <div class="game-medal game-medal-${medal.id}" style="margin:0 auto 10px;">${medal.name}</div>
-        <p class="game-result-title">Ronda completada</p>
-        <p class="game-result-message">Se habilitó el Juego 3. ${summary.message}</p>
-        <div class="game-result-stats">
-          <div class="game-result-stat"><div class="game-result-stat-label">Palabras</div><div class="game-result-stat-value">${items.length}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+      <div class="gs-final game-fade-in">
+        <h3 class="gs-final-title">Ronda completada</h3>
+        <p class="gs-final-msg">${summary.message}</p>
+        <div class="gs-final-stats">
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Palabras</div><div class="gs-final-stat-value">${items.length}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+        </div>
+        <div class="gs-final-actions">
+          <button id="playAgainBtn2" class="game-btn game-btn-primary" type="button">Nueva ronda</button>
+          <a href="juegos.html" class="game-btn">← Juegos</a>
         </div>
       </div>
     `;
     doneBox.classList.remove("hidden");
+    document.getElementById("playAgainBtn2").addEventListener("click", newRound);
   }
 
   // ========= Nueva ronda =========
@@ -470,6 +457,12 @@ tailwind.config = {
   renderTime();
   renderList();
   startSession();
+
+  // Transición intro → juego (FASE 1)
+  document.getElementById("btnEmpezar2").addEventListener("click", function(){
+    document.getElementById("introScreen2").classList.add("hidden");
+    document.getElementById("gameArea2").classList.remove("hidden");
+  });
 </script>
 
 <!-- AUDIO PREMIO -->

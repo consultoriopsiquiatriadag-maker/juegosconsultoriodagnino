@@ -56,7 +56,7 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 </head>
 
 <body class="bg-inst-light font-sans text-inst-navy antialiased gs-scope">
@@ -102,40 +102,26 @@
     </div>
   </div>
 
-  <!-- HEADER -->
-  <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-inst-navy flex items-center justify-center overflow-hidden" aria-hidden="true">
-          <img src="logo-avion.png" alt="" class="w-7 h-7 object-contain">
-        </div>
-        <div class="leading-tight">
-          <p class="text-sm text-inst-gray font-medium">Consultorio de Psiquiatría del Dr. Pedro Nicolás Dagnino</p>
-          <p class="text-xs text-inst-gray/70">Juegos cognitivos · Memory Aeronáutico</p>
-        </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
       </div>
-
-      <a href="juegos.html"
-         class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white">
-        ← Volver
-      </a>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 4 · Memory Aeronáutico</div>
+      </div>
+    </div>
+    <div class="gs-header-actions">
+      <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
     </div>
   </header>
 
-  <!-- CONTENIDO -->
-  <main class="max-w-7xl mx-auto px-6 py-10 md:py-12 game-shell">
+  <main>
+  <div class="gs-shell-wrap game-shell">
 
-    <!-- Encabezado del juego (reemplaza el hero institucional genérico) -->
-    <div class="mb-6">
-      <p class="game-category">Memoria visual · Aeronáutico</p>
-      <h1 class="game-title">Memory Aeronáutico</h1>
-      <p class="game-subtitle">
-        Actividad breve para entrenar memoria visual y atención sostenida. Uso sugerido: 3–7 minutos.
-        Si te genera ansiedad o frustración, pausá y retomá más tarde.
-      </p>
-    </div>
-
-    <div class="grid lg:grid-cols-12 gap-6">
+    <div class="grid lg:grid-cols-12 gap-5">
 
       <!-- Panel -->
       <section class="lg:col-span-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 game-card game-main-panel game-panel-secondary">
@@ -241,6 +227,8 @@
         <div id="result" class="hidden mt-6 game-result-card"></div>
       </section>
     </div>
+
+  </div><!-- /gs-shell-wrap -->
   </main>
 
   <!-- FOOTER -->
@@ -609,19 +597,22 @@
     // ======= GAMEPLAY =======
     function renderResult(title, message){
       const summary = session.summary();
-      const medal = summary.medal;
       resultBox.classList.remove("hidden");
       resultBox.innerHTML = `
-        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
-        <h3 class="game-result-title mt-3">${title}</h3>
-        <p class="game-result-message">${message}</p>
-        <div class="game-result-stats">
-          <div class="game-result-stat"><div class="game-result-stat-label">Tiempo</div><div class="game-result-stat-value">${formatTime(elapsed)}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Movimientos</div><div class="game-result-stat-value">${moves}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+        <h3 class="gs-final-title">${title}</h3>
+        <p class="gs-final-msg">${message}</p>
+        <div class="gs-final-stats">
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Tiempo</div><div class="gs-final-stat-value">${formatTime(elapsed)}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Movimientos</div><div class="gs-final-stat-value">${moves}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+        </div>
+        <div class="gs-final-actions">
+          <button id="againBtn4" class="game-btn game-btn-primary" type="button">Nueva partida</button>
+          <a href="juegos.html" class="game-btn">← Juegos</a>
         </div>
       `;
+      document.getElementById("againBtn4").addEventListener("click", () => elNew.click());
     }
 
     async function onWin(){
