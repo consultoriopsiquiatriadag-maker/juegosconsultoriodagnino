@@ -6,16 +6,9 @@
   <title>Juego · Categorías semánticas — Sala de espera virtual</title>
   <meta name="description" content="Juego breve de categorización semántica: elegí la categoría correcta para cada palabra." />
   <link rel="stylesheet" href="assets/css/app.css?v=1" />
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1" />
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4" />
   <meta name="theme-color" content="#0e2239" />
   <style>
-    .topbar{ position:sticky; top:0; z-index:30; background:#0e2239; color:#fff; }
-    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .brand .logo{ width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
-    .brand-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brand-sub{ opacity:.9; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .controls{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
     .game-shell{ margin-top:16px; }
     .game-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
     .kpiwrap{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
@@ -50,23 +43,40 @@
   </style>
 </head>
 <body class="gs-scope">
-  <header class="topbar" role="banner">
-    <div class="wrap topbar-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;"></div>
-        <div class="brand-text" style="min-width:0">
-          <div class="brand-title">Sala de espera virtual</div>
-          <div class="brand-sub">Juego · Categorías semánticas</div>
-        </div>
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
       </div>
-      <div class="controls" role="group" aria-label="Controles">
-        <a class="btn btn-ghost" href="juegos.html" data-spa="0" aria-label="Volver a Juegos">← Juegos</a>
-        <button id="btnAminus" class="btn btn-ghost" type="button" aria-label="Reducir texto">A-</button>
-        <button id="btnAplus" class="btn btn-ghost" type="button" aria-label="Aumentar texto">A+</button>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 9 · Categorías semánticas</div>
       </div>
+    </div>
+    <div class="gs-header-actions">
+      <button id="btnAminus" class="gs-btn-back" type="button" aria-label="Reducir texto">A−</button>
+      <button id="btnAplus" class="gs-btn-back" type="button" aria-label="Aumentar texto">A+</button>
+      <a href="juegos.html" class="gs-btn-back" data-spa="0">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
     </div>
   </header>
 
+  <!-- Pantalla de misión (FASE 1) -->
+  <div id="introScreen9" class="gs-shell-wrap">
+    <div class="gs-intro game-fade-in">
+      <p class="gs-intro-eyebrow">Lenguaje y razonamiento · Juego 9</p>
+      <h1 class="gs-intro-title">Categorías semánticas</h1>
+      <p class="gs-intro-subtitle">Aparece una palabra y elegís a qué categoría pertenece. Breve y sin presión.</p>
+      <p class="gs-intro-objective">Objetivo: elegir la categoría correcta de cada palabra</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> configurá dificultad, cantidad de ítems y tiempo. Tocá la categoría correcta para cada palabra. Si te frustrás, pausá y retomá.</div>
+      <div class="gs-intro-actions">
+        <button id="btnEmpezar9" class="gs-btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="gameArea9" class="hidden game-fade-in">
   <main class="wrap game-shell">
     <section class="section">
       <div class="section-card hint-bg game-card game-main-panel">
@@ -184,6 +194,7 @@
       </div>
     </section>
   </main>
+  </div><!-- /gameArea9 -->
 
   <script src="assets/js/gamification.js"></script>
   <script>
@@ -400,9 +411,12 @@
       els.resMedal.className = `game-medal game-medal-${medal.id}`;
       els.resMedal.textContent = medal.name;
       els.resMedal.style.display = "inline-flex";
+      els.resStats.className = "gs-final-stats";
+      els.resStats.style.justifyContent = "flex-start";
       els.resStats.innerHTML = `
-        <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-        <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+        <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${acc}%</div></div>
       `;
     }
 
@@ -442,6 +456,12 @@
     });
 
     startSession();
+
+    // Transición intro → juego (FASE 1)
+    document.getElementById("btnEmpezar9").addEventListener("click", function(){
+      document.getElementById("introScreen9").classList.add("hidden");
+      document.getElementById("gameArea9").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>
