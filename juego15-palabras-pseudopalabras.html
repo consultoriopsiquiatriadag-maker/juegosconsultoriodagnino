@@ -204,10 +204,18 @@
         </div>
       </div>
 
-      <div class="game-status-group" style="margin-top:10px;">
-        <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-        <span class="game-chip" id="scorePill">Puntaje: 0</span>
-        <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+      <!-- HUD en partida (FASE 2) -->
+      <div class="gs-hud" style="margin-top:10px;">
+        <div class="gs-hud-chips">
+          <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+          <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+          <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+        </div>
+      </div>
+
+      <!-- Barra de progreso de ítems (FASE 2) -->
+      <div class="gs-progress-bar" role="progressbar" aria-label="Progreso de ítems" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="itemProgressBar">
+        <div class="gs-progress-fill" id="itemProgressFill" style="width:0%"></div>
       </div>
 
       <div class="kpiwrap" aria-label="Indicadores">
@@ -238,7 +246,7 @@
           <div class="prompt-box game-card" aria-live="polite">
             <div>
               <p class="subline" id="hintLine">Configurá y presioná <b>Iniciar</b>.</p>
-              <h2 class="stim" id="stim">—</h2>
+              <h2 class="stim" id="stim" aria-live="polite">—</h2>
               <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
               <p class="subline" style="margin-top:10px">
                 Teclado: <span class="kbd">←</span> = Palabra · <span class="kbd">→</span> = No palabra
@@ -251,7 +259,7 @@
                 <button class="choice" id="btnNon" type="button" disabled>No palabra</button>
               </div>
 
-              <div class="status" id="status">
+              <div class="status" id="status" role="status" aria-live="polite">
                 <span class="muted">Tip:</span> respondé por intuición (sin “pensar demasiado”).
               </div>
             </div>
@@ -370,8 +378,10 @@
       streakPill.textContent = "Racha: " + s.streak;
     }
     function pulseStreak(){
-      streakPill.classList.add("is-up");
-      setTimeout(()=> streakPill.classList.remove("is-up"), 500);
+      [scorePill, streakPill].forEach(p=>{
+        p.classList.add("is-up");
+        setTimeout(()=> p.classList.remove("is-up"), 500);
+      });
     }
 
     // === Bancos (tamaño moderado; podés ampliar después) ===
@@ -465,6 +475,9 @@
 
     function updateKPIs(){
       kpiItem.textContent = state==="running" ? `${idx+1} / ${trials}` : "—";
+      const pct = (state==="running" && trials) ? Math.min(100, Math.round((idx / trials) * 100)) : (state==="ended" ? 100 : 0);
+      document.getElementById("itemProgressFill").style.width = pct + "%";
+      document.getElementById("itemProgressBar").setAttribute("aria-valuenow", pct);
       kpiOk.textContent = `${ok}`;
       kpiBad.textContent = `${bad}`;
       const avg = rts.length ? Math.round(rts.reduce((a,b)=>a+b,0)/rts.length) : 0;

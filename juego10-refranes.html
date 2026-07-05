@@ -184,10 +184,18 @@
           </div>
         </div>
 
-        <div class="game-status-group" style="margin-top:10px;">
-          <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-          <span class="game-chip" id="scorePill">Puntaje: 0</span>
-          <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+        <!-- HUD en partida (FASE 2) -->
+        <div class="gs-hud" style="margin-top:10px;">
+          <div class="gs-hud-chips">
+            <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+            <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+          </div>
+        </div>
+
+        <!-- Barra de progreso de ítems (FASE 2) -->
+        <div class="gs-progress-bar" role="progressbar" aria-label="Progreso de ítems" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="itemProgressBar">
+          <div class="gs-progress-fill" id="itemProgressFill" style="width:0%"></div>
         </div>
 
         <div class="divider" aria-hidden="true"></div>
@@ -235,7 +243,7 @@
             <div class="bar" aria-label="Barra de tiempo" title="Tiempo restante" style="display:none" id="timerBar">
               <div id="timerFill"></div>
             </div>
-            <div class="status" id="status">
+            <div class="status" id="status" role="status" aria-live="polite">
               <span class="muted">Tip: leé el refrán en voz baja y elegí la opción que “cierra” mejor.</span>
             </div>
 
@@ -367,8 +375,10 @@
       streakPill.textContent = "Racha: " + s.streak;
     }
     function pulseStreak(){
-      streakPill.classList.add("is-up");
-      setTimeout(()=> streakPill.classList.remove("is-up"), 500);
+      [scorePill, streakPill].forEach(p=>{
+        p.classList.add("is-up");
+        setTimeout(()=> p.classList.remove("is-up"), 500);
+      });
     }
 
     // ===== Estado del juego =====
@@ -419,6 +429,9 @@
       kScore.textContent = total ? `${score}/${total}` : "—";
       kStreak.textContent = total ? `${streak}` : "—";
       kTime.textContent = startedAt ? fmtTime(Date.now() - startedAt) : "—";
+      const pct = total ? Math.min(100, Math.round((idx / total) * 100)) : 0;
+      document.getElementById("itemProgressFill").style.width = pct + "%";
+      document.getElementById("itemProgressBar").setAttribute("aria-valuenow", pct);
     }
 
     function stopTimer(){

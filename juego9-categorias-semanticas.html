@@ -95,10 +95,18 @@
           </div>
         </div>
 
-        <div class="game-status-group" style="margin-top:10px;">
-          <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-          <span class="game-chip" id="scorePill">Puntaje: 0</span>
-          <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+        <!-- HUD en partida (FASE 2) -->
+        <div class="gs-hud" style="margin-top:10px;">
+          <div class="gs-hud-chips">
+            <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+            <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+            <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+          </div>
+        </div>
+
+        <!-- Barra de progreso de ítems (FASE 2) -->
+        <div class="gs-progress-bar" role="progressbar" aria-label="Progreso de ítems" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="itemProgressBar">
+          <div class="gs-progress-fill" id="itemProgressFill" style="width:0%"></div>
         </div>
 
         <div class="divider" aria-hidden="true"></div>
@@ -128,7 +136,7 @@
 
             <div class="word-box" style="margin-top:12px">
               <div>
-                <div class="word" id="word">—</div>
+                <div class="word" id="word" aria-live="polite">—</div>
                 <p class="subhint" id="prompt" style="margin-top:10px">Elegí una categoría para comenzar.</p>
               </div>
             </div>
@@ -272,8 +280,10 @@
       els.streakPill.textContent = "Racha: " + s.streak;
     }
     function pulseStreak(){
-      els.streakPill.classList.add("is-up");
-      setTimeout(()=> els.streakPill.classList.remove("is-up"), 500);
+      [els.scorePill, els.streakPill].forEach(p=>{
+        p.classList.add("is-up");
+        setTimeout(()=> p.classList.remove("is-up"), 500);
+      });
     }
 
     function shuffle(arr){
@@ -323,6 +333,9 @@
       els.kpiTotal.textContent = state.items.length;
       els.kpiOk.textContent = state.correct;
       els.kpiStreak.textContent = state.streak;
+      const pct = state.items.length ? Math.min(100, Math.round((state.index / state.items.length) * 100)) : 0;
+      document.getElementById("itemProgressFill").style.width = pct + "%";
+      document.getElementById("itemProgressBar").setAttribute("aria-valuenow", pct);
     }
     function clearTimer(){
       if(timer){ clearInterval(timer); timer=null; }
