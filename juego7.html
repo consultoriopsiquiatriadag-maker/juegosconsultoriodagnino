@@ -33,29 +33,53 @@
   </style>
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 </head>
 
 <body class="bg-inst-light text-inst-navy antialiased gs-scope">
-  <main class="max-w-5xl mx-auto px-6 py-10 game-shell">
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-      <a href="juegos.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-inst-sky transition">
-        ← Volver a Juegos
-      </a>
-      <a href="index.html" class="inline-flex items-center gap-2 bg-white/70 border border-gray-200 px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
-        Inicio
-      </a>
+
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+      </div>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Juego 7 · Semáforo Go/No-Go</div>
+      </div>
     </div>
+    <div class="gs-header-actions">
+      <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+      <a href="index.html" class="gs-btn-back">Inicio</a>
+    </div>
+  </header>
+
+  <main class="game-shell">
+
+    <!-- Pantalla de misión -->
+    <div id="introScreen7" class="gs-shell-wrap">
+      <div class="gs-intro game-fade-in">
+        <p class="gs-intro-eyebrow">Control de impulsos · Juego 7</p>
+        <h1 class="gs-intro-title">Semáforo Go / No-Go</h1>
+        <p class="gs-intro-subtitle">Tocá el botón <strong style="color:#fff;">solo cuando esté VERDE</strong>. Si está ROJO, no toques. Duración: 60 segundos.</p>
+        <p class="gs-intro-objective">Objetivo: tocar solo en verde, el mayor número de veces posible</p>
+        <div class="gs-intro-brief"><strong>Regla simple:</strong> VERDE = tocá · ROJO = no tocás · Amarillo = transición. Entrena atención sostenida y control de impulsos.</div>
+        <div class="gs-intro-actions">
+          <button id="btnEmpezar7" class="gs-btn-start" type="button">Comenzar</button>
+          <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área de juego -->
+    <div id="gameArea7" class="hidden game-fade-in">
+    <div class="max-w-5xl mx-auto px-6 py-10 game-shell">
 
     <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8 game-card game-main-panel">
       <div class="flex items-start justify-between gap-4 flex-wrap">
         <div class="min-w-0">
           <p class="game-category">Atención y velocidad · Control de impulsos</p>
           <h1 class="text-2xl md:text-3xl font-semibold tracking-wide">Semáforo (Go / No-Go)</h1>
-          <p class="text-inst-gray mt-2 leading-relaxed">
-            Tocá el botón <strong>solo cuando esté VERDE</strong>. Si está ROJO, no toques.
-            Entrena atención sostenida y control de impulsos.
-          </p>
           <span class="game-objective mt-2">Objetivo: tocar solo en verde, el mayor número de veces posible</span>
         </div>
 
@@ -128,8 +152,10 @@
         Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
       </p>
 
-      <div id="result" class="hidden mt-6 game-result-card"></div>
+      <div id="result" class="hidden gs-final"></div>
     </section>
+    </div><!-- /inner wrapper -->
+    </div><!-- /gameArea7 -->
   </main>
 
   <!-- Motor común de gamificación (puntaje/racha/nivel/medalla) -->
@@ -227,15 +253,14 @@
       const medal = summary.medal;
       resultBox.classList.remove("hidden");
       resultBox.innerHTML = `
-        <div class="game-medal game-medal-${medal.id}">${medal.name}</div>
-        <h3 class="game-result-title mt-3">Tiempo finalizado</h3>
-        <p class="game-result-message">${summary.message} ${errors} errores y ${misses} respuestas tardías.</p>
-        <div class="game-result-stats">
-          <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
-          <div class="game-result-stat"><div class="game-result-stat-label">Precisión</div><div class="game-result-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
+        <h3 class="gs-final-title">Tiempo finalizado</h3>
+        <p class="gs-final-msg">${summary.message} ${errors} errores y ${misses} respuestas tardías.</p>
+        <div class="gs-final-stats">
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+          <div class="gs-final-stat"><div class="gs-final-stat-label">Precisión</div><div class="gs-final-stat-value">${summary.accuracy !== null ? summary.accuracy + "%" : "—"}</div></div>
         </div>
-        <div class="game-actions" style="justify-content:center;">
+        <div class="gs-final-actions">
           <button id="again" class="game-btn game-btn-primary">Nueva ronda</button>
           <a href="juegos.html" class="game-btn">Volver a juegos</a>
         </div>
@@ -366,6 +391,12 @@
 
     // estado inicial
     resetGame();
+
+    // Transición intro → juego (FASE 1)
+    document.getElementById("btnEmpezar7").addEventListener("click", function(){
+      document.getElementById("introScreen7").classList.add("hidden");
+      document.getElementById("gameArea7").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>

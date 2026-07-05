@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Sistema visual común para juegos legados (FASE 1) -->
-  <link rel="stylesheet" href="assets/css/legacy-games.css?v=1">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=2">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -160,12 +160,20 @@
 </head>
 <body class="gs-scope">
 
-<header class="topbar" role="banner">
-  <div>
-    <div class="topbar-brand">Dr. Pedro Nicolás Dagnino</div>
-    <div class="topbar-sub">Consultorio · Sala de espera virtual</div>
+<header class="gs-header gs-scope">
+  <div class="gs-header-brand">
+    <div class="gs-header-logo" aria-hidden="true">
+      <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;" onerror="this.style.display='none'">
+    </div>
+    <div>
+      <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+      <div class="gs-header-sub">Juego 22 · Cabina: diferencias</div>
+    </div>
   </div>
-  <a href="juegos.html" class="btn-back" aria-label="Volver al listado de juegos">← Volver a juegos</a>
+  <div class="gs-header-actions">
+    <a href="juegos.html" class="gs-btn-back" aria-label="Volver al listado de juegos">← Juegos</a>
+    <a href="index.html" class="gs-btn-back">Inicio</a>
+  </div>
 </header>
 
 <main class="game-shell">
@@ -226,14 +234,15 @@
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen card result-center game-card">
-    <div id="res-medal" class="game-medal" style="margin:0 auto 10px;"></div>
-    <div class="result-title">¡Cabina inspeccionada!</div>
-    <div class="result-sub" id="res-sub">Encontraste las 5 diferencias.</div>
-    <div class="game-result-stats" id="res-stats"></div>
-    <div class="btn-row game-actions">
-      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Otro nivel</button>
-      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
+  <div id="screen-result" class="screen gs-scope" style="padding: 20px 16px;">
+    <div class="gs-final">
+      <h3 class="gs-final-title">¡Cabina inspeccionada!</h3>
+      <p class="gs-final-msg" id="res-sub">Encontraste las 5 diferencias.</p>
+      <div class="gs-final-stats" id="res-stats"></div>
+      <div class="gs-final-actions">
+        <button class="game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Otro nivel</button>
+        <a href="juegos.html" class="game-btn">Volver a juegos</a>
+      </div>
     </div>
   </div>
 
@@ -262,41 +271,212 @@
       viewBox: '0 0 400 300',
       // Base SVG elements (shared between orig and mod, described as strings with placeholders)
       baseSVG: `
-        <!-- Sky / background -->
-        <rect x="0" y="0" width="400" height="300" fill="#dbeafe"/>
-        <!-- Fuselage body -->
-        <rect x="20" y="60" width="360" height="200" rx="18" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-        <!-- Windows row -->
-        <rect x="50"  y="90" width="36" height="24" rx="8" fill="D1" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="105" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="160" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="215" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="270" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="325" y="90" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <!-- Overhead bins -->
-        <rect x="30" y="130" width="340" height="35" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
-        <line x1="200" y1="130" x2="200" y2="165" stroke="#cbd5e1" stroke-width="1.5"/>
-        <!-- Seats row A -->
-        <rect x="40"  y="175" width="38" height="50" rx="8" fill="D2" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="90"  y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="140" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <!-- Aisle -->
-        <!-- Seats row B -->
-        <rect x="220" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="270" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="320" y="175" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <!-- Overhead panel lights -->
-        <circle cx="80"  cy="148" r="5" fill="D3"/>
-        <circle cx="160" cy="148" r="5" fill="#fbbf24"/>
-        <circle cx="240" cy="148" r="5" fill="#fbbf24"/>
-        <circle cx="320" cy="148" r="5" fill="#fbbf24"/>
-        <!-- Screen on seatback (front seat) -->
-        <rect x="55" y="185" width="22" height="16" rx="3" fill="D4" stroke="#64748b" stroke-width="1"/>
-        <!-- Luggage in bin -->
-        <rect x="50"  y="136" width="55" height="22" rx="4" fill="D5" stroke="#94a3b8" stroke-width="1"/>
-        <rect x="215" y="136" width="55" height="22" rx="4" fill="#fde68a" stroke="#94a3b8" stroke-width="1"/>
-        <!-- Floor strip -->
-        <rect x="20" y="255" width="360" height="5" rx="2" fill="#e2e8f0"/>
+        <defs>
+          <linearGradient id="skyDay" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7dd3fc"/>
+            <stop offset="60%" stop-color="#bae6fd"/>
+            <stop offset="100%" stop-color="#e0f2fe"/>
+          </linearGradient>
+          <linearGradient id="fuseOuter" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#dde3ea"/>
+            <stop offset="100%" stop-color="#c8d0da"/>
+          </linearGradient>
+          <linearGradient id="cabinWall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#eef2f7"/>
+            <stop offset="100%" stop-color="#f5f8fc"/>
+          </linearGradient>
+          <linearGradient id="binGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#dde4ed"/>
+            <stop offset="100%" stop-color="#c8d2de"/>
+          </linearGradient>
+          <linearGradient id="seatGradA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#bfdbfe"/>
+            <stop offset="100%" stop-color="#93c5fd"/>
+          </linearGradient>
+          <filter id="winGlow">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Sky -->
+        <rect x="0" y="0" width="400" height="300" fill="url(#skyDay)"/>
+        <!-- Clouds -->
+        <ellipse cx="70" cy="22" rx="52" ry="13" fill="#fff" opacity=".75"/>
+        <ellipse cx="50" cy="22" rx="28" ry="10" fill="#fff" opacity=".85"/>
+        <ellipse cx="300" cy="32" rx="60" ry="11" fill="#fff" opacity=".6"/>
+        <ellipse cx="275" cy="34" rx="30" ry="9" fill="#fff" opacity=".7"/>
+
+        <!-- Fuselage outer hull -->
+        <rect x="6" y="46" width="388" height="236" rx="30" fill="url(#fuseOuter)" stroke="#a0aec0" stroke-width="2"/>
+        <!-- Fuselage inner cabin liner -->
+        <rect x="16" y="56" width="368" height="216" rx="22" fill="url(#cabinWall)"/>
+
+        <!-- Cabin ceiling strip (darker at top) -->
+        <rect x="16" y="56" width="368" height="36" rx="22" fill="#d6dfe8" opacity=".8"/>
+        <rect x="16" y="78" width="368" height="14" fill="#d6dfe8" opacity=".8"/>
+
+        <!-- Window bezels + glass — 6 windows at y=90 -->
+        <!-- W1 bezel -->
+        <rect x="44" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="50" y="90" width="36" height="24" rx="9" fill="D1" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="52" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+        <rect x="52" y="107" width="32" height="3" rx="1.5" fill="#a8b9c8" opacity=".7"/>
+
+        <!-- W2 -->
+        <rect x="99" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="105" y="90" width="36" height="24" rx="9" fill="#bfdbfe" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="107" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+        <rect x="107" y="107" width="32" height="3" rx="1.5" fill="#a8b9c8" opacity=".7"/>
+
+        <!-- W3 -->
+        <rect x="154" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="160" y="90" width="36" height="24" rx="9" fill="#bfdbfe" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="162" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+
+        <!-- W4 -->
+        <rect x="209" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="215" y="90" width="36" height="24" rx="9" fill="#bfdbfe" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="217" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+
+        <!-- W5 -->
+        <rect x="264" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="270" y="90" width="36" height="24" rx="9" fill="#bfdbfe" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="272" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+
+        <!-- W6 -->
+        <rect x="319" y="85" width="48" height="34" rx="13" fill="#b8c5d2" stroke="#8fa0b0" stroke-width="1.5"/>
+        <rect x="325" y="90" width="36" height="24" rx="9" fill="#bfdbfe" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="327" y="92" width="14" height="8" rx="3" fill="#fff" opacity=".45"/>
+
+        <!-- Overhead bin — left half -->
+        <rect x="22" y="124" width="176" height="38" rx="9" fill="url(#binGrad)" stroke="#9caabb" stroke-width="1.5"/>
+        <!-- Bin seam -->
+        <rect x="22" y="124" width="176" height="4" rx="9" fill="#c0ccd8"/>
+        <!-- Bin handle left -->
+        <rect x="60" y="150" width="50" height="7" rx="3.5" fill="#a8b8c6" stroke="#8fa0b0" stroke-width="1"/>
+        <!-- Bin latch dots -->
+        <circle cx="62" cy="137" r="3" fill="#8fa0b0"/>
+        <circle cx="180" cy="137" r="3" fill="#8fa0b0"/>
+
+        <!-- Luggage in left bin (the diff element) -->
+        <rect x="50" y="136" width="55" height="22" rx="5" fill="D5" stroke="#7a8fa0" stroke-width="1.2"/>
+        <!-- Luggage tag -->
+        <rect x="98" y="133" width="6" height="8" rx="2" fill="#94a3b8" opacity=".8"/>
+        <!-- Luggage handle -->
+        <path d="M 68 134 Q 77 131 86 134" stroke="#64748b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Overhead bin — right half -->
+        <rect x="202" y="124" width="176" height="38" rx="9" fill="url(#binGrad)" stroke="#9caabb" stroke-width="1.5"/>
+        <rect x="202" y="124" width="176" height="4" rx="9" fill="#c0ccd8"/>
+        <rect x="240" y="150" width="50" height="7" rx="3.5" fill="#a8b8c6" stroke="#8fa0b0" stroke-width="1"/>
+        <circle cx="210" cy="137" r="3" fill="#8fa0b0"/>
+        <circle cx="366" cy="137" r="3" fill="#8fa0b0"/>
+
+        <!-- Luggage in right bin -->
+        <rect x="215" y="136" width="55" height="22" rx="5" fill="#fde68a" stroke="#7a8fa0" stroke-width="1.2"/>
+        <path d="M 233 134 Q 242 131 251 134" stroke="#64748b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Central overhead panel (between bins) -->
+        <rect x="174" y="118" width="52" height="52" rx="6" fill="#c4cdd8" stroke="#9caabb" stroke-width="1.5"/>
+        <!-- Sign display -->
+        <rect x="178" y="122" width="44" height="11" rx="3" fill="#0f172a"/>
+        <text x="200" y="131" font-size="6.5" fill="#93c5fd" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">CINTURÓN</text>
+        <!-- Panel reading lights -->
+        <circle cx="80"  cy="148" r="5" fill="D3" stroke="#475569" stroke-width="1"/>
+        <circle cx="160" cy="148" r="5" fill="#fbbf24" stroke="#475569" stroke-width="1"/>
+        <circle cx="240" cy="148" r="5" fill="#fbbf24" stroke="#475569" stroke-width="1"/>
+        <circle cx="320" cy="148" r="5" fill="#fbbf24" stroke="#475569" stroke-width="1"/>
+        <!-- Reading light halos -->
+        <ellipse cx="160" cy="151" rx="8" ry="3" fill="#fef9c3" opacity=".5"/>
+        <ellipse cx="240" cy="151" rx="8" ry="3" fill="#fef9c3" opacity=".5"/>
+        <ellipse cx="320" cy="151" rx="8" ry="3" fill="#fef9c3" opacity=".5"/>
+
+        <!-- Overhead call buttons strip -->
+        <rect x="22" y="163" width="356" height="8" rx="3" fill="#b8c5d2" stroke="#9caabb" stroke-width="1"/>
+        <circle cx="60"  cy="167" r="2.5" fill="#ef4444" opacity=".7"/>
+        <circle cx="80"  cy="167" r="2.5" fill="#22c55e" opacity=".7"/>
+        <circle cx="160" cy="167" r="2.5" fill="#ef4444" opacity=".7"/>
+        <circle cx="180" cy="167" r="2.5" fill="#22c55e" opacity=".7"/>
+        <circle cx="260" cy="167" r="2.5" fill="#ef4444" opacity=".7"/>
+        <circle cx="280" cy="167" r="2.5" fill="#22c55e" opacity=".7"/>
+        <circle cx="340" cy="167" r="2.5" fill="#ef4444" opacity=".7"/>
+        <circle cx="360" cy="167" r="2.5" fill="#22c55e" opacity=".7"/>
+
+        <!-- AISLE -->
+        <rect x="183" y="173" width="34" height="90" fill="#c8d4e0" opacity=".6"/>
+        <!-- Aisle carpet pattern -->
+        <rect x="188" y="185" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+        <rect x="188" y="195" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+        <rect x="188" y="205" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+        <rect x="188" y="215" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+        <rect x="188" y="225" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+        <rect x="188" y="235" width="24" height="4" rx="1" fill="#a0aec0" opacity=".5"/>
+
+        <!-- SEATS ROW A — detailed -->
+        <!-- Seat A1 (has diff D2 + D4) -->
+        <rect x="38" y="173" width="42" height="55" rx="9" fill="D2" stroke="#5a7a98" stroke-width="1.5"/>
+        <!-- Headrest A1 -->
+        <rect x="42" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <!-- Armrests A1 -->
+        <rect x="36" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="77" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <!-- Seatbelt buckle A1 -->
+        <rect x="55" y="220" width="10" height="5" rx="2" fill="#94a3b8"/>
+        <!-- Seatback screen A1 (diff D4) -->
+        <rect x="55" y="185" width="22" height="16" rx="3" fill="D4" stroke="#334155" stroke-width="1"/>
+        <rect x="57" y="187" width="9" height="6" rx="1.5" fill="#93c5fd" opacity=".8"/>
+        <rect x="68" y="187" width="7" height="3" rx="1" fill="#60a5fa" opacity=".6"/>
+        <rect x="68" y="192" width="7" height="3" rx="1" fill="#60a5fa" opacity=".4"/>
+
+        <!-- Seat A2 -->
+        <rect x="90" y="173" width="42" height="55" rx="9" fill="url(#seatGradA)" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="94" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <rect x="88" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="129" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <!-- Screen A2 -->
+        <rect x="105" y="185" width="22" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <rect x="107" y="187" width="18" height="12" rx="2" fill="#0f3460" opacity=".9"/>
+
+        <!-- Seat A3 -->
+        <rect x="140" y="173" width="42" height="55" rx="9" fill="url(#seatGradA)" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="144" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <rect x="138" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="179" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="155" y="185" width="22" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <rect x="157" y="187" width="18" height="12" rx="2" fill="#0f3460" opacity=".9"/>
+
+        <!-- SEATS ROW B -->
+        <!-- Seat B1 -->
+        <rect x="218" y="173" width="42" height="55" rx="9" fill="url(#seatGradA)" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="222" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <rect x="216" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="257" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="233" y="185" width="22" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <rect x="235" y="187" width="18" height="12" rx="2" fill="#0f3460" opacity=".9"/>
+
+        <!-- Seat B2 -->
+        <rect x="268" y="173" width="42" height="55" rx="9" fill="url(#seatGradA)" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="272" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <rect x="266" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="307" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="283" y="185" width="22" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+        <!-- Seat B3 -->
+        <rect x="318" y="173" width="42" height="55" rx="9" fill="url(#seatGradA)" stroke="#5a7a98" stroke-width="1.5"/>
+        <rect x="322" y="173" width="34" height="14" rx="7" fill="#94a3b8" opacity=".75"/>
+        <rect x="316" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="357" y="194" width="5" height="24" rx="2.5" fill="#8fa0b0"/>
+        <rect x="333" y="185" width="22" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+        <!-- Floor -->
+        <rect x="16" y="254" width="368" height="14" rx="4" fill="#b8c8d8"/>
+        <rect x="16" y="254" width="368" height="4" rx="2" fill="#c8d8e8" opacity=".7"/>
+        <!-- Floor seat track lines -->
+        <line x1="36" y1="255" x2="36" y2="268" stroke="#9caabb" stroke-width="1"/>
+        <line x1="186" y1="255" x2="186" y2="268" stroke="#9caabb" stroke-width="1"/>
+        <line x1="216" y1="255" x2="216" y2="268" stroke="#9caabb" stroke-width="1"/>
+        <line x1="364" y1="255" x2="364" y2="268" stroke="#9caabb" stroke-width="1"/>
       `,
       diffs: [
         { id: 'D1', orig: '#bfdbfe', mod: '#fca5a5', desc: 'Color de la primera ventanilla', hx: 50, hy: 90, hw: 36, hh: 24 },
@@ -312,49 +492,176 @@
       label: 'Nivel 2 · Crucero',
       viewBox: '0 0 400 300',
       baseSVG: `
+        <defs>
+          <linearGradient id="nightSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1628"/>
+            <stop offset="100%" stop-color="#0f2240"/>
+          </linearGradient>
+          <linearGradient id="cabinNight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d1526"/>
+            <stop offset="100%" stop-color="#111827"/>
+          </linearGradient>
+          <linearGradient id="binNight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1c2840"/>
+            <stop offset="100%" stop-color="#16202e"/>
+          </linearGradient>
+          <linearGradient id="seatNight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e3a7a"/>
+            <stop offset="100%" stop-color="#1a2f66"/>
+          </linearGradient>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fef9c3"/>
+            <stop offset="70%" stop-color="#fef08a"/>
+            <stop offset="100%" stop-color="#fef08a" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="readLight" cx="50%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#fef9c3" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#fef9c3" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
         <!-- Night sky -->
-        <rect x="0" y="0" width="400" height="300" fill="#1e3a5f"/>
-        <!-- Stars -->
-        <circle cx="30"  cy="20" r="2" fill="#fff" opacity=".7"/>
-        <circle cx="90"  cy="15" r="1.5" fill="#fff" opacity=".6"/>
-        <circle cx="180" cy="25" r="2" fill="#fff" opacity=".8"/>
-        <circle cx="300" cy="10" r="1.5" fill="#fff" opacity=".5"/>
-        <circle cx="370" cy="30" r="2" fill="#fff" opacity=".7"/>
-        <!-- Moon -->
+        <rect x="0" y="0" width="400" height="300" fill="url(#nightSky)"/>
+        <!-- Stars — scattered -->
+        <circle cx="20"  cy="18" r="1.2" fill="#fff" opacity=".8"/>
+        <circle cx="55"  cy="8"  r="0.9" fill="#fff" opacity=".7"/>
+        <circle cx="90"  cy="22" r="1.5" fill="#fff" opacity=".9"/>
+        <circle cx="130" cy="12" r="1"   fill="#fff" opacity=".6"/>
+        <circle cx="175" cy="28" r="1.3" fill="#fff" opacity=".8"/>
+        <circle cx="210" cy="8"  r="0.8" fill="#fff" opacity=".5"/>
+        <circle cx="255" cy="20" r="1.2" fill="#fff" opacity=".9"/>
+        <circle cx="295" cy="14" r="1"   fill="#fff" opacity=".7"/>
+        <circle cx="330" cy="30" r="1.5" fill="#fff" opacity=".8"/>
+        <circle cx="368" cy="10" r="1"   fill="#fff" opacity=".6"/>
+        <circle cx="385" cy="25" r="0.9" fill="#fff" opacity=".7"/>
+        <circle cx="42"  cy="35" r="0.8" fill="#fff" opacity=".5"/>
+        <circle cx="155" cy="5"  r="1.1" fill="#fff" opacity=".8"/>
+
+        <!-- Moon glow halo -->
+        <circle cx="D1x" cy="40" r="28" fill="url(#moonGlow)" opacity=".4"/>
+        <!-- Moon body -->
         <circle cx="D1x" cy="40" r="18" fill="#fef9c3"/>
-        <circle cx="363" cy="33" r="13" fill="#1e3a5f"/>
+        <!-- Moon shadow (crescent) -->
+        <circle cx="D1x" cy="34" r="13" fill="#0a1628"/>
+
+        <!-- Fuselage outer hull -->
+        <rect x="6" y="56" width="388" height="224" rx="30" fill="#1c2838" stroke="#2d3f52" stroke-width="2"/>
         <!-- Cabin interior -->
-        <rect x="20" y="80" width="360" height="200" rx="18" fill="#0f172a" stroke="#334155" stroke-width="2"/>
-        <!-- Windows with glow -->
-        <rect x="50"  y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect x="105" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect x="160" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect x="215" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect x="270" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect x="325" y="105" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1.5"/>
-        <!-- Dim overhead bins -->
-        <rect x="30" y="145" width="340" height="30" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-        <line x1="200" y1="145" x2="200" y2="175" stroke="#334155" stroke-width="1.5"/>
-        <!-- Reading lights -->
-        <ellipse cx="80"  cy="155" rx="12" ry="5" fill="D2" opacity=".7"/>
-        <ellipse cx="160" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
-        <ellipse cx="240" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
-        <ellipse cx="320" cy="155" rx="12" ry="5" fill="#fef9c3" opacity=".7"/>
-        <!-- Seats (dark) -->
-        <rect x="40"  y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <rect x="90"  y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <rect x="140" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <rect x="220" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <rect x="270" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <rect x="320" y="185" width="38" height="50" rx="8" fill="#1e40af" stroke="#3b82f6" stroke-width="1.2"/>
-        <!-- Tray table screen -->
-        <rect x="50" y="195" width="D3w" height="18" rx="3" fill="#0f172a" stroke="#3b82f6" stroke-width="1"/>
-        <rect x="52" y="197" width="18" height="14" rx="2" fill="#93c5fd"/>
-        <!-- Seatbelt sign -->
+        <rect x="16" y="66" width="368" height="206" rx="22" fill="url(#cabinNight)"/>
+        <!-- Ceiling strip dim light -->
+        <rect x="16" y="66" width="368" height="30" rx="22" fill="#162033" opacity=".9"/>
+        <rect x="16" y="88" width="368" height="12" fill="#162033" opacity=".9"/>
+
+        <!-- Windows (night) — positioned at y=105 matching hitboxes -->
+        <!-- W1 -->
+        <rect x="44" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="50" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+        <!-- Star through window -->
+        <circle cx="62" cy="114" r="1" fill="#fff" opacity=".6"/>
+        <circle cx="76" cy="110" r="0.8" fill="#fff" opacity=".5"/>
+        <circle cx="68" cy="120" r="0.7" fill="#fff" opacity=".4"/>
+        <!-- Window glow on wall -->
+        <rect x="46" y="125" width="44" height="3" rx="1.5" fill="#3b82f6" opacity=".2"/>
+
+        <!-- W2 -->
+        <rect x="99" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="105" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="120" cy="114" r="1" fill="#fff" opacity=".5"/>
+
+        <!-- W3 -->
+        <rect x="154" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="160" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+
+        <!-- W4 -->
+        <rect x="209" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="215" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+
+        <!-- W5 -->
+        <rect x="264" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="270" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+
+        <!-- W6 -->
+        <rect x="319" y="100" width="48" height="34" rx="13" fill="#16243a" stroke="#2a3f58" stroke-width="1.5"/>
+        <rect x="325" y="105" width="36" height="24" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+
+        <!-- Overhead bins (dark) -->
+        <rect x="22" y="138" width="176" height="34" rx="9" fill="url(#binNight)" stroke="#2d3f52" stroke-width="1.5"/>
+        <rect x="202" y="138" width="176" height="34" rx="9" fill="url(#binNight)" stroke="#2d3f52" stroke-width="1.5"/>
+        <!-- Bin seams and handles -->
+        <rect x="22" y="138" width="176" height="3" rx="9" fill="#243348"/>
+        <rect x="202" y="138" width="176" height="3" rx="9" fill="#243348"/>
+        <rect x="60"  cy="158" width="50" height="6" rx="3" fill="#243348" x="60" y="158"/>
+        <rect x="242" cy="158" width="50" height="6" rx="3" fill="#243348" x="242" y="158"/>
+
+        <!-- Reading lights (diff D2 on left) -->
+        <ellipse cx="80"  cy="155" rx="14" ry="6" fill="D2" opacity=".75"/>
+        <ellipse cx="160" cy="155" rx="14" ry="6" fill="#fef9c3" opacity=".75"/>
+        <ellipse cx="240" cy="155" rx="14" ry="6" fill="#fef9c3" opacity=".75"/>
+        <ellipse cx="320" cy="155" rx="14" ry="6" fill="#fef9c3" opacity=".75"/>
+        <!-- Reading light cones (subtle) -->
+        <path d="M 66 155 Q 80 185 94 155" fill="#fef9c3" opacity=".06"/>
+        <path d="M 146 155 Q 160 185 174 155" fill="#fef9c3" opacity=".06"/>
+        <path d="M 226 155 Q 240 185 254 155" fill="#fef9c3" opacity=".06"/>
+
+        <!-- Seatbelt sign (diff D4) -->
         <rect x="170" y="148" width="60" height="16" rx="4" fill="#D4" stroke="#475569" stroke-width="1"/>
-        <text x="200" y="160" font-size="8" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif">CINTURÓN</text>
-        <!-- Number on screen panel -->
-        <text x="312" y="125" font-size="D5" fill="#93c5fd" font-family="Inter,sans-serif" font-weight="700">FL380</text>
+        <text x="200" y="160" font-size="8" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">CINTURÓN</text>
+
+        <!-- Flight data panel -->
+        <rect x="292" y="140" width="72" height="24" rx="4" fill="#0a1628" stroke="#334155" stroke-width="1"/>
+        <text x="328" y="156" font-size="D5" fill="#93c5fd" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">FL380</text>
+
+        <!-- AISLE -->
+        <rect x="183" y="175" width="34" height="88" fill="#0d1c30" opacity=".8"/>
+        <!-- Aisle floor lights -->
+        <rect x="188" y="180" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+        <rect x="188" y="192" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+        <rect x="188" y="204" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+        <rect x="188" y="216" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+        <rect x="188" y="228" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+        <rect x="188" y="240" width="24" height="2" rx="1" fill="#3b82f6" opacity=".3"/>
+
+        <!-- SEATS (night, dark blue) -->
+        <!-- A1 with screen (diff D3w) -->
+        <rect x="38" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="42" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <!-- Tray table screen (diff D3w) -->
+        <rect x="50" y="195" width="D3w" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+        <rect x="52" y="197" width="18" height="14" rx="2" fill="#1e3a7a"/>
+        <!-- Map display on screen -->
+        <path d="M 53 202 Q 58 199 63 203 Q 67 207 70 204" stroke="#60a5fa" stroke-width="1" fill="none"/>
+        <!-- Passenger silhouette A1 -->
+        <circle cx="59" cy="183" r="5" fill="#334155" opacity=".7"/>
+
+        <!-- A2 -->
+        <rect x="90" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="94" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <rect x="100" y="195" width="22" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+        <rect x="102" y="197" width="18" height="14" rx="2" fill="#1e3a7a"/>
+
+        <!-- A3 -->
+        <rect x="140" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="144" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <rect x="150" y="195" width="22" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+
+        <!-- B1 -->
+        <rect x="218" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="222" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <rect x="228" y="195" width="22" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+
+        <!-- B2 -->
+        <rect x="268" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="272" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <rect x="278" y="195" width="22" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+
+        <!-- B3 -->
+        <rect x="318" y="183" width="42" height="55" rx="9" fill="url(#seatNight)" stroke="#3b82f6" stroke-width="1.2"/>
+        <rect x="322" y="183" width="34" height="13" rx="7" fill="#1a2e62" opacity=".8"/>
+        <rect x="328" y="195" width="22" height="18" rx="3" fill="#060e1e" stroke="#3b82f6" stroke-width="1"/>
+
+        <!-- Floor -->
+        <rect x="16" y="254" width="368" height="12" rx="4" fill="#0d1a2c"/>
+        <rect x="183" y="254" width="34" height="12" fill="#0a1525"/>
       `,
       diffs: [
         { id: 'D1x', orig: '350', mod: '310', desc: 'Posición de la luna', hx: 315, hy: 20, hw: 70, hh: 50 },
@@ -370,55 +677,178 @@
       label: 'Nivel 3 · Aterrizaje',
       viewBox: '0 0 400 300',
       baseSVG: `
-        <!-- Golden sky -->
-        <rect x="0" y="0" width="400" height="300" fill="#fef3c7"/>
-        <rect x="0" y="0" width="400" height="120" fill="url(#sunGrad)"/>
         <defs>
-          <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#f97316" stop-opacity=".5"/>
-            <stop offset="100%" stop-color="#fef3c7" stop-opacity="0"/>
+          <linearGradient id="sunsetSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f97316"/>
+            <stop offset="40%" stop-color="#fb923c"/>
+            <stop offset="75%" stop-color="#fcd34d"/>
+            <stop offset="100%" stop-color="#fef9c3"/>
+          </linearGradient>
+          <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4ade80"/>
+            <stop offset="100%" stop-color="#16a34a"/>
+          </linearGradient>
+          <linearGradient id="fuseSet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8e0d4"/>
+            <stop offset="100%" stop-color="#d4ccc0"/>
+          </linearGradient>
+          <linearGradient id="cabinSet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fdf8f0"/>
+            <stop offset="100%" stop-color="#f9f4eb"/>
+          </linearGradient>
+          <linearGradient id="binSet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#dfd8cc"/>
+            <stop offset="100%" stop-color="#cec7ba"/>
+          </linearGradient>
+          <linearGradient id="seatSet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#bfdbfe"/>
+            <stop offset="100%" stop-color="#93c5fd"/>
           </linearGradient>
         </defs>
-        <!-- Ground -->
-        <rect x="0" y="220" width="400" height="80" fill="#86efac"/>
-        <rect x="0" y="230" width="400" height="6" fill="#4ade80"/>
-        <!-- Runway markings -->
-        <rect x="160" y="240" width="80" height="8" rx="2" fill="#fff" opacity=".8"/>
-        <rect x="185" y="255" width="30" height="5" rx="1" fill="#fff" opacity=".6"/>
-        <!-- Airport building sketch -->
-        <rect x="310" y="190" width="80" height="40" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
-        <rect x="325" y="175" width="50" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
-        <!-- Cabin frame -->
-        <rect x="10" y="50" width="380" height="175" rx="18" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-        <!-- Windows tilted view -->
-        <rect x="40"  y="75" width="36" height="24" rx="8" fill="D1" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="95"  y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="150" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="205" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="260" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="315" y="75" width="36" height="24" rx="8" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.5"/>
-        <!-- Overhead bins landing pos -->
-        <rect x="20" y="115" width="360" height="30" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
-        <line x1="200" y1="115" x2="200" y2="145" stroke="#cbd5e1" stroke-width="1.5"/>
-        <!-- Fasten seatbelt sign lit -->
-        <rect x="150" y="120" width="100" height="18" rx="4" fill="D2" stroke="#f59e0b" stroke-width="1.5"/>
-        <text x="200" y="132" font-size="8" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">ABROCHEN CINTURÓN</text>
-        <!-- Seats landing -->
-        <rect x="30"  y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="80"  y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="130" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="220" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="270" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <rect x="320" y="155" width="38" height="50" rx="8" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.5"/>
-        <!-- Altitude indicator -->
-        <rect x="30" y="120" width="70" height="18" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+
+        <!-- Sunset sky -->
+        <rect x="0" y="0" width="400" height="300" fill="url(#sunsetSky)"/>
+        <!-- Sun disc -->
+        <circle cx="340" cy="195" r="28" fill="#fef08a" opacity=".9"/>
+        <circle cx="340" cy="195" r="22" fill="#fde047"/>
+        <!-- Sun rays -->
+        <line x1="340" y1="162" x2="340" y2="155" stroke="#fef08a" stroke-width="2" opacity=".5"/>
+        <line x1="364" y1="171" x2="369" y2="165" stroke="#fef08a" stroke-width="2" opacity=".5"/>
+        <line x1="373" y1="195" x2="381" y2="195" stroke="#fef08a" stroke-width="2" opacity=".5"/>
+        <!-- Horizon haze -->
+        <rect x="0" y="190" width="400" height="30" fill="#fde68a" opacity=".25"/>
+
+        <!-- Ground / runway visible below cabin -->
+        <rect x="0" y="218" width="400" height="82" fill="url(#groundGrad)"/>
+        <rect x="0" y="218" width="400" height="6" fill="#22c55e" opacity=".6"/>
+        <!-- Runway -->
+        <rect x="130" y="238" width="140" height="44" rx="3" fill="#4b5563" opacity=".8"/>
+        <rect x="188" y="242" width="24" height="10" rx="2" fill="#fff" opacity=".85"/>
+        <rect x="188" y="256" width="24" height="10" rx="2" fill="#fff" opacity=".85"/>
+        <rect x="188" y="270" width="24" height="10" rx="2" fill="#fff" opacity=".85"/>
+        <!-- Runway lights -->
+        <circle cx="130" cy="240" r="2.5" fill="#fef08a" opacity=".9"/>
+        <circle cx="270" cy="240" r="2.5" fill="#fef08a" opacity=".9"/>
+        <circle cx="130" cy="282" r="2.5" fill="#fef08a" opacity=".9"/>
+        <circle cx="270" cy="282" r="2.5" fill="#fef08a" opacity=".9"/>
+        <!-- Airport terminal silhouette -->
+        <rect x="295" y="185" width="90" height="40" rx="5" fill="#d4cdb8" stroke="#a8a090" stroke-width="1"/>
+        <rect x="308" y="172" width="64" height="18" rx="4" fill="#bdb6a2" stroke="#a8a090" stroke-width="1"/>
+        <rect x="318" y="165" width="44" height="12" rx="3" fill="#a8a090"/>
+        <!-- Terminal windows -->
+        <rect x="300" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <rect x="312" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <rect x="324" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <rect x="336" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <rect x="348" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <rect x="360" y="190" width="6" height="8" rx="1" fill="#fef08a" opacity=".7"/>
+        <!-- Control tower -->
+        <rect x="362" y="158" width="14" height="30" rx="3" fill="#c8c0b0"/>
+        <rect x="358" y="155" width="22" height="10" rx="4" fill="#a8a090"/>
+
+        <!-- Fuselage outer (sunset tint) -->
+        <rect x="6" y="44" width="388" height="178" rx="30" fill="url(#fuseSet)" stroke="#a8a090" stroke-width="2"/>
+        <!-- Cabin interior -->
+        <rect x="16" y="54" width="368" height="160" rx="22" fill="url(#cabinSet)"/>
+        <!-- Ceiling -->
+        <rect x="16" y="54" width="368" height="28" rx="22" fill="#dfd8cc" opacity=".8"/>
+        <rect x="16" y="74" width="368" height="10" fill="#dfd8cc" opacity=".8"/>
+
+        <!-- Windows — sunset warm tones — at y=75 matching hitboxes -->
+        <!-- W1 (diff D1) -->
+        <rect x="34" y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="40" y="75" width="36" height="24" rx="9" fill="D1" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="42" y="77" width="14" height="8" rx="3" fill="#fff" opacity=".35"/>
+        <!-- Sunset orange tint on window frame -->
+        <rect x="34" y="99" width="48" height="3" rx="1.5" fill="#fb923c" opacity=".3"/>
+
+        <!-- W2–W6 with warm sunset view -->
+        <rect x="89"  y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="95"  y="75" width="36" height="24" rx="9" fill="#fed7aa" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="97"  y="77" width="14" height="8" rx="3" fill="#fff" opacity=".3"/>
+
+        <rect x="144" y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="150" y="75" width="36" height="24" rx="9" fill="#fde68a" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="152" y="77" width="14" height="8" rx="3" fill="#fff" opacity=".3"/>
+
+        <rect x="199" y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="205" y="75" width="36" height="24" rx="9" fill="#fed7aa" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="207" y="77" width="14" height="8" rx="3" fill="#fff" opacity=".3"/>
+
+        <rect x="254" y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="260" y="75" width="36" height="24" rx="9" fill="#fde68a" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="262" y="77" width="14" height="8" rx="3" fill="#fff" opacity=".3"/>
+
+        <rect x="309" y="70" width="48" height="34" rx="13" fill="#c8c0b0" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="315" y="75" width="36" height="24" rx="9" fill="#fed7aa" stroke="#8a7a60" stroke-width="1.5"/>
+        <rect x="317" y="77" width="14" height="8" rx="3" fill="#fff" opacity=".3"/>
+
+        <!-- Overhead bins (landing position — slightly open/loose) -->
+        <rect x="22" y="108" width="176" height="32" rx="9" fill="url(#binSet)" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="202" y="108" width="176" height="32" rx="9" fill="url(#binSet)" stroke="#a09880" stroke-width="1.5"/>
+        <rect x="22" y="108" width="176" height="4" rx="9" fill="#c8c0b0"/>
+        <rect x="202" y="108" width="176" height="4" rx="9" fill="#c8c0b0"/>
+
+        <!-- Fasten seatbelt sign (diff D2) — lit in landing -->
+        <rect x="150" y="120" width="100" height="18" rx="4" fill="D2" stroke="#d97706" stroke-width="1.5"/>
+        <text x="200" y="132" font-size="7.5" fill="#fff" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">ABROCHEN CINTURÓN</text>
+        <!-- Sign glow -->
+        <rect x="148" y="118" width="104" height="22" rx="5" fill="#f59e0b" opacity=".12"/>
+
+        <!-- Altitude indicator (diff D3m) -->
+        <rect x="28" y="120" width="74" height="18" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
         <text x="65" y="132" font-size="9" fill="#93c5fd" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700">D3m</text>
-        <!-- Passenger silhouette -->
-        <circle cx="49" cy="148" r="D4r" fill="#94a3b8"/>
-        <rect   cx="49" cy="165" width="16" height="22" rx="4" fill="#94a3b8" x="41" y="155"/>
-        <!-- Tray up sign -->
-        <rect x="230" y="120" width="80" height="18" rx="4" fill="D5c" stroke="#94a3b8" stroke-width="1"/>
-        <text x="270" y="132" font-size="8" fill="#0f172a" text-anchor="middle" font-family="Inter,sans-serif">BANDEJA ARRIBA</text>
+
+        <!-- Tray up sign (diff D5c) -->
+        <rect x="232" y="120" width="78" height="18" rx="4" fill="D5c" stroke="#a09880" stroke-width="1"/>
+        <text x="271" y="132" font-size="7.5" fill="#374151" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">BANDEJA ARRIBA</text>
+
+        <!-- AISLE -->
+        <rect x="183" y="148" width="34" height="62" fill="#cec7ba" opacity=".5"/>
+
+        <!-- SEATS (landing position — upright, compact) -->
+        <!-- A1 -->
+        <rect x="28" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="32" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="26" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="67" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <!-- Passenger silhouette (diff D4r) -->
+        <circle cx="49" cy="153" r="D4r" fill="#6b7c8f"/>
+        <rect x="41" y="160" width="16" height="22" rx="4" fill="#7a8fa0"/>
+
+        <!-- A2 -->
+        <rect x="78" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="82" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="76" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="117" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+
+        <!-- A3 -->
+        <rect x="128" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="132" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="126" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="167" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+
+        <!-- B1 -->
+        <rect x="220" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="224" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="218" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="259" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+
+        <!-- B2 -->
+        <rect x="268" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="272" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="266" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="307" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+
+        <!-- B3 -->
+        <rect x="318" y="153" width="42" height="52" rx="9" fill="url(#seatSet)" stroke="#6a8aa8" stroke-width="1.5"/>
+        <rect x="322" y="153" width="34" height="13" rx="7" fill="#94a3b8" opacity=".7"/>
+        <rect x="316" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+        <rect x="357" y="174" width="5" height="22" rx="2.5" fill="#8a9cb0"/>
+
+        <!-- Floor (warm, landing) -->
+        <rect x="16" y="210" width="368" height="10" rx="4" fill="#c8c0b0"/>
+        <rect x="183" y="210" width="34" height="10" fill="#b8b0a0"/>
       `,
       diffs: [
         { id: 'D1',  orig: '#bfdbfe', mod: '#fde68a', desc: 'Color de la ventanilla delantera', hx: 40, hy: 75, hw: 36, hh: 24 },
@@ -577,12 +1007,10 @@
     const summary = session.summary();
     const medal = summary.medal;
     $('res-sub').textContent = `Encontraste las ${TOTAL_DIFFS} diferencias en la escena "${SCENES[currentLevel].label}". ${summary.message}`;
-    $('res-medal').className = `game-medal game-medal-${medal.id}`;
-    $('res-medal').textContent = medal.name;
     $('res-stats').innerHTML = `
-      <div class="game-result-stat"><div class="game-result-stat-label">Puntaje</div><div class="game-result-stat-value">${summary.score}</div></div>
-      <div class="game-result-stat"><div class="game-result-stat-label">Racha máxima</div><div class="game-result-stat-value">${summary.maxStreak}</div></div>
-      <div class="game-result-stat"><div class="game-result-stat-label">Pistas usadas</div><div class="game-result-stat-value">${hintUsed}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Pistas usadas</div><div class="gs-final-stat-value">${hintUsed}</div></div>
     `;
     showScreen('screen-result');
   }
