@@ -212,10 +212,13 @@
 
 <main class="game-shell">
 
-  <div class="game-status-group" style="margin-bottom:14px; justify-content:center;">
-    <span class="game-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
-    <span class="game-chip" id="scorePill">Puntaje: 0</span>
-    <span class="game-chip game-streak" id="streakPill">Racha: 0</span>
+  <!-- HUD en partida (FASE 2) -->
+  <div class="gs-hud" style="margin-bottom:14px;">
+    <div class="gs-hud-chips" style="margin:0 auto;">
+      <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+      <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+      <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+    </div>
   </div>
 
   <!-- INTRO (FASE 1: pantalla de misión) -->
@@ -336,9 +339,11 @@
   }
 
   function pulseStreak(){
-    const pill = $('streakPill');
-    pill.classList.add('is-up');
-    setTimeout(() => pill.classList.remove('is-up'), 500);
+    ['scorePill','streakPill'].forEach(id => {
+      const pill = $(id);
+      pill.classList.add('is-up');
+      setTimeout(() => pill.classList.remove('is-up'), 500);
+    });
   }
 
   function reverse(s) {
