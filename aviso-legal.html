@@ -5,54 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aviso legal y privacidad | Dr. Dagnino</title>
 
-  <!-- Tailwind + Inter -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Tipografía (sin Tailwind CDN, alineado a FASE 3 del sitio) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'inst-navy': '#0f1e33',
-            'inst-blue': '#2563eb',
-            'inst-light':'#f8fafc',
-            'inst-gray': '#64748b'
-          },
-          fontFamily: { 'sans': ['Inter','system-ui','sans-serif'] }
-        }
-      }
-    }
-  </script>
+  <!-- Sistema visual común del sitio -->
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4">
 </head>
 
-<body class="bg-inst-light font-sans text-inst-navy antialiased">
+<body class="gs-page gs-scope">
 
-  <!-- HEADER -->
-  <header class="bg-white border-b border-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-4">
-      <p class="text-sm font-medium">Dr. Dagnino</p>
-      <p class="text-xs text-inst-gray">Aviso legal y privacidad</p>
+  <!-- HEADER institucional homogéneo -->
+  <header class="gs-header">
+    <div class="gs-header-brand">
+      <div class="gs-header-logo" aria-hidden="true">
+        <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+      </div>
+      <div>
+        <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+        <div class="gs-header-sub">Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+      </div>
+    </div>
+    <div class="gs-header-actions">
+      <a href="index.html" class="gs-btn-back">Inicio</a>
+      <a href="juegos.html" class="gs-btn-back">Juegos</a>
+      <a href="turnos.html" class="gs-btn-back">Central de Turnos</a>
     </div>
   </header>
 
   <!-- CONTENIDO -->
-  <main class="max-w-5xl mx-auto px-6 py-10">
-    <section class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8">
+  <main class="gs-section" style="max-width:900px;">
+    <style>
+      /* Tipografía del contenido legal (reemplazo local de Tailwind) */
+      .legal h1{ font-size:clamp(24px,4vw,30px); font-weight:300; margin:0 0 16px; }
+      .legal h2{ font-size:17px; font-weight:600; margin:0 0 8px; }
+      .legal p{ color:var(--gs-muted); line-height:1.65; margin:0 0 20px; }
+      .legal a{ color:#2563eb; font-weight:600; text-decoration:none; }
+      .legal a:hover{ text-decoration:underline; }
+      .legal .contact-block{ border-top:1px solid var(--gs-border); padding-top:16px; font-size:14px; }
+      .legal .contact-block p{ margin-bottom:8px; }
+    </style>
+    <section class="gs-panel legal">
 
-      <h1 class="text-2xl md:text-3xl font-light mb-4">
+      <h1>
         Aviso legal y política de privacidad
       </h1>
 
-      <p class="text-inst-gray leading-relaxed mb-6">
+      <p>
         El presente sitio web pertenece al <strong>Consultorio de Psiquiatría y Medicina Aeronáutica
         del Dr. Pedro Nicolás Dagnino</strong> y tiene como finalidad brindar información general,
         orientación y acceso a recursos administrativos vinculados a la actividad profesional.
       </p>
 
       <!-- 1 -->
-      <h2 class="text-lg font-semibold mb-2">1. Naturaleza informativa del contenido</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>1. Naturaleza informativa del contenido</h2>
+      <p>
         Los contenidos publicados en este sitio, incluidos textos, materiales psicoeducativos,
         recursos audiovisuales y herramientas complementarias, tienen carácter exclusivamente
         informativo y no constituyen diagnóstico, indicación terapéutica, prescripción médica
@@ -60,8 +68,8 @@
       </p>
 
       <!-- 2 -->
-      <h2 class="text-lg font-semibold mb-2">2. Urgencias y emergencias</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>2. Urgencias y emergencias</h2>
+      <p>
         Este sitio y sus canales de contacto no se encuentran destinados a la atención de urgencias
         o emergencias médicas o psiquiátricas. Ante síntomas agudos, riesgo para sí o para terceros,
         o situaciones de crisis, se recomienda contactar de inmediato a los servicios de emergencias
@@ -69,8 +77,8 @@
       </p>
 
       <!-- 3 -->
-      <h2 class="text-lg font-semibold mb-2">3. Canales de contacto</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>3. Canales de contacto</h2>
+      <p>
         Los canales de contacto publicados (correo electrónico, mensajería instantánea y redes
         sociales) tienen finalidad <strong>principalmente administrativa</strong>, orientada a la
         coordinación de turnos, información general y comunicación institucional. Dichos canales
@@ -78,8 +86,8 @@
       </p>
 
       <!-- 4 -->
-      <h2 class="text-lg font-semibold mb-2">4. Teleconsulta y plataformas de terceros</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>4. Teleconsulta y plataformas de terceros</h2>
+      <p>
         La atención médica puede realizarse, cuando corresponda, mediante videollamadas a través
         de plataformas de terceros (por ejemplo, WhatsApp, Google Meet, Zoom o Skype), emulando la
         experiencia presencial. Estas plataformas cuentan con políticas de uso y privacidad propias,
@@ -87,8 +95,8 @@
       </p>
 
       <!-- 5 -->
-      <h2 class="text-lg font-semibold mb-2">5. Prescripción y normativa aplicable</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>5. Prescripción y normativa aplicable</h2>
+      <p>
         La prescripción de psicofármacos, la emisión de recetas y la confección de documentación
         clínica se ajustan a la normativa vigente y pueden variar según el país de residencia del
         paciente. El consultorio podrá requerir documentación adicional y adecuar los procedimientos
@@ -96,8 +104,8 @@
       </p>
 
       <!-- 6 -->
-      <h2 class="text-lg font-semibold mb-2">6. Relación médico-paciente</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>6. Relación médico-paciente</h2>
+      <p>
         El uso de este sitio web y/o el contacto por canales administrativos no implica por sí mismo
         la constitución de una relación médico-paciente. Dicha relación se considera formalmente
         establecida únicamente con la <strong>confirmación del turno</strong> y la correspondiente
@@ -105,8 +113,8 @@
       </p>
 
       <!-- 7 -->
-      <h2 class="text-lg font-semibold mb-2">7. Privacidad y confidencialidad</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>7. Privacidad y confidencialidad</h2>
+      <p>
         Se procura el resguardo y la confidencialidad de la información brindada conforme a los
         principios del secreto profesional. Se recomienda <strong>no enviar información clínica
         sensible</strong> (historias clínicas completas, estudios médicos, diagnósticos detallados
@@ -114,8 +122,8 @@
       </p>
 
       <!-- 8 -->
-      <h2 class="text-lg font-semibold mb-2">8. Enlaces a sitios de terceros</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>8. Enlaces a sitios de terceros</h2>
+      <p>
         Este sitio puede contener enlaces a redes sociales o servicios de terceros. El consultorio
         no controla ni es responsable por el contenido, disponibilidad, términos de uso o políticas
         de privacidad de dichos sitios externos. Se recomienda revisar las condiciones de cada
@@ -123,37 +131,31 @@
       </p>
 
       <!-- 9 -->
-      <h2 class="text-lg font-semibold mb-2">9. Propiedad intelectual</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>9. Propiedad intelectual</h2>
+      <p>
         Salvo indicación expresa en contrario, los textos, diseños, logotipos, identidad visual y
         contenidos de este sitio son propiedad del consultorio. Queda prohibida su reproducción,
         distribución o utilización total o parcial sin autorización expresa.
       </p>
 
       <!-- 10 -->
-      <h2 class="text-lg font-semibold mb-2">10. Cookies y analíticas</h2>
-      <p class="text-inst-gray leading-relaxed mb-5">
+      <h2>10. Cookies y analíticas</h2>
+      <p>
         Este sitio no utiliza cookies de seguimiento ni tecnologías destinadas a la elaboración de
         perfiles, publicidad personalizada o monitoreo individual del comportamiento del usuario.
       </p>
-      <p class="text-inst-gray leading-relaxed mb-6">
+      <p>
         Únicamente se emplean recursos técnicos esenciales para el correcto funcionamiento del sitio.
         La navegación no requiere la aceptación de cookies adicionales.
       </p>
 
       <!-- CONTACTO -->
-      <div class="border-t border-gray-100 pt-4 text-sm text-inst-gray flex flex-col gap-2">
+      <div class="contact-block">
         <p>
           <strong>Contacto administrativo:</strong>
-          <a href="mailto:consultoriopsiquiatriadag@gmail.com"
-             class="text-inst-blue font-semibold hover:underline">
-            consultoriopsiquiatriadag@gmail.com
-          </a>
+          <a href="mailto:consultoriopsiquiatriadag@gmail.com">consultoriopsiquiatriadag@gmail.com</a>
           ·
-          <a href="mailto:secretaria.dr.dagnino@gmail.com"
-             class="text-inst-blue font-semibold hover:underline">
-            secretaria.dr.dagnino@gmail.com
-          </a>
+          <a href="mailto:secretaria.dr.dagnino@gmail.com">secretaria.dr.dagnino@gmail.com</a>
         </p>
         <p>
           <strong>Ubicación:</strong>
@@ -161,18 +163,15 @@
         </p>
       </div>
 
-      <div class="mt-6 text-center">
-        <a href="index.html"
-           class="text-inst-blue font-semibold hover:underline">
-          ← Volver a la Sala de Espera Virtual
-        </a>
+      <div style="margin-top:24px; text-align:center;">
+        <a href="index.html">← Volver a la Sala de Espera Virtual</a>
       </div>
 
     </section>
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-inst-navy text-white py-6 text-center text-xs">
+  <footer style="background:#0f1e33; color:#fff; padding:24px; text-align:center; font-size:12px;">
     Copyright © <span id="year"></span> Todos los derechos reservados ·
     Desarrollado por <span class="font-semibold">PETER-SOFT</span>
   </footer>
