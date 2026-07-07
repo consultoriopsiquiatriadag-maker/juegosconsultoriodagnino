@@ -117,6 +117,28 @@
     .psico-selector-card:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 3px; }
 
     .psico-card-emoji { font-size: 26px; line-height: 1; flex-shrink: 0; }
+
+    /* Iconos SVG institucionales del selector (reemplazo de emojis) */
+    .resource-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text, #fff);
+    }
+    .resource-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
     .psico-card-label {
       font-size: calc(15px * var(--text-scale));
       font-weight: 700;
@@ -431,7 +453,12 @@
              href="psicoeducacion-ejercicios.html#ansiedad"
              data-spa="0"
              aria-label="Ansiedad: Bajar activacion">
-            <span class="psico-card-emoji" aria-hidden="true">&#x1F630;</span>
+            <span class="resource-icon resource-icon-anxiety" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M2 14c2-4.5 4-4.5 6 0s4 4.5 6 0 4-4.5 6 0" />
+                <path d="M6 8.5c1.5-2.5 3-2.5 4.5 0" opacity=".55" />
+              </svg>
+            </span>
             <span class="psico-card-label">Ansiedad</span>
             <span class="psico-card-micro">Bajar activacion</span>
           </a>
@@ -440,7 +467,13 @@
              href="psicoeducacion-ejercicios.html#panico"
              data-spa="0"
              aria-label="Panico: Orientarte y respirar">
-            <span class="psico-card-emoji" aria-hidden="true">&#x1F6A8;</span>
+            <span class="resource-icon resource-icon-panic" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <circle cx="12" cy="12" r="8" />
+                <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+                <path d="M12 1.5v2M12 20.5v2M1.5 12h2M20.5 12h2" opacity=".5" />
+              </svg>
+            </span>
             <span class="psico-card-label">Panico</span>
             <span class="psico-card-micro">Orientarte y respirar</span>
           </a>
@@ -449,7 +482,12 @@
              href="psicoeducacion-ejercicios.html#rumiacion"
              data-spa="0"
              aria-label="Rumiacion: Salir del bucle mental">
-            <span class="psico-card-emoji" aria-hidden="true">&#x1F9E0;</span>
+            <span class="resource-icon resource-icon-rumination" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M18.4 7A8 8 0 1 0 20 12" />
+                <path d="M19.5 3.5v3.6h-3.6" />
+              </svg>
+            </span>
             <span class="psico-card-label">Rumiacion</span>
             <span class="psico-card-micro">Salir del bucle mental</span>
           </a>
@@ -458,7 +496,11 @@
              href="psicoeducacion-ejercicios.html#sueno"
              data-spa="0"
              aria-label="Sueno: Preparar el descanso">
-            <span class="psico-card-emoji" aria-hidden="true">&#x1F634;</span>
+            <span class="resource-icon resource-icon-sleep" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5z" />
+              </svg>
+            </span>
             <span class="psico-card-label">Sue&#xF1;o</span>
             <span class="psico-card-micro">Preparar el descanso</span>
           </a>
@@ -467,7 +509,14 @@
              href="impulsividad.html"
              data-spa="0"
              aria-label="Impulsividad e Ira: Frenar antes de actuar">
-            <span class="psico-card-emoji" aria-hidden="true">&#x26A1;</span>
+            <span class="resource-icon resource-icon-impulse" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <rect x="8.5" y="2.5" width="7" height="19" rx="3.5" />
+                <circle cx="12" cy="7" r="1.3" fill="currentColor" stroke="none" />
+                <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" opacity=".55" />
+                <circle cx="12" cy="17" r="1.3" fill="currentColor" stroke="none" opacity=".3" />
+              </svg>
+            </span>
             <span class="psico-card-label">Impulsividad / Ira</span>
             <span class="psico-card-micro">Frenar antes de actuar</span>
           </a>
@@ -476,7 +525,13 @@
              href="silla-ansiedad.html"
              data-spa="0"
              aria-label="Rutina en silla: Calmar el cuerpo en 3 minutos">
-            <span class="psico-card-emoji" aria-hidden="true">&#x1FA91;</span>
+            <span class="resource-icon resource-icon-chair" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M7 3.5v17" />
+                <path d="M7 13h10v7.5" />
+                <path d="M7 7h6" opacity=".55" />
+              </svg>
+            </span>
             <span class="psico-card-label">Rutina en silla</span>
             <span class="psico-card-micro">Calmar el cuerpo en 3 minutos</span>
           </a>
