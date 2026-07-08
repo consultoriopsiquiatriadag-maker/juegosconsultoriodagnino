@@ -187,6 +187,50 @@
       line-height: 1.4;
       font-weight: 400;
     }
+    /* FASE 5: aviso de riesgo sobrio */
+    .quick-help-risk-note {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(251, 191, 36, .28);
+      background: rgba(251, 191, 36, .08);
+      color: rgba(254, 243, 199, .92);
+      font-size: calc(13.5px * var(--text-scale));
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .risk-note-icon {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(251, 191, 36, .12);
+      color: #fcd34d;
+    }
+    .risk-note-icon svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .risk-note-link {
+      display: inline-block;
+      margin-left: 6px;
+      color: #fde68a;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .risk-note-link:hover,
+    .risk-note-link:focus-visible { color: #fff7ed; }
+
     .psico-eyebrow {
       margin: 0 0 6px;
       font-size: .76rem;
@@ -591,9 +635,20 @@
 
         </nav>
 
-        <div class="note" style="margin-top:16px" role="note">
-          Si hay riesgo (autolesion / violencia / consumo fuera de control),
-          mira <strong>&#x00AB;Si estas en riesgo&#x00BB;</strong> al final de esta pagina.
+        <div class="quick-help-risk-note" role="note">
+          <span class="risk-note-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 3.5 21.5 20h-19L12 3.5z" />
+              <path d="M12 10v4.5" />
+              <circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span>
+            Si hay riesgo de autolesi&#xF3;n, violencia o consumo fuera de control,
+            prioriz&#xE1; la seguridad y revis&#xE1; la secci&#xF3;n
+            <strong>&#x00AB;Si est&#xE1;s en riesgo&#x00BB;</strong> al final de esta p&#xE1;gina.
+            <a class="risk-note-link" href="#seccion-riesgo">Ver secci&#xF3;n de riesgo</a>
+          </span>
         </div>
 
       </div>
@@ -666,7 +721,7 @@
 
 
     <!-- Bloque de riesgo -->
-    <section class="section" aria-label="Informacion de riesgo">
+    <section class="section" aria-label="Informacion de riesgo" id="seccion-riesgo">
       <details class="psico-riesgo-card">
 
         <summary class="psico-riesgo-summary"
