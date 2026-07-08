@@ -150,8 +150,23 @@
       font-size: calc(13px * var(--text-scale));
       color: rgba(255,255,255,.82);
       line-height: 1.65;
+      font-weight: 700;
+    }
+    .psico-card-desc {
+      font-size: calc(12.5px * var(--text-scale));
+      color: rgba(255,255,255,.62);
+      line-height: 1.4;
       font-weight: 400;
     }
+    .psico-eyebrow {
+      margin: 0 0 6px;
+      font-size: .76rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #93c5fd;
+      font-weight: 800;
+    }
+    .quick-help-header { max-width: 760px; }
 
 
     /* ==================================================================
@@ -440,12 +455,15 @@
     <section class="section" aria-labelledby="psico-selector-heading">
       <div class="section-card hint-bg">
 
-        <h2 class="card-title" id="psico-selector-heading" style="margin:0">
-          &#xBF;Que necesitas ahora?
-        </h2>
-        <p class="card-sub" style="margin-top:8px; margin-bottom:0">
-          Toca una opcion. Cada recurso esta pensado para usarse en pocos minutos.
-        </p>
+        <div class="quick-help-header">
+          <p class="psico-eyebrow">Selector r&#xE1;pido</p>
+          <h2 class="card-title" id="psico-selector-heading" style="margin:0">
+            &#xBF;Que necesitas ahora?
+          </h2>
+          <p class="card-sub" style="margin-top:8px; margin-bottom:0">
+            Eleg&#xED; un recurso breve seg&#xFA;n lo que est&#xE9;s sintiendo. Cada opci&#xF3;n est&#xE1; pensada para usarse en pocos minutos.
+          </p>
+        </div>
 
         <nav class="psico-selector-grid" aria-label="Seleccion por estado o necesidad">
 
@@ -461,6 +479,7 @@
             </span>
             <span class="psico-card-label">Ansiedad</span>
             <span class="psico-card-micro">Bajar activacion</span>
+            <span class="psico-card-desc">Para nerviosismo, aceleraci&#xF3;n corporal o inquietud.</span>
           </a>
 
           <a class="psico-selector-card"
@@ -476,6 +495,7 @@
             </span>
             <span class="psico-card-label">Panico</span>
             <span class="psico-card-micro">Orientarte y respirar</span>
+            <span class="psico-card-desc">Para momentos de alarma intensa o sensaci&#xF3;n de desborde.</span>
           </a>
 
           <a class="psico-selector-card"
@@ -490,6 +510,7 @@
             </span>
             <span class="psico-card-label">Rumiacion</span>
             <span class="psico-card-micro">Salir del bucle mental</span>
+            <span class="psico-card-desc">Para pensamientos repetitivos que vuelven una y otra vez.</span>
           </a>
 
           <a class="psico-selector-card"
@@ -503,6 +524,7 @@
             </span>
             <span class="psico-card-label">Sue&#xF1;o</span>
             <span class="psico-card-micro">Preparar el descanso</span>
+            <span class="psico-card-desc">Para bajar revoluciones antes de dormir.</span>
           </a>
 
           <a class="psico-selector-card"
@@ -519,6 +541,7 @@
             </span>
             <span class="psico-card-label">Impulsividad / Ira</span>
             <span class="psico-card-micro">Frenar antes de actuar</span>
+            <span class="psico-card-desc">Para enojo, tensi&#xF3;n o dificultad para detener una reacci&#xF3;n.</span>
           </a>
 
           <a class="psico-selector-card"
@@ -534,6 +557,7 @@
             </span>
             <span class="psico-card-label">Rutina en silla</span>
             <span class="psico-card-micro">Calmar el cuerpo en 3 minutos</span>
+            <span class="psico-card-desc">Ejercicio guiado, breve y discreto, sin equipamiento.</span>
           </a>
 
         </nav>
