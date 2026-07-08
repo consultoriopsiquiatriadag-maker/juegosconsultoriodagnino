@@ -112,9 +112,38 @@
       cursor: pointer;
       transition: background .18s, border-color .18s, transform .12s;
     }
-    .psico-selector-card:hover         { background: rgba(255,255,255,.20); border-color: rgba(255,255,255,.38); }
+    .psico-selector-card:hover,
+    .psico-selector-card:focus-visible {
+      background: rgba(255,255,255,.16);
+      border-color: var(--accent-ring, rgba(255,255,255,.38));
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(15,23,42,.28);
+    }
     .psico-selector-card:active        { transform: scale(.98); }
     .psico-selector-card:focus-visible { outline: 2px solid rgba(255,255,255,.75); outline-offset: 3px; }
+
+    /* FASE 4: acento sutil propio por tarjeta */
+    .psico-selector-card { position: relative; overflow: hidden; }
+    .psico-selector-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(circle at top left, var(--accent-soft, transparent), transparent 46%);
+    }
+    .psico-selector-card > * { position: relative; }
+    .psico-selector-card .resource-icon {
+      color: var(--accent, var(--text, #fff));
+      box-shadow: 0 0 0 1px var(--accent-ring, rgba(255,255,255,.14));
+    }
+
+    .psico-selector-card.is-anxiety    { --accent:#38bdf8; --accent-soft:rgba(56,189,248,.14);  --accent-ring:rgba(56,189,248,.35); }
+    .psico-selector-card.is-panic      { --accent:#fbbf24; --accent-soft:rgba(251,191,36,.12);  --accent-ring:rgba(251,191,36,.35); }
+    .psico-selector-card.is-rumination { --accent:#a78bfa; --accent-soft:rgba(167,139,250,.14); --accent-ring:rgba(167,139,250,.35); }
+    .psico-selector-card.is-sleep      { --accent:#60a5fa; --accent-soft:rgba(96,165,250,.14);  --accent-ring:rgba(96,165,250,.35); }
+    .psico-selector-card.is-impulse    { --accent:#fb7185; --accent-soft:rgba(251,113,133,.12); --accent-ring:rgba(251,113,133,.35); }
+    .psico-selector-card.is-chair      { --accent:#2dd4bf; --accent-soft:rgba(45,212,191,.14);  --accent-ring:rgba(45,212,191,.35); }
 
     .psico-card-emoji { font-size: 26px; line-height: 1; flex-shrink: 0; }
 
@@ -467,7 +496,7 @@
 
         <nav class="psico-selector-grid" aria-label="Seleccion por estado o necesidad">
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-anxiety"
              href="psicoeducacion-ejercicios.html#ansiedad"
              data-spa="0"
              aria-label="Ansiedad: Bajar activacion">
@@ -482,7 +511,7 @@
             <span class="psico-card-desc">Para nerviosismo, aceleraci&#xF3;n corporal o inquietud.</span>
           </a>
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-panic"
              href="psicoeducacion-ejercicios.html#panico"
              data-spa="0"
              aria-label="Panico: Orientarte y respirar">
@@ -498,7 +527,7 @@
             <span class="psico-card-desc">Para momentos de alarma intensa o sensaci&#xF3;n de desborde.</span>
           </a>
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-rumination"
              href="psicoeducacion-ejercicios.html#rumiacion"
              data-spa="0"
              aria-label="Rumiacion: Salir del bucle mental">
@@ -513,7 +542,7 @@
             <span class="psico-card-desc">Para pensamientos repetitivos que vuelven una y otra vez.</span>
           </a>
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-sleep"
              href="psicoeducacion-ejercicios.html#sueno"
              data-spa="0"
              aria-label="Sueno: Preparar el descanso">
@@ -527,7 +556,7 @@
             <span class="psico-card-desc">Para bajar revoluciones antes de dormir.</span>
           </a>
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-impulse"
              href="impulsividad.html"
              data-spa="0"
              aria-label="Impulsividad e Ira: Frenar antes de actuar">
@@ -544,7 +573,7 @@
             <span class="psico-card-desc">Para enojo, tensi&#xF3;n o dificultad para detener una reacci&#xF3;n.</span>
           </a>
 
-          <a class="psico-selector-card"
+          <a class="psico-selector-card is-chair"
              href="silla-ansiedad.html"
              data-spa="0"
              aria-label="Rutina en silla: Calmar el cuerpo en 3 minutos">
