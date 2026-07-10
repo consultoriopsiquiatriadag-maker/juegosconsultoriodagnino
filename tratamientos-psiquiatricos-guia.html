@@ -270,7 +270,7 @@
             <h2 class="card-title" style="margin:0">Escuchá el audio (podcast)</h2>
             <p class="card-sub">Podés escuchar primero y después leer, o al revés.</p>
           </div>
-          <span class="chip" aria-label="Audio disponible">🎧 Audio</span>
+          <span class="chip" aria-label="Audio disponible"><span class="ticon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg></span> Audio</span>
         </div>
 
         <div class="audio-wrap">
@@ -486,7 +486,7 @@
               <button class="btn btn-ghost" id="btnReset" type="button">Reset</button>
             </div>
 
-            <div class="copy-ok" id="copyOk">✅ Copiado. Podés pegarlo en WhatsApp o traerlo a consulta.</div>
+            <div class="copy-ok" id="copyOk"><span class="ticon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg></span> Copiado. Podés pegarlo en WhatsApp o traerlo a consulta.</div>
           </div>
 
           <div class="section-card hint-bg" style="margin:0">
@@ -555,24 +555,24 @@
     <!-- Navegación inter-temática -->
     <section class="section">
       <div class="section-card hint-bg">
-        <div class="tema-nav-label">📚 También en esta línea temática</div>
+        <div class="tema-nav-label">También en esta línea temática</div>
         <div class="tema-nav-grid">
 
           <span class="tema-card activo">
-            <span class="tema-card-icon">🧠</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.6a2.3 2.3 0 1 1 3.3 2c-.8.4-1.1.9-1.1 1.7"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/></svg></span>
             <span class="tema-card-title">Los mitos frecuentes</span>
             <span class="tema-card-sub">Mitos, señales de alarma y mini ejercicio de registro.</span>
             <span class="tema-card-badge">Estás aquí</span>
           </span>
 
           <a class="tema-card" href="explicarle-a-un-familiar.html" data-spa="0">
-            <span class="tema-card-icon">💬</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4.5 4.5h15a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 4v-4H4.5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/></svg></span>
             <span class="tema-card-title">Explicarle a un familiar</span>
             <span class="tema-card-sub">Cómo preparar y sostener esa conversación difícil.</span>
           </a>
 
           <a class="tema-card" href="estudios-medicos-actualizados.html" data-spa="0">
-            <span class="tema-card-icon">📋</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h6M10 15.5h6"/></svg></span>
             <span class="tema-card-title">Estudios médicos actualizados</span>
             <span class="tema-card-sub">Cómo mantener actualizada la historia clínica entre consultas.</span>
           </a>
@@ -667,7 +667,7 @@
           const need  = needToFeelSafe ? (needToFeelSafe.value || "").trim() : "";
 
           const txt =
-            `🧠 Desmitificando tratamientos psiquiátricos — Registro breve\n` +
+            `Desmitificando tratamientos psiquiátricos — Registro breve\n` +
             `• Reticencia / miedo (0–10): ${value}\n` +
             `• Preocupación principal: ${worry}\n` +
             `• Para sentirme más seguro/a necesitaría: ${need || "—"}\n` +
