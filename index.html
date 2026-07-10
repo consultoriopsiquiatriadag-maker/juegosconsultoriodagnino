@@ -484,91 +484,8 @@ a.btn-primary[href*="whatsapp"]{
   box-shadow: 0 0 8px rgba(255,255,255,0.10);
 }
 
-/* ===== Zócalo Sala de espera virtual ===== */
-.hero-intro-wrap{
-  background: #f2f5f8;
-  padding: 0 0 8px;
-}
+/* (Zócalo "Sala de espera virtual" removido: la bienvenida la da la barra ONLINE) */
 
-.hero-card--inline{
-  position: relative;
-  right: auto;
-  top: auto;
-  transform: none;
-  width: min(100%, 520px);
-  max-width: 100%;
-  margin: 18px 0 0 auto;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 18px;
-  padding: 22px 20px;
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.6);
-}
-
-.hero-card--inline .pill{
-  white-space: normal;
-  flex-wrap: nowrap; /* punto titilante y texto siempre en la misma línea */
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.hero-card--inline .pill .dot{
-  flex: 0 0 auto; /* el punto no se encoge ni se separa del texto */
-}
-
-.hero-card--inline .hero-title{
-  color: #0a1f36 !important;
-  font-size: clamp(16px, 2.6vw, 22px);
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-shadow: none !important;
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  flex: 1 1 auto;
-  min-width: 0; /* permite que el texto use el ancho restante y baje de línea internamente, sin caer debajo del punto */
-  max-width: 100%;
-  box-sizing: border-box;
-  line-height: 1.25;
-  text-align: left;
-}
-
-.hero-card--inline .pill{
-  color: #2b2b2b !important;
-}
-
-.hero-card--inline .pill .dot{
-  background: #34c759;
-  box-shadow: 0 0 0 0 rgba(52,199,89,0.7);
-  animation: onlinePulseCard 2.2s infinite;
-}
-
-@keyframes onlinePulseCard{
-  0%{
-    box-shadow: 0 0 0 0 rgba(52,199,89,0.7);
-  }
-  70%{
-    box-shadow: 0 0 0 8px rgba(52,199,89,0);
-  }
-  100%{
-    box-shadow: 0 0 0 0 rgba(52,199,89,0);
-  }
-}
-
-@media (max-width: 640px){
-  .hero-card--inline{
-    width: 100%;
-    margin: 14px 0 0 0;
-    padding: 20px 18px;
-    border-radius: 16px;
-  }
-}
 
 /* ===== Ola de transición hero → contenido (conservada) ===== */
 .hero-wave{
@@ -585,47 +502,7 @@ a.btn-primary[href*="whatsapp"]{
   .hero-wave svg{ height: 40px; }
 }
 
-/* ===== BIENVENIDA HERO — animación sobria ===== */
-/* Fade + deslizamiento horizontal suave desde la izquierda.
-   No toca .hero-title original: solo se activa si se agrega
-   la clase .hero-title-welcome-motion al elemento. */
-.hero-title-welcome-motion{
-  animation: heroTitleIn 0.90s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
-}
-
-@keyframes heroTitleIn{
-  from{
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to{
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* En mobile pequeño: "SALA DE ESPERA VIRTUAL" pasa a bloque
-   para evitar corte de texto y mejorar lectura. */
-.sala-label{
-  display: inline;
-  letter-spacing: 0.03em;
-}
-
-@media (max-width: 480px){
-  .sala-label{
-    display: block;
-    margin-top: 2px;
-  }
-}
-
-/* Sin movimiento: texto fijo, totalmente legible */
-@media (prefers-reduced-motion: reduce){
-  .hero-title-welcome-motion{
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+/* (Bloque "Bienvenida hero" removido: la bienvenida la da la barra ONLINE) */
 
 /* ===== FASE 4 — Tarjeta profesional Dr. Dagnino ===== */
 .welcome-profile-grid{
@@ -1096,17 +973,10 @@ a.btn-primary[href*="whatsapp"]{
   <!-- Línea divisoria blanca -->
   <div class="hero-divider" aria-hidden="true"></div>
 
-  <!-- Sala de espera virtual -->
-  <section class="hero-intro-wrap">
-    <div class="wrap">
-      <div class="hero-card hero-card--inline">
-        <div class="pill" aria-label="Bienvenida" style="align-items:center; gap:10px;">
-          <span class="dot" aria-hidden="true"></span>
-          <h1 class="hero-title hero-title-welcome-motion" style="margin:0;">Bienvenidos a la <span class="sala-label">SALA DE ESPERA VIRTUAL</span></h1>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- H1 accesible/SEO (la bienvenida visual la da la barra ONLINE) -->
+  <h1 style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
+    Bienvenidos a la Sala de Espera Virtual — Consultorio Dr. Pedro Nicolás Dagnino
+  </h1>
 
   <!-- Main -->
   <main id="spaMain" class="wrap" aria-label="Contenido principal">
