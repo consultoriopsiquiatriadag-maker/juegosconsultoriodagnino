@@ -6,7 +6,7 @@
   <title>Desmitificando los tratamientos psiquiátricos — Consultorio Dr. Pedro Nicolas Dagnino</title>
   <meta name="description" content="Línea temática sobre tratamientos psiquiátricos: mitos frecuentes, cómo hablar con un familiar y cómo mantener la historia clínica actualizada." />
 
-  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="assets/css/app.css?v=3" />
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0e2239">
 
@@ -121,7 +121,7 @@
   </style>
 </head>
 
-<body>
+<body class="theme-treatment-page">
 
   <!-- HEADER institucional -->
   <header>
@@ -144,6 +144,23 @@
       </div>
     </div>
   </header>
+
+  <!-- Barra ONLINE — Sala de Espera Virtual -->
+  <div class="online-strip" aria-label="Sala de espera virtual en línea">
+    <div class="online-strip-inner">
+      <span class="online-static">
+        <span class="online-dot" aria-hidden="true"></span>
+        <span class="online-label">ON LINE</span>
+      </span>
+      <div class="online-ticker" aria-hidden="false">
+        <div class="online-ticker-track">
+          <span class="online-message">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
 
@@ -172,14 +189,14 @@
 
         <div class="audio-wrap">
           <audio class="audio-player" controls preload="metadata" id="podcastAudio">
-            <source src="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/mp4" />
-            <source src="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/x-m4a" />
+            <source src="audio/el_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/mp4" />
+            <source src="audio/el_laberinto_del_tratamiento_psiquiátrico.m4a" type="audio/x-m4a" />
             Tu navegador no soporta audio.
           </audio>
 
           <div class="audio-actions">
             <a class="btn" href="#temas">Ver los temas</a>
-            <a class="btn btn-ghost" href="audio/El_laberinto_del_tratamiento_psiquiátrico.m4a" download>Descargar audio</a>
+            <a class="btn btn-ghost" href="audio/el_laberinto_del_tratamiento_psiquiátrico.m4a" download>Descargar audio</a>
           </div>
 
           <div class="note">
