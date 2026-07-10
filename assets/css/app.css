@@ -798,6 +798,27 @@
     @media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
 
 /* ============================================================
+   Nav de header — páginas internas (línea tratamientos)
+   ============================================================ */
+.header-nav{
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.header-nav a{
+  display: inline-flex; align-items: center;
+  padding: 7px 12px; border-radius: 10px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff; font-size: 13px; font-weight: 600;
+  text-decoration: none; white-space: nowrap;
+  transition: background .2s;
+}
+.header-nav a:hover{ background: rgba(255,255,255,.22); }
+.header-nav a:focus-visible{ outline: 2px solid rgba(255,255,255,.75); outline-offset: 2px; }
+@media (max-width: 720px){
+  .header-nav a{ padding: 6px 9px; font-size: 12px; }
+}
+
+/* ============================================================
    Barra ONLINE — Sala de Espera Virtual (reutilizable)
    ============================================================ */
 .online-strip{
