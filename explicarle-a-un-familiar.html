@@ -7,7 +7,7 @@
   <meta name="description" content="Guía práctica para hablar con un familiar sobre lo que uno está atravesando: cómo prepararse, qué decir, cómo pedir apoyo y manejar reacciones difíciles. Consultorio Dr. Pedro Nicolas Dagnino." />
 
   <!-- Estética del ecosistema -->
-  <link rel="stylesheet" href="assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="assets/css/app.css?v=3" />
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0e2239">
 
@@ -216,6 +216,23 @@
       </div>
     </div>
   </header>
+
+  <!-- Barra ONLINE — Sala de Espera Virtual -->
+  <div class="online-strip" aria-label="Sala de espera virtual en línea">
+    <div class="online-strip-inner">
+      <span class="online-static">
+        <span class="online-dot" aria-hidden="true"></span>
+        <span class="online-label">ON LINE</span>
+      </span>
+      <div class="online-ticker" aria-hidden="false">
+        <div class="online-ticker-track">
+          <span class="online-message">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
 
@@ -710,20 +727,20 @@
         <div class="tema-nav-grid">
 
           <a class="tema-card" href="tratamientos-psiquiatricos-guia.html" data-spa="0">
-            <span class="tema-card-icon">🧠</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.6a2.3 2.3 0 1 1 3.3 2c-.8.4-1.1.9-1.1 1.7"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/></svg></span>
             <span class="tema-card-title">Los mitos frecuentes</span>
             <span class="tema-card-sub">Mitos, señales de alarma y mini ejercicio de registro.</span>
           </a>
 
           <span class="tema-card activo">
-            <span class="tema-card-icon">💬</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" focusable="false"><path d="M4.5 4.5h15a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 4v-4H4.5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/></svg></span>
             <span class="tema-card-title">Explicarle a un familiar</span>
             <span class="tema-card-sub">Cómo preparar y sostener esa conversación difícil.</span>
             <span class="tema-card-badge">Estás aquí</span>
           </span>
 
           <a class="tema-card" href="estudios-medicos-actualizados.html" data-spa="0">
-            <span class="tema-card-icon">📋</span>
+            <span class="tema-card-icon ticon ticon--lg" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" focusable="false"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h6M10 15.5h6"/></svg></span>
             <span class="tema-card-title">Estudios médicos actualizados</span>
             <span class="tema-card-sub">Cómo mantener actualizada la historia clínica entre consultas.</span>
           </a>
