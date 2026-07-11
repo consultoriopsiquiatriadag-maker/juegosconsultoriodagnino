@@ -41,7 +41,9 @@
     }
 
     *{box-sizing:border-box}
-    html{font-size:var(--base-font)}
+    /* La base escala con --text-scale para que los tamaños en rem
+       también respondan a los botones A− / A+ */
+    html{font-size:calc(var(--base-font, 100%) * var(--text-scale, 1))}
     body{
       margin:0;
       font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
