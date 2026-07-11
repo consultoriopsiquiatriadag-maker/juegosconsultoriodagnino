@@ -798,6 +798,29 @@
     @media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
 
 /* ============================================================
+   Hero — línea tratamientos (eyebrow + aviso)
+   ============================================================ */
+.treatment-eyebrow{
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.25);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #dbeafe;
+}
+.treatment-note{
+  margin: 10px 0 0;
+  font-size: .78rem;
+  opacity: .85;
+  line-height: 1.4;
+}
+
+/* ============================================================
    Íconos SVG inline — línea tratamientos (.ticon)
    ============================================================ */
 .ticon{
