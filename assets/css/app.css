@@ -798,6 +798,53 @@
     @media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
 
 /* ============================================================
+   Zócalos de contenido — línea tratamientos (FASE 6)
+   Pulido homogéneo sobre las section-card existentes.
+   ============================================================ */
+.theme-treatment-page .section-card{
+  border-radius: 20px;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.theme-treatment-page .section-card.hint-bg{
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,.05), transparent 40%),
+    var(--surface-2, #fff);
+}
+.theme-treatment-page .section-card p,
+.theme-treatment-page .section-card li{
+  line-height: 1.62;
+}
+.theme-treatment-page .section-card ul,
+.theme-treatment-page .section-card ol{
+  padding-left: 1.2rem;
+}
+.theme-treatment-page .card-title{
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+.theme-treatment-page a.hub-card,
+.theme-treatment-page a.tema-card{
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.theme-treatment-page a.hub-card:hover,
+.theme-treatment-page a.tema-card:hover,
+.theme-treatment-page a.hub-card:focus-visible,
+.theme-treatment-page a.tema-card:focus-visible{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(15,23,42,.14);
+  border-color: rgba(37,99,235,.35);
+}
+@media (prefers-reduced-motion: reduce){
+  .theme-treatment-page .section-card,
+  .theme-treatment-page a.hub-card,
+  .theme-treatment-page a.tema-card{
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ============================================================
    Hero — línea tratamientos (eyebrow + aviso)
    ============================================================ */
 .treatment-eyebrow{
