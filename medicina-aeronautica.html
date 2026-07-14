@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medicina aeronáutica para pasajeros — Consultorio Dr. Pedro Nicolás Dagnino</title>
+  <meta name="description" content="Qué le puede pasar al cuerpo y a la mente cuando volamos, y cuándo conviene consultar. Recursos psicoeducativos sobre salud y vuelo comercial." />
+  <link rel="stylesheet" href="assets/css/app.css?v=4" />
+  <meta name="theme-color" content="#0e2239" />
+  <style>
+    /* Hero visual institucional (sin imagen: degradado aeronáutico) */
+    .aero-hero{
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 80% 15%, rgba(147,197,253,.25), transparent 45%),
+        linear-gradient(160deg, #0e2239 0%, #14406b 60%, #0e6cc4 130%);
+      color: #fff;
+      padding: clamp(28px, 6vw, 56px) clamp(18px, 4vw, 36px);
+    }
+    .aero-hero h1{ margin: 0; font-size: clamp(24px, 3.6vw, 38px); line-height: 1.12; }
+    .aero-hero .sub{ margin: 10px 0 0; opacity: .92; max-width: 62ch; line-height: 1.55; }
+
+    /* Selector rápido */
+    .aero-selector{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .aero-chip{
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 999px;
+      background: #fff; border: 1px solid rgba(15,30,51,.16);
+      font-weight: 700; font-size: .9rem; color: #0e2239;
+      text-decoration: none; transition: background .18s, border-color .18s, transform .15s;
+    }
+    .aero-chip:hover, .aero-chip:focus-visible{
+      background: #e0f2fe; border-color: rgba(14,108,196,.4);
+      transform: translateY(-1px); outline: none;
+    }
+
+    /* Grilla de temas (se completa en FASE 3) */
+    .aero-grid{
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px; margin-top: 14px;
+    }
+    @media (max-width: 900px){ .aero-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 600px){ .aero-grid{ grid-template-columns: 1fr; } }
+    .aero-card{
+      display: flex; flex-direction: column; gap: 6px;
+      padding: 16px; border-radius: 16px;
+      background: #fff; border: 1px solid rgba(15,30,51,.12);
+      color: inherit; text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .aero-card:hover, .aero-card:focus-visible{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(15,23,42,.14);
+      border-color: rgba(14,108,196,.35);
+      outline: none;
+    }
+    .aero-card h3{ margin: 0; font-size: .98rem; line-height: 1.25; }
+    .aero-card p{ margin: 0; font-size: .84rem; color: var(--muted); line-height: 1.5; }
+    .aero-card .soon{
+      align-self: flex-start; font-size: .68rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 999px;
+      background: rgba(148,163,184,.15); color: #64748b;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .aero-chip, .aero-card{ transition: none; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="theme-treatment-page">
+
+  <!-- HEADER institucional -->
+  <header class="topbar" role="banner">
+    <div class="wrap header-inner">
+      <div class="brand" aria-label="Identidad institucional">
+        <div class="brand-badge" aria-hidden="true">
+          <img src="logo-avion.png" alt="" style="width:34px;height:34px;object-fit:contain;display:block;">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Dr. Pedro Nicolás Dagnino | Consultorio de Psiquiatría y Medicina Aeronáutica</div>
+          <div class="brand-sub">Medicina aeronáutica para pasajeros</div>
+        </div>
+      </div>
+      <div class="controls" aria-label="Controles">
+        <nav class="header-nav" aria-label="Navegación principal">
+          <a href="index.html" data-spa="0">Inicio</a>
+          <a href="temas-salud-mental.html" data-spa="0">Temas de Salud Mental</a>
+          <a href="turnos.html" data-spa="0">Central de Turnos</a>
+          <a href="aviso-legal.html" data-spa="0">Aviso legal</a>
+        </nav>
+        <div class="font-size-controls" aria-label="Tamaño de letra">
+          <button class="font-size-btn" id="btnAminus" type="button" aria-label="Disminuir tamaño de letra">A−</button>
+          <button class="font-size-btn" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra ONLINE — Sala de Espera Virtual -->
+  <div class="online-strip" aria-label="Sala de espera virtual en línea">
+    <div class="online-strip-inner">
+      <span class="online-static">
+        <span class="online-dot" aria-hidden="true"></span>
+        <span class="online-label">ON LINE</span>
+      </span>
+      <div class="online-ticker" aria-hidden="false">
+        <div class="online-ticker-track">
+          <span class="online-message">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+          <span class="online-message" aria-hidden="true">Bienvenidos a la SALA DE ESPERA VIRTUAL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" style="padding-top:18px; padding-bottom:24px;">
+
+    <!-- HERO -->
+    <section class="section">
+      <div class="aero-hero">
+        <span class="treatment-eyebrow">Medicina aeronáutica · Sección para pasajeros</span>
+        <h1>Medicina aeronáutica para pasajeros</h1>
+        <p class="sub">Qué le puede pasar al cuerpo y a la mente cuando volamos, y cuándo conviene consultar.</p>
+        <p class="treatment-note">Material psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.</p>
+      </div>
+    </section>
+
+    <!-- Introducción + selector rápido -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <h2 class="card-title" style="margin:0">Salud y vuelo comercial</h2>
+        <p class="card-sub" style="margin-top:8px">
+          Volar es seguro para la mayoría de las personas. Sin embargo, el ambiente de cabina puede
+          modificar la presión, la humedad, el sueño, la circulación y la ansiedad. Esta sección reúne
+          recursos breves para comprender síntomas frecuentes antes, durante y después de un vuelo.
+        </p>
+        <nav class="aero-selector" aria-label="Selector rápido por momento del viaje">
+          <a class="aero-chip" href="#antes">Antes de volar</a>
+          <a class="aero-chip" href="#durante">Durante el vuelo</a>
+          <a class="aero-chip" href="#despues">Después del vuelo</a>
+          <a class="aero-chip" href="fobia-al-vuelo.html" data-spa="0">Temor a volar</a>
+          <a class="aero-chip" href="#consultar">Cuándo consultar</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Grilla de temas (FASE 3) -->
+    <section class="section" id="temas">
+      <div class="section-card hint-bg">
+        <h2 class="card-title" style="margin:0">Temas frecuentes</h2>
+        <p class="card-sub" style="margin-top:8px">
+          Situaciones habituales de salud vinculadas al vuelo comercial. Las tarjetas se irán
+          habilitando a medida que se publiquen las páginas de cada tema.
+        </p>
+        <div class="aero-grid" id="aeroGrid">
+          <!-- Tarjetas de temas: se agregan en FASE 3 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Recursos relacionados -->
+    <section class="section">
+      <div class="section-card hint-bg">
+        <h2 class="card-title" style="margin:0">Recursos relacionados del consultorio</h2>
+        <p class="card-sub" style="margin-top:8px">Herramientas y contenidos aeronáuticos ya disponibles en la Sala de Espera Virtual.</p>
+        <div class="aero-grid">
+          <a class="aero-card" href="fobia-al-vuelo.html" data-spa="0">
+            <h3>Fobia al vuelo (aerofobia)</h3>
+            <p>Ansiedad anticipatoria, pánico en vuelo, evitación y herramientas de regulación.</p>
+          </a>
+          <a class="aero-card" href="evaluacion-situacional.html" data-spa="0">
+            <h3>Evaluación situacional de vuelo</h3>
+            <p>Autoevaluación breve orientativa sobre cómo te sentís frente a un próximo vuelo.</p>
+          </a>
+          <a class="aero-card" href="factores-humanos-aviacion-vida.html" data-spa="0">
+            <h3>Factores humanos: de la aviación a la vida</h3>
+            <p>Qué enseña la seguridad aérea sobre el error, la fatiga y las decisiones humanas.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Central de Turnos -->
+    <section class="section" id="consultar">
+      <div class="section-card hint-bg" style="text-align:center;">
+        <h2 class="card-title" style="margin:0; justify-content:center;">¿Tenés un vuelo próximo y dudas de salud?</h2>
+        <p class="card-sub" style="margin-top:8px">
+          Si tenés una enfermedad previa, síntomas recientes o temor significativo a volar,
+          una consulta anticipada permite planificar el viaje con tranquilidad.
+        </p>
+        <div style="margin-top:14px;">
+          <a class="btn-primary" href="turnos.html" data-spa="0">Central de Turnos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER institucional -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div style="text-align:center; margin-bottom:10px;">
+        <div style="font-weight:700;">Dr. Pedro Nicolás Dagnino</div>
+        <div style="opacity:.8; font-size:13px;">Médico especialista en Psiquiatría y Medicina Aeronáutica · Consultorio de Psiquiatría Dagnino</div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-spa="0">Inicio</a>
+        <span>·</span>
+        <a href="turnos.html" data-spa="0">Central de Turnos</a>
+        <span>·</span>
+        <a href="temas-salud-mental.html" data-spa="0">Temas de Salud Mental</a>
+        <span>·</span>
+        <a href="aviso-legal.html" data-spa="0">Aviso legal / Privacidad</a>
+        <span>·</span>
+        <a href="https://g.page/r/CVsCzoS0tE9REBI/review" target="_blank" rel="noopener">Publicar reseña</a>
+      </div>
+      <div class="footer-copy">© Consultorio Dr. Pedro Nicolás Dagnino · Desarrollado por <strong>PETER-SOFT</strong></div>
+    </div>
+  </footer>
+
+  <!-- JS ecosistema -->
+  <script src="js/i18n.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/spa.js"></script>
+  <script src="assets/js/app.js?v=1"></script>
+
+</body>
+</html>
