@@ -253,12 +253,23 @@ a{ color:inherit; }
   background:#0e2239;
   box-shadow:var(--riobamba-shadow);
 }
-.riobamba-video-frame video{
+.riobamba-video-frame iframe,`n.riobamba-video-frame video{
   display:block;
   width:100%;
   aspect-ratio:16/9;
   object-fit:cover;
   background:#0e2239;
+}
+.riobamba-video-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px;
+}
+.riobamba-video-actions p{
+  margin:0;
+  color:var(--riobamba-muted);
+  font-size:13.5px;
 }
 @media (min-width:860px){
   .riobamba-video-layout{
