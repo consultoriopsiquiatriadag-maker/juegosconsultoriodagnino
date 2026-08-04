@@ -247,17 +247,24 @@ a{ color:inherit; }
   max-width:620px;
 }
 .riobamba-video-frame{
+  position:relative;
+  width:min(420px, 100%);
+  aspect-ratio:9/16;
+  justify-self:center;
   overflow:hidden;
   border-radius:var(--riobamba-radius);
   border:1px solid var(--riobamba-border);
   background:#0e2239;
   box-shadow:var(--riobamba-shadow);
 }
-.riobamba-video-frame iframe,`n.riobamba-video-frame video{
+.riobamba-video-frame iframe,
+.riobamba-video-frame video{
+  position:absolute;
+  inset:0;
   display:block;
   width:100%;
-  aspect-ratio:16/9;
-  object-fit:cover;
+  height:100%;
+  border:0;
   background:#0e2239;
 }
 .riobamba-video-actions{
