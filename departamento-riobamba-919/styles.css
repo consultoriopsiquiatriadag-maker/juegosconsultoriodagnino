@@ -234,6 +234,37 @@ a{ color:inherit; }
 }
 .riobamba-map-embed iframe{ display:block; }
 
+/* ── Video de la unidad ───────────────────────────────────── */
+.riobamba-video-section{
+  background:rgba(255,255,255,.72);
+}
+.riobamba-video-layout{
+  display:grid;
+  gap:20px;
+  align-items:start;
+}
+.riobamba-video-copy{
+  max-width:620px;
+}
+.riobamba-video-frame{
+  overflow:hidden;
+  border-radius:var(--riobamba-radius);
+  border:1px solid var(--riobamba-border);
+  background:#0e2239;
+  box-shadow:var(--riobamba-shadow);
+}
+.riobamba-video-frame video{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  background:#0e2239;
+}
+@media (min-width:860px){
+  .riobamba-video-layout{
+    grid-template-columns:minmax(0, .62fr) minmax(360px, 1fr);
+  }
+}
 /* ── Galería ───────────────────────────────────────────────── */
 .riobamba-gallery{
   display:grid;
