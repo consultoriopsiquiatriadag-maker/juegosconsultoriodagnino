@@ -49,7 +49,7 @@
           <button class="btn-ghost" id="btnAplus" type="button" aria-label="Aumentar tamaño de letra">A+</button>
 
           
-          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">⚙️ Ajustes</button>
+          <button class="btn-ghost" id="openSettingsDesktop" type="button" aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">Ajustes</button>
 <button class="btn-ghost" id="audioToggle" type="button" aria-pressed="false" data-i18n="audio_off">Activar sonidos</button>
 
           <div class="volume" aria-label="Control de volumen">
@@ -65,7 +65,7 @@
         <!-- Mobile: botón premium -->
         <button class="btn-ghost controls-mobile" id="openSettings" type="button"
                 aria-haspopup="dialog" aria-expanded="false" data-i18n="settings_btn">
-          ⚙️ Ajustes
+          Ajustes
         </button>
       </div>
     </div>
@@ -78,12 +78,12 @@
     <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes">
       <div class="sheet-head">
         <div class="sheet-title" data-i18n="settings_title">Ajustes</div>
-        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button" data-i18n="close_btn">Cerrar ✕</button>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button" data-i18n="close_btn">Cerrar ×</button>
       </div>
 
       <div class="sheet-body">
                 <div class="sheet-row">
-          <p class="sheet-row-title" data-i18n="sheet_font_title">🔠 Tamaño de letra</p>
+          <p class="sheet-row-title" data-i18n="sheet_font_title">Tamaño de letra</p>
           <div class="sheet-actions sheet-actions-col">
             <input id="textScaleRange" type="range" min="85" max="130" step="1" value="100" aria-label="Tamaño de texto" data-action="text-scale" />
             <div class="sheet-actions" style="justify-content:flex-end">
@@ -94,7 +94,7 @@
         
 
         <div class="sheet-row">
-          <p class="sheet-row-title" data-i18n="sheet_contrast_title">🌓 Contraste</p>
+          <p class="sheet-row-title" data-i18n="sheet_contrast_title">Contraste</p>
           <div class="sheet-actions">
             <label class="a11y-switch">
               <input type="checkbox" id="toggleContrast" data-action="contrast" aria-label="Activar alto contraste">
@@ -104,7 +104,7 @@
         </div>
 
         <div class="sheet-row">
-          <p class="sheet-row-title" data-i18n="sheet_motion_title">🪶 Reducir animaciones</p>
+          <p class="sheet-row-title" data-i18n="sheet_motion_title">Reducir animaciones</p>
           <div class="sheet-actions">
             <label class="a11y-switch">
               <input type="checkbox" id="toggleMotion" data-action="reduce-motion" aria-label="Reducir animaciones">
@@ -126,7 +126,7 @@
 </div>
 
         <div class="sheet-row">
-          <p class="sheet-row-title" data-i18n="sheet_audio_title">🔊 Sonidos</p>
+          <p class="sheet-row-title" data-i18n="sheet_audio_title">Sonidos</p>
           <div class="sheet-actions">
             <button class="btn-ghost" id="audioToggleSheet" type="button" aria-pressed="false" data-action="audio-toggle" data-i18n="audio_off">
               Activar sonidos
@@ -139,7 +139,7 @@
         </div>
 
         <div class="sheet-row lang-row">
-          <p class="sheet-row-title" data-i18n="sheet_lang_title">🌐 Idioma</p>
+          <p class="sheet-row-title" data-i18n="sheet_lang_title">Idioma</p>
           <div class="sheet-actions">
             <!-- sin IDs (evitamos duplicados), pero sí data-lang para reutilizar tu i18n -->
             <button class="btn-chip" type="button" data-lang="es" aria-pressed="true">ES</button>
@@ -436,7 +436,7 @@
     function scrollToNextTodo(){
       const checks = [...document.querySelectorAll('input[type="checkbox"][data-idx]')];
       const next = checks.find(c => !c.checked);
-      if(!next){ alert("¡Excelente! No hay pendientes ✅"); return; }
+      if(!next){ alert("¡Excelente! No hay pendientes"); return; }
       document.querySelectorAll(".focus-ring").forEach(el => el.classList.remove("focus-ring"));
       const card = next.closest("label");
       if(card){
@@ -453,11 +453,11 @@
         "Higiene del sueño — Checklist",
         `Cumplimiento: ${ok} de ${items.length} (${Math.round((ok/items.length)*100)}%)`,
         "",
-        ...done.map(x => `${x.ok ? "✅" : "⬜"} ${x.i}. ${x.t}`)
+        ...done.map(x => `${x.ok ? "✓" : "–"} ${x.i}. ${x.t}`)
       ].join("\n");
       try{
         await navigator.clipboard.writeText(text);
-        alert("Resultado copiado ✅");
+        alert("Resultado copiado");
       }catch{
         prompt("Copiá el texto:", text);
       }
