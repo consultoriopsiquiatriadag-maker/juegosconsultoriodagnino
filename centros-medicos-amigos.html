@@ -89,7 +89,7 @@
         <div aria-label="Controles (escritorio)" class="controls-desktop">
           <button aria-label="Disminuir tamaño de letra" class="btn-ghost" id="btnAminus" type="button">A-</button>
           <button aria-label="Aumentar tamaño de letra" class="btn-ghost" id="btnAplus" type="button">A+</button>
-          <button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost" id="openSettingsDesktop" type="button">⚙️ Ajustes</button>
+          <button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost" id="openSettingsDesktop" type="button">Ajustes</button>
           <button aria-pressed="false" class="btn-ghost" id="audioToggle" type="button">Activar sonidos</button>
           <div aria-label="Control de volumen" class="volume">
             <label for="volumeRange">Volumen</label>
@@ -102,7 +102,7 @@
 
         <!-- Mobile -->
         <button aria-expanded="false" aria-haspopup="dialog" class="btn-ghost controls-mobile" id="openSettings" type="button">
-          ⚙️ Ajustes
+          Ajustes
         </button>
       </div>
     </div>
@@ -114,11 +114,11 @@
     <div aria-label="Ajustes" aria-modal="true" class="sheet" role="dialog">
       <div class="sheet-head">
         <div class="sheet-title">Ajustes</div>
-        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button">Cerrar ✕</button>
+        <button class="btn-ghost sheet-close" id="closeSettingsBtn" type="button">Cerrar ×</button>
       </div>
       <div class="sheet-body">
         <div class="sheet-row">
-          <p class="sheet-row-title">🔠 Tamaño de letra</p>
+          <p class="sheet-row-title">Tamaño de letra</p>
           <div class="sheet-actions sheet-actions-col">
             <input aria-label="Tamaño de texto" data-action="text-scale" id="textScaleRange" max="130" min="85" step="1" type="range" value="100"/>
             <div class="sheet-actions" style="justify-content:flex-end">
@@ -129,7 +129,7 @@
         </div>
 
         <div class="sheet-row">
-          <p class="sheet-row-title">🌓 Contraste</p>
+          <p class="sheet-row-title">Contraste</p>
           <div class="sheet-actions">
             <label class="a11y-switch">
               <input aria-label="Activar alto contraste" data-action="contrast" id="toggleContrast" type="checkbox"/>
@@ -139,7 +139,7 @@
         </div>
 
         <div class="sheet-row">
-          <p class="sheet-row-title">🪶 Reducir animaciones</p>
+          <p class="sheet-row-title">Reducir animaciones</p>
           <div class="sheet-actions">
             <label class="a11y-switch">
               <input aria-label="Reducir animaciones" data-action="reduce-motion" id="toggleMotion" type="checkbox"/>
@@ -159,7 +159,7 @@
         </div>
 
         <div class="sheet-row">
-          <p class="sheet-row-title">🔊 Sonidos</p>
+          <p class="sheet-row-title">Sonidos</p>
           <div class="sheet-actions">
             <button aria-pressed="false" class="btn-ghost" data-action="audio-toggle" id="audioToggleSheet" type="button">
               Activar sonidos
@@ -172,7 +172,7 @@
         </div>
 
         <div class="sheet-row lang-row">
-          <p class="sheet-row-title">🌐 Idioma</p>
+          <p class="sheet-row-title">Idioma</p>
           <div class="sheet-actions">
             <button aria-pressed="true" class="btn-chip" data-lang="es" type="button">ES</button>
             <button aria-pressed="false" class="btn-chip" data-lang="en" type="button">EN</button>

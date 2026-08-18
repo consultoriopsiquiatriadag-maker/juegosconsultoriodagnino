@@ -63,7 +63,7 @@
         <button id="audioToggle"
           class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-inst-light border border-gray-200 hover:bg-white"
           aria-pressed="false">
-          🔇 Audio silenciado
+          Audio silenciado
         </button>
 
         <div class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200">
@@ -87,7 +87,7 @@
         <div class="mt-6 flex flex-col sm:flex-row gap-3">
           <a href="#musica"
              class="inline-flex justify-center items-center rounded-xl bg-inst-blue text-white font-semibold px-5 py-3 hover:opacity-95 soft-ring">
-            🎧 Elegir música y comenzar
+            Elegir música y comenzar
           </a>
           <a href="#actividad"
              class="inline-flex justify-center items-center rounded-xl bg-white/10 border border-white/15 text-white font-semibold px-5 py-3 hover:bg-white/10 soft-ring">
@@ -314,7 +314,7 @@
 
     function setAudioUI(){
       audioToggle.setAttribute("aria-pressed", audioEnabled ? "true" : "false");
-      audioToggle.textContent = audioEnabled ? "🔊 Audio activo" : "🔇 Audio silenciado";
+      audioToggle.textContent = audioEnabled ? "Audio activo" : "Audio silenciado";
     }
 
     function showCredits(key){
@@ -396,12 +396,12 @@
 
     // ===== Actividad emocional =====
     const EMOTIONS = [
-      { key:"Calma", emoji:"🫶", tone:"bg-emerald-50" },
-      { key:"Alegría", emoji:"🙂", tone:"bg-yellow-50" },
-      { key:"Ansiedad", emoji:"😣", tone:"bg-sky-50" },
-      { key:"Tristeza", emoji:"😔", tone:"bg-indigo-50" },
-      { key:"Enojo", emoji:"😠", tone:"bg-rose-50" },
-      { key:"Cansancio", emoji:"😮‍💨", tone:"bg-slate-50" },
+      { key:"Calma", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M9 10h.01M15 10h.01M8.5 15c1-.8 6-.8 7 0\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-emerald-50" },
+      { key:"Alegría", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M9 10h.01M15 10h.01M8 14c1.3 1.8 6.7 1.8 8 0\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-yellow-50" },
+      { key:"Ansiedad", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M9 10h.01M15 10h.01M8 15.5c1-1 2-1.4 4-1.4s3 .4 4 1.4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-sky-50" },
+      { key:"Tristeza", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M9 10h.01M15 10h.01M8.5 16c1-1.8 6-1.8 7 0\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-indigo-50" },
+      { key:"Enojo", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M8 9.5l2.3 1M16 9.5l-2.3 1M8.5 15.5c1-.9 6-.9 7 0\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-rose-50" },
+      { key:"Cansancio", emoji:"<svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" focusable=\"false\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M8 10.3h2.3M13.7 10.3H16M8.5 15h7\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>", tone:"bg-slate-50" },
     ];
 
     const emotionGrid = document.getElementById("emotionGrid");
@@ -479,7 +479,7 @@
     btnCopy2.addEventListener("click", async () => {
       updateSummary();
       await copyText(summary.textContent);
-      btnCopy2.textContent = "✅ Copiado";
+      btnCopy2.textContent = "Copiado";
       setTimeout(() => (btnCopy2.textContent = "Copiar"), 1200);
     });
 
