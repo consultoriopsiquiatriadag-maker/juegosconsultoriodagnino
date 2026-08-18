@@ -129,10 +129,10 @@
         <div class="controls-desktop">
           <button class="btn-ghost" id="btnAminus" type="button">A-</button>
           <button class="btn-ghost" id="btnAplus" type="button">A+</button>
-          <button class="btn-ghost" id="toggleContrast" type="button" aria-pressed="false">🌓 Contraste</button>
-          <button class="btn-ghost" id="toggleMotion" type="button" aria-pressed="false">🪶 Animación</button>
-          <button class="btn-ghost" id="toggleSound" type="button" aria-pressed="false">🔊 Sonido</button>
-          <a class="btn-ghost" href="aviso-legal.html" title="Aviso legal y privacidad">ⓘ Aviso legal</a>
+          <button class="btn-ghost" id="toggleContrast" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true" style="vertical-align:-3px;margin-right:4px;"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/></svg>Contraste</button>
+          <button class="btn-ghost" id="toggleMotion" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true" style="vertical-align:-3px;margin-right:4px;"><path d="M4 18c3-8 7-12 14-13" fill="none" stroke="currentColor"/><path d="M9 15c2-3 4-5 8-6" fill="none" stroke="currentColor" opacity=".6"/></svg>Animación</button>
+          <button class="btn-ghost" id="toggleSound" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true" style="vertical-align:-3px;margin-right:4px;"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor"/></svg>Sonido</button>
+          <a class="btn-ghost" href="aviso-legal.html" title="Aviso legal y privacidad"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true" style="vertical-align:-3px;margin-right:4px;"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor"/><circle cx="12" cy="8" r=".9" fill="currentColor" stroke="none"/><path d="M12 11v6" stroke="currentColor"/></svg>Aviso legal</a>
         </div>
       </div>
     </div>
@@ -1013,7 +1013,7 @@
       toggleContrast?.setAttribute("aria-pressed", String(!!p.hc));
       toggleMotion?.setAttribute("aria-pressed", String(!!p.rm));
       toggleSound?.setAttribute("aria-pressed", String(!!p.muted));
-      toggleSound.textContent = p.muted ? "🔇 Sonido" : "🔊 Sonido";
+      if (toggleSound) toggleSound.querySelector("svg")?.style.setProperty("opacity", p.muted ? ".5" : "1");
     };
 
     const bumpFont = (delta) => {
