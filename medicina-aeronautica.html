@@ -76,6 +76,17 @@
     @media (prefers-reduced-motion: reduce){
       .aero-chip, .aero-card{ transition: none; transform: none; }
     }
+
+    /* Audio de introducción */
+    .audio-wrap{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+    .audio-player{ width:100%; border-radius:12px; }
+    .audio-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px;
+      background:rgba(14,108,196,.08); border:1px solid rgba(14,108,196,.22);
+      color:#0e6cc4; font-weight:700; font-size:.82rem;
+    }
   </style>
 </head>
 
@@ -138,14 +149,28 @@
     </section>
 
     <!-- Introducción + selector rápido -->
-    <section class="section">
+    <section class="section" id="intro">
       <div class="section-card hint-bg">
-        <h2 class="card-title" style="margin:0">Salud y vuelo comercial</h2>
-        <p class="card-sub" style="margin-top:8px">
-          Volar es seguro para la mayoría de las personas. Sin embargo, el ambiente de cabina puede
-          modificar la presión, la humedad, el sueño, la circulación y la ansiedad. Esta sección reúne
-          recursos breves para comprender síntomas frecuentes antes, durante y después de un vuelo.
-        </p>
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">Salud y vuelo comercial</h2>
+            <p class="card-sub" style="margin-top:8px">
+              Volar es seguro para la mayoría de las personas. Sin embargo, el ambiente de cabina puede
+              modificar la presión, la humedad, el sueño, la circulación y la ansiedad. Esta sección reúne
+              recursos breves para comprender síntomas frecuentes antes, durante y después de un vuelo.
+            </p>
+          </div>
+          <span class="chip" aria-label="Audio disponible">Audio</span>
+        </div>
+        <div class="audio-wrap">
+          <audio class="audio-player" controls preload="metadata">
+            <source src="audio/intro-medicina-aeronautica.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <div class="audio-actions">
+            <a class="btn-secondary" href="audio/intro-medicina-aeronautica.mp3" download>Descargar audio</a>
+          </div>
+        </div>
         <nav class="aero-selector" aria-label="Selector rápido por momento del viaje">
           <a class="aero-chip" href="#antes">Antes de volar</a>
           <a class="aero-chip" href="#durante">Durante el vuelo</a>
