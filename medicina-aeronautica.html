@@ -24,12 +24,25 @@
     .aero-hero h1{ margin: 0; font-size: clamp(24px, 3.6vw, 38px); line-height: 1.12; }
     .aero-hero .sub{ margin: 10px 0 0; opacity: .92; max-width: 62ch; line-height: 1.55; }
 
+    .aero-hero-toggle{
+      display: none;
+      appearance: none; background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.3); border-radius: 999px;
+      color: #fff; font-size: .78rem; font-weight: 700;
+      padding: 6px 14px; margin-top: 10px; cursor: pointer;
+    }
+    .aero-hero-details{ overflow: hidden; }
+
     @media (max-width: 640px){
-      .aero-hero{ padding: 18px 16px; border-radius: 14px; }
+      .aero-hero{ padding: 16px 16px; border-radius: 14px; }
       .aero-hero .treatment-eyebrow{ font-size: .68rem; }
-      .aero-hero h1{ font-size: 1.4rem; margin-top: 6px; }
+      .aero-hero h1{ font-size: 1.3rem; margin-top: 6px; }
       .aero-hero .sub{ font-size: .9rem; margin-top: 6px; }
       .aero-hero .treatment-note{ font-size: .74rem; margin-top: 8px; opacity: .8; }
+
+      .aero-hero-toggle{ display: inline-block; }
+      .aero-hero-details{ max-height: 0; margin-top: 0; transition: max-height .28s ease; }
+      .aero-hero-details.is-open{ max-height: 220px; margin-top: 6px; }
     }
 
     /* Selector rápido */
@@ -151,8 +164,11 @@
       <div class="aero-hero">
         <span class="treatment-eyebrow">Medicina aeronáutica · Sección para pasajeros</span>
         <h1>Medicina aeronáutica para pasajeros</h1>
-        <p class="sub">Qué le puede pasar al cuerpo y a la mente cuando volamos, y cuándo conviene consultar.</p>
-        <p class="treatment-note">Material psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.</p>
+        <div class="aero-hero-details" id="aeroHeroDetails">
+          <p class="sub">Qué le puede pasar al cuerpo y a la mente cuando volamos, y cuándo conviene consultar.</p>
+          <p class="treatment-note">Material psicoeducativo. No reemplaza una consulta profesional ni está destinado a urgencias.</p>
+        </div>
+        <button class="aero-hero-toggle" id="aeroHeroToggle" type="button" aria-expanded="false" aria-controls="aeroHeroDetails">Ver más</button>
       </div>
     </section>
 
@@ -337,6 +353,18 @@
   <script src="js/audio.js"></script>
   <script src="assets/js/spa.js"></script>
   <script src="assets/js/app.js?v=1"></script>
+  <script>
+    (function(){
+      var toggle = document.getElementById('aeroHeroToggle');
+      var details = document.getElementById('aeroHeroDetails');
+      if (!toggle || !details) return;
+      toggle.addEventListener('click', function(){
+        var open = details.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.textContent = open ? 'Ver menos' : 'Ver más';
+      });
+    })();
+  </script>
 
 </body>
 </html>
