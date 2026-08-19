@@ -8,14 +8,16 @@
   <link rel="stylesheet" href="assets/css/app.css?v=4" />
   <meta name="theme-color" content="#0e2239" />
   <style>
-    /* Hero visual institucional (sin imagen: degradado aeronáutico) */
+    /* Hero visual institucional (portada + overlay para legibilidad) */
     .aero-hero{
       position: relative;
       overflow: hidden;
       border-radius: 18px;
       background:
-        radial-gradient(circle at 80% 15%, rgba(147,197,253,.25), transparent 45%),
-        linear-gradient(160deg, #0e2239 0%, #14406b 60%, #0e6cc4 130%);
+        linear-gradient(160deg, rgba(14,34,57,.88) 0%, rgba(20,64,107,.82) 60%, rgba(14,108,196,.75) 130%),
+        url("assets/img/portada-medicina-aeronautica.png");
+      background-size: cover;
+      background-position: center;
       color: #fff;
       padding: clamp(28px, 6vw, 56px) clamp(18px, 4vw, 36px);
     }
