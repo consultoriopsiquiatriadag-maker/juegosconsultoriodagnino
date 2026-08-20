@@ -108,6 +108,15 @@
       background:rgba(14,108,196,.08); border:1px solid rgba(14,108,196,.22);
       color:#0e6cc4; font-weight:700; font-size:.82rem;
     }
+
+    /* Header: se oculta al bajar y reaparece al subir (solo mobile) */
+    @media (max-width: 640px){
+      header.topbar{ transition: transform .25s ease; }
+      header.topbar.header-hidden{ transform: translateY(-100%); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      header.topbar{ transition: none; }
+    }
   </style>
 </head>
 
@@ -363,6 +372,33 @@
         toggle.setAttribute('aria-expanded', String(open));
         toggle.textContent = open ? 'Ver menos' : 'Ver más';
       });
+    })();
+
+    (function(){
+      var header = document.querySelector('header.topbar');
+      if (!header) return;
+      var lastY = window.scrollY || 0;
+      var ticking = false;
+      var minY = 80; // no ocultar cerca del tope
+
+      function onScroll(){
+        var y = window.scrollY || 0;
+        if (Math.abs(y - lastY) < 6){ ticking = false; return; }
+        if (y > lastY && y > minY){
+          header.classList.add('header-hidden');
+        } else {
+          header.classList.remove('header-hidden');
+        }
+        lastY = y;
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function(){
+        if (!ticking){
+          window.requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      }, { passive: true });
     })();
   </script>
 
