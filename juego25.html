@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 25 · Sudoku cognitivo — Sala de espera virtual</title>
+  <meta name="description" content="Razonamiento, planificación y memoria de trabajo: completá grillas breves de sudoku (4×4 y 6×6) adaptadas al celular." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1; max-width: 620px; margin: 0 auto; padding: 24px 16px 40px; width: 100%; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 18px; margin-bottom: 16px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 10px 24px; border-radius: 10px;
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* MODE PICKER (intro) */
+    .mode-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 16px 0 4px; }
+    .mode-btn {
+      padding: 10px 18px; border-radius: 12px;
+      border: 2px solid var(--border); background: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 700; color: var(--dark);
+      cursor: pointer; transition: border-color .18s, background .18s;
+    }
+    .mode-btn.selected { border-color: var(--blue); background: rgba(14,108,196,.08); color: var(--blue); }
+
+    /* PROGRESS */
+    .prog-wrap { margin-bottom: 16px; }
+    .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .prog-label  { font-size: 13px; color: var(--muted); }
+    .diff-badge  {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      padding: 2px 10px; border-radius: 999px;
+      background: rgba(14,108,196,.10); color: var(--blue);
+    }
+    .prog-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 999px; transition: width .4s ease; }
+
+    /* SUDOKU GRID */
+    .sudoku-wrap { display: flex; justify-content: center; margin: 6px 0 16px; }
+    .sudoku-grid {
+      display: grid;
+      gap: 3px;
+      background: var(--dark);
+      border: 3px solid var(--dark);
+      border-radius: 10px;
+      overflow: hidden;
+      width: min(100%, 360px);
+      aspect-ratio: 1 / 1;
+    }
+    .cell {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: clamp(16px, 5.5vw, 24px);
+      color: var(--dark);
+      border: none;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .cell.given { background: var(--bg); color: var(--dark); cursor: default; }
+    .cell.selected { background: rgba(14,108,196,.16); }
+    .cell.hinted { color: #0e6cc4; }
+    .cell.wrong { background: #fee2e2; color: #991b1b; }
+    .cell.box-r { border-right: 2.5px solid var(--dark); }
+    .cell.box-b { border-bottom: 2.5px solid var(--dark); }
+
+    /* NUMPAD */
+    .numpad { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
+    .num-btn {
+      width: 46px; height: 46px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-family: inherit; font-size: 19px; font-weight: 700; color: var(--dark);
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .12s;
+    }
+    .num-btn:hover { border-color: var(--blue); background: rgba(14,108,196,.05); }
+    .num-btn:active { transform: scale(.94); }
+    .num-btn.erase { font-size: 13px; font-weight: 600; width: auto; padding: 0 14px; }
+
+    .action-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 16px 0 4px; }
+    .action-btn {
+      min-height: 40px; padding: 8px 16px; border-radius: 10px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      border: 1.5px solid var(--border); background: var(--white); color: var(--dark);
+      transition: background .18s, border-color .18s;
+    }
+    .action-btn:hover { background: var(--bg); border-color: var(--blue); }
+    .action-btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .action-btn.primary:hover { opacity: .9; }
+
+    /* FEEDBACK */
+    .fb-wrap { margin: 14px 0 4px; min-height: 44px; }
+    .fb-box {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .fb-box.ok   { background: #d1fae5; color: #065f46; }
+    .fb-box.err  { background: #fee2e2; color: #991b1b; }
+    .fb-box.info { background: rgba(14,108,196,.08); color: var(--blue); }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub   { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .score-box    { background: rgba(14,108,196,.08); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .score-box .snum  { font-size: 40px; font-weight: 900; color: var(--blue); }
+    .score-box .slabel{ font-size: 13px; color: var(--muted); }
+
+    footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body class="gs-scope">
+
+<header class="gs-header">
+  <div class="gs-header-brand">
+    <div class="gs-header-logo" aria-hidden="true">
+      <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+    </div>
+    <div>
+      <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+      <div class="gs-header-sub">Juego 25 · Sudoku cognitivo</div>
+    </div>
+  </div>
+  <div class="gs-header-actions">
+    <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+    <a href="index.html" class="gs-btn-back">Inicio</a>
+  </div>
+</header>
+
+<main class="game-shell">
+
+  <!-- HUD en partida -->
+  <div class="gs-hud" style="margin-bottom:14px;">
+    <div class="gs-hud-chips" style="margin:0 auto;">
+      <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+      <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+      <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active">
+    <div class="gs-intro game-fade-in" style="text-align:center;">
+      <p class="gs-intro-eyebrow">Razonamiento y planificación · Juego 25</p>
+      <h1 class="gs-intro-title">Sudoku cognitivo</h1>
+      <p class="gs-intro-subtitle">Completá la grilla usando lógica. No hace falta apurarse: buscá patrones paso a paso.</p>
+      <p class="gs-intro-objective">Objetivo: completar cada fila, columna y bloque sin repetir números</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> elegí una celda vacía y tocá un número del selector inferior para completarla. Podés borrar, pedir una pista o verificar cuando quieras. Son 3 grillas por partida.</div>
+      <div class="mode-row" role="group" aria-label="Elegir tamaño de grilla">
+        <button class="mode-btn selected" id="mode-4" type="button" data-size="4">4×4 · Inicial</button>
+        <button class="mode-btn" id="mode-6" type="button" data-size="6">6×6 · Intermedio</button>
+      </div>
+      <div class="gs-intro-actions">
+        <button class="gs-btn-start" id="btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
+    <p class="game-safety-note" style="margin-top:18px; text-align:center;">
+      Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
+    </p>
+  </div>
+
+  <!-- GAME -->
+  <div id="screen-game" class="screen card game-card">
+    <div class="prog-wrap">
+      <div class="prog-header">
+        <span class="prog-label" id="prog-label">Grilla 1 de 3</span>
+        <span class="diff-badge" id="diff-badge">4×4</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:33%"></div></div>
+    </div>
+
+    <div class="sudoku-wrap">
+      <div class="sudoku-grid" id="sudoku-grid" role="group" aria-label="Grilla de sudoku"></div>
+    </div>
+
+    <div class="numpad" id="numpad"></div>
+
+    <div class="action-row">
+      <button class="action-btn" id="btn-clear" type="button">Borrar</button>
+      <button class="action-btn" id="btn-hint" type="button">Pista</button>
+      <button class="action-btn" id="btn-restart" type="button">Reiniciar</button>
+      <button class="action-btn" id="btn-newgrid" type="button">Nueva grilla</button>
+      <button class="action-btn primary" id="btn-check" type="button">Verificar</button>
+    </div>
+
+    <div class="fb-wrap" id="fb-wrap"></div>
+
+    <div style="display:none; text-align:center;" id="next-wrap">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next" aria-label="Siguiente grilla">Siguiente grilla →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
+    <div class="result-title" id="res-title">¡Ejercicio completado!</div>
+    <div class="result-sub"  id="res-sub"></div>
+    <div class="score-box">
+      <div class="snum"   id="res-num">3</div>
+      <div class="slabel" id="res-lbl">grillas completadas de 3</div>
+    </div>
+    <div class="gs-final-stats" id="res-gp-stats" style="margin-bottom:16px;"></div>
+    <div class="btn-row game-actions">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- Navegación cruzada -->
+  <div class="card" style="margin-top:6px;">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:10px; text-align:center;">Otros juegos de razonamiento</p>
+    <div class="btn-row" style="margin-top:0;">
+      <a href="juegos.html" class="btn btn-secondary">Todos los juegos</a>
+      <a href="juego17-secuencias-logicas.html" class="btn btn-secondary">Secuencias lógicas</a>
+      <a href="juego24.html" class="btn btn-secondary">Armar palabras</a>
+      <a href="juego1.html" class="btn btn-secondary">Juego 1</a>
+      <a href="juego3.html" class="btn btn-secondary">Juego 3</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script src="assets/js/gamification.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const ROUNDS = 3;
+
+  let selectedSize = 4;
+  let round = 0;
+  let completedRounds = 0;
+  let hintsThisGame = 0;
+  let errorsThisGame = 0;
+
+  let size = 4, boxR = 2, boxC = 2;
+  let solution = [];
+  let board = [];      // current values (0 = empty)
+  let given = [];       // boolean grid of fixed cells
+  let hinted = [];       // boolean grid of hinted cells
+  let selectedCell = null; // {r,c}
+
+  let session = null;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    ['scorePill','streakPill'].forEach(id => {
+      const pill = $(id);
+      pill.classList.add('is-up');
+      setTimeout(() => pill.classList.remove('is-up'), 500);
+    });
+  }
+
+  function showScreen(id) {
+    ['screen-intro','screen-game','screen-result'].forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  /* ── Generador de solución válida (backtracking aleatorizado) ── */
+  function boxDims(n) {
+    if (n === 4) return { r: 2, c: 2 };
+    if (n === 6) return { r: 2, c: 3 };
+    return { r: 3, c: 3 };
+  }
+
+  function generateSolution(n) {
+    const dims = boxDims(n);
+    const grid = Array.from({ length: n }, () => Array(n).fill(0));
+
+    function isValid(r, c, val) {
+      for (let i = 0; i < n; i++) {
+        if (grid[r][i] === val) return false;
+        if (grid[i][c] === val) return false;
+      }
+      const br = Math.floor(r / dims.r) * dims.r;
+      const bc = Math.floor(c / dims.c) * dims.c;
+      for (let i = br; i < br + dims.r; i++) {
+        for (let j = bc; j < bc + dims.c; j++) {
+          if (grid[i][j] === val) return false;
+        }
+      }
+      return true;
+    }
+
+    function fill(pos) {
+      if (pos === n * n) return true;
+      const r = Math.floor(pos / n), c = pos % n;
+      const candidates = shuffle(Array.from({ length: n }, (_, i) => i + 1));
+      for (const val of candidates) {
+        if (isValid(r, c, val)) {
+          grid[r][c] = val;
+          if (fill(pos + 1)) return true;
+          grid[r][c] = 0;
+        }
+      }
+      return false;
+    }
+
+    fill(0);
+    return grid;
+  }
+
+  function buildPuzzle(n) {
+    const dims = boxDims(n);
+    const sol = generateSolution(n);
+    const brd = sol.map(row => [...row]);
+    const giv = Array.from({ length: n }, () => Array(n).fill(true));
+
+    const total = n * n;
+    const keep = n === 4 ? Math.ceil(total * 0.5) : Math.ceil(total * 0.45);
+    const removeCount = total - keep;
+
+    const cells = shuffle(Array.from({ length: total }, (_, i) => i));
+    let removed = 0;
+    for (const idx of cells) {
+      if (removed >= removeCount) break;
+      const r = Math.floor(idx / n), c = idx % n;
+      brd[r][c] = 0;
+      giv[r][c] = false;
+      removed++;
+    }
+
+    return { size: n, boxR: dims.r, boxC: dims.c, solution: sol, board: brd, given: giv };
+  }
+
+  function renderGrid() {
+    const grid = $('sudoku-grid');
+    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    grid.innerHTML = '';
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        const isGiven = given[r][c];
+        let cls = 'cell';
+        if (isGiven) cls += ' given';
+        if (hinted[r] && hinted[r][c]) cls += ' hinted';
+        if (selectedCell && selectedCell.r === r && selectedCell.c === c) cls += ' selected';
+        if ((c + 1) % boxC === 0 && c !== size - 1) cls += ' box-r';
+        if ((r + 1) % boxR === 0 && r !== size - 1) cls += ' box-b';
+        btn.className = cls;
+        btn.textContent = board[r][c] === 0 ? '' : board[r][c];
+        btn.disabled = isGiven;
+        btn.setAttribute('aria-label', `Fila ${r + 1}, columna ${c + 1}`);
+        btn.addEventListener('click', () => selectCell(r, c));
+        grid.appendChild(btn);
+      }
+    }
+  }
+
+  function renderNumpad() {
+    const pad = $('numpad');
+    pad.innerHTML = '';
+    for (let n = 1; n <= size; n++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'num-btn';
+      btn.textContent = n;
+      btn.addEventListener('click', () => placeNumber(n));
+      pad.appendChild(btn);
+    }
+    const erase = document.createElement('button');
+    erase.type = 'button';
+    erase.className = 'num-btn erase';
+    erase.textContent = 'Borrar';
+    erase.addEventListener('click', clearSelected);
+    pad.appendChild(erase);
+  }
+
+  function selectCell(r, c) {
+    if (given[r][c]) return;
+    selectedCell = { r, c };
+    renderGrid();
+  }
+
+  function placeNumber(n) {
+    if (!selectedCell) {
+      showFeedback('info', 'Primero tocá una celda vacía de la grilla.');
+      return;
+    }
+    const { r, c } = selectedCell;
+    if (given[r][c]) return;
+    board[r][c] = n;
+    renderGrid();
+  }
+
+  function clearSelected() {
+    if (!selectedCell) return;
+    const { r, c } = selectedCell;
+    if (given[r][c]) return;
+    board[r][c] = 0;
+    if (hinted[r]) hinted[r][c] = false;
+    renderGrid();
+  }
+
+  function restartGrid() {
+    board = solution.map((row, r) => row.map((val, c) => given[r][c] ? val : 0));
+    hinted = Array.from({ length: size }, () => Array(size).fill(false));
+    selectedCell = null;
+    $('fb-wrap').innerHTML = '';
+    renderGrid();
+  }
+
+  function newGrid() {
+    const puzzle = buildPuzzle(size);
+    applyPuzzle(puzzle);
+    $('fb-wrap').innerHTML = '';
+  }
+
+  function applyPuzzle(puzzle) {
+    size = puzzle.size;
+    boxR = puzzle.boxR;
+    boxC = puzzle.boxC;
+    solution = puzzle.solution;
+    board = puzzle.board;
+    given = puzzle.given;
+    hinted = Array.from({ length: size }, () => Array(size).fill(false));
+    selectedCell = null;
+    renderGrid();
+    renderNumpad();
+  }
+
+  function useHint() {
+    let target = selectedCell && !given[selectedCell.r][selectedCell.c] ? selectedCell : null;
+    if (!target) {
+      outer:
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          if (!given[r][c] && board[r][c] === 0) { target = { r, c }; break outer; }
+        }
+      }
+    }
+    if (!target) {
+      showFeedback('info', 'No quedan celdas vacías para dar una pista.');
+      return;
+    }
+    const { r, c } = target;
+    board[r][c] = solution[r][c];
+    hinted[r][c] = true;
+    hintsThisGame++;
+    selectedCell = target;
+    renderGrid();
+    showFeedback('info', 'Pista aplicada. Buen trabajo de planificación.');
+  }
+
+  function checkBoard() {
+    let hasEmpty = false;
+    let hasError = false;
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        const el = gridCellEl(r, c);
+        el.classList.remove('wrong');
+        if (board[r][c] === 0) { hasEmpty = true; continue; }
+        if (board[r][c] !== solution[r][c]) {
+          hasError = true;
+          errorsThisGame++;
+          el.classList.add('wrong');
+        }
+      }
+    }
+
+    if (hasError) {
+      showFeedback('err', 'Revisá esa celda: puede haber un número repetido en la fila, columna o bloque.');
+      return;
+    }
+    if (hasEmpty) {
+      showFeedback('info', 'Vas bien. Todavía quedan celdas vacías por completar.');
+      return;
+    }
+
+    // Completed correctly
+    completedRounds++;
+    const usedHint = hinted.some(row => row.some(h => h));
+    session.registerHit(usedHint ? 1 : 2);
+    pulseStreak();
+    updateGPChips();
+    showFeedback('ok', 'Correcto. Seguí buscando patrones. Buen trabajo de planificación.');
+
+    const nw = $('next-wrap');
+    nw.style.display = 'block';
+    const nb = $('btn-next');
+    if (round + 1 < ROUNDS) {
+      nb.textContent = 'Siguiente grilla →';
+      nb.onclick = () => { round++; loadRound(); };
+    } else {
+      nb.textContent = 'Ver resultado';
+      nb.onclick = showResult;
+    }
+  }
+
+  function gridCellEl(r, c) {
+    return $('sudoku-grid').children[r * size + c];
+  }
+
+  function showFeedback(type, text) {
+    const wrap = $('fb-wrap');
+    wrap.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = `fb-box ${type}`;
+    box.textContent = text;
+    wrap.appendChild(box);
+  }
+
+  function loadRound() {
+    $('prog-label').textContent = `Grilla ${round + 1} de ${ROUNDS}`;
+    $('prog-fill').style.width = ((round + 1) / ROUNDS * 100) + '%';
+    $('diff-badge').textContent = `${selectedSize}×${selectedSize}`;
+    $('next-wrap').style.display = 'none';
+    $('fb-wrap').innerHTML = '';
+
+    const puzzle = buildPuzzle(selectedSize);
+    applyPuzzle(puzzle);
+  }
+
+  function showResult() {
+    $('res-num').textContent = completedRounds;
+    $('res-lbl').textContent = `grillas completadas de ${ROUNDS}`;
+
+    const pct = completedRounds / ROUNDS;
+    $('res-title').textContent = pct === 1 ? '¡Razonamiento sólido!' : '¡Buen ejercicio!';
+    $('res-sub').textContent = hintsThisGame === 0
+      ? `Completaste ${completedRounds} de ${ROUNDS} grillas sin usar pistas. Excelente planificación.`
+      : `Completaste ${completedRounds} de ${ROUNDS} grillas. Usaste ${hintsThisGame} pista(s) en el camino, y eso también es parte de aprender.`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Pistas usadas</div><div class="gs-final-stat-value">${hintsThisGame}</div></div>
+    `;
+
+    showScreen('screen-result');
+  }
+
+  function startGame() {
+    round = 0;
+    completedRounds = 0;
+    hintsThisGame = 0;
+    errorsThisGame = 0;
+    startSession();
+    loadRound();
+    showScreen('screen-game');
+  }
+
+  $('mode-4').addEventListener('click', () => {
+    selectedSize = 4;
+    $('mode-4').classList.add('selected');
+    $('mode-6').classList.remove('selected');
+  });
+  $('mode-6').addEventListener('click', () => {
+    selectedSize = 6;
+    $('mode-6').classList.add('selected');
+    $('mode-4').classList.remove('selected');
+  });
+
+  $('btn-clear').addEventListener('click', clearSelected);
+  $('btn-hint').addEventListener('click', useHint);
+  $('btn-restart').addEventListener('click', restartGrid);
+  $('btn-newgrid').addEventListener('click', newGrid);
+  $('btn-check').addEventListener('click', checkBoard);
+  $('btn-start').addEventListener('click', startGame);
+  $('btn-again').addEventListener('click', startGame);
+
+  startSession();
+
+})();
+</script>
+</body>
+</html>
