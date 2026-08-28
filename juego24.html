@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 24 · Armar palabras — Sala de espera virtual</title>
+  <meta name="description" content="Lenguaje, atención y flexibilidad verbal: ordená letras para formar palabras breves, con pistas semánticas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1; max-width: 620px; margin: 0 auto; padding: 24px 16px 40px; width: 100%; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; margin-bottom: 16px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 10px 24px; border-radius: 10px;
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* PROGRESS */
+    .prog-wrap { margin-bottom: 18px; }
+    .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .prog-label  { font-size: 13px; color: var(--muted); }
+    .diff-badge  {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      padding: 2px 10px; border-radius: 999px;
+      background: rgba(14,108,196,.10); color: var(--blue);
+    }
+    .prog-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 999px; transition: width .4s ease; }
+
+    /* CATEGORY / HINT */
+    .word-tag { text-align: center; font-size: 12px; color: var(--muted); letter-spacing: .08em; margin-bottom: 10px; text-transform: uppercase; }
+
+    /* ANSWER SLOTS */
+    .answer-wrap {
+      display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;
+      min-height: 56px; margin-bottom: 22px; padding: 0 4px;
+    }
+    .slot {
+      width: 40px; height: 48px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      font-size: 22px; font-weight: 800; color: var(--dark);
+      transition: border-color .15s, background .15s;
+    }
+    .slot.filled { border-color: var(--blue); background: #fff; }
+    .slot.hinted { border-color: #10b981; background: #d1fae5; color: #065f46; }
+
+    /* LETTER TILE BANK */
+    .tiles-wrap {
+      display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .tile {
+      width: 44px; height: 50px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 20px; font-weight: 700; color: var(--dark);
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .12s, opacity .15s;
+    }
+    .tile:hover { border-color: var(--blue); background: rgba(14,108,196,.05); transform: translateY(-2px); }
+    .tile:active { transform: scale(.95); }
+    .tile.used { opacity: 0; pointer-events: none; transform: scale(.6); }
+
+    .action-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 18px 0 4px; }
+    .action-btn {
+      min-height: 40px; padding: 8px 16px; border-radius: 10px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      border: 1.5px solid var(--border); background: var(--white); color: var(--dark);
+      transition: background .18s, border-color .18s;
+    }
+    .action-btn:hover { background: var(--bg); border-color: var(--blue); }
+    .action-btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .action-btn.primary:hover { opacity: .9; }
+
+    /* FEEDBACK */
+    .fb-wrap { margin: 14px 0 4px; min-height: 44px; }
+    .fb-box {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .fb-box.ok   { background: #d1fae5; color: #065f46; }
+    .fb-box.err  { background: #fee2e2; color: #991b1b; }
+    .hint-box { text-align: center; font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 18px; }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub   { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .score-box    { background: rgba(14,108,196,.08); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .score-box .snum  { font-size: 40px; font-weight: 900; color: var(--blue); }
+    .score-box .slabel{ font-size: 13px; color: var(--muted); }
+
+    .detail-list { list-style: none; text-align: left; margin-bottom: 16px; }
+    .detail-list li {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid var(--border);
+      font-size: 13px; color: var(--muted);
+    }
+    .detail-list li:last-child { border-bottom: none; }
+    .det-word { font-weight: 700; color: var(--dark); font-size: 14px; }
+
+    footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body class="gs-scope">
+
+<header class="gs-header">
+  <div class="gs-header-brand">
+    <div class="gs-header-logo" aria-hidden="true">
+      <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+    </div>
+    <div>
+      <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+      <div class="gs-header-sub">Juego 24 · Armar palabras</div>
+    </div>
+  </div>
+  <div class="gs-header-actions">
+    <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+    <a href="index.html" class="gs-btn-back">Inicio</a>
+  </div>
+</header>
+
+<main class="game-shell">
+
+  <!-- HUD en partida -->
+  <div class="gs-hud" style="margin-bottom:14px;">
+    <div class="gs-hud-chips" style="margin:0 auto;">
+      <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+      <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+      <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active">
+    <div class="gs-intro game-fade-in" style="text-align:center;">
+      <p class="gs-intro-eyebrow">Lenguaje y flexibilidad verbal · Juego 24</p>
+      <h1 class="gs-intro-title">Armar palabras</h1>
+      <p class="gs-intro-subtitle">Ordená las letras para formar una palabra. Podés usar una pista si lo necesitás.</p>
+      <p class="gs-intro-objective">Objetivo: reconstruir la palabra letra por letra</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> vas a ver letras mezcladas de una palabra breve. Tocá las letras en orden para armarla en los casilleros de arriba. Podés borrar, pedir una pista o verificar cuando termines. Son 12 palabras por partida.</div>
+      <div class="gs-intro-actions">
+        <button class="gs-btn-start" id="btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
+    <p class="game-safety-note" style="margin-top:18px; text-align:center;">
+      Este ejercicio tiene fines de estimulación cognitiva general. No constituye una evaluación diagnóstica ni un test psicológico.
+    </p>
+  </div>
+
+  <!-- GAME -->
+  <div id="screen-game" class="screen card game-card">
+    <div class="prog-wrap">
+      <div class="prog-header">
+        <span class="prog-label" id="prog-label">Palabra 1 de 12</span>
+        <span class="diff-badge" id="diff-badge">Categoría</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:8%"></div></div>
+    </div>
+
+    <div class="word-tag" id="word-tag">Ordená las letras</div>
+
+    <div class="answer-wrap" id="answer-wrap" aria-live="polite"></div>
+
+    <div class="tiles-wrap" id="tiles-wrap" role="group" aria-label="Letras disponibles"></div>
+
+    <div class="hint-box" id="hint-box"></div>
+
+    <div class="action-row">
+      <button class="action-btn" id="btn-clear" type="button">Borrar</button>
+      <button class="action-btn" id="btn-hint" type="button">Pista</button>
+      <button class="action-btn primary" id="btn-check" type="button">Verificar</button>
+    </div>
+
+    <div class="fb-wrap" id="fb-wrap"></div>
+
+    <div style="display:none; text-align:center;" id="next-wrap">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next" aria-label="Siguiente palabra">Nueva palabra →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
+    <div class="result-title" id="res-title">¡Ejercicio completado!</div>
+    <div class="result-sub"  id="res-sub"></div>
+    <div class="score-box">
+      <div class="snum"   id="res-num">12</div>
+      <div class="slabel" id="res-lbl">palabras correctas de 12</div>
+    </div>
+    <div class="gs-final-stats" id="res-gp-stats" style="margin-bottom:16px;"></div>
+    <ul class="detail-list" id="detail-list"></ul>
+    <div class="btn-row game-actions">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- Navegación cruzada -->
+  <div class="card" style="margin-top:6px;">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:10px; text-align:center;">Otros juegos de lenguaje y razonamiento</p>
+    <div class="btn-row" style="margin-top:0;">
+      <a href="juegos.html" class="btn btn-secondary">Todos los juegos</a>
+      <a href="juego23-palabras-inversas.html" class="btn btn-secondary">Palabras inversas</a>
+      <a href="juego9-categorias-semanticas.html" class="btn btn-secondary">Categorías semánticas</a>
+      <a href="juego15-palabras-pseudopalabras.html" class="btn btn-secondary">Palabras / pseudopalabras</a>
+      <a href="juego25.html" class="btn btn-secondary">Sudoku cognitivo</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script src="assets/js/gamification.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const WORDS = [
+    { word: "CALMA",    hint: "Estado que buscamos cuando baja la activación.", category: "Regulación" },
+    { word: "PAUSA",    hint: "Lo que ayuda antes de responder en caliente.", category: "Impulsividad" },
+    { word: "SUENO",    hint: "Función clave para recuperar energía.", category: "Descanso" },
+    { word: "FOCO",     hint: "Capacidad de sostener la atención.", category: "Atención" },
+    { word: "CUERPO",   hint: "También participa en la ansiedad.", category: "Psicoeducación" },
+    { word: "MENTE",    hint: "Donde aparecen pensamientos, recuerdos e ideas.", category: "Psicoeducación" },
+    { word: "VUELO",    hint: "Viaje en avión.", category: "Medicina aeronáutica" },
+    { word: "CABINA",   hint: "Espacio presurizado donde viajan los pasajeros.", category: "Medicina aeronáutica" },
+    { word: "PRESION",  hint: "Puede cambiar durante ascenso y descenso.", category: "Medicina aeronáutica" },
+    { word: "RESPIRAR", hint: "Acción básica para regular activación.", category: "Regulación" },
+    { word: "RUTINA",   hint: "Orden que ayuda al descanso y al ánimo.", category: "Hábitos" },
+    { word: "ANSIEDAD", hint: "Activación del cuerpo y la mente ante amenaza o incertidumbre.", category: "Salud mental" }
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  let wordQueue = [];
+  let currentIdx = 0;
+  let score = 0;
+  let results = [];
+  let session = null;
+
+  // Per-word runtime state
+  let letters = [];       // shuffled letter objects [{ch, used}]
+  let answer = [];        // array of chosen letters (chars) in order
+  let answered = false;
+  let hintUsed = false;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    ['scorePill','streakPill'].forEach(id => {
+      const pill = $(id);
+      pill.classList.add('is-up');
+      setTimeout(() => pill.classList.remove('is-up'), 500);
+    });
+  }
+
+  function showScreen(id) {
+    ['screen-intro','screen-game','screen-result'].forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function shuffledLetters(word) {
+    // Ensure the shuffle differs from the original order when possible
+    let arr = word.split('');
+    let attempts = 0;
+    let shuffled = shuffle(arr);
+    while (shuffled.join('') === word && attempts < 10) {
+      shuffled = shuffle(arr);
+      attempts++;
+    }
+    return shuffled;
+  }
+
+  function renderTiles() {
+    const wrap = $('tiles-wrap');
+    wrap.innerHTML = '';
+    letters.forEach((L, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tile' + (L.used ? ' used' : '');
+      btn.type = 'button';
+      btn.textContent = L.ch;
+      btn.disabled = L.used || answered;
+      btn.setAttribute('aria-label', 'Letra ' + L.ch);
+      btn.addEventListener('click', () => onTileTap(i));
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderAnswer(entry) {
+    const wrap = $('answer-wrap');
+    wrap.innerHTML = '';
+    const wordLen = entry.word.length;
+    for (let i = 0; i < wordLen; i++) {
+      const slot = document.createElement('div');
+      const ch = answer[i];
+      slot.className = 'slot' + (ch ? ' filled' : '');
+      slot.textContent = ch || '';
+      wrap.appendChild(slot);
+    }
+  }
+
+  function onTileTap(i) {
+    if (answered) return;
+    const L = letters[i];
+    if (L.used) return;
+    if (answer.length >= currentEntry().word.length) return;
+    L.used = true;
+    answer.push(L.ch);
+    renderTiles();
+    renderAnswer(currentEntry());
+  }
+
+  function onClear() {
+    if (answered) return;
+    if (answer.length === 0) return;
+    const lastCh = answer.pop();
+    // Return the most recently used tile with this character back to the bank
+    for (let i = letters.length - 1; i >= 0; i--) {
+      if (letters[i].used && letters[i].ch === lastCh) { letters[i].used = false; break; }
+    }
+    renderTiles();
+    renderAnswer(currentEntry());
+  }
+
+  function onHint() {
+    if (answered) return;
+    const entry = currentEntry();
+    const nextIdx = answer.length;
+    if (nextIdx >= entry.word.length) return;
+    const correctCh = entry.word[nextIdx];
+    // Find an unused tile matching the needed letter and place it
+    const tileIdx = letters.findIndex(L => !L.used && L.ch === correctCh);
+    if (tileIdx === -1) return;
+    letters[tileIdx].used = true;
+    answer.push(correctCh);
+    hintUsed = true;
+    renderTiles();
+    renderAnswer(entry);
+    $('hint-box').textContent = entry.hint;
+  }
+
+  function currentEntry() { return wordQueue[currentIdx]; }
+
+  function loadWord(idx) {
+    currentIdx = idx;
+    answered = false;
+    hintUsed = false;
+    answer = [];
+
+    const entry = wordQueue[idx];
+    const total = wordQueue.length;
+
+    $('prog-label').textContent = `Palabra ${idx + 1} de ${total}`;
+    $('prog-fill').style.width = ((idx + 1) / total * 100) + '%';
+    $('diff-badge').textContent = entry.category;
+
+    $('word-tag').textContent = `Categoría: ${entry.category} · ${entry.word.length} letras`;
+
+    letters = shuffledLetters(entry.word).map(ch => ({ ch, used: false }));
+
+    renderTiles();
+    renderAnswer(entry);
+
+    $('hint-box').textContent = '';
+    $('fb-wrap').innerHTML = '';
+    $('next-wrap').style.display = 'none';
+    $('btn-check').disabled = false;
+    $('btn-clear').disabled = false;
+    $('btn-hint').disabled = false;
+  }
+
+  function onCheck() {
+    if (answered) return;
+    const entry = currentEntry();
+    if (answer.length !== entry.word.length) {
+      const fb = document.createElement('div');
+      fb.className = 'fb-box err';
+      fb.textContent = 'Todavía te faltan letras por ubicar.';
+      $('fb-wrap').innerHTML = '';
+      $('fb-wrap').appendChild(fb);
+      return;
+    }
+
+    const built = answer.join('');
+    const isCorrect = built === entry.word && !hintUsed;
+    const isCorrectWithHint = built === entry.word && hintUsed;
+    const success = built === entry.word;
+
+    answered = true;
+    document.querySelectorAll('.tile').forEach(t => t.disabled = true);
+    $('btn-check').disabled = true;
+    $('btn-clear').disabled = true;
+    $('btn-hint').disabled = true;
+
+    const fbWrap = $('fb-wrap');
+    fbWrap.innerHTML = '';
+    const fb = document.createElement('div');
+
+    if (success) {
+      score++;
+      fb.className = 'fb-box ok';
+      fb.textContent = isCorrectWithHint
+        ? `Correcto (con pista). Buen trabajo de atención y lenguaje.`
+        : `Correcto. Buen trabajo de atención y lenguaje.`;
+      session.registerHit(isCorrectWithHint ? 1 : 2);
+      pulseStreak();
+    } else {
+      fb.className = 'fb-box err';
+      fb.textContent = `Todavía no. La palabra era: ${entry.word}.`;
+      session.registerMiss(0);
+    }
+    fbWrap.appendChild(fb);
+    updateGPChips();
+
+    results.push({ word: entry.word, category: entry.category, success, hintUsed });
+
+    const nw = $('next-wrap');
+    nw.style.display = 'block';
+    const nb = $('btn-next');
+    if (currentIdx + 1 < wordQueue.length) {
+      nb.textContent = 'Nueva palabra →';
+      nb.onclick = () => loadWord(currentIdx + 1);
+    } else {
+      nb.textContent = 'Ver resultado';
+      nb.onclick = showResult;
+    }
+  }
+
+  function showResult() {
+    const total = wordQueue.length;
+    $('res-num').textContent = score;
+    $('res-lbl').textContent = `palabras correctas de ${total}`;
+
+    const pct = score / total;
+    $('res-title').textContent = pct === 1 ? '¡Vocabulario impecable!' : pct >= .7 ? '¡Excelente!' : pct >= .5 ? '¡Buen ejercicio!' : '¡Seguí practicando!';
+    $('res-sub').textContent   = pct === 1
+      ? 'Armaste todas las palabras correctamente. ¡Gran trabajo de lenguaje y atención!'
+      : `Armaste ${score} de ${total} palabras. Cada práctica entrena la flexibilidad verbal.`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+    `;
+
+    const list = $('detail-list');
+    list.innerHTML = '';
+    results.forEach(r => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span style="font-weight:700; color:${r.success ? '#065f46' : '#991b1b'}">${r.success ? 'OK' : 'X'}</span>
+        <span class="det-word">${r.word}</span>
+        <span style="color:var(--muted)">${r.category}${r.hintUsed ? ' · con pista' : ''}</span>
+      `;
+      list.appendChild(li);
+    });
+
+    showScreen('screen-result');
+  }
+
+  function startGame() {
+    score = 0;
+    results = [];
+    wordQueue = shuffle(WORDS);
+    startSession();
+    loadWord(0);
+    showScreen('screen-game');
+  }
+
+  $('btn-clear').addEventListener('click', onClear);
+  $('btn-hint').addEventListener('click', onHint);
+  $('btn-check').addEventListener('click', onCheck);
+  $('btn-start').addEventListener('click', startGame);
+  $('btn-again').addEventListener('click', startGame);
+
+  startSession();
+
+})();
+</script>
+</body>
+</html>
