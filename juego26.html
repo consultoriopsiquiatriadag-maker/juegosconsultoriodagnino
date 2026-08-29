@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 26 · Maleta inteligente — Sala de espera virtual</title>
+  <meta name="description" content="Medicina aeronáutica, planificación y autocuidado en vuelo: clasificá elementos de equipaje de mano." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/legacy-games.css?v=4" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f4f8;
+      --dark: #0e2239;
+      --blue: #0e6cc4;
+      --muted: #475569;
+      --white: #ffffff;
+      --border: rgba(14,34,57,0.10);
+      --radius: 16px;
+      --green: #10b981;
+      --amber: #d97706;
+      --red: #dc2626;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1; max-width: 620px; margin: 0 auto; padding: 24px 16px 40px; width: 100%; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; margin-bottom: 16px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 10px 24px; border-radius: 10px;
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* PROGRESS */
+    .prog-wrap { margin-bottom: 18px; }
+    .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .prog-label  { font-size: 13px; color: var(--muted); }
+    .diff-badge  {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      padding: 2px 10px; border-radius: 999px;
+      background: rgba(14,108,196,.10); color: var(--blue);
+    }
+    .prog-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 999px; transition: width .4s ease; }
+
+    /* ITEM CARD */
+    .item-card {
+      background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 22px 18px; text-align: center; margin-bottom: 18px;
+    }
+    .item-name { font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .item-hint { font-size: 13.5px; color: var(--muted); }
+
+    /* CATEGORY BUTTONS */
+    .cat-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+    .cat-btn {
+      min-height: 52px; padding: 12px 16px; border-radius: 12px;
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+      border: 2px solid var(--border); background: var(--white); color: var(--dark);
+      transition: background .18s, border-color .18s, transform .15s;
+      text-align: left; display: flex; align-items: center; gap: 10px;
+    }
+    .cat-btn:active { transform: scale(.98); }
+    .cat-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .cat-btn .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .cat-btn.llevar { }
+    .cat-btn.llevar .dot { background: var(--green); }
+    .cat-btn.llevar:hover:not(:disabled) { border-color: var(--green); background: rgba(16,185,129,.06); }
+    .cat-btn.cuidado .dot { background: var(--amber); }
+    .cat-btn.cuidado:hover:not(:disabled) { border-color: var(--amber); background: rgba(217,119,6,.06); }
+    .cat-btn.evitar .dot { background: var(--red); }
+    .cat-btn.evitar:hover:not(:disabled) { border-color: var(--red); background: rgba(220,38,38,.06); }
+
+    /* FEEDBACK */
+    .fb-wrap { margin: 14px 0 4px; min-height: 44px; }
+    .fb-box {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .fb-box.ok   { background: #d1fae5; color: #065f46; }
+    .fb-box.err  { background: #fee2e2; color: #991b1b; }
+    .fb-box.neutral { background: rgba(14,108,196,.08); color: var(--dark); }
+
+    /* RESULT */
+    .result-center { text-align: center; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .result-sub   { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .score-box    { background: rgba(14,108,196,.08); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .score-box .snum  { font-size: 40px; font-weight: 900; color: var(--blue); }
+    .score-box .slabel{ font-size: 13px; color: var(--muted); }
+
+    .detail-list { list-style: none; text-align: left; margin-bottom: 16px; }
+    .detail-list li {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid var(--border);
+      font-size: 13px; color: var(--muted);
+    }
+    .detail-list li:last-child { border-bottom: none; }
+    .det-word { font-weight: 700; color: var(--dark); font-size: 14px; }
+
+    .note-box {
+      background: rgba(217,119,6,.08); border: 1px solid rgba(217,119,6,.25);
+      border-radius: 10px; padding: 10px 14px; font-size: 12.5px; color: #92400e; margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    footer { text-align: center; padding: 20px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body class="gs-scope">
+
+<header class="gs-header">
+  <div class="gs-header-brand">
+    <div class="gs-header-logo" aria-hidden="true">
+      <img src="logo-avion.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+    </div>
+    <div>
+      <div class="gs-header-name">Dr. Pedro N. Dagnino</div>
+      <div class="gs-header-sub">Juego 26 · Maleta inteligente</div>
+    </div>
+  </div>
+  <div class="gs-header-actions">
+    <a href="juegos.html" class="gs-btn-back">← Juegos</a>
+    <a href="index.html" class="gs-btn-back">Inicio</a>
+  </div>
+</header>
+
+<main class="game-shell">
+
+  <!-- HUD en partida -->
+  <div class="gs-hud" style="margin-bottom:14px;">
+    <div class="gs-hud-chips" style="margin:0 auto;">
+      <span class="gs-hud-chip" id="gpLevelPill">Nivel 1 · Entrenamiento</span>
+      <span class="gs-hud-chip" id="scorePill">Puntaje: 0</span>
+      <span class="gs-hud-chip" id="streakPill">Racha: 0</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active">
+    <div class="gs-intro game-fade-in" style="text-align:center;">
+      <p class="gs-intro-eyebrow">Medicina aeronáutica · Juego 26</p>
+      <h1 class="gs-intro-title">Maleta inteligente</h1>
+      <p class="gs-intro-subtitle">Elegí qué elementos conviene llevar en el equipaje de mano para viajar con más organización, salud y seguridad.</p>
+      <p class="gs-intro-objective">Objetivo: clasificar cada elemento en la categoría correcta</p>
+      <div class="gs-intro-brief"><strong>Cómo funciona:</strong> vas a ver un elemento a la vez. Elegí si conviene llevarlo, si requiere cuidado, o si es mejor evitarlo o consultar antes de volar. Son 12 elementos por partida.</div>
+      <div class="gs-intro-actions">
+        <button class="gs-btn-start" id="btn-start" type="button">Comenzar</button>
+        <a href="juegos.html" class="gs-btn-start alt">← Volver a juegos</a>
+      </div>
+    </div>
+    <p class="game-safety-note" style="margin-top:18px; text-align:center;">
+      Este juego tiene fines psicoeducativos. No reemplaza una consulta médica ni las normas oficiales de aerolíneas, aeropuertos o autoridades de seguridad.
+    </p>
+  </div>
+
+  <!-- GAME -->
+  <div id="screen-game" class="screen card game-card">
+    <div class="prog-wrap">
+      <div class="prog-header">
+        <span class="prog-label" id="prog-label">Elemento 1 de 12</span>
+        <span class="diff-badge" id="diff-badge">Equipaje de mano</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:8%"></div></div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-name" id="item-name">Elemento</div>
+      <div class="item-hint" id="item-hint">Descripción breve</div>
+    </div>
+
+    <div class="cat-row" id="cat-row">
+      <button class="cat-btn llevar" type="button" data-cat="Conviene llevar"><span class="dot"></span> Conviene llevar</button>
+      <button class="cat-btn cuidado" type="button" data-cat="Requiere cuidado"><span class="dot"></span> Requiere cuidado</button>
+      <button class="cat-btn evitar" type="button" data-cat="Mejor evitar o consultar"><span class="dot"></span> Mejor evitar o consultar</button>
+    </div>
+
+    <div class="fb-wrap" id="fb-wrap"></div>
+
+    <div style="display:none; text-align:center;" id="next-wrap">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-next" aria-label="Siguiente elemento">Siguiente elemento →</button>
+    </div>
+
+    <div class="note-box">
+      Las normas de equipaje y seguridad pueden variar según país, aeropuerto y aerolínea. Antes de viajar, revisá la información oficial correspondiente.
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen card game-card result-center">
+    <div id="res-medal" class="game-medal" style="margin:0 auto 12px;"></div>
+    <div class="result-title" id="res-title">¡Maleta lista!</div>
+    <div class="result-sub"  id="res-sub"></div>
+    <div class="score-box">
+      <div class="snum"   id="res-num">12</div>
+      <div class="slabel" id="res-lbl">aciertos de 12</div>
+    </div>
+    <div class="gs-final-stats" id="res-gp-stats" style="margin-bottom:16px;"></div>
+    <ul class="detail-list" id="detail-list"></ul>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Preparar la maleta también es preparar el cuerpo y la tranquilidad para volar.</p>
+    <div class="btn-row game-actions">
+      <button class="btn btn-primary game-btn game-btn-primary" id="btn-again" aria-label="Jugar de nuevo">Jugar de nuevo</button>
+      <a href="juegos.html" class="btn btn-secondary game-btn">Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- Navegación cruzada -->
+  <div class="card" style="margin-top:6px;">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:10px; text-align:center;">Recursos relacionados</p>
+    <div class="btn-row" style="margin-top:0;">
+      <a href="juegos.html" class="btn btn-secondary">Todos los juegos</a>
+      <a href="medicina-aeronautica.html" class="btn btn-secondary">Medicina aeronáutica</a>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  Este contenido es psicoeducativo y recreativo. No reemplaza una evaluación clínica.
+</footer>
+
+<script src="assets/js/gamification.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const ITEMS = [
+    {
+      name: "Medicación habitual",
+      category: "Conviene llevar",
+      explanation: "La medicación habitual conviene llevarla en el equipaje de mano, no solo en la valija despachada."
+    },
+    {
+      name: "Receta o indicación médica",
+      category: "Conviene llevar",
+      explanation: "Puede ser útil si necesitás explicar un tratamiento o reponer medicación durante el viaje."
+    },
+    {
+      name: "Botella vacía para cargar agua",
+      category: "Conviene llevar",
+      explanation: "Ayuda a mantener hidratación después del control de seguridad, respetando normas del aeropuerto."
+    },
+    {
+      name: "Abrigo liviano",
+      category: "Conviene llevar",
+      explanation: "La temperatura de cabina puede sentirse fresca para algunas personas."
+    },
+    {
+      name: "Auriculares o tapones",
+      category: "Conviene llevar",
+      explanation: "Pueden ayudar a reducir estímulos, ruido y cansancio durante el viaje."
+    },
+    {
+      name: "Snack simple",
+      category: "Conviene llevar",
+      explanation: "Puede ser útil en demoras o si tenés horarios de comida organizados."
+    },
+    {
+      name: "Sedante improvisado",
+      category: "Mejor evitar o consultar",
+      explanation: "No conviene improvisar sedantes para volar. Consultá antes si necesitás medicación."
+    },
+    {
+      name: "Alcohol para dormir",
+      category: "Mejor evitar o consultar",
+      explanation: "El alcohol puede empeorar sueño, deshidratación, ansiedad y efectos de otros medicamentos."
+    },
+    {
+      name: "Medicamentos sin envase",
+      category: "Requiere cuidado",
+      explanation: "Puede ser mejor llevarlos identificados, especialmente si viajás al exterior."
+    },
+    {
+      name: "Objetos cortantes",
+      category: "Mejor evitar o consultar",
+      explanation: "Pueden estar restringidos en cabina. Revisá normas de aerolínea y aeropuerto."
+    },
+    {
+      name: "Medias de compresión",
+      category: "Requiere cuidado",
+      explanation: "Pueden ser útiles en algunas personas, pero conviene consultar si tenés antecedentes circulatorios."
+    },
+    {
+      name: "Informe médico reciente",
+      category: "Conviene llevar",
+      explanation: "Si tenés una enfermedad crónica importante, llevar información médica puede facilitar asistencia."
+    }
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  let queue = [];
+  let currentIdx = 0;
+  let score = 0;
+  let results = [];
+  let session = null;
+  let answered = false;
+
+  function startSession(){
+    session = window.GP.createSession({ messages: window.GP.neutralMessages });
+    updateGPChips();
+  }
+
+  function updateGPChips(){
+    const s = session.state;
+    $('gpLevelPill').textContent = s.level.name;
+    $('scorePill').textContent = "Puntaje: " + s.score;
+    $('streakPill').textContent = "Racha: " + s.streak;
+  }
+
+  function pulseStreak(){
+    ['scorePill','streakPill'].forEach(id => {
+      const pill = $(id);
+      pill.classList.add('is-up');
+      setTimeout(() => pill.classList.remove('is-up'), 500);
+    });
+  }
+
+  function showScreen(id) {
+    ['screen-intro','screen-game','screen-result'].forEach(s => $(s).classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function currentItem() { return queue[currentIdx]; }
+
+  function loadItem(idx) {
+    currentIdx = idx;
+    answered = false;
+
+    const item = queue[idx];
+    const total = queue.length;
+
+    $('prog-label').textContent = `Elemento ${idx + 1} de ${total}`;
+    $('prog-fill').style.width = ((idx + 1) / total * 100) + '%';
+
+    $('item-name').textContent = item.name;
+    $('item-hint').textContent = 'Tocá la categoría que te parezca correcta.';
+
+    $('fb-wrap').innerHTML = '';
+    $('next-wrap').style.display = 'none';
+    document.querySelectorAll('.cat-btn').forEach(b => b.disabled = false);
+  }
+
+  function onCategoryTap(cat) {
+    if (answered) return;
+    const item = currentItem();
+    const success = cat === item.category;
+
+    answered = true;
+    document.querySelectorAll('.cat-btn').forEach(b => b.disabled = true);
+
+    const fbWrap = $('fb-wrap');
+    fbWrap.innerHTML = '';
+    const fb = document.createElement('div');
+
+    if (success) {
+      score++;
+      fb.className = 'fb-box ok';
+      fb.textContent = 'Bien. Esa elección ayuda a viajar con más organización.';
+      session.registerHit(2);
+      pulseStreak();
+    } else {
+      fb.className = 'fb-box err';
+      fb.textContent = 'Revisemos. ' + item.explanation;
+      session.registerMiss(0);
+    }
+    fbWrap.appendChild(fb);
+    updateGPChips();
+
+    results.push({ name: item.name, category: item.category, chosen: cat, success });
+
+    const nw = $('next-wrap');
+    nw.style.display = 'block';
+    const nb = $('btn-next');
+    if (currentIdx + 1 < queue.length) {
+      nb.textContent = 'Siguiente elemento →';
+      nb.onclick = () => loadItem(currentIdx + 1);
+    } else {
+      nb.textContent = 'Ver resultado';
+      nb.onclick = showResult;
+    }
+  }
+
+  function showResult() {
+    const total = queue.length;
+    $('res-num').textContent = score;
+    $('res-lbl').textContent = `aciertos de ${total}`;
+
+    const pct = score / total;
+    $('res-title').textContent = pct === 1 ? '¡Maleta perfectamente organizada!' : pct >= .7 ? '¡Muy buena preparación!' : pct >= .5 ? '¡Buen ejercicio!' : '¡Seguí practicando!';
+    $('res-sub').textContent   = pct === 1
+      ? 'Clasificaste todos los elementos correctamente. La preparación del viaje también se entrena.'
+      : `Clasificaste ${score} de ${total} elementos correctamente. Cada práctica ayuda a organizar mejor el viaje.`;
+
+    const summary = session.summary();
+    const medal = summary.medal;
+    const medalEl = $('res-medal');
+    medalEl.className = `game-medal game-medal-${medal.id}`;
+    medalEl.textContent = medal.name;
+    $('res-gp-stats').innerHTML = `
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Puntaje</div><div class="gs-final-stat-value">${summary.score}</div></div>
+      <div class="gs-final-stat"><div class="gs-final-stat-label">Racha máxima</div><div class="gs-final-stat-value">${summary.maxStreak}</div></div>
+    `;
+
+    const list = $('detail-list');
+    list.innerHTML = '';
+    results.forEach(r => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span style="font-weight:700; color:${r.success ? '#065f46' : '#991b1b'}">${r.success ? 'OK' : 'X'}</span>
+        <span class="det-word">${r.name}</span>
+        <span style="color:var(--muted)">${r.category}</span>
+      `;
+      list.appendChild(li);
+    });
+
+    showScreen('screen-result');
+  }
+
+  function startGame() {
+    score = 0;
+    results = [];
+    queue = shuffle(ITEMS);
+    startSession();
+    loadItem(0);
+    showScreen('screen-game');
+  }
+
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => onCategoryTap(btn.getAttribute('data-cat')));
+  });
+  $('btn-start').addEventListener('click', startGame);
+  $('btn-again').addEventListener('click', startGame);
+
+  startSession();
+
+})();
+</script>
+</body>
+</html>
