@@ -491,7 +491,7 @@
   }
 
   function useHint() {
-    let target = selectedCell && !given[selectedCell.r][selectedCell.c] ? selectedCell : null;
+    let target = selectedCell && !given[selectedCell.r][selectedCell.c] && board[selectedCell.r][selectedCell.c] === 0 ? selectedCell : null;
     if (!target) {
       outer:
       for (let r = 0; r < size; r++) {
