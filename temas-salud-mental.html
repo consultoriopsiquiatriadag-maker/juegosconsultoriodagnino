@@ -108,6 +108,52 @@
       flex-wrap:wrap;
       margin-top: 10px;
     }
+
+    /* Buscador / salto rápido de temas */
+    .jump-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 640px){ .jump-row{ grid-template-columns: 1fr; } }
+
+    .jump-field{ display:flex; flex-direction:column; gap:6px; }
+    .jump-label{ font-size:.82rem; font-weight:700; color:#0e2239; }
+
+    .jump-input, .jump-select{
+      min-height: 46px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(13,34,57,.16);
+      background: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      color: #0e2239;
+      width: 100%;
+    }
+    .jump-input:focus, .jump-select:focus{
+      outline: none;
+      border-color: #0e6cc4;
+      box-shadow: 0 0 0 3px rgba(14,108,196,.15);
+    }
+
+    .jump-count{
+      margin: 10px 0 0;
+      font-size: .82rem;
+      color: #475569;
+      min-height: 1.2em;
+    }
+
+    /* Card oculta por el filtro de búsqueda */
+    .section-card.is-hidden-by-filter{ display:none !important; }
+
+    /* Resalte breve al saltar a un tema desde el buscador */
+    .grid-2 > article.topic-jump-highlight{
+      outline: 3px solid #0e6cc4;
+      outline-offset: 3px;
+      transition: outline-color .3s ease;
+    }
+    .grid-2 > article{ scroll-margin-top: 96px; }
   </style>
 </head>
 
@@ -160,6 +206,61 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Buscador / salto rápido de temas -->
+    <section class="section" aria-label="Buscar o elegir un tema rápidamente">
+      <div class="section-card hint-bg" style="padding:18px 20px;">
+        <div class="jump-row">
+          <div class="jump-field">
+            <label for="temaBuscar" class="jump-label">Buscar un tema</label>
+            <input type="search" id="temaBuscar" class="jump-input" placeholder="Ej: ansiedad, sueño, duelo…" autocomplete="off" />
+          </div>
+          <div class="jump-field">
+            <label for="temaSelect" class="jump-label">Ir directamente a…</label>
+            <select id="temaSelect" class="jump-select">
+              <option value="">Elegí un tema…</option>
+              <option value="adicciones.html">Adicciones (sustancias y conductas)</option>
+              <option value="agorafobia.html">Agorafobia</option>
+              <option value="ansiedad-generalizada.html">Ansiedad generalizada</option>
+              <option value="ansiedad-salud-tdc.html">Ansiedad por la salud y trastorno dismórfico corporal</option>
+              <option value="crisis-suicida-autolesiones-plan-seguridad.html">Crisis suicida y autolesiones</option>
+              <option value="cuidador-hogar-roles-pareja.html">Cuidador del hogar · roles de pareja</option>
+              <option value="depresion.html">Depresión</option>
+              <option value="control-impulsos.html">Dificultad de control de los impulsos</option>
+              <option value="dolor-cronico.html">Dolor crónico</option>
+              <option value="duelos-patologicos.html">Duelos patológicos</option>
+              <option value="estres-cronico-burnout.html">Estrés crónico y burnout</option>
+              <option value="estres-postraumatico.html">Estrés postraumático</option>
+              <option value="factores-humanos-aviacion-vida.html">Factores humanos: Aviación y vida diaria</option>
+              <option value="falta-memoria-animo.html">Falta de memoria con poco ánimo</option>
+              <option value="fobia-al-vuelo.html">Fobia al vuelo</option>
+              <option value="fobia-social.html">Fobia social</option>
+              <option value="insomnio-cbt-i-plan-7-dias.html">Insomnio: CBT-I y plan de 7 días</option>
+              <option value="ludopatia.html">Juego patológico (Ludopatía)</option>
+              <option value="psicofarmacos.html">Medicamentos y salud mental</option>
+              <option value="narcolepsia.html">Narcolepsia</option>
+              <option value="prosopagnosia.html">Prosopagnosia</option>
+              <option value="sindrome-capgras.html">Síndrome de Capgras</option>
+              <option value="sindrome-cotard.html">Síndrome de Cotard</option>
+              <option value="sindrome-diogenes.html">Síndrome de Diógenes</option>
+              <option value="sindrome-fregoli.html">Síndrome de Fregoli</option>
+              <option value="saturacion-audiovisual.html">Síndrome de Saturación Audiovisual</option>
+              <option value="tdah-adulto.html">TDAH adulto</option>
+              <option value="bipolar.html">Trastorno bipolar</option>
+              <option value="trastorno-acumulacion.html">Trastorno de acumulación (Hoarding)</option>
+              <option value="panico.html">Trastorno de pánico</option>
+              <option value="tlp.html">Trastorno límite de la personalidad</option>
+              <option value="toc.html">Trastorno obsesivo compulsivo</option>
+              <option value="disociacion.html">Trastornos disociativos</option>
+              <option value="trastornos-psicoticos.html">Trastornos psicóticos y esquizofrenia</option>
+            </select>
+          </div>
+        </div>
+        <p class="jump-count" id="temaContador" aria-live="polite"></p>
       </div>
     </section>
 
@@ -1279,6 +1380,62 @@
     toggleSound?.addEventListener("click", () => { const p = getPrefs(); p.muted = !p.muted; setPrefs(p); applyPrefs(); });
 
     applyPrefs();
+
+    // ===== Buscador / salto rápido de temas =====
+    (function(){
+      const buscar = document.getElementById("temaBuscar");
+      const select = document.getElementById("temaSelect");
+      const contador = document.getElementById("temaContador");
+      const grid = document.querySelector(".grid-2");
+      if (!grid) return;
+
+      const articulos = Array.from(grid.querySelectorAll(":scope > article"));
+      const totalTemas = articulos.length;
+
+      function normalizar(t){
+        return (t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      }
+
+      function filtrar(){
+        const q = normalizar(buscar ? buscar.value : "");
+        let visibles = 0;
+        articulos.forEach(art => {
+          const titulo = art.querySelector(".card-title");
+          const desc = art.querySelector(".card-sub");
+          const texto = normalizar((titulo ? titulo.textContent : "") + " " + (desc ? desc.textContent : ""));
+          const coincide = !q || texto.indexOf(q) !== -1;
+          art.classList.toggle("is-hidden-by-filter", !coincide);
+          if (coincide) visibles++;
+        });
+        if (contador){
+          contador.textContent = q
+            ? `${visibles} de ${totalTemas} temas coinciden con "${buscar.value}".`
+            : "";
+        }
+      }
+
+      function irATema(href){
+        if (!href) return;
+        const link = grid.querySelector(`a.btn-primary[href="${href}"]`);
+        const art = link ? link.closest("article") : null;
+        if (!art) return;
+
+        if (art.classList.contains("is-hidden-by-filter")){
+          if (buscar) buscar.value = "";
+          filtrar();
+        }
+
+        art.scrollIntoView({ behavior: "smooth", block: "start" });
+        art.classList.add("topic-jump-highlight");
+        setTimeout(() => art.classList.remove("topic-jump-highlight"), 1800);
+      }
+
+      buscar?.addEventListener("input", filtrar);
+      select?.addEventListener("change", () => {
+        irATema(select.value);
+        select.value = "";
+      });
+    })();
   </script>
 
 </body>
