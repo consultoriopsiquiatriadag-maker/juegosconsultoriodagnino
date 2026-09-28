@@ -1414,9 +1414,20 @@
         }
       }
 
+      function slugDe(href){
+        return (href || "")
+          .toLowerCase()
+          .replace(/^https?:\/\/[^/]+/, "")
+          .replace(/^\/+/, "")
+          .replace(/\.html?$/, "")
+          .replace(/\/+$/, "");
+      }
+
       function irATema(href){
         if (!href) return;
-        const link = grid.querySelector(`a.btn-primary[href="${href}"]`);
+        const slugBuscado = slugDe(href);
+        const enlaces = Array.from(grid.querySelectorAll("a.btn-primary"));
+        const link = enlaces.find(a => slugDe(a.getAttribute("href")) === slugBuscado);
         const art = link ? link.closest("article") : null;
         if (!art) return;
 
