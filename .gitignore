@@ -8,3 +8,6 @@ ehthumbs.db
 
 # Claude worktrees
 .claude/worktrees/
+
+# Landing confidencial / ajena al consultorio (no debe publicarse en Netlify)
+departamento-riobamba-919/
