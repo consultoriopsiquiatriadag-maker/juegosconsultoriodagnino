@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Una forma grande que contiene y abraza a otra más pequeña bajo una luna creciente">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e2239"/><stop offset="1" stop-color="#3c1e34"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffc2d6" stop-opacity=".45"/><stop offset="1" stop-color="#ffc2d6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="520" r="430" fill="url(#glow)"/>
+  <!-- luna creciente -->
+  <path d="M1250 150 a110 110 0 1 0 90 190 a90 90 0 1 1 -90 -190z" fill="#ffe3ec" fill-opacity=".9"/>
+  <!-- estrellas -->
+  <g fill="#ffd6e4" fill-opacity=".7">
+    <circle cx="260" cy="170" r="6"/><circle cx="420" cy="260" r="4"/><circle cx="1100" cy="130" r="5"/><circle cx="1400" cy="430" r="4"/><circle cx="200" cy="470" r="5"/>
+  </g>
+  <!-- forma protectora -->
+  <path d="M800 230 C1030 230 1180 400 1180 600 C1180 750 1000 800 800 800 C600 800 420 750 420 600 C420 400 570 230 800 230z" fill="#ffc2d6" fill-opacity=".22" stroke="#ffd6e4" stroke-width="5"/>
+  <path d="M800 330 C960 330 1060 450 1060 590 C1060 700 940 740 800 740 C660 740 540 700 540 590 C540 450 640 330 800 330z" fill="#ffc2d6" fill-opacity=".3"/>
+  <!-- forma pequeña -->
+  <circle cx="800" cy="560" r="105" fill="#ffe3ec"/>
+  <circle cx="800" cy="560" r="150" fill="none" stroke="#ffe3ec" stroke-opacity=".5" stroke-width="3"/>
+</svg>

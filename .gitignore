@@ -11,3 +11,8 @@ ehthumbs.db
 
 # Landing confidencial / ajena al consultorio (no debe publicarse en Netlify)
 departamento-riobamba-919/
+
+# Archivos de respaldo y copias viejas (se conservan solo en local)
+*backup*
+*.bak
+narcolepsia/
