@@ -83,6 +83,35 @@
     @media (prefers-reduced-motion: reduce){
       .team-img{ transition: none !important; transform: none !important; }
     }
+
+    /* ── Flyer en miniatura con ampliación ── */
+    .flyer-thumb{
+      display:block; position:relative; margin-top:14px; padding:0;
+      width:100%; max-width:320px; border:1px solid rgba(15,30,51,.15);
+      border-radius:12px; overflow:hidden; cursor:zoom-in; background:#fff;
+      box-shadow:0 6px 18px rgba(2,6,23,.12);
+    }
+    .flyer-thumb img{ display:block; width:100%; height:auto; }
+    .flyer-hint{
+      position:absolute; right:8px; bottom:8px; padding:4px 10px;
+      font-size:12px; font-weight:600; color:#fff;
+      background:rgba(14,34,57,.82); border-radius:999px;
+    }
+    .flyer-thumb:focus-visible{ outline:3px solid #2563eb; outline-offset:2px; }
+    #flyerDialog{
+      border:0; padding:0; background:transparent; max-width:96vw; max-height:96vh;
+      overflow:visible;
+    }
+    #flyerDialog::backdrop{ background:rgba(2,6,23,.82); }
+    #flyerDialog img{
+      display:block; max-width:96vw; max-height:88vh; width:auto; height:auto;
+      border-radius:10px; margin:0 auto;
+    }
+    #flyerDialog .flyer-close{
+      display:block; margin:10px auto 0; padding:8px 20px; border:0;
+      border-radius:999px; font-weight:600; font-size:15px; cursor:pointer;
+      background:#fff; color:#0e2239;
+    }
     </style>
 </head>
 <body>
@@ -415,6 +444,22 @@
 </div>
 </div>
 </article>
+
+<article class="section-card hint-bg" style="overflow:hidden">
+<div class="card-head" style="align-items:flex-start">
+<div>
+  <h3 class="card-title" style="margin:0">Lic. María Elisa Zavala</h3>
+  <p class="card-sub">Licenciada en Psicología · Especialista en Psicología del Deporte</p>
+</div>
+<div class="btn-row" style="margin:0; justify-content:flex-end">
+<a class="btn-primary" href="https://wa.me/5493513359951?text=Hola%2C%20quisiera%20realizar%20una%20consulta%2C%20acced%C3%AD%20a%20tu%20contacto%20desde%20la%20p%C3%A1gina%20del%20Consultorio%20de%20Psiquiatr%C3%ADa%20del%20Doctor%20Dagnino" rel="noopener noreferrer" target="_blank">Contacto (WhatsApp)</a>
+</div>
+</div>
+<a class="flyer-thumb" href="/asociados_salud_mental/Licenciada_Zavala_Elisa.png" data-flyer="/asociados_salud_mental/Licenciada_Zavala_Elisa.png" data-spa="0" target="_blank" rel="noopener" aria-label="Ampliar flyer de la Lic. María Elisa Zavala">
+  <img src="/asociados_salud_mental/Licenciada_Zavala_Elisa.png" alt="Flyer de Psicología del Deporte de la Lic. María Elisa Zavala" loading="lazy" />
+  <span class="flyer-hint">Tocá para ampliar</span>
+</a>
+</article>
 </section>
 <div aria-hidden="true" class="divider"></div>
 <section class="section">
@@ -432,6 +477,28 @@
 </div>
 </section>
 </main>
+
+<dialog id="flyerDialog" aria-label="Flyer ampliado">
+  <img id="flyerBig" src="" alt="Flyer de Psicología del Deporte de la Lic. María Elisa Zavala" />
+  <button type="button" class="flyer-close" id="flyerClose">Cerrar</button>
+</dialog>
+<script>
+(function(){
+  var dlg = document.getElementById("flyerDialog");
+  var big = document.getElementById("flyerBig");
+  if(!dlg || !big) return;
+  document.addEventListener("click", function(e){
+    var t = e.target.closest ? e.target.closest(".flyer-thumb") : null;
+    if(t){
+      e.preventDefault();
+      big.src = t.getAttribute("data-flyer");
+      if(dlg.showModal){ dlg.showModal(); } else { dlg.setAttribute("open",""); }
+      return;
+    }
+    if(e.target === dlg || e.target.id === "flyerClose"){ dlg.close(); }
+  });
+})();
+</script>
 <footer>
 <div class="wrap footer-grid">
 <div>
