@@ -221,11 +221,11 @@
 
     <section class="section">
       <div class="section-card hint-bg">
-        <div class="card-head">
-          <div>
-            <h2 class="card-title" style="margin:0">Higiene del sueño — Checklist</h2>
-            <p class="card-sub">Marcá lo que actualmente cumplís. Al final, podés copiar tu resultado.</p>
-          </div>
+        <details id="checklist" class="sleep-checklist">
+          <summary class="sleep-summary">
+            <span><span class="card-title sleep-summary-title">Higiene del sueño — Checklist</span><span class="card-sub sleep-summary-sub">Marcá lo que actualmente cumplís. Al final, podés copiar tu resultado.</span></span>
+          </summary>
+        <div class="card-head" style="margin-top:16px">
           <div class="btn-row" style="justify-content:flex-end; gap:10px">
             <button class="btn-secondary" id="copyBtn" type="button">Copiar resultado</button>
             <button class="btn-secondary" id="nextTodoBtn" type="button">Próximo pendiente</button>
@@ -286,13 +286,16 @@
             </div>
           </aside>
         </div>
+        </details>
       </div>
     </section>
 
     <section class="section" aria-labelledby="cuidadores-sueno">
       <div class="section-card hint-bg">
-        <h2 class="card-title" id="cuidadores-sueno">El rol del cuidador del hogar</h2>
-        <p class="card-sub">Consejos para convivientes y parejas</p>
+        <details class="sleep-checklist">
+          <summary class="sleep-summary" id="cuidadores-sueno">
+            <span><span class="card-title sleep-summary-title">El rol del cuidador del hogar</span><span class="card-sub sleep-summary-sub">Consejos para convivientes y parejas</span></span>
+          </summary>
         <p>Para algunas personas, la noche puede despertar temor, pensamientos difíciles o una sensación de vulnerabilidad. El estrés y las experiencias previas pueden aumentar la alerta y dificultar el descanso. Escuchar sin juzgar y conversar sobre lo que cada persona necesita puede ayudar a construir una sensación de seguridad.</p>
         <p>La amígdala participa, junto con otras redes cerebrales, en la detección de amenazas y la regulación emocional. Cuando una persona está muy alerta, puede costarle relajarse, incluso en un entorno seguro. Esta reacción no depende de una sola estructura cerebral ni significa que exista necesariamente un peligro actual.</p>
         <h3>Acompañarse antes de dormir</h3>
@@ -364,12 +367,19 @@
           <p>&quot;You don&#39;t have to stay on guard tonight. You can rest. I&#39;m here with you.&quot;</p>
           <p>Consultorio de Psiquiatr&#237;a DagninoPsychiatry and Mental Health Care</p>
         </details>
+        </details>
       </div>
     </section>
   </main>
 
   <style>
     /* Alineado al look del index: usa tus tokens visuales y sólo agrega layout específico */
+    .sleep-summary{ cursor:pointer; display:flex; align-items:center; gap:12px; list-style:none; }
+    .sleep-summary::-webkit-details-marker{ display:none; }
+    .sleep-summary::after{ content:"+"; margin-left:auto; font-size:26px; color:#2563eb; }
+    .sleep-checklist[open] .sleep-summary::after{ content:"−"; }
+    .sleep-summary-title, .sleep-summary-sub{ display:block; }
+    .sleep-summary:focus-visible{ outline:3px solid #2563eb; outline-offset:4px; }
     .sleep-grid{ display:grid; gap:16px; }
     @media(min-width: 980px){ .sleep-grid{ grid-template-columns: 1fr 360px; align-items:start; } }
     .sleep-aside{ position:relative; }
@@ -557,6 +567,8 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
+    document.querySelectorAll('a[href="#checklist"]').forEach(link => link.addEventListener("click", () => { document.getElementById("checklist").open = true; }));
+    if (location.hash === "#checklist") document.getElementById("checklist").open = true;
     render();
   </script>
 
