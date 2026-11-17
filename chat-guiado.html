@@ -43,6 +43,12 @@
       .card-hover { transition: none; }
       .card-hover:hover { transform: none; box-shadow: none; }
     }
+    /* Contraste del área de conversación y sus mensajes. */
+    .chat-conversation { background: #e4edf0; border-color: #9fb6bd; }
+    .chat-message-assistant:not(.chat-bubble-safety) { background: #fff; color: #172d37; border: 1px solid #a3b6bd; }
+    .chat-message-user { background: #174c64; color: #fff; }
+    #chatInput { border-color: #829ca5; color: #172d37; }
+    #chatInput::placeholder { color: #526770; opacity: 1; }
   </style>
 </head>
 
@@ -131,10 +137,10 @@
       <section class="space-y-6">
 
         <!-- MÚSICA -->
-        <div id="musica" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <details id="musica" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
+          <summary class="cursor-pointer text-xl font-semibold">Música de fondo (opcional)</summary>
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
             <div>
-              <h2 class="text-xl font-semibold mb-1">Música de fondo (opcional)</h2>
               <p class="text-inst-gray text-sm leading-relaxed">
                 Elegí una música suave para acompañar. Podés pausar cuando quieras.
               </p>
@@ -214,7 +220,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- CHAT -->
         <div id="chat" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-7 card-hover">
@@ -257,7 +263,7 @@
           </div>
 
           <div class="mt-5 grid lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-8 rounded-2xl border border-gray-100 bg-inst-light p-4">
+            <div class="chat-conversation lg:col-span-8 rounded-2xl border border-gray-100 bg-inst-light p-4">
               <p class="text-xs text-inst-gray mb-3" role="note">
                 Este chat orienta recursos del sitio. No reemplaza una consulta profesional ni atiende urgencias.
               </p>
@@ -759,8 +765,8 @@
       wrap.className = isUser ? "flex justify-end" : "flex justify-start";
       // variant "safety": aviso de seguridad con estilo diferenciado (rojo sobrio)
       const baseClass = isUser
-        ? "bg-inst-blue text-white"
-        : "bg-white border border-gray-200 text-inst-navy";
+        ? "chat-message-user bg-inst-blue text-white"
+        : "chat-message-assistant bg-white border border-gray-200 text-inst-navy";
       const safetyClass = (variant === "safety" && !isUser) ? " chat-bubble-safety" : "";
       wrap.innerHTML = `
         <div class="${baseClass}${safetyClass} max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed">
@@ -1180,5 +1186,11 @@
   })();
   </script>
 
+  <script>
+    document.querySelectorAll('a[href="#musica"]').forEach(function (link) {
+      link.addEventListener('click', function () { document.getElementById('musica').open = true; });
+    });
+    if (location.hash === '#musica') document.getElementById('musica').open = true;
+  </script>
 </body>
 </html>
